@@ -7,3 +7,6 @@
 /.gradle/
 /build/
 /out/
+
+# API Spec — openapi.json은 커밋, redoc.html은 빌드 산출물
+/api-spec/redoc.html

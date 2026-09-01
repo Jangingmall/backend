@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.epages.restdocs-api-spec' version '0.20.1'
 }
 
 group = 'com.jangingmall'
@@ -53,11 +54,13 @@ dependencies {
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    // REST Docs
+    // REST Docs + OpenAPI spec generation
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.20.1'
 
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
     // Lombok
@@ -81,7 +84,72 @@ tasks.withType(JavaCompile).configureEach {
     options.getGeneratedSourceOutputDirectory().set(querydslDir)
 }
 
+// ── REST Docs 스니펫 출력 경로 ────────────────────────────────────────────────
+def snippetsDir = layout.buildDirectory.dir('generated-snippets')
+
 tasks.named('test') {
-    outputs.dir(layout.buildDirectory.dir('generated-snippets'))
+    outputs.dir(snippetsDir)
     useJUnitPlatform()
+}
+
+// ── OpenAPI 3.0 JSON 생성 (restdocs-api-spec) ────────────────────────────────
+openapi3 {
+    server = 'http://localhost:8080'
+    title = '장인몰 (미담) API'
+    description = '국가무형유산 장인 B2C 마켓플레이스 REST API'
+    version = project.version
+    format = 'json'
+    outputDirectory = 'build/api-spec'
+    outputFileNamePrefix = 'openapi'
+}
+
+// ── 후처리: 공백·개행 정규화 + 샘플 데이터 주입 ─────────────────────────────
+tasks.register('processOpenapi') {
+    dependsOn 'openapi3'
+    description = 'Pretty-print openapi.json and inject x-sample-data extensions'
+
+    def inputFile  = file('build/api-spec/openapi.json')
+    def outputFile = file('api-spec/openapi.json')
+
+    inputs.file(inputFile)
+    outputs.file(outputFile)
+
+    doLast {
+        def json = new groovy.json.JsonSlurper().parse(inputFile)
+
+        // x-sample-data 최상위 extension 주입
+        json['x-sample-data'] = [
+            member   : [email: 'artisan@example.com', name: '김도공'],
+            product  : [title: '청자 상감 다완', price: 85000, category: 'POTTERY'],
+            chatbot  : [message: '어머니 생신 선물 추천해줘', sessionKey: 'sess-abc123']
+        ]
+
+        def outputDir = file('api-spec')
+        outputDir.mkdirs()
+        outputFile.text = groovy.json.JsonOutput.prettyPrint(
+            groovy.json.JsonOutput.toJson(json)
+        )
+
+        println "[processOpenapi] 생성 완료: ${outputFile.absolutePath}"
+    }
+}
+
+// ── Redocly HTML 생성 ────────────────────────────────────────────────────────
+tasks.register('buildRedocly', Exec) {
+    dependsOn 'processOpenapi'
+    description = 'Generate Redocly static HTML from api-spec/openapi.json'
+
+    def specFile  = file('api-spec/openapi.json')
+    def outputHtml = file('api-spec/redoc.html')
+
+    inputs.file(specFile)
+    outputs.file(outputHtml)
+
+    commandLine 'npx', '--yes', '@redocly/cli', 'build-docs',
+        specFile.absolutePath,
+        '--output', outputHtml.absolutePath
+
+    doLast {
+        println "[buildRedocly] HTML 생성 완료: ${outputHtml.absolutePath}"
+    }
 }
