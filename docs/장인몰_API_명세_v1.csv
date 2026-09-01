@@ -1,0 +1,2832 @@
+﻿도메인,담당자,메소드,엔드포인트,기능명,설명,인증,상태,우선순위,요청(Request),응답(Response),대표에러(Error)
+회원,유창민,POST,/api/member/signup,이메일 회원가입,"이메일/비밀번호/비밀번호확인/이름/전화번호와 약관 동의(만14세이상·이용약관·개인정보수집 필수, 마케팅수신 선택)를 받아 계정을 생성한다. 가입 직후 인증 이메일이 자동 발송되며, 인증 전까지는 로그인이 제한된다",Public,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/signup"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""body"": {
+    ""email"": ""string · 필수 — 이메일 주소"",
+    ""password"": ""string · 필수 — 비밀번호(평문 전송, 서버는 해시 저장)"",
+    ""passwordConfirm"": ""string · 필수"",
+    ""name"": ""string · 필수 — 이름/명칭"",
+    ""phone"": ""string · 필수 — 전화번호(하이픈 제외 숫자만)"",
+    ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) · 필수 — 회원 역할"",
+    ""agreements"": {
+      ""age14OrOlder"": ""boolean · 필수"",
+      ""termsOfService"": ""boolean · 필수"",
+      ""privacyCollection"": ""boolean · 필수"",
+      ""marketing"": ""boolean · 선택""
+    }
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""memberId"": ""number — 회원 고유 ID"",
+    ""email"": ""string — 이메일 주소"",
+    ""status"": ""string (enum: `PENDING_VERIFICATION`(이메일 인증 대기 — 로그인 불가) | `ACTIVE`(활성) | `WITHDRAWN`(탈퇴))""
+  }
+}","{
+  ""success"": false,
+  ""status"": 409,
+  ""errorCode"": ""CONFLICT""
+}"
+회원,유창민,POST,/api/member/email-verifications,인증 이메일 재전송,회원가입 시 자동 발송된 인증 이메일을 못 받았거나 링크가 만료된 경우 재전송을 요청한다,Public,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/email-verifications"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""body"": {
+    ""email"": ""string · 필수 — 이메일 주소""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""expiresInSeconds"": ""number — 유효시간(초)""
+  }
+}",
+회원,유창민,GET,/api/member/email-verifications/verify,이메일 인증 링크 확인,"이메일로 받은 인증 링크의 token을 검증하여 계정을 활성화한다(GET, 브라우저가 링크 클릭 시 직접 호출). 성공/실패와 무관하게 302로 프론트 홈('/')으로 리다이렉트한다",Public,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/email-verifications/verify"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""queryParams"": {
+    ""token"": ""string · 선택""
+  }
+}","{
+  ""description"": ""302 Redirect → 인증 성공 시 프론트 홈('/')으로 이동(PM 확정, 전용 완료 페이지는 프론트에서 추후 URI 생성 예정). 토큰 만료/위조 등 실패 시의 리다이렉트 대상은 아직 미정""
+}",
+회원,유창민,GET,/api/member/oauth2/kakao,카카오 로그인,카카오 OAuth2 로그인을 시작한다,Public,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/oauth2/kakao"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  }
+}","{
+  ""description"": ""302 Redirect → OAuth2 Provider 인가 페이지로 이동 후 콜백에서 accessToken/refreshToken 발급""
+}",
+회원,유창민,GET,/api/member/oauth2/google,구글 로그인,구글 OAuth2 로그인을 시작한다,Public,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/oauth2/google"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  }
+}","{
+  ""description"": ""302 Redirect → OAuth2 Provider 인가 페이지로 이동 후 콜백에서 accessToken/refreshToken 발급""
+}",
+회원,유창민,POST,/api/member/login,로그인,이메일/비밀번호로 로그인한다. 이메일 인증 전 계정은 로그인이 거부된다(403),Public,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/login"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""body"": {
+    ""email"": ""string · 필수 — 이메일 주소"",
+    ""password"": ""string · 필수 — 비밀번호(평문 전송, 서버는 해시 저장)""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""accessToken"": ""string"",
+    ""refreshToken"": ""string"",
+    ""member"": {
+      ""memberId"": ""number — 회원 고유 ID"",
+      ""email"": ""string — 이메일 주소"",
+      ""name"": ""string — 이름/명칭"",
+      ""nickname"": ""string — 닉네임"",
+      ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) — 회원 역할"",
+      ""profileImageUrl"": ""string — 프로필 이미지 URL""
+    }
+  }
+}","{
+  ""success"": false,
+  ""status"": 401,
+  ""errorCode"": ""UNAUTHORIZED""
+}"
+회원,유창민,POST,/api/member/logout,로그아웃,현재 인증 세션을 종료한다,Authenticated,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/logout"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+회원,유창민,GET,/api/member/me,내 정보 조회,현재 로그인한 회원 정보를 조회한다,Authenticated,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/me"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""memberId"": ""number — 회원 고유 ID"",
+    ""email"": ""string — 이메일 주소"",
+    ""name"": ""string — 이름/명칭"",
+    ""nickname"": ""string — 닉네임"",
+    ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) — 회원 역할"",
+    ""profileImageUrl"": ""string — 프로필 이미지 URL""
+  }
+}",
+회원,유창민,PATCH,/api/member/me,내 정보 수정,회원 기본 정보를 수정한다,Authenticated,예정,P1,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/member/me"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""name"": ""string · 선택 — 이름/명칭"",
+    ""nickname"": ""string · 선택 — 닉네임"",
+    ""phone"": ""string · 선택 — 전화번호(하이픈 제외 숫자만)""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""memberId"": ""number — 회원 고유 ID"",
+    ""email"": ""string — 이메일 주소"",
+    ""name"": ""string — 이름/명칭"",
+    ""nickname"": ""string — 닉네임"",
+    ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) — 회원 역할"",
+    ""profileImageUrl"": ""string — 프로필 이미지 URL""
+  }
+}",
+회원,유창민,PATCH,/api/member/me/password,비밀번호 변경,현재 비밀번호를 변경한다,Authenticated,예정,P1,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/member/me/password"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""currentPassword"": ""string · 선택"",
+    ""newPassword"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}","{
+  ""success"": false,
+  ""status"": 400,
+  ""errorCode"": ""MISMATCH""
+}"
+회원,유창민,DELETE,/api/member/me,회원 탈퇴,회원 탈퇴를 처리한다,Authenticated,예정,P1,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/member/me"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""reason"": ""string · 필수 — AI가 생성한 추천 이유""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+회원,유창민,GET,/api/member/me/addresses,배송지 목록 조회,회원의 배송지 목록을 조회한다,USER,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/me/addresses"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": [
+    {
+      ""addressId"": ""number — 배송지 ID"",
+      ""recipientName"": ""string — 수령인명"",
+      ""phone"": ""string — 전화번호(하이픈 제외 숫자만)"",
+      ""zipCode"": ""string — 우편번호"",
+      ""address1"": ""string — 기본주소"",
+      ""address2"": ""string — 상세주소"",
+      ""isDefault"": ""boolean — 기본값 여부""
+    }
+  ]
+}",
+회원,유창민,POST,/api/member/me/addresses,배송지 등록,배송지를 등록한다,USER,예정,P1,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/me/addresses"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""recipientName"": ""string · 필수 — 수령인명"",
+    ""phone"": ""string · 필수 — 전화번호(하이픈 제외 숫자만)"",
+    ""zipCode"": ""string · 필수 — 우편번호"",
+    ""address1"": ""string · 필수 — 기본주소"",
+    ""address2"": ""string · 필수 — 상세주소"",
+    ""isDefault"": ""boolean · 필수 — 기본값 여부""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""addressId"": ""number — 배송지 ID"",
+    ""recipientName"": ""string — 수령인명"",
+    ""phone"": ""string — 전화번호(하이픈 제외 숫자만)"",
+    ""zipCode"": ""string — 우편번호"",
+    ""address1"": ""string — 기본주소"",
+    ""address2"": ""string — 상세주소"",
+    ""isDefault"": ""boolean — 기본값 여부""
+  }
+}",
+회원,유창민,PATCH,/api/member/me/addresses/{addressId},배송지 수정,배송지 정보를 수정한다,USER,예정,P1,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/member/me/addresses/{addressId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""recipientName"": ""string · 선택 — 수령인명"",
+    ""phone"": ""string · 선택 — 전화번호(하이픈 제외 숫자만)"",
+    ""zipCode"": ""string · 선택 — 우편번호"",
+    ""address1"": ""string · 선택 — 기본주소"",
+    ""address2"": ""string · 선택 — 상세주소"",
+    ""isDefault"": ""boolean · 선택 — 기본값 여부""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""addressId"": ""number — 배송지 ID"",
+    ""recipientName"": ""string — 수령인명"",
+    ""phone"": ""string — 전화번호(하이픈 제외 숫자만)"",
+    ""zipCode"": ""string — 우편번호"",
+    ""address1"": ""string — 기본주소"",
+    ""address2"": ""string — 상세주소"",
+    ""isDefault"": ""boolean — 기본값 여부""
+  }
+}",
+회원,유창민,DELETE,/api/member/me/addresses/{addressId},배송지 삭제,배송지를 삭제한다,USER,예정,P1,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/member/me/addresses/{addressId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+회원,유창민,GET,/api/member/me/wishes,찜 목록 조회,찜한 상품 목록을 조회한다,USER,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/me/wishes"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""productId"": ""number — 상품 고유 ID"",
+        ""name"": ""string — 이름/명칭"",
+        ""price"": ""number — 가격, 원 단위 정수"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
+        ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+        ""isLimited"": ""boolean — 한정수량 여부"",
+        ""isCustomOrder"": ""boolean — 주문제작 여부"",
+        ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+        ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+        ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+        ""hasOptions"": ""boolean — 옵션 존재 여부"",
+        ""purposeTags"": [
+          ""string — 용도 태그 배열(선물/다도 등)""
+        ],
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+회원,유창민,GET,/api/member/me/orders,주문 목록 조회,회원의 주문 내역을 조회한다,USER,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/me/orders"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택"",
+    ""status"": ""string (enum, 예: `ALL`, 동적 값) · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""orderId"": ""number — 주문 고유 ID"",
+        ""orderNumber"": ""string (enum, 예: `ORD20260825001`, 동적 값) — 사람이 보는 주문번호(orderId와 별개 식별자)"",
+        ""status"": ""string (enum, 예: `PAID`, 동적 값)"",
+        ""totalAmount"": ""number — 총 주문 금액"",
+        ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+회원,유창민,GET,/api/member/me/orders/{orderId},주문 상세 조회,회원의 주문 상세 정보를 조회한다,USER,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/me/orders/{orderId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""orderId"": ""number — 주문 고유 ID"",
+    ""orderNumber"": ""string (enum, 예: `ORD20260825001`, 동적 값) — 사람이 보는 주문번호(orderId와 별개 식별자)"",
+    ""status"": ""string (enum, 예: `PAID`, 동적 값)"",
+    ""totalAmount"": ""number — 총 주문 금액"",
+    ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601"",
+    ""items"": [
+      {
+        ""orderItemId"": ""number"",
+        ""productId"": ""number — 상품 고유 ID"",
+        ""productName"": ""string"",
+        ""price"": ""number — 가격, 원 단위 정수"",
+        ""quantity"": ""number — 수량""
+      }
+    ],
+    ""address"": {
+      ""addressId"": ""number — 배송지 ID"",
+      ""recipientName"": ""string — 수령인명"",
+      ""phone"": ""string — 전화번호(하이픈 제외 숫자만)"",
+      ""zipCode"": ""string — 우편번호"",
+      ""address1"": ""string — 기본주소"",
+      ""address2"": ""string — 상세주소"",
+      ""isDefault"": ""boolean — 기본값 여부""
+    }
+  }
+}",
+회원,유창민,GET,/api/member/me/reviews/writable,작성 가능 후기 조회,후기 작성이 가능한 주문 상품을 조회한다,USER,예정,P2,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/me/reviews/writable"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""orderItemId"": ""number"",
+        ""productId"": ""number — 상품 고유 ID"",
+        ""productName"": ""string"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+회원,유창민,GET,/api/member/me/reviews,내 후기 조회,회원이 작성한 후기를 조회한다,USER,예정,P2,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/me/reviews"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""reviewId"": ""number — 후기 ID"",
+        ""productId"": ""number — 상품 고유 ID"",
+        ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+        ""content"": ""string — 본문 내용"",
+        ""images"": [
+          ""string""
+        ],
+        ""writerNickname"": ""string"",
+        ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+회원,유창민,GET,/api/member/artisans/{artisanId},장인 정보 조회,장인의 프로필과 인증 정보를 조회한다,Public,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/artisans/{artisanId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""artisanId"": ""number — 장인 고유 ID"",
+    ""businessName"": ""string — 공방명"",
+    ""introduction"": ""string — 한 줄 소개"",
+    ""profileImageUrl"": ""string — 프로필 이미지 URL"",
+    ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+    ""isOrganization"": ""boolean — 단체 지정 여부"",
+    ""certificationStatus"": ""string (enum, 예: `APPROVED`, 동적 값)"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""region"": ""string — 활동 지역"",
+    ""careerYears"": ""number — 경력 연수"",
+    ""productCount"": ""number — 등록 작품 총수"",
+    ""topProducts"": [
+      {
+        ""productId"": ""number — 상품 고유 ID"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+      }
+    ],
+    ""certifiedYear"": ""number — 지정 연도"",
+    ""lineage"": ""string — 계보"",
+    ""quote"": ""string — 인용문"",
+    ""bio"": ""string — 상세 소개 본문"",
+    ""videoUrl"": ""string — 영상 URL(등록 방식)"",
+    ""careerTimeline"": [
+      {
+        ""year"": ""number"",
+        ""title"": ""string"",
+        ""description"": ""string — 설명""
+      }
+    ]
+  }
+}","{
+  ""success"": false,
+  ""status"": 404,
+  ""errorCode"": ""NOT_FOUND""
+}"
+회원,유창민,GET,/api/member/artisans/me,내 장인 정보 조회,현재 장인의 정보를 조회한다,ARTISAN,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/artisans/me"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""artisanId"": ""number — 장인 고유 ID"",
+    ""businessName"": ""string — 공방명"",
+    ""introduction"": ""string — 한 줄 소개"",
+    ""profileImageUrl"": ""string — 프로필 이미지 URL"",
+    ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+    ""isOrganization"": ""boolean — 단체 지정 여부"",
+    ""certificationStatus"": ""string (enum, 예: `APPROVED`, 동적 값)"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""region"": ""string — 활동 지역"",
+    ""careerYears"": ""number — 경력 연수"",
+    ""productCount"": ""number — 등록 작품 총수"",
+    ""topProducts"": [
+      {
+        ""productId"": ""number — 상품 고유 ID"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+      }
+    ],
+    ""certifiedYear"": ""number — 지정 연도"",
+    ""lineage"": ""string — 계보"",
+    ""quote"": ""string — 인용문"",
+    ""bio"": ""string — 상세 소개 본문"",
+    ""videoUrl"": ""string — 영상 URL(등록 방식)"",
+    ""careerTimeline"": [
+      {
+        ""year"": ""number"",
+        ""title"": ""string"",
+        ""description"": ""string — 설명""
+      }
+    ]
+  }
+}",
+회원,유창민,PATCH,/api/member/artisans/me,장인 정보 수정,장인 프로필 및 소개 정보를 수정한다,ARTISAN,예정,P1,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/member/artisans/me"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""businessName"": ""string · 선택 — 공방명"",
+    ""introduction"": ""string · 선택 — 한 줄 소개"",
+    ""profileImageUrl"": ""string · 선택 — 프로필 이미지 URL"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) · 선택 — 종목/카테고리 코드"",
+    ""region"": ""string · 선택 — 활동 지역"",
+    ""careerYears"": ""number · 선택 — 경력 연수"",
+    ""certifiedYear"": ""number · 선택 — 지정 연도"",
+    ""lineage"": ""string · 선택 — 계보"",
+    ""quote"": ""string · 선택 — 인용문"",
+    ""bio"": ""string · 선택 — 상세 소개 본문"",
+    ""videoUrl"": ""string · 선택 — 영상 URL(등록 방식)""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""artisanId"": ""number — 장인 고유 ID"",
+    ""businessName"": ""string — 공방명"",
+    ""introduction"": ""string — 한 줄 소개"",
+    ""profileImageUrl"": ""string — 프로필 이미지 URL"",
+    ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+    ""isOrganization"": ""boolean — 단체 지정 여부"",
+    ""certificationStatus"": ""string (enum, 예: `APPROVED`, 동적 값)"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""region"": ""string — 활동 지역"",
+    ""careerYears"": ""number — 경력 연수"",
+    ""productCount"": ""number — 등록 작품 총수"",
+    ""topProducts"": [
+      {
+        ""productId"": ""number — 상품 고유 ID"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+      }
+    ],
+    ""certifiedYear"": ""number — 지정 연도"",
+    ""lineage"": ""string — 계보"",
+    ""quote"": ""string — 인용문"",
+    ""bio"": ""string — 상세 소개 본문"",
+    ""videoUrl"": ""string — 영상 URL(등록 방식)"",
+    ""careerTimeline"": [
+      {
+        ""year"": ""number"",
+        ""title"": ""string"",
+        ""description"": ""string — 설명""
+      }
+    ]
+  }
+}",
+회원,유창민,POST,/api/member/artisans/applications,장인 가입 신청,장인 가입 및 인증 심사를 신청한다,ARTISAN,예정,P1,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/artisans/applications"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""businessName"": ""string · 필수 — 공방명"",
+    ""introduction"": ""string · 필수 — 한 줄 소개"",
+    ""businessLicenseImageUrl"": ""string · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""applicationId"": ""number — 장인 가입 신청 ID"",
+    ""memberId"": ""number — 회원 고유 ID"",
+    ""businessName"": ""string — 공방명"",
+    ""status"": ""string (enum: `PENDING`(심사대기) | `APPROVED`(승인됨 — 회원 role이 ARTISAN으로 전환) | `REJECTED`(반려됨(사유 포함)))"",
+    ""submittedAt"": ""string (ISO 8601 datetime) — 제출 일시, ISO 8601""
+  }
+}","{
+  ""success"": false,
+  ""status"": 409,
+  ""errorCode"": ""CONFLICT""
+}"
+상품,강정훈,GET,/api/products/me,내 상품 목록 조회,장인이 등록한 상품을 조회한다,ARTISAN,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/products/me"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택"",
+    ""status"": ""string (enum, 예: `ALL`, 동적 값) · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""productId"": ""number — 상품 고유 ID"",
+        ""name"": ""string — 이름/명칭"",
+        ""price"": ""number — 가격, 원 단위 정수"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
+        ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+        ""isLimited"": ""boolean — 한정수량 여부"",
+        ""isCustomOrder"": ""boolean — 주문제작 여부"",
+        ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+        ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+        ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+        ""hasOptions"": ""boolean — 옵션 존재 여부"",
+        ""purposeTags"": [
+          ""string — 용도 태그 배열(선물/다도 등)""
+        ],
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+상품,강정훈,POST,/api/products,상품 등록,"상품 기본정보와 필수(A)/선택(B)/입력(C) 3계층 옵션(optionGroups)을 등록한다. 필수 옵션이 실질적 재고단위(SKU)가 된다. 등록 직후 상태는 DRAFT(비공개) — 공개 목록/상세에 노출되지 않으며, CONTENT-011(콘텐츠 게시) 시점에 ON_SALE로 전환되어야 노출된다. (내부) AI파트 POST /ai/products 동기화는 콘텐츠 게시 시점에 서사 데이터와 함께 일괄 수행",ARTISAN,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/products"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""name"": ""string · 필수 — 이름/명칭"",
+    ""price"": ""number · 필수 — 가격, 원 단위 정수"",
+    ""description"": ""string · 필수 — 설명"",
+    ""modelName"": ""string · 필수"",
+    ""size"": ""string · 필수"",
+    ""material"": ""string · 필수 — 소재 코드"",
+    ""components"": [
+      ""string · 필수""
+    ],
+    ""manufacturer"": ""string · 필수"",
+    ""countryOfOrigin"": ""string · 필수"",
+    ""asManagerContact"": ""string · 필수"",
+    ""warrantyPolicy"": ""string · 필수"",
+    ""stock"": ""number · 필수 — 재고 수량"",
+    ""productionPeriodDays"": ""number · 필수 — 제작 소요일수"",
+    ""isLimited"": ""boolean · 필수 — 한정수량 여부"",
+    ""isCustomOrder"": ""boolean · 필수 — 주문제작 여부"",
+    ""hasGiftWrap"": ""boolean · 필수 — 선물포장 가능 여부"",
+    ""engravingAvailable"": ""boolean · 필수"",
+    ""shippingFee"": ""number · 필수 — 배송비"",
+    ""freeShippingThreshold"": ""number · 필수 — 무료배송 조건 금액(없으면 null)"",
+    ""images"": [
+      ""string · 필수""
+    ],
+    ""optionGroups"": [
+      {
+        ""type"": ""string (enum: `REQUIRED`(필수 옵션 — 선택해야 구매 가능, 실질적 SKU) | `OPTIONAL`(선택 옵션 — 안 골라도 구매 가능, 가격 가산) | `TEXT`(입력형 옵션 — 사용자가 텍스트 직접 입력)) · 필수"",
+        ""name"": ""string · 필수 — 이름/명칭"",
+        ""choices"": [
+          {
+            ""name"": ""string · 필수 — 이름/명칭"",
+            ""priceDelta"": ""number · 필수 — 기본가 대비 가감액"",
+            ""stock"": ""number · 필수 — 재고 수량""
+          }
+        ]
+      }
+    ]
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""productId"": ""number — 상품 고유 ID"",
+    ""name"": ""string — 이름/명칭"",
+    ""price"": ""number — 가격, 원 단위 정수"",
+    ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+    ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+    ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+    ""isLimited"": ""boolean — 한정수량 여부"",
+    ""isCustomOrder"": ""boolean — 주문제작 여부"",
+    ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+    ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+    ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+    ""hasOptions"": ""boolean — 옵션 존재 여부"",
+    ""purposeTags"": [
+      ""string — 용도 태그 배열(선물/다도 등)""
+    ],
+    ""artisanId"": ""number — 장인 고유 ID"",
+    ""artisanName"": ""string"",
+    ""modelName"": ""string"",
+    ""size"": ""string"",
+    ""material"": ""string — 소재 코드"",
+    ""components"": [
+      ""string""
+    ],
+    ""manufacturer"": ""string"",
+    ""countryOfOrigin"": ""string"",
+    ""asManagerContact"": ""string"",
+    ""warrantyPolicy"": ""string"",
+    ""description"": ""string — 설명"",
+    ""stock"": ""number — 재고 수량"",
+    ""stockAvailable"": ""boolean — 구매 가능 재고 존재 여부"",
+    ""productionPeriodDays"": ""number — 제작 소요일수"",
+    ""engravingAvailable"": ""boolean"",
+    ""shippingFee"": ""number — 배송비"",
+    ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)"",
+    ""detailPageBlocks"": [
+      {
+        ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
+        ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
+        ""hasImage"": ""boolean"",
+        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
+        ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+      }
+    ],
+    ""optionGroups"": [
+      {
+        ""optionGroupId"": ""number — 옵션 그룹 ID"",
+        ""type"": ""string (enum: `REQUIRED`(필수 옵션 — 선택해야 구매 가능, 실질적 SKU) | `OPTIONAL`(선택 옵션 — 안 골라도 구매 가능, 가격 가산) | `TEXT`(입력형 옵션 — 사용자가 텍스트 직접 입력))"",
+        ""name"": ""string — 이름/명칭"",
+        ""choices"": [
+          {
+            ""choiceId"": ""number — 옵션 선택지 ID"",
+            ""name"": ""string — 이름/명칭"",
+            ""priceDelta"": ""number — 기본가 대비 가감액"",
+            ""stock"": ""number — 재고 수량""
+          }
+        ]
+      }
+    ],
+    ""images"": [
+      {
+        ""imageId"": ""string — 이미지 그룹 ID, ULID 형식(예: image_01HXYZ)"",
+        ""alt"": ""string"",
+        ""variants"": [
+          {
+            ""url"": ""string"",
+            ""width"": ""number"",
+            ""height"": ""number"",
+            ""format"": ""string""
+          }
+        ]
+      }
+    ],
+    ""artisan"": {
+      ""artisanId"": ""number — 장인 고유 ID"",
+      ""businessName"": ""string — 공방명"",
+      ""introduction"": ""string — 한 줄 소개"",
+      ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)""
+    }
+  }
+}","{
+  ""success"": false,
+  ""status"": 403,
+  ""errorCode"": ""FORBIDDEN""
+}"
+상품,강정훈,PATCH,/api/products/{productId},상품 수정,상품 기본정보 및 옵션(optionGroups)을 수정한다. material·title 등 AI 임베딩 대상 필드 변경 시 (내부) AI파트 PUT /ai/products/{id} 재동기화 필요,ARTISAN,예정,P0,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/products/{productId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""name"": ""string · 선택 — 이름/명칭"",
+    ""price"": ""number · 선택 — 가격, 원 단위 정수"",
+    ""description"": ""string · 선택 — 설명"",
+    ""stock"": ""number · 선택 — 재고 수량"",
+    ""productionPeriodDays"": ""number · 선택 — 제작 소요일수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""productId"": ""number — 상품 고유 ID"",
+    ""name"": ""string — 이름/명칭"",
+    ""price"": ""number — 가격, 원 단위 정수"",
+    ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+    ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+    ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+    ""isLimited"": ""boolean — 한정수량 여부"",
+    ""isCustomOrder"": ""boolean — 주문제작 여부"",
+    ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+    ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+    ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+    ""hasOptions"": ""boolean — 옵션 존재 여부"",
+    ""purposeTags"": [
+      ""string — 용도 태그 배열(선물/다도 등)""
+    ],
+    ""artisanId"": ""number — 장인 고유 ID"",
+    ""artisanName"": ""string"",
+    ""modelName"": ""string"",
+    ""size"": ""string"",
+    ""material"": ""string — 소재 코드"",
+    ""components"": [
+      ""string""
+    ],
+    ""manufacturer"": ""string"",
+    ""countryOfOrigin"": ""string"",
+    ""asManagerContact"": ""string"",
+    ""warrantyPolicy"": ""string"",
+    ""description"": ""string — 설명"",
+    ""stock"": ""number — 재고 수량"",
+    ""stockAvailable"": ""boolean — 구매 가능 재고 존재 여부"",
+    ""productionPeriodDays"": ""number — 제작 소요일수"",
+    ""engravingAvailable"": ""boolean"",
+    ""shippingFee"": ""number — 배송비"",
+    ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)"",
+    ""detailPageBlocks"": [
+      {
+        ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
+        ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
+        ""hasImage"": ""boolean"",
+        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
+        ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+      }
+    ],
+    ""optionGroups"": [
+      {
+        ""optionGroupId"": ""number — 옵션 그룹 ID"",
+        ""type"": ""string (enum: `REQUIRED`(필수 옵션 — 선택해야 구매 가능, 실질적 SKU) | `OPTIONAL`(선택 옵션 — 안 골라도 구매 가능, 가격 가산) | `TEXT`(입력형 옵션 — 사용자가 텍스트 직접 입력))"",
+        ""name"": ""string — 이름/명칭"",
+        ""choices"": [
+          {
+            ""choiceId"": ""number — 옵션 선택지 ID"",
+            ""name"": ""string — 이름/명칭"",
+            ""priceDelta"": ""number — 기본가 대비 가감액"",
+            ""stock"": ""number — 재고 수량""
+          }
+        ]
+      }
+    ],
+    ""images"": [
+      {
+        ""imageId"": ""string — 이미지 그룹 ID, ULID 형식(예: image_01HXYZ)"",
+        ""alt"": ""string"",
+        ""variants"": [
+          {
+            ""url"": ""string"",
+            ""width"": ""number"",
+            ""height"": ""number"",
+            ""format"": ""string""
+          }
+        ]
+      }
+    ],
+    ""artisan"": {
+      ""artisanId"": ""number — 장인 고유 ID"",
+      ""businessName"": ""string — 공방명"",
+      ""introduction"": ""string — 한 줄 소개"",
+      ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)""
+    }
+  }
+}",
+상품,강정훈,DELETE,/api/products/{productId},상품 삭제,상품을 삭제한다. (내부) AI파트 DELETE /ai/products/{id} 동기화 필요 — 누락 시 AI 추천 결과에 삭제된 상품이 계속 노출됨,ARTISAN,예정,P0,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/products/{productId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+상품,강정훈,PATCH,/api/products/{productId}/status,상품 상태 변경,상품 판매 상태를 변경한다,ARTISAN,예정,P0,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/products/{productId}/status"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리)) · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""productId"": ""number — 상품 고유 ID"",
+    ""name"": ""string — 이름/명칭"",
+    ""price"": ""number — 가격, 원 단위 정수"",
+    ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+    ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+    ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+    ""isLimited"": ""boolean — 한정수량 여부"",
+    ""isCustomOrder"": ""boolean — 주문제작 여부"",
+    ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+    ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+    ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+    ""hasOptions"": ""boolean — 옵션 존재 여부"",
+    ""purposeTags"": [
+      ""string — 용도 태그 배열(선물/다도 등)""
+    ],
+    ""artisanId"": ""number — 장인 고유 ID"",
+    ""artisanName"": ""string""
+  }
+}","{
+  ""success"": false,
+  ""status"": 404,
+  ""errorCode"": ""NOT_FOUND""
+}"
+상품,강정훈,GET,/api/products,상품 목록 조회/검색/필터,"가격대(4구간: 5만원미만/5만원~10만원미만/10만원~20만원미만/20만원이상)·선물테마(giftTheme, 8종)·소재(material, 진입 카테고리 기준 동적)·컬러(color)·구매방식(isLimited/isCustomOrder/hasGiftWrap — UI는 하나로 묶이나 데이터는 3개 파라미터 유지)·종목(category)·품절제외(excludeSoldOut, 기본 true) 조건으로 검색·필터링. artisanId로 특정 장인 작품만 필터링 가능. sort 6종: POPULAR(인기순, 기본)/NEWEST(최신순)/WISHLIST_COUNT(찜많은순)/SALES_COUNT(판매많은순)/PRICE_ASC(낮은가격순)/PRICE_DESC(높은가격순)",Public,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/products"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택"",
+    ""artisanId"": ""string · 선택 — 장인 고유 ID"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) · 선택 — 종목/카테고리 코드"",
+    ""material"": ""string · 선택 — 소재 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) · 선택 — 선물테마 코드"",
+    ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) · 선택 — 컬러 코드"",
+    ""sort"": ""string (enum: `POPULAR`(인기순(기본값)) | `NEWEST`(최신순) | `WISHLIST_COUNT`(찜많은순) | `SALES_COUNT`(판매많은순) | `PRICE_ASC`(낮은가격순) | `PRICE_DESC`(높은가격순)) · 선택"",
+    ""minPrice"": ""string · 선택"",
+    ""maxPrice"": ""string · 선택"",
+    ""isLimited"": ""string · 선택 — 한정수량 여부"",
+    ""isCustomOrder"": ""string · 선택 — 주문제작 여부"",
+    ""hasGiftWrap"": ""string · 선택 — 선물포장 가능 여부"",
+    ""excludeSoldOut"": ""string · 선택"",
+    ""keyword"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""productId"": ""number — 상품 고유 ID"",
+        ""name"": ""string — 이름/명칭"",
+        ""price"": ""number — 가격, 원 단위 정수"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
+        ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+        ""isLimited"": ""boolean — 한정수량 여부"",
+        ""isCustomOrder"": ""boolean — 주문제작 여부"",
+        ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+        ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+        ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+        ""hasOptions"": ""boolean — 옵션 존재 여부"",
+        ""purposeTags"": [
+          ""string — 용도 태그 배열(선물/다도 등)""
+        ],
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+상품,강정훈,GET,/api/products/{productId},상품 상세 조회,상품 상세 및 장인 정보를 조회한다,Public,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/products/{productId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""productId"": ""number — 상품 고유 ID"",
+    ""name"": ""string — 이름/명칭"",
+    ""price"": ""number — 가격, 원 단위 정수"",
+    ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+    ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+    ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+    ""isLimited"": ""boolean — 한정수량 여부"",
+    ""isCustomOrder"": ""boolean — 주문제작 여부"",
+    ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+    ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+    ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+    ""hasOptions"": ""boolean — 옵션 존재 여부"",
+    ""purposeTags"": [
+      ""string — 용도 태그 배열(선물/다도 등)""
+    ],
+    ""artisanId"": ""number — 장인 고유 ID"",
+    ""artisanName"": ""string"",
+    ""modelName"": ""string"",
+    ""size"": ""string"",
+    ""material"": ""string — 소재 코드"",
+    ""components"": [
+      ""string""
+    ],
+    ""manufacturer"": ""string"",
+    ""countryOfOrigin"": ""string"",
+    ""asManagerContact"": ""string"",
+    ""warrantyPolicy"": ""string"",
+    ""description"": ""string — 설명"",
+    ""stock"": ""number — 재고 수량"",
+    ""stockAvailable"": ""boolean — 구매 가능 재고 존재 여부"",
+    ""productionPeriodDays"": ""number — 제작 소요일수"",
+    ""engravingAvailable"": ""boolean"",
+    ""shippingFee"": ""number — 배송비"",
+    ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)"",
+    ""detailPageBlocks"": [
+      {
+        ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
+        ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
+        ""hasImage"": ""boolean"",
+        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
+        ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+      }
+    ],
+    ""optionGroups"": [
+      {
+        ""optionGroupId"": ""number — 옵션 그룹 ID"",
+        ""type"": ""string (enum: `REQUIRED`(필수 옵션 — 선택해야 구매 가능, 실질적 SKU) | `OPTIONAL`(선택 옵션 — 안 골라도 구매 가능, 가격 가산) | `TEXT`(입력형 옵션 — 사용자가 텍스트 직접 입력))"",
+        ""name"": ""string — 이름/명칭"",
+        ""choices"": [
+          {
+            ""choiceId"": ""number — 옵션 선택지 ID"",
+            ""name"": ""string — 이름/명칭"",
+            ""priceDelta"": ""number — 기본가 대비 가감액"",
+            ""stock"": ""number — 재고 수량""
+          }
+        ]
+      }
+    ],
+    ""images"": [
+      {
+        ""imageId"": ""string — 이미지 그룹 ID, ULID 형식(예: image_01HXYZ)"",
+        ""alt"": ""string"",
+        ""variants"": [
+          {
+            ""url"": ""string"",
+            ""width"": ""number"",
+            ""height"": ""number"",
+            ""format"": ""string""
+          }
+        ]
+      }
+    ],
+    ""artisan"": {
+      ""artisanId"": ""number — 장인 고유 ID"",
+      ""businessName"": ""string — 공방명"",
+      ""introduction"": ""string — 한 줄 소개"",
+      ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)""
+    }
+  }
+}","{
+  ""success"": false,
+  ""status"": 404,
+  ""errorCode"": ""NOT_FOUND""
+}"
+상품,강정훈,POST,/api/products/{productId}/wish,상품 찜,상품을 찜한다,USER,예정,P1,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/products/{productId}/wish"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": ""null""
+}","{
+  ""success"": false,
+  ""status"": 409,
+  ""errorCode"": ""CONFLICT""
+}"
+상품,강정훈,DELETE,/api/products/{productId}/wish,상품 찜 취소,찜한 상품을 삭제한다,USER,예정,P1,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/products/{productId}/wish"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+상품,강정훈,GET,/api/products/{productId}/questions,상품 문의 조회,상품에 등록된 문의를 조회한다,Public/ARTISAN,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/products/{productId}/questions"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""questionId"": ""number — 문의 ID"",
+        ""productId"": ""number — 상품 고유 ID"",
+        ""content"": ""string — 본문 내용"",
+        ""answer"": ""string · nullable"",
+        ""writerNickname"": ""string"",
+        ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+상품,강정훈,POST,/api/products/{productId}/questions,상품 문의 작성,상품에 대한 문의를 작성한다,USER,예정,P1,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/products/{productId}/questions"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""content"": ""string · 필수 — 본문 내용""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""questionId"": ""number — 문의 ID"",
+    ""productId"": ""number — 상품 고유 ID"",
+    ""content"": ""string — 본문 내용"",
+    ""answer"": ""string · nullable"",
+    ""writerNickname"": ""string"",
+    ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+  }
+}",
+상품,강정훈,POST,/api/products/questions/{questionId}/answer,상품 문의 답변,장인이 상품 문의에 답변한다,ARTISAN,예정,P1,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/products/questions/{questionId}/answer"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""answer"": ""string · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""questionId"": ""number — 문의 ID"",
+    ""productId"": ""number — 상품 고유 ID"",
+    ""content"": ""string — 본문 내용"",
+    ""answer"": ""string"",
+    ""writerNickname"": ""string"",
+    ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+  }
+}",
+상품,강정훈,GET,/api/products/{productId}/reviews,상품 후기 조회,상품의 후기를 조회한다,Public,예정,P2,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/products/{productId}/reviews"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""reviewId"": ""number — 후기 ID"",
+        ""productId"": ""number — 상품 고유 ID"",
+        ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+        ""content"": ""string — 본문 내용"",
+        ""images"": [
+          ""string""
+        ],
+        ""writerNickname"": ""string"",
+        ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+상품,강정훈,POST,/api/products/{productId}/reviews,상품 후기 작성,구매한 상품의 후기를 작성한다,USER,예정,P2,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/products/{productId}/reviews"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""orderItemId"": ""number · 필수"",
+    ""rating"": ""number · 필수 — 평균 평점(후기 없으면 null)"",
+    ""content"": ""string · 필수 — 본문 내용"",
+    ""images"": [
+      ""string · 필수""
+    ]
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""reviewId"": ""number — 후기 ID"",
+    ""productId"": ""number — 상품 고유 ID"",
+    ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+    ""content"": ""string — 본문 내용"",
+    ""images"": [
+      ""string""
+    ],
+    ""writerNickname"": ""string"",
+    ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+  }
+}",
+결제,유창민,GET,/api/payments/cart,장바구니 조회,현재 회원의 장바구니를 조회한다,Public(게스트 허용),예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/payments/cart"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken} (선택 — 로그인 상태면 회원 장바구니, 없으면 쿠키의 guestCartId로 게스트 장바구니 식별)""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""sections"": [
+      {
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string"",
+        ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+        ""items"": [
+          {
+            ""cartItemId"": ""number — 장바구니 항목 ID"",
+            ""productId"": ""number — 상품 고유 ID"",
+            ""productName"": ""string"",
+            ""unitPrice"": ""number — 옵션 반영된 단가"",
+            ""quantity"": ""number — 수량"",
+            ""subtotal"": ""number — 항목별 소계"",
+            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""isCustomOrder"": ""boolean — 주문제작 여부"",
+            ""soldOut"": ""boolean — 품절 스냅샷 여부"",
+            ""selected"": ""boolean — 체크(선택) 상태"",
+            ""selectedOptions"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""choiceId"": ""number — 옵션 선택지 ID"",
+                ""choiceName"": ""string"",
+                ""priceDelta"": ""number — 기본가 대비 가감액""
+              }
+            ],
+            ""textInputs"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+              }
+            ]
+          }
+        ],
+        ""shippingFee"": ""number — 배송비"",
+        ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)""
+      }
+    ],
+    ""totalPrice"": ""number — 합계 금액"",
+    ""totalShippingFee"": ""number"",
+    ""totalCount"": ""number""
+  }
+}",
+결제,유창민,POST,/api/payments/cart/items,장바구니 상품 추가,상품과 선택한 옵션 조합(selectedOptions)·입력형 옵션 텍스트(textInputs)·수량으로 장바구니에 담는다. 필수(REQUIRED) 옵션 그룹은 반드시 선택해야 한다. 동일 상품+동일 옵션조합(텍스트 입력 제외)이 이미 담겨 있으면 새 행을 만들지 않고 기존 항목의 수량에 합산한다(병합),Public(게스트 허용),예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments/cart/items"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken} (선택 — 로그인 상태면 회원 장바구니, 없으면 쿠키의 guestCartId로 게스트 장바구니 식별)""
+  },
+  ""body"": {
+    ""productId"": ""number · 필수 — 상품 고유 ID"",
+    ""quantity"": ""number · 필수 — 수량"",
+    ""selectedOptions"": [
+      {
+        ""optionGroupId"": ""number · 필수 — 옵션 그룹 ID"",
+        ""choiceId"": ""number · 필수 — 옵션 선택지 ID""
+      }
+    ],
+    ""textInputs"": [
+      {
+        ""optionGroupId"": ""number · 필수 — 옵션 그룹 ID"",
+        ""text"": ""string · 필수 — 텍스트 블록 내용(img/video 블록은 null)""
+      }
+    ]
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""sections"": [
+      {
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string"",
+        ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+        ""items"": [
+          {
+            ""cartItemId"": ""number — 장바구니 항목 ID"",
+            ""productId"": ""number — 상품 고유 ID"",
+            ""productName"": ""string"",
+            ""unitPrice"": ""number — 옵션 반영된 단가"",
+            ""quantity"": ""number — 수량"",
+            ""subtotal"": ""number — 항목별 소계"",
+            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""isCustomOrder"": ""boolean — 주문제작 여부"",
+            ""soldOut"": ""boolean — 품절 스냅샷 여부"",
+            ""selected"": ""boolean — 체크(선택) 상태"",
+            ""selectedOptions"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""choiceId"": ""number — 옵션 선택지 ID"",
+                ""choiceName"": ""string"",
+                ""priceDelta"": ""number — 기본가 대비 가감액""
+              }
+            ],
+            ""textInputs"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+              }
+            ]
+          }
+        ],
+        ""shippingFee"": ""number — 배송비"",
+        ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)""
+      }
+    ],
+    ""totalPrice"": ""number — 합계 금액"",
+    ""totalShippingFee"": ""number"",
+    ""totalCount"": ""number""
+  }
+}","{
+  ""success"": false,
+  ""status"": 422,
+  ""errorCode"": ""BUSINESS_RULE_VIOLATION""
+}"
+결제,유창민,PATCH,/api/payments/cart/items/{cartItemId},장바구니 수량 변경,장바구니 상품 수량을 변경한다,Public(게스트 허용),예정,P0,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/payments/cart/items/{cartItemId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken} (선택 — 로그인 상태면 회원 장바구니, 없으면 쿠키의 guestCartId로 게스트 장바구니 식별)""
+  },
+  ""body"": {
+    ""quantity"": ""number · 선택 — 수량""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""sections"": [
+      {
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string"",
+        ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+        ""items"": [
+          {
+            ""cartItemId"": ""number — 장바구니 항목 ID"",
+            ""productId"": ""number — 상품 고유 ID"",
+            ""productName"": ""string"",
+            ""unitPrice"": ""number — 옵션 반영된 단가"",
+            ""quantity"": ""number — 수량"",
+            ""subtotal"": ""number — 항목별 소계"",
+            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""isCustomOrder"": ""boolean — 주문제작 여부"",
+            ""soldOut"": ""boolean — 품절 스냅샷 여부"",
+            ""selected"": ""boolean — 체크(선택) 상태"",
+            ""selectedOptions"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""choiceId"": ""number — 옵션 선택지 ID"",
+                ""choiceName"": ""string"",
+                ""priceDelta"": ""number — 기본가 대비 가감액""
+              }
+            ],
+            ""textInputs"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+              }
+            ]
+          }
+        ],
+        ""shippingFee"": ""number — 배송비"",
+        ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)""
+      }
+    ],
+    ""totalPrice"": ""number — 합계 금액"",
+    ""totalShippingFee"": ""number"",
+    ""totalCount"": ""number""
+  }
+}",
+결제,유창민,DELETE,/api/payments/cart/items/{cartItemId},장바구니 상품 삭제,장바구니에서 상품을 삭제한다,Public(게스트 허용),예정,P0,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/payments/cart/items/{cartItemId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken} (선택 — 로그인 상태면 회원 장바구니, 없으면 쿠키의 guestCartId로 게스트 장바구니 식별)""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""sections"": [
+      {
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string"",
+        ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+        ""items"": [
+          {
+            ""cartItemId"": ""number — 장바구니 항목 ID"",
+            ""productId"": ""number — 상품 고유 ID"",
+            ""productName"": ""string"",
+            ""unitPrice"": ""number — 옵션 반영된 단가"",
+            ""quantity"": ""number — 수량"",
+            ""subtotal"": ""number — 항목별 소계"",
+            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""isCustomOrder"": ""boolean — 주문제작 여부"",
+            ""soldOut"": ""boolean — 품절 스냅샷 여부"",
+            ""selected"": ""boolean — 체크(선택) 상태"",
+            ""selectedOptions"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""choiceId"": ""number — 옵션 선택지 ID"",
+                ""choiceName"": ""string"",
+                ""priceDelta"": ""number — 기본가 대비 가감액""
+              }
+            ],
+            ""textInputs"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+              }
+            ]
+          }
+        ],
+        ""shippingFee"": ""number — 배송비"",
+        ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)""
+      }
+    ],
+    ""totalPrice"": ""number — 합계 금액"",
+    ""totalShippingFee"": ""number"",
+    ""totalCount"": ""number""
+  }
+}",
+결제,유창민,DELETE,/api/payments/cart/items,장바구니 전체 삭제,장바구니 상품을 전체 삭제한다,Public(게스트 허용),예정,P1,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/payments/cart/items"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken} (선택 — 로그인 상태면 회원 장바구니, 없으면 쿠키의 guestCartId로 게스트 장바구니 식별)""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+결제,유창민,POST,/api/payments/orders,주문 생성,"장바구니 기준 주문 생성. 로그인 필수(R-02: 장바구니는 비회원 허용, 구매하기 클릭=주문 생성부터 로그인 필요)",USER,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments/orders"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""cartItemIds"": [
+      ""number · 필수""
+    ],
+    ""addressId"": ""number · 필수 — 배송지 ID"",
+    ""paymentMethod"": ""string (enum, 예: `CARD`, 동적 값) · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""orderId"": ""number — 주문 고유 ID"",
+    ""orderNumber"": ""string (enum, 예: `ORD20260825001`, 동적 값) — 사람이 보는 주문번호(orderId와 별개 식별자)"",
+    ""status"": ""string (enum: `CREATED`(주문 생성됨 — 결제 전) | `PAID`(결제완료) | `PAYMENT_FAILED`(결제실패) | `CANCELED`(주문 취소됨) | `DELIVERED`(배송완료))"",
+    ""totalAmount"": ""number — 총 주문 금액"",
+    ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601"",
+    ""items"": [
+      {
+        ""orderItemId"": ""number"",
+        ""productId"": ""number — 상품 고유 ID"",
+        ""productName"": ""string"",
+        ""price"": ""number — 가격, 원 단위 정수"",
+        ""quantity"": ""number — 수량""
+      }
+    ],
+    ""address"": {
+      ""addressId"": ""number — 배송지 ID"",
+      ""recipientName"": ""string — 수령인명"",
+      ""phone"": ""string — 전화번호(하이픈 제외 숫자만)"",
+      ""zipCode"": ""string — 우편번호"",
+      ""address1"": ""string — 기본주소"",
+      ""address2"": ""string — 상세주소"",
+      ""isDefault"": ""boolean — 기본값 여부""
+    }
+  }
+}","{
+  ""success"": false,
+  ""status"": 422,
+  ""errorCode"": ""BUSINESS_RULE_VIOLATION""
+}"
+결제,유창민,GET,/api/payments/orders/{orderId}/delivery,배송 조회,주문의 배송 상태 및 운송장 정보를 조회한다,Authenticated,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/payments/orders/{orderId}/delivery"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""orderId"": ""number — 주문 고유 ID"",
+    ""carrier"": ""string — 택배사명"",
+    ""trackingNumber"": ""string — 운송장 번호"",
+    ""status"": ""string (enum, 예: `IN_TRANSIT`, 동적 값)""
+  }
+}",
+결제,유창민,POST,/api/payments,결제 준비,주문에 대한 결제를 준비한다,USER,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""orderId"": ""number · 필수 — 주문 고유 ID"",
+    ""amount"": ""number · 필수 — 금액, 원 단위 정수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""paymentId"": ""number — 결제 고유 ID"",
+    ""orderId"": ""number — 주문 고유 ID"",
+    ""amount"": ""number — 금액, 원 단위 정수"",
+    ""tossClientKey"": ""string""
+  }
+}",
+결제,유창민,POST,/api/payments/confirm,결제 승인,토스페이먼츠 결제를 승인한다,USER,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments/confirm"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""paymentKey"": ""string · 필수"",
+    ""orderId"": ""string (enum, 예: `ORD20260825001`, 동적 값) · 필수 — 주문 고유 ID"",
+    ""amount"": ""number · 필수 — 금액, 원 단위 정수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""paymentId"": ""number — 결제 고유 ID"",
+    ""orderId"": ""number — 주문 고유 ID"",
+    ""amount"": ""number — 금액, 원 단위 정수"",
+    ""method"": ""string (enum, 예: `CARD`, 동적 값)"",
+    ""status"": ""string (enum: `DONE`(결제완료) | `CANCELED`(결제취소) | `FAILED`(결제실패))"",
+    ""approvedAt"": ""string (ISO 8601 datetime) — 승인/처리 일시, ISO 8601""
+  }
+}","{
+  ""success"": false,
+  ""status"": 422,
+  ""errorCode"": ""BUSINESS_RULE_VIOLATION""
+}"
+결제,유창민,POST,/api/payments/fail,결제 실패 처리,결제 실패 상태를 처리한다,USER,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments/fail"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""orderId"": ""string (enum, 예: `ORD20260825001`, 동적 값) · 필수 — 주문 고유 ID"",
+    ""errorCode"": ""string (enum, 예: `PAY_PROCESS_CANCELED`, 동적 값) · 필수"",
+    ""errorMessage"": ""string · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+결제,유창민,POST,/api/payments/{paymentId}/cancel,결제 취소/환불,결제를 취소하고 환불을 요청한다,Authenticated,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments/{paymentId}/cancel"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""reason"": ""string · 필수 — AI가 생성한 추천 이유""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""paymentId"": ""number — 결제 고유 ID"",
+    ""orderId"": ""number — 주문 고유 ID"",
+    ""amount"": ""number — 금액, 원 단위 정수"",
+    ""method"": ""string (enum, 예: `CARD`, 동적 값)"",
+    ""status"": ""string (enum: `DONE`(결제완료) | `CANCELED`(결제취소) | `FAILED`(결제실패))"",
+    ""approvedAt"": ""string (ISO 8601 datetime) — 승인/처리 일시, ISO 8601""
+  }
+}","{
+  ""success"": false,
+  ""status"": 409,
+  ""errorCode"": ""CONCURRENT_UPDATE""
+}"
+알림,강정훈,GET,/api/notifications,알림 목록 조회,회원의 알림을 조회한다,Authenticated,백로그(MVP 제외),P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/notifications"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""notificationId"": ""number — 알림 ID"",
+        ""type"": ""string (enum, 예: `ORDER`, 동적 값)"",
+        ""title"": ""string"",
+        ""content"": ""string — 본문 내용"",
+        ""isRead"": ""boolean — 읽음 여부"",
+        ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+알림,강정훈,GET,/api/notifications/unread-count,읽지 않은 알림 수,읽지 않은 알림 개수를 조회한다,Authenticated,백로그(MVP 제외),P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/notifications/unread-count"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""unreadCount"": ""number — 읽지 않은 알림 수""
+  }
+}",
+알림,강정훈,PATCH,/api/notifications/{notificationId},알림 읽음 처리,특정 알림을 읽음 처리한다,Authenticated,백로그(MVP 제외),P1,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/notifications/{notificationId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""isRead"": ""boolean · 선택 — 읽음 여부""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+알림,강정훈,PATCH,/api/notifications/read-all,전체 알림 읽음,모든 알림을 읽음 처리한다,Authenticated,백로그(MVP 제외),P1,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/notifications/read-all"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+관리자,유창민,GET,/api/admin/seller-applications,장인 가입 신청 조회,장인 가입 신청 목록을 조회한다,ADMIN,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/admin/seller-applications"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택"",
+    ""status"": ""string (enum: `PENDING`(심사대기) | `APPROVED`(승인됨 — 회원 role이 ARTISAN으로 전환) | `REJECTED`(반려됨(사유 포함))) · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""applicationId"": ""number — 장인 가입 신청 ID"",
+        ""memberId"": ""number — 회원 고유 ID"",
+        ""businessName"": ""string — 공방명"",
+        ""status"": ""string (enum: `PENDING`(심사대기) | `APPROVED`(승인됨 — 회원 role이 ARTISAN으로 전환) | `REJECTED`(반려됨(사유 포함)))"",
+        ""submittedAt"": ""string (ISO 8601 datetime) — 제출 일시, ISO 8601""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+관리자,유창민,GET,/api/admin/seller-applications/{applicationId},장인 가입 신청 상세,장인 인증 신청 상세 정보를 조회한다,ADMIN,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/admin/seller-applications/{applicationId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""applicationId"": ""number — 장인 가입 신청 ID"",
+    ""memberId"": ""number — 회원 고유 ID"",
+    ""businessName"": ""string — 공방명"",
+    ""status"": ""string (enum: `PENDING`(심사대기) | `APPROVED`(승인됨 — 회원 role이 ARTISAN으로 전환) | `REJECTED`(반려됨(사유 포함)))"",
+    ""submittedAt"": ""string (ISO 8601 datetime) — 제출 일시, ISO 8601""
+  }
+}",
+관리자,유창민,POST,/api/admin/seller-applications/{applicationId}/approve,장인 가입 승인,장인 가입 신청을 승인한다,ADMIN,예정,P1,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/admin/seller-applications/{applicationId}/approve"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""applicationId"": ""number — 장인 가입 신청 ID"",
+    ""memberId"": ""number — 회원 고유 ID"",
+    ""businessName"": ""string — 공방명"",
+    ""status"": ""string (enum: `PENDING`(심사대기) | `APPROVED`(승인됨 — 회원 role이 ARTISAN으로 전환) | `REJECTED`(반려됨(사유 포함)))"",
+    ""submittedAt"": ""string (ISO 8601 datetime) — 제출 일시, ISO 8601""
+  }
+}","{
+  ""success"": false,
+  ""status"": 409,
+  ""errorCode"": ""CONCURRENT_UPDATE""
+}"
+관리자,유창민,POST,/api/admin/seller-applications/{applicationId}/reject,장인 가입 반려,장인 가입 신청을 반려한다,ADMIN,예정,P1,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/admin/seller-applications/{applicationId}/reject"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""reason"": ""string · 필수 — AI가 생성한 추천 이유""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""applicationId"": ""number — 장인 가입 신청 ID"",
+    ""memberId"": ""number — 회원 고유 ID"",
+    ""businessName"": ""string — 공방명"",
+    ""status"": ""string (enum: `PENDING`(심사대기) | `APPROVED`(승인됨 — 회원 role이 ARTISAN으로 전환) | `REJECTED`(반려됨(사유 포함)))"",
+    ""submittedAt"": ""string (ISO 8601 datetime) — 제출 일시, ISO 8601""
+  }
+}",
+컨텐츠,강정훈,POST,/api/content/products/{productId}/interview,취재 데이터 등록,AI 생성에 필요한 제작과정·소재·기법·스토리를 등록한다,ARTISAN,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/content/products/{productId}/interview"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""productId"": ""number · 필수 — 상품 고유 ID"",
+    ""process"": ""string · 필수"",
+    ""materials"": ""string · 필수"",
+    ""technique"": ""string · 필수"",
+    ""story"": ""string · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""productId"": ""number — 상품 고유 ID"",
+    ""process"": ""string"",
+    ""materials"": ""string"",
+    ""technique"": ""string"",
+    ""story"": ""string""
+  }
+}",
+컨텐츠,강정훈,GET,/api/content/products/{productId}/interview,취재 데이터 조회,등록된 취재 데이터를 조회한다,ARTISAN,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/content/products/{productId}/interview"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""productId"": ""number — 상품 고유 ID"",
+    ""process"": ""string"",
+    ""materials"": ""string"",
+    ""technique"": ""string"",
+    ""story"": ""string""
+  }
+}",
+컨텐츠,강정훈,PATCH,/api/content/products/{productId}/interview,취재 데이터 수정,취재 데이터를 수정한다,ARTISAN,예정,P0,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/content/products/{productId}/interview"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""productId"": ""number · 선택 — 상품 고유 ID"",
+    ""process"": ""string · 선택"",
+    ""materials"": ""string · 선택"",
+    ""technique"": ""string · 선택"",
+    ""story"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""productId"": ""number — 상품 고유 ID"",
+    ""process"": ""string"",
+    ""materials"": ""string"",
+    ""technique"": ""string"",
+    ""story"": ""string""
+  }
+}",
+컨텐츠,강정훈,POST,/api/content/products/{productId}/generations,AI 상세페이지 생성 요청,"사진 3~12장(imageId 목록, JPG/PNG 10MB 이내)과 작품이름/어떻게 만드셨나요/관리법(선택) 3개 필드를 입력받아 템플릿·프롬프트 기반으로 상세페이지 콘텐츠 생성을 요청한다",ARTISAN,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/content/products/{productId}/generations"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""images"": [
+      ""string · 필수""
+    ],
+    ""productName"": ""string · 필수"",
+    ""howMade"": ""string · 필수"",
+    ""careTips"": ""string · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 202,
+  ""data"": {
+    ""generationId"": ""number"",
+    ""productId"": ""number — 상품 고유 ID"",
+    ""status"": ""string (enum, 예: `PROCESSING`, 동적 값)"",
+    ""requestedAt"": ""string (ISO 8601 datetime)"",
+    ""completedAt"": ""?(타입 미상) · nullable""
+  }
+}",
+컨텐츠,강정훈,GET,/api/content/products/{productId}/generations/{generationId},AI 생성 상태 조회,AI 콘텐츠 생성 작업의 상태와 결과를 조회한다,ARTISAN,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/content/products/{productId}/generations/{generationId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""generationId"": ""number"",
+    ""productId"": ""number — 상품 고유 ID"",
+    ""status"": ""string (enum, 예: `COMPLETED`, 동적 값)"",
+    ""requestedAt"": ""string (ISO 8601 datetime)"",
+    ""completedAt"": ""string (ISO 8601 datetime)""
+  }
+}",
+컨텐츠,강정훈,GET,/api/content/products/{productId}/contents,생성 결과 조회,AI가 생성한 초안을 문단(사진+텍스트 묶음) 리스트 형태로 조회한다,ARTISAN,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/content/products/{productId}/contents"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": [
+    {
+      ""contentId"": ""number — 콘텐츠 ID"",
+      ""productId"": ""number — 상품 고유 ID"",
+      ""status"": ""string (enum: `DRAFT`(초안 — AI 생성 직후, 장인 편집 가능) | `PENDING_REVIEW`(장인 검토 대기) | `APPROVED`(승인됨 — 사실확인·사진일치 체크 완료) | `REJECTED`(반려됨(사유 포함)) | `PUBLISHED`(게시완료 — 상품 상세페이지에 노출))"",
+      ""version"": ""number — 콘텐츠 버전 번호"",
+      ""blocks"": [
+        {
+          ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
+          ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
+          ""hasImage"": ""boolean"",
+          ""imageUrl"": ""string · nullable — 이미지 URL"",
+          ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
+          ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+        }
+      ]
+    }
+  ]
+}",
+컨텐츠,강정훈,PATCH,/api/content/products/{productId}/contents/{contentId},문단 일괄 수정,여러 문단을 한 번에 대체한다(문단 순서 변경 등). 문단 1개만 고칠 때는 CONTENT-012를 사용한다,ARTISAN,예정,P0,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/content/products/{productId}/contents/{contentId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""blocks"": [
+      {
+        ""order"": ""number · 선택 — 표시 순서(드래그앤드롭 시 재정렬됨)"",
+        ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) · 선택 — 블록 태그(h2/p/img/video)"",
+        ""hasImage"": ""boolean · 선택"",
+        ""imageUrl"": ""string · 선택 · nullable — 이미지 URL"",
+        ""text"": ""string · 선택 — 텍스트 블록 내용(img/video 블록은 null)""
+      }
+    ]
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""contentId"": ""number — 콘텐츠 ID"",
+    ""productId"": ""number — 상품 고유 ID"",
+    ""status"": ""string (enum: `DRAFT`(초안 — AI 생성 직후, 장인 편집 가능) | `PENDING_REVIEW`(장인 검토 대기) | `APPROVED`(승인됨 — 사실확인·사진일치 체크 완료) | `REJECTED`(반려됨(사유 포함)) | `PUBLISHED`(게시완료 — 상품 상세페이지에 노출))"",
+    ""version"": ""number — 콘텐츠 버전 번호"",
+    ""blocks"": [
+      {
+        ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
+        ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
+        ""hasImage"": ""boolean"",
+        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
+        ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+      }
+    ]
+  }
+}","{
+  ""success"": false,
+  ""status"": 400,
+  ""errorCode"": ""INVALID_INPUT""
+}"
+컨텐츠,강정훈,GET,/api/content/products/{productId}/contents/versions,콘텐츠 버전 조회,콘텐츠 변경 이력을 조회한다,ARTISAN,예정,P0,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/content/products/{productId}/contents/versions"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": [
+    {
+      ""version"": ""number — 콘텐츠 버전 번호"",
+      ""editedAt"": ""string (ISO 8601 datetime)"",
+      ""editedBy"": ""string (enum: `AI`(AI 응답))""
+    }
+  ]
+}",
+컨텐츠,강정훈,POST,/api/content/products/{productId}/contents/{contentId}/approve,콘텐츠 승인,장인이 사실확인·사진일치확인 체크리스트를 완료하고 콘텐츠를 승인한다(2개 필수 체크 통과해야 승인 가능),ARTISAN,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/content/products/{productId}/contents/{contentId}/approve"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""factCheckConfirmed"": ""boolean · 필수 — 사실확인 체크 여부(필수)"",
+    ""photoMatchConfirmed"": ""boolean · 필수 — 사진일치 체크 여부(필수)"",
+    ""displayApprovalBadge"": ""boolean · 선택 — 승인 사실 상세페이지 표시 동의 여부(선택)""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""contentId"": ""number — 콘텐츠 ID"",
+    ""productId"": ""number — 상품 고유 ID"",
+    ""status"": ""string (enum: `DRAFT`(초안 — AI 생성 직후, 장인 편집 가능) | `PENDING_REVIEW`(장인 검토 대기) | `APPROVED`(승인됨 — 사실확인·사진일치 체크 완료) | `REJECTED`(반려됨(사유 포함)) | `PUBLISHED`(게시완료 — 상품 상세페이지에 노출))"",
+    ""version"": ""number — 콘텐츠 버전 번호"",
+    ""blocks"": [
+      {
+        ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
+        ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
+        ""hasImage"": ""boolean"",
+        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
+        ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+      }
+    ]
+  }
+}",
+컨텐츠,강정훈,POST,/api/content/products/{productId}/contents/{contentId}/reject,콘텐츠 반려,장인이 생성 콘텐츠를 반려하고 사유를 등록한다,ARTISAN,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/content/products/{productId}/contents/{contentId}/reject"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""reason"": ""string · 필수 — AI가 생성한 추천 이유""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""contentId"": ""number — 콘텐츠 ID"",
+    ""productId"": ""number — 상품 고유 ID"",
+    ""status"": ""string (enum: `DRAFT`(초안 — AI 생성 직후, 장인 편집 가능) | `PENDING_REVIEW`(장인 검토 대기) | `APPROVED`(승인됨 — 사실확인·사진일치 체크 완료) | `REJECTED`(반려됨(사유 포함)) | `PUBLISHED`(게시완료 — 상품 상세페이지에 노출))"",
+    ""version"": ""number — 콘텐츠 버전 번호"",
+    ""blocks"": [
+      {
+        ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
+        ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
+        ""hasImage"": ""boolean"",
+        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
+        ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+      }
+    ]
+  }
+}",
+컨텐츠,강정훈,POST,/api/content/products/{productId}/publish,상품 게시,승인된 콘텐츠를 상품 상세페이지에 게시한다. (내부) 이 시점에 제작과정(making_story)·관리법(usage_care) 등 서사 데이터를 포함해 AI파트 POST /ai/products로 동기화한다,ARTISAN,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/content/products/{productId}/publish"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""productId"": ""number — 상품 고유 ID"",
+    ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
+    ""publishedAt"": ""string (ISO 8601 datetime) — 게시 일시, ISO 8601""
+  }
+}","{
+  ""success"": false,
+  ""status"": 422,
+  ""errorCode"": ""BUSINESS_RULE_VIOLATION""
+}"
+회원,유창민,POST,/api/member/oauth2/complete-profile,SNS 회원가입 추가정보 입력,카카오/구글 최초 로그인 직후 배송에 필요한 이름·전화번호와 약관 동의를 추가로 입력받아 가입을 완료한다,Authenticated(OAuth 임시세션),예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/oauth2/complete-profile"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""name"": ""string · 필수 — 이름/명칭"",
+    ""phone"": ""string · 필수 — 전화번호(하이픈 제외 숫자만)"",
+    ""agreements"": {
+      ""age14OrOlder"": ""boolean · 필수"",
+      ""termsOfService"": ""boolean · 필수"",
+      ""privacyCollection"": ""boolean · 필수"",
+      ""marketing"": ""boolean · 선택""
+    }
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""memberId"": ""number — 회원 고유 ID"",
+    ""email"": ""string — 이메일 주소"",
+    ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) — 회원 역할""
+  }
+}",
+결제,유창민,POST,/api/payments/cart/merge,장바구니 병합,비회원 상태에서 담은 게스트 장바구니(쿠키의 guestCartId)를 로그인 시점에 회원 장바구니로 병합한다. 동일 상품+옵션조합은 CART-002와 동일한 병합(수량 합산) 규칙을 따른다,Authenticated,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments/cart/merge"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""sections"": [
+      {
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string"",
+        ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+        ""items"": [
+          {
+            ""cartItemId"": ""number — 장바구니 항목 ID"",
+            ""productId"": ""number — 상품 고유 ID"",
+            ""productName"": ""string"",
+            ""unitPrice"": ""number — 옵션 반영된 단가"",
+            ""quantity"": ""number — 수량"",
+            ""subtotal"": ""number — 항목별 소계"",
+            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""isCustomOrder"": ""boolean — 주문제작 여부"",
+            ""soldOut"": ""boolean — 품절 스냅샷 여부"",
+            ""selected"": ""boolean — 체크(선택) 상태"",
+            ""selectedOptions"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""choiceId"": ""number — 옵션 선택지 ID"",
+                ""choiceName"": ""string"",
+                ""priceDelta"": ""number — 기본가 대비 가감액""
+              }
+            ],
+            ""textInputs"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+              }
+            ]
+          }
+        ],
+        ""shippingFee"": ""number — 배송비"",
+        ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)""
+      }
+    ],
+    ""totalPrice"": ""number — 합계 금액"",
+    ""totalShippingFee"": ""number"",
+    ""totalCount"": ""number""
+  }
+}",
+결제,유창민,PATCH,/api/payments/cart/items/{cartItemId}/options,장바구니 옵션 변경,담긴 항목의 옵션 조합과 수량을 함께 변경한다(옵션마다 재고가 다르므로 같은 결정으로 처리). 필수 옵션은 1개 이상 선택 필요,Authenticated,예정,P0,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/payments/cart/items/{cartItemId}/options"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""quantity"": ""number · 선택 — 수량"",
+    ""selectedOptions"": [
+      {
+        ""optionGroupId"": ""number · 선택 — 옵션 그룹 ID"",
+        ""choiceId"": ""number · 선택 — 옵션 선택지 ID""
+      }
+    ],
+    ""textInputs"": ""array (빈 배열 가능) · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""sections"": [
+      {
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string"",
+        ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+        ""items"": [
+          {
+            ""cartItemId"": ""number — 장바구니 항목 ID"",
+            ""productId"": ""number — 상품 고유 ID"",
+            ""productName"": ""string"",
+            ""unitPrice"": ""number — 옵션 반영된 단가"",
+            ""quantity"": ""number — 수량"",
+            ""subtotal"": ""number — 항목별 소계"",
+            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""isCustomOrder"": ""boolean — 주문제작 여부"",
+            ""soldOut"": ""boolean — 품절 스냅샷 여부"",
+            ""selected"": ""boolean — 체크(선택) 상태"",
+            ""selectedOptions"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""choiceId"": ""number — 옵션 선택지 ID"",
+                ""choiceName"": ""string"",
+                ""priceDelta"": ""number — 기본가 대비 가감액""
+              }
+            ],
+            ""textInputs"": [
+              {
+                ""optionGroupId"": ""number — 옵션 그룹 ID"",
+                ""name"": ""string — 이름/명칭"",
+                ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
+              }
+            ]
+          }
+        ],
+        ""shippingFee"": ""number — 배송비"",
+        ""freeShippingThreshold"": ""number — 무료배송 조건 금액(없으면 null)""
+      }
+    ],
+    ""totalPrice"": ""number — 합계 금액"",
+    ""totalShippingFee"": ""number"",
+    ""totalCount"": ""number""
+  }
+}",
+회원,유창민,GET,/api/member/artisans/subscriptions,관심 장인(구독) 목록 조회,내가 신작 알림을 구독한 장인 목록을 조회한다. 장인별 등록 작품 총수·구독 이후 새 작품 수를 함께 반환,Authenticated,백로그(MVP 제외),P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/artisans/subscriptions"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""businessName"": ""string — 공방명"",
+        ""introduction"": ""string — 한 줄 소개"",
+        ""profileImageUrl"": ""string — 프로필 이미지 URL"",
+        ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+        ""isOrganization"": ""boolean — 단체 지정 여부"",
+        ""certificationStatus"": ""string (enum, 예: `APPROVED`, 동적 값)"",
+        ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""region"": ""string — 활동 지역"",
+        ""careerYears"": ""number — 경력 연수"",
+        ""productCount"": ""number — 등록 작품 총수"",
+        ""topProducts"": [
+          {
+            ""productId"": ""number — 상품 고유 ID"",
+            ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+          }
+        ],
+        ""newProductCount"": ""number""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+회원,유창민,PATCH,/api/member/artisans/subscriptions/notifications,관심 장인 전체 알림 일괄 켜기/끄기,구독 중인 모든 장인의 신작 알림을 한 번에 켜거나 끈다,Authenticated,백로그(MVP 제외),P2,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/member/artisans/subscriptions/notifications"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""notificationsEnabled"": ""boolean · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+회원,유창민,POST,/api/member/recent-views/merge,최근 본 작품 병합,"비로그인 상태에서 브라우저에 쌓인 최근 본 작품 목록을 로그인 시점에 서버 기록과 병합한다(최대 50개, 30일 보관)",Authenticated,예정,P2,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/recent-views/merge"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""productIds"": [
+      ""number · 필수""
+    ]
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+회원,유창민,DELETE,/api/member/recent-views,최근 본 작품 전체 삭제,최근 본 작품 목록을 한 번에 전체 삭제한다(개별 삭제는 없음),Authenticated,예정,P2,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/member/recent-views"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+상품,강정훈,GET,/api/products/materials,소재 목록 조회,"category 쿼리파라미터로 필터링된, 해당 종목에서 실제 사용 중인 소재 목록을 조회한다(예: 다기·찻잔 종목이면 백자/분청/청자/옹기토/옻칠). 종목 진입 맥락에 따라 동적 렌더링용",Public,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/products/materials"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""queryParams"": {
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) · 선택 — 종목/카테고리 코드""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": [
+    {
+      ""code"": ""string (enum, 예: `CELADON`, 동적 값)"",
+      ""name"": ""string — 이름/명칭""
+    }
+  ]
+}",
+상품,강정훈,GET,/api/products/categories,종목(카테고리) 목록 조회,"현재 입점된 종목 목록을 종목별 상품 건수(productCount)와 함께 조회한다(장인관·상품목록 필터 칩 렌더링용, R2 확정: 결과 건수 노출). category 쿼리파라미터로 현재 진입 카테고리 맥락 기준 동적 목록도 지원(소재/종목 필터 동적 렌더링용)",Public,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/products/categories"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": [
+    {
+      ""code"": ""string (enum, 예: `POTTERY`, 동적 값)"",
+      ""name"": ""string — 이름/명칭"",
+      ""productCount"": ""number — 등록 작품 총수""
+    }
+  ]
+}",
+회원,유창민,GET,/api/member/recent-views,최근 본 상품 조회,최근에 조회한 상품 목록을 조회한다,Authenticated,예정,P2,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/recent-views"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""productId"": ""number — 상품 고유 ID"",
+        ""name"": ""string — 이름/명칭"",
+        ""price"": ""number — 가격, 원 단위 정수"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
+        ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+        ""isLimited"": ""boolean — 한정수량 여부"",
+        ""isCustomOrder"": ""boolean — 주문제작 여부"",
+        ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+        ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+        ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+        ""hasOptions"": ""boolean — 옵션 존재 여부"",
+        ""purposeTags"": [
+          ""string — 용도 태그 배열(선물/다도 등)""
+        ],
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string"",
+        ""viewedAt"": ""string (ISO 8601 datetime) — 조회 일시, ISO 8601""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+회원,유창민,POST,/api/member/recent-views,최근 본 상품 기록,상품 상세 조회 시 최근 본 상품 이력을 기록한다,Authenticated,예정,P2,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/recent-views"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""productId"": ""number · 필수 — 상품 고유 ID""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": ""null""
+}",
+회원,유창민,GET,/api/member/settings,환경설정 조회,"다크모드, 마케팅 정보 수신 동의 등 개인 설정을 조회한다(인앱 알림 유형별 토글은 알림 기능 자체가 MVP 백로그라 제외됨)",Authenticated,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/settings"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""darkMode"": ""boolean"",
+    ""marketing"": ""boolean""
+  }
+}",
+회원,유창민,PATCH,/api/member/settings,환경설정 수정,"다크모드, 마케팅 정보 수신 동의를 수정한다",Authenticated,예정,P1,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/member/settings"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""darkMode"": ""boolean · 선택"",
+    ""marketing"": ""boolean · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""darkMode"": ""boolean"",
+    ""marketing"": ""boolean""
+  }
+}",
+결제,유창민,GET,/api/payments/methods,결제수단 목록 조회,등록된 카드 등 결제수단 목록을 조회한다,Authenticated,보류(추후 구현),P2,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/payments/methods"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": [
+    {
+      ""paymentMethodId"": ""number"",
+      ""type"": ""string (enum, 예: `CARD`, 동적 값)"",
+      ""cardCompany"": ""string — 카드사명"",
+      ""cardNumberMasked"": ""string — 마스킹된 카드번호"",
+      ""isDefault"": ""boolean — 기본값 여부""
+    }
+  ]
+}",
+결제,유창민,POST,/api/payments/methods,결제수단 등록,카드 등 결제수단을 등록한다 (빌링키 방식),Authenticated,보류(추후 구현),P2,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments/methods"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""type"": ""string (enum, 예: `CARD`, 동적 값) · 필수"",
+    ""cardNumber"": ""string · 필수"",
+    ""expiry"": ""string · 필수"",
+    ""birthOrBusinessNo"": ""string · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""paymentMethodId"": ""number"",
+    ""type"": ""string (enum, 예: `CARD`, 동적 값)"",
+    ""cardCompany"": ""string — 카드사명"",
+    ""cardNumberMasked"": ""string — 마스킹된 카드번호"",
+    ""isDefault"": ""boolean — 기본값 여부""
+  }
+}",
+결제,유창민,DELETE,/api/payments/methods/{paymentMethodId},결제수단 삭제,등록된 결제수단을 삭제한다,Authenticated,보류(추후 구현),P2,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/payments/methods/{paymentMethodId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+결제,유창민,POST,/api/payments/refund-account,환불 계좌 등록,결제 취소/환불 시 사용할 계좌를 등록한다,Authenticated,보류(추후 구현),P2,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/payments/refund-account"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""bankName"": ""string · 필수 — 은행명"",
+    ""accountNumber"": ""string · 필수"",
+    ""accountHolder"": ""string · 필수 — 예금주명""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""refundAccountId"": ""number"",
+    ""bankName"": ""string — 은행명"",
+    ""accountNumberMasked"": ""string — 마스킹된 계좌번호"",
+    ""accountHolder"": ""string — 예금주명""
+  }
+}",
+이미지,유창민,POST,/api/images/presigned-url,이미지 업로드 Presigned URL 발급(다중 variant),320w/640w/1280w 등 요청한 variant별로 WebP 업로드용 Presigned URL을 한 번에 발급한다(유효시간 5분). imageId로 variant 그룹을 묶어 소유권을 내부 기록한다,Authenticated,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/images/presigned-url"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""fileName"": ""string · 필수"",
+    ""contentType"": ""string · 필수"",
+    ""purpose"": ""string (enum: `PRODUCT`(상품 이미지) | `ARTISAN`(장인 프로필 이미지) | `CONTENT`(AI 상세페이지 콘텐츠 이미지)) · 필수"",
+    ""variants"": [
+      ""string · 필수""
+    ]
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""imageId"": ""string — 이미지 그룹 ID, ULID 형식(예: image_01HXYZ)"",
+    ""uploads"": [
+      {
+        ""variant"": ""string"",
+        ""objectKey"": ""string — S3 내부 저장 경로"",
+        ""presignedUrl"": ""string — S3 직접 업로드용 서명된 URL(짧은 유효시간)""
+      }
+    ],
+    ""expiresInSeconds"": ""number — 유효시간(초)""
+  }
+}","{
+  ""success"": false,
+  ""status"": 400,
+  ""errorCode"": ""INVALID_INPUT""
+}"
+이미지,유창민,DELETE,/api/images/{imageId},미사용 이미지 삭제,업로드했으나 아직 어떤 도메인에도 참조되지 않은(미소비) 이미지를 imageId 기준으로 variant 전체 삭제한다,Authenticated,예정,P2,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/images/{imageId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}","{
+  ""success"": false,
+  ""status"": 403,
+  ""errorCode"": ""FORBIDDEN""
+}"
+이미지,유창민,POST,/api/internal/images/verify,이미지 소유권/존재 검증(내부 전용),"상품·콘텐츠 등 타 서비스가 imageId를 자신의 엔티티에 저장하기 직전, 요청자 소유 여부와 variant 전체의 S3 실제 존재 여부(HeadObject)를 내부적으로 검증한다",Internal(Service-to-Service),예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/internal/images/verify"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""imageId"": ""string · 필수 — 이미지 그룹 ID, ULID 형식(예: image_01HXYZ)"",
+    ""requesterId"": ""number · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""exists"": ""boolean"",
+    ""ownerMatched"": ""boolean"",
+    ""variants"": [
+      ""string""
+    ]
+  }
+}","{
+  ""success"": false,
+  ""status"": 404,
+  ""errorCode"": ""NOT_FOUND""
+}"
+챗봇,강정훈,POST,/api/chatbot/sessions,챗봇 세션 생성,상품 추천 챗봇과의 대화 세션을 시작한다,Public,예정,P2(2차 솔루션),"{
+  ""method"": ""POST"",
+  ""url"": ""/api/chatbot/sessions"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": {
+    ""sessionId"": ""string — 챗봇 세션 ID(문자열)"",
+    ""expiresInSeconds"": ""number — 유효시간(초)""
+  }
+}",
+챗봇,강정훈,POST,/api/chatbot/sessions/{sessionId}/messages,챗봇 메시지 전송,소비자 원문 메시지를 가공 없이 그대로 내부 AI파트 /ai/chat 으로 전달(최근 5~6턴 history 동봉)한다. AI가 반환한 product_id+reason을 백엔드가 상품 상세와 결합해 카드로 조립 후 응답한다,Public,예정,P2(2차 솔루션),"{
+  ""method"": ""POST"",
+  ""url"": ""/api/chatbot/sessions/{sessionId}/messages"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""body"": {
+    ""message"": ""string · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""sessionId"": ""string — 챗봇 세션 ID(문자열)"",
+    ""messageId"": ""number"",
+    ""reply"": ""string — 챗봇 대화형 응답 텍스트"",
+    ""intent"": ""string — AI 의도분류 결과"",
+    ""extracted"": {
+      ""maxPrice"": ""number"",
+      ""purpose"": [
+        ""string""
+      ],
+      ""vibe"": ""string""
+    },
+    ""products"": [
+      {
+        ""productId"": ""number — 상품 고유 ID"",
+        ""name"": ""string — 이름/명칭"",
+        ""price"": ""number — 가격, 원 단위 정수"",
+        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
+        ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""rating"": ""number — 평균 평점(후기 없으면 null)"",
+        ""isLimited"": ""boolean — 한정수량 여부"",
+        ""isCustomOrder"": ""boolean — 주문제작 여부"",
+        ""isSingleItem"": ""boolean — 총재고 1, 재입고 없음 여부"",
+        ""isNew"": ""boolean — 신작 여부(최근 등록된 상품)"",
+        ""hasGiftWrap"": ""boolean — 선물포장 가능 여부"",
+        ""hasOptions"": ""boolean — 옵션 존재 여부"",
+        ""purposeTags"": [
+          ""string — 용도 태그 배열(선물/다도 등)""
+        ],
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""artisanName"": ""string"",
+        ""reason"": ""string — AI가 생성한 추천 이유""
+      }
+    ]
+  }
+}","{
+  ""success"": false,
+  ""status"": 404,
+  ""errorCode"": ""NOT_FOUND""
+}"
+챗봇,강정훈,GET,/api/chatbot/sessions/{sessionId}/messages,챗봇 대화 히스토리 조회,현재 세션의 대화 이력을 조회한다,Public,예정,P2(2차 솔루션),"{
+  ""method"": ""GET"",
+  ""url"": ""/api/chatbot/sessions/{sessionId}/messages"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""messageId"": ""number"",
+        ""sender"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자))"",
+        ""content"": ""string — 본문 내용"",
+        ""createdAt"": ""string (ISO 8601 datetime) — 생성 일시, ISO 8601""
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+회원,유창민,POST,/api/member/artisans/{artisanId}/subscribe,장인 신작 알림 구독,해당 장인이 새 작품을 게시할 때 알림을 받도록 구독한다(작품 없음 상태의 CTA에서 진입),Authenticated,백로그(MVP 제외),P2,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/artisans/{artisanId}/subscribe"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 201,
+  ""data"": ""null""
+}",
+회원,유창민,DELETE,/api/member/artisans/{artisanId}/subscribe,장인 신작 알림 구독 취소,장인 신작 알림 구독을 해지한다,Authenticated,백로그(MVP 제외),P2,"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/member/artisans/{artisanId}/subscribe"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
+회원,유창민,GET,/api/member/artisans,장인 목록 조회,"초성(ㄱ~ㅎ)·전승단계·종목 필터(다중선택, 배열)와 전용 정렬 3종(POPULAR 기본)으로 장인 목록을 조회한다(장인관 탐색용)",Public,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/member/artisans"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""queryParams"": {
+    ""cursor"": ""string · 선택"",
+    ""limit"": ""string · 선택"",
+    ""certificationLevel"": ""string · 선택 — 인증 등급(전승 단계)"",
+    ""category"": ""string · 선택 — 종목/카테고리 코드"",
+    ""initial"": ""string · 선택"",
+    ""sort"": ""string (enum: `POPULAR`(인기순(기본값) — 최근 7일 조회·찜·구매 가중합산) | `MOST_PRODUCTS`(작품많은순) | `RECENTLY_JOINED`(최근입점순)) · 선택""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""items"": [
+      {
+        ""artisanId"": ""number — 장인 고유 ID"",
+        ""businessName"": ""string — 공방명"",
+        ""introduction"": ""string — 한 줄 소개"",
+        ""profileImageUrl"": ""string — 프로필 이미지 URL"",
+        ""certificationLevel"": ""string (enum: `보유자`(국가유산청 지정 국가무형유산 보유자) | `전승교육사`(지정 전승교육사) | `이수자`(이수증 취득자) | `일반`(인증 등급 없음)) — 인증 등급(전승 단계)"",
+        ""isOrganization"": ""boolean — 단체 지정 여부"",
+        ""certificationStatus"": ""string (enum, 예: `APPROVED`, 동적 값)"",
+        ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""region"": ""string — 활동 지역"",
+        ""careerYears"": ""number — 경력 연수"",
+        ""productCount"": ""number — 등록 작품 총수"",
+        ""topProducts"": [
+          {
+            ""productId"": ""number — 상품 고유 ID"",
+            ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+          }
+        ]
+      }
+    ],
+    ""nextCursor"": ""string"",
+    ""hasNext"": ""boolean"",
+    ""totalCount"": ""number""
+  }
+}",
+챗봇,강정훈,DELETE,/api/chatbot/sessions/{sessionId},챗봇 세션 종료,대화 세션을 종료하고 히스토리를 정리한다,Public,예정,P2(2차 솔루션),"{
+  ""method"": ""DELETE"",
+  ""url"": ""/api/chatbot/sessions/{sessionId}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": ""null""
+}",
