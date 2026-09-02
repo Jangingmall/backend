@@ -11,3 +11,9 @@
 # API Spec — openapi.json은 커밋, redoc.html은 빌드 산출물
 /api-spec/redoc.html
 /docs/장인몰_아키텍처_강정훈담당.md
+/docs/장인몰_알림_아키텍처_참고.md
+
+.env
+/env
+*.env
+
