@@ -311,6 +311,7 @@
         ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
         ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -323,6 +324,7 @@
         ""purposeTags"": [
           ""string — 용도 태그 배열(선물/다도 등)""
         ],
+        ""primaryBadge"": ""string (enum: `LIMITED`(한정수량) | `NEW`(신작) | `POPULAR`(인기)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
         ""artisanId"": ""number — 장인 고유 ID"",
         ""artisanName"": ""string""
       }
@@ -652,6 +654,7 @@
         ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
         ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -664,6 +667,7 @@
         ""purposeTags"": [
           ""string — 용도 태그 배열(선물/다도 등)""
         ],
+        ""primaryBadge"": ""string (enum: `LIMITED`(한정수량) | `NEW`(신작) | `POPULAR`(인기)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
         ""artisanId"": ""number — 장인 고유 ID"",
         ""artisanName"": ""string""
       }
@@ -729,6 +733,7 @@
     ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""subcategory"": ""string"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
     ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
     ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -741,6 +746,7 @@
     ""purposeTags"": [
       ""string — 용도 태그 배열(선물/다도 등)""
     ],
+    ""primaryBadge"": ""string (enum: `LIMITED`(한정수량) | `NEW`(신작) | `POPULAR`(인기)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
     ""artisanId"": ""number — 장인 고유 ID"",
     ""artisanName"": ""string"",
     ""modelName"": ""string"",
@@ -835,6 +841,7 @@
     ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""subcategory"": ""string"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
     ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
     ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -847,6 +854,7 @@
     ""purposeTags"": [
       ""string — 용도 태그 배열(선물/다도 등)""
     ],
+    ""primaryBadge"": ""string (enum: `LIMITED`(한정수량) | `NEW`(신작) | `POPULAR`(인기)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
     ""artisanId"": ""number — 장인 고유 ID"",
     ""artisanName"": ""string"",
     ""modelName"": ""string"",
@@ -945,6 +953,7 @@
     ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""subcategory"": ""string"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
     ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
     ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -957,6 +966,7 @@
     ""purposeTags"": [
       ""string — 용도 태그 배열(선물/다도 등)""
     ],
+    ""primaryBadge"": ""string (enum: `LIMITED`(한정수량) | `NEW`(신작) | `POPULAR`(인기)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
     ""artisanId"": ""number — 장인 고유 ID"",
     ""artisanName"": ""string""
   }
@@ -965,7 +975,7 @@
   ""status"": 404,
   ""errorCode"": ""NOT_FOUND""
 }"
-상품,강정훈,GET,/api/products,상품 목록 조회/검색/필터,"가격대(4구간: 5만원미만/5만원~10만원미만/10만원~20만원미만/20만원이상)·선물테마(giftTheme, 8종)·소재(material, 진입 카테고리 기준 동적)·컬러(color)·구매방식(isLimited/isCustomOrder/hasGiftWrap — UI는 하나로 묶이나 데이터는 3개 파라미터 유지)·종목(category)·품절제외(excludeSoldOut, 기본 true) 조건으로 검색·필터링. artisanId로 특정 장인 작품만 필터링 가능. sort 6종: POPULAR(인기순, 기본)/NEWEST(최신순)/WISHLIST_COUNT(찜많은순)/SALES_COUNT(판매많은순)/PRICE_ASC(낮은가격순)/PRICE_DESC(높은가격순)",Public,예정,P0,"{
+상품,강정훈,GET,/api/products,상품 목록 조회/검색/필터,"가격대(4구간)·선물테마(giftTheme, 8종)·선물포장가능(hasGiftWrap)·소재(material, 카테고리 기준 동적)·컬러(color)·카테고리(category)·종목(subcategory, 카테고리보다 세부적인 품목분류, PM 확정 필터)·품절제외(excludeSoldOut, 기본 true) 조건으로 검색·필터링. artisanId로 특정 장인 작품만 필터링 가능. 한정수량(isLimited)/주문제작(isCustomOrder)은 PM 확정으로 필터 목록에서 제외 — 개별 상품 속성(배지)으로만 노출, 응답 필드는 유지. sort 6종: POPULAR(인기순, 기본)/NEWEST(최신순)/WISHLIST_COUNT(찜많은순)/SALES_COUNT(판매많은순)/PRICE_ASC(낮은가격순)/PRICE_DESC(높은가격순). 응답의 primaryBadge는 서버가 우선순위(한정수량>신작>인기) 계산해서 내려줌(PM 최종 확정, 대표배지 1개만 노출)",Public,예정,P0,"{
   ""method"": ""GET"",
   ""url"": ""/api/products"",
   ""headers"": {
@@ -976,14 +986,13 @@
     ""limit"": ""string · 선택"",
     ""artisanId"": ""string · 선택 — 장인 고유 ID"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) · 선택 — 종목/카테고리 코드"",
+    ""subcategory"": ""string · 선택"",
     ""material"": ""string · 선택 — 소재 코드"",
     ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) · 선택 — 선물테마 코드"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) · 선택 — 컬러 코드"",
     ""sort"": ""string (enum: `POPULAR`(인기순(기본값)) | `NEWEST`(최신순) | `WISHLIST_COUNT`(찜많은순) | `SALES_COUNT`(판매많은순) | `PRICE_ASC`(낮은가격순) | `PRICE_DESC`(높은가격순)) · 선택"",
     ""minPrice"": ""string · 선택"",
     ""maxPrice"": ""string · 선택"",
-    ""isLimited"": ""string · 선택 — 한정수량 여부"",
-    ""isCustomOrder"": ""string · 선택 — 주문제작 여부"",
     ""hasGiftWrap"": ""string · 선택 — 선물포장 가능 여부"",
     ""excludeSoldOut"": ""string · 선택"",
     ""keyword"": ""string · 선택""
@@ -1000,6 +1009,7 @@
         ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
         ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
         ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -1012,6 +1022,7 @@
         ""purposeTags"": [
           ""string — 용도 태그 배열(선물/다도 등)""
         ],
+        ""primaryBadge"": ""string (enum: `POPULAR`(인기순(기본값)) | `NEWEST`(최신순) | `WISHLIST_COUNT`(찜많은순) | `SALES_COUNT`(판매많은순) | `PRICE_ASC`(낮은가격순) | `PRICE_DESC`(높은가격순)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
         ""artisanId"": ""number — 장인 고유 ID"",
         ""artisanName"": ""string""
       }
@@ -1037,6 +1048,7 @@
     ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+    ""subcategory"": ""string"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
     ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
     ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -1049,6 +1061,7 @@
     ""purposeTags"": [
       ""string — 용도 태그 배열(선물/다도 등)""
     ],
+    ""primaryBadge"": ""string (enum: `LIMITED`(한정수량) | `NEW`(신작) | `POPULAR`(인기)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
     ""artisanId"": ""number — 장인 고유 ID"",
     ""artisanName"": ""string"",
     ""modelName"": ""string"",
@@ -1765,7 +1778,7 @@
   ""status"": 200,
   ""data"": ""null""
 }",
-관리자,유창민,GET,/api/admin/seller-applications,장인 가입 신청 조회,장인 가입 신청 목록을 조회한다,ADMIN,예정,P1,"{
+회원,유창민,GET,/api/admin/seller-applications,장인 가입 신청 조회,장인 가입 신청 목록을 조회한다,ADMIN,예정,P1,"{
   ""method"": ""GET"",
   ""url"": ""/api/admin/seller-applications"",
   ""headers"": {
@@ -1795,7 +1808,7 @@
     ""totalCount"": ""number""
   }
 }",
-관리자,유창민,GET,/api/admin/seller-applications/{applicationId},장인 가입 신청 상세,장인 인증 신청 상세 정보를 조회한다,ADMIN,예정,P1,"{
+회원,유창민,GET,/api/admin/seller-applications/{applicationId},장인 가입 신청 상세,장인 인증 신청 상세 정보를 조회한다,ADMIN,예정,P1,"{
   ""method"": ""GET"",
   ""url"": ""/api/admin/seller-applications/{applicationId}"",
   ""headers"": {
@@ -1813,7 +1826,7 @@
     ""submittedAt"": ""string (ISO 8601 datetime) — 제출 일시, ISO 8601""
   }
 }",
-관리자,유창민,POST,/api/admin/seller-applications/{applicationId}/approve,장인 가입 승인,장인 가입 신청을 승인한다,ADMIN,예정,P1,"{
+회원,유창민,POST,/api/admin/seller-applications/{applicationId}/approve,장인 가입 승인,장인 가입 신청을 승인한다,ADMIN,예정,P1,"{
   ""method"": ""POST"",
   ""url"": ""/api/admin/seller-applications/{applicationId}/approve"",
   ""headers"": {
@@ -1835,7 +1848,7 @@
   ""status"": 409,
   ""errorCode"": ""CONCURRENT_UPDATE""
 }"
-관리자,유창민,POST,/api/admin/seller-applications/{applicationId}/reject,장인 가입 반려,장인 가입 신청을 반려한다,ADMIN,예정,P1,"{
+회원,유창민,POST,/api/admin/seller-applications/{applicationId}/reject,장인 가입 반려,장인 가입 신청을 반려한다,ADMIN,예정,P1,"{
   ""method"": ""POST"",
   ""url"": ""/api/admin/seller-applications/{applicationId}/reject"",
   ""headers"": {
@@ -2371,6 +2384,25 @@
   ""status"": 200,
   ""data"": ""null""
 }",
+상품,강정훈,GET,/api/products/subcategories,종목 목록 조회,"category 쿼리파라미터로 필터링된, 해당 카테고리 안에서 실제 사용 중인 세부 품목(종목) 목록을 조회한다(예: 칼 카테고리면 버선코식칼/다덕이칼/탕파칼/손질칼). 카테고리보다 한 단계 더 세부적인 탐색 축(PM 확정)",Public,예정,P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/products/subcategories"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  },
+  ""queryParams"": {
+    ""category"": ""string (enum, 예: `POTTERY`, 동적 값) · 선택 — 종목/카테고리 코드""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": [
+    {
+      ""code"": ""string"",
+      ""name"": ""string — 이름/명칭""
+    }
+  ]
+}",
 상품,강정훈,GET,/api/products/materials,소재 목록 조회,"category 쿼리파라미터로 필터링된, 해당 종목에서 실제 사용 중인 소재 목록을 조회한다(예: 다기·찻잔 종목이면 백자/분청/청자/옹기토/옻칠). 종목 진입 맥락에 따라 동적 렌더링용",Public,예정,P1,"{
   ""method"": ""GET"",
   ""url"": ""/api/products/materials"",
@@ -2430,6 +2462,7 @@
         ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
         ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -2442,6 +2475,7 @@
         ""purposeTags"": [
           ""string — 용도 태그 배열(선물/다도 등)""
         ],
+        ""primaryBadge"": ""string (enum: `LIMITED`(한정수량) | `NEW`(신작) | `POPULAR`(인기)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
         ""artisanId"": ""number — 장인 고유 ID"",
         ""artisanName"": ""string"",
         ""viewedAt"": ""string (ISO 8601 datetime) — 조회 일시, ISO 8601""
@@ -2701,6 +2735,7 @@
         ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
+        ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
         ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
@@ -2713,6 +2748,7 @@
         ""purposeTags"": [
           ""string — 용도 태그 배열(선물/다도 등)""
         ],
+        ""primaryBadge"": ""string (enum: `LIMITED`(한정수량) | `NEW`(신작) | `POPULAR`(인기)) — 서버가 계산한 대표 배지 1개(우선순위: 한정수량>신작>인기, 해당 없으면 null). 품절은 배지가 아니라 이미지 오버레이로 별도 표현(FE), 단하나/주문제작/선물포장 배지는 폐지(PM 최종 확정). FE는 primaryBadge 값 하나만 그대로 렌더링"",
         ""artisanId"": ""number — 장인 고유 ID"",
         ""artisanName"": ""string"",
         ""reason"": ""string — AI가 생성한 추천 이유""

@@ -76,9 +76,13 @@ image_upload,created_at,TIMESTAMP,,,,Y,,now(),,
 image_upload,expires_at,TIMESTAMP,,,,Y,,,,미소비 시 배치 정리
 category,category_code,VARCHAR(50),PK,,,Y,,,,
 category,name,VARCHAR(50),,,,Y,,,,
+subcategory,subcategory_code,VARCHAR(50),PK,,,Y,,,,"예: 다완, 찻잔, 버선코식칼"
+subcategory,category_code,VARCHAR(50),,category.category_code,1:N,Y,,,,상위 카테고리
+subcategory,name,VARCHAR(50),,,,Y,,,,
 product,product_id,BIGINT,PK,,,Y,,GENERATED ALWAYS AS IDENTITY,,
 product,artisan_id,BIGINT,,artisan_profile.artisan_id,1:N,Y,,,,
 product,category_code,VARCHAR(50),,category.category_code,1:N,Y,,,,
+product,subcategory_code,VARCHAR(50),,subcategory.subcategory_code,1:N,,,,,"세부 품목 분류(종목), PM 확정: 카테고리보다 한 단계 더 세부적인 탐색 축"
 product,name,VARCHAR(200),,,,Y,,,,
 product,price,BIGINT,,,,Y,,,CHECK(price >= 0),
 product,description,TEXT,,,,Y,,,,
