@@ -1,219 +1,225 @@
-# 장인몰 (Jangingmall) — 백엔드
+# 장인몰 백엔드 — 미담 (Midam)
 
-[![GitHub](https://img.shields.io/badge/GitHub-Jangingmall%2Fbackend-181717?logo=github)](https://github.com/Jangingmall/backend)
+> 국가무형유산 장인의 공예 작품을 소비자와 연결하는 B2C 공예 전문 커머스 플랫폼
 
-국가무형유산 장인의 공예 작품과 가치를 소비자에게 연결하는 B2C 공예 전문 커머스 플랫폼 **"미담"** 의 백엔드 서버입니다.
+[![Java](https://img.shields.io/badge/Java-25-007396?logo=openjdk)](https://openjdk.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.3-6DB33F?logo=springboot)](https://spring.io/projects/spring-boot)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-4169E1?logo=postgresql)](https://www.postgresql.org/)
+[![Redis](https://img.shields.io/badge/Redis-8-DC382D?logo=redis)](https://redis.io/)
+
+---
+
+## 팀원
+
+| **강정훈** | **유창민** |
+|:---:|:---:|
+| [<img src="https://avatars.githubusercontent.com/u/105915960?v=4" width=100>](https://github.com/JHkoder)<br/>[@JHkoder](https://github.com/JHkoder) | [<img src="https://avatars.githubusercontent.com/u/268832835?v=4" width=100>](https://github.com/dnwn3295-lgtm)<br/>[@dnwn3295-lgtm](https://github.com/dnwn3295-lgtm) |
+| 상품 · 콘텐츠 · 챗봇 · 알림 | 회원 · 결제 · 관리자 · 이미지 |
 
 ---
 
 ## 프로젝트 개요
 
-### 서비스 정의
+### 왜 만드는가
 
-| 항목 | 내용 |
-| --- | --- |
-| 서비스명 | 장인몰 (가제) / 미담 |
-| 유형 | B2C 종합 마켓플레이스 |
-| 핵심 가치 | 국가 공인 인증 기반 신뢰성 확보 + 장인의 안정적 판로 제공 |
-| MVP 배포 목표 | 2026-09-21 |
+| 대상 | 문제 |
+|---|---|
+| 공급자 (장인) | 온라인 판로 부재 — 공예품 직접 판매 의존 71.7%, 장인 평균 연령 75세 |
+| 수요자 (소비자) | 국가 공인 장인 여부 판단 불가 — 기존 플랫폼에 자격 식별 수단 없음 |
 
-### 해결하는 문제
+### 규모
 
-| 대상 | 핵심 문제 |
-| --- | --- |
-| 공급자 (장인) | 온라인 판로 부재 및 디지털 운영 부담 — 공예품 직접 판매 의존 71.7%, 장인 평균 연령 75세 |
-| 수요자 (소비자) | 국가 공인 장인 여부 및 작품 가치 판단의 어려움 — 기존 플랫폼에 자격 식별 수단 미흡 |
+- 장인 **52명**, 상품 **832개**, 카테고리 **6종 / 27 서브카테고리**
+- 엔드포인트 **101개**, 동시성 시나리오 **16개** 설계·문서화
 
----
+### MVP 목표일
 
-## MVP 솔루션 범위
-
-| 우선순위 | 솔루션 | MVP 포함 |
-| --- | --- | --- |
-| **P0** | AI 상세페이지 자동 생성 + 장인 승인 구조 | ✅ |
-| **P0** | 취재 데이터 구조화 (제작과정·기법·소재) | ✅ (화면 구현 제외) |
-| **P1** | 장인 브랜드관 + 공인 인증 배지 + 경력·전승 정보 | ✅ |
-| **P1** | 취향·용도 큐레이션 · 통합 검색/필터 | ✅ |
-| **P2** | 주문제작·한정수량 / 후기 / 장바구니 | 🟡 표기·표시 수준으로 축소 |
+**2026-09-21**
 
 ---
 
-## 시스템 아키텍처
+## 기술 스택
 
-### 팀별 역할 분담
-
-| 파트 | 담당 |
-| --- | --- |
-| 백엔드 | 커머스 원본 DB(상품·장인·주문·결제), 장인 ID 발급, 세션·대화이력 관리, AI 호출, 상품 상세 조립 |
-| 프론트 | 입력 UI, 백엔드 챗봇 API 호출, ISR 캐시 관리, 추천 결과 렌더링 |
-| AI 파트 | 추천 챗봇 + 자체 벡터 DB(pgvector) 운영 |
-| 인프라 | VPC/EKS, PostgreSQL(EC2), S3, CI/CD(GitHub Actions + ArgoCD), 모니터링 |
-| 보안 | 위협 모델링, SAST/DAST, 계정·결제 무결성 검토 |
-
-### AI 추천 챗봇 흐름
-
-```
-[소비자]
-   │ 자연어 입력 ("엄마 환갑 선물 5만원 이하, 고급스러운 걸로")
-   ▼
-[프론트] ─── 챗봇 메시지 전송 ───▶ [백엔드]
-   ▲                                 │ ① 메시지·세션 저장
-   │                                 │ ② POST /ai/chat 호출
-   │                                 ▼
-   │                              [AI 서버]
-   │                                 │ ① 의도분류·조건추출 (Qwen3)
-   │                                 │ ② 쿼리 임베딩 (KURE-v1)
-   │                                 │ ③ 하이브리드 검색 (Vector + BM25 + RRF)
-   │                                 │ ④ 인증 등급 가중 랭킹
-   │                                 │ ⑤ 근거 기반 추천이유 생성 (Qwen3)
-   │                                 ▼
-   │ ◀── 카드 조립 + reply ───── [백엔드]
-   ▼
-[모달 렌더링]
-```
-
-### AI 기술 스택
-
-| 역할 | 선택 | 비고 |
-| --- | --- | --- |
-| DB | PostgreSQL + pgvector | AI 자체 운영, 로컬 |
-| 임베딩 | KURE-v1 (1024차원) | 한국어 특화 |
-| LLM | Qwen3 (Ollama) | MacBook M4 24GB 로컬 |
-| BM25 | rank_bm25 + 형태소(mecab/Kiwi) | 애플리케이션단 |
-| 서버 | FastAPI | `/ai/*` 엔드포인트 |
-
-### 인프라 구성 (MVP 기준)
-
-| 항목 | 기술 |
-| --- | --- |
-| 컨테이너 오케스트레이션 | AWS EKS |
-| DB | PostgreSQL (EC2) |
-| 스토리지 | AWS S3 (이미지, 서류) |
-| CI/CD | GitHub Actions + ArgoCD |
-| 모니터링 | Prometheus / Grafana / CloudWatch |
-| 시크릿 관리 | AWS SSM / Secrets Manager |
+| 구분 | 기술 |
+|---|---|
+| Language / Runtime | Java 25, Virtual Threads |
+| Framework | Spring Boot 4.0.3, Spring Security, Spring Data JPA |
+| ORM | JPA + QueryDSL (성능 이슈 시 Native Query) |
+| Database | PostgreSQL 18, Redis 8 |
+| Auth | JWT (Access 30분 / Refresh 7일 HttpOnly Cookie), OAuth2 (Kakao · Google) |
+| API 문서 | Spring REST Docs → OpenAPI → Redocly |
 | 결제 | 토스페이먼츠 |
+| 인프라 | AWS EC2 · ALB · S3, nginx, GitHub Actions |
 
 ---
 
-## 백엔드 API 도메인 구조
+## 아키텍처
 
-총 **95개 엔드포인트**, 8개 도메인으로 구성됩니다.  
+### 설계 원칙
+
+- **DDD** 기반 도메인 패키징 (`presentation / application / domain / infrastructure`)
+- **클린 아키텍처** — 도메인 간 참조는 ID만 허용, 엔티티 직접 참조 금지
+- **모놀리식 단일 배포** — 서비스 간 경계는 패키지로 분리, 브로커 없이 `ApplicationEvent` 활용
+
+### 배포 구성
+
+```
+Client
+  └── HTTPS ──► AWS ALB (TLS 종료)
+                    └── HTTP ──► EC2 · nginx (리버스 프록시)
+                                    └── HTTP ──► Spring Boot jar (Tomcat 내장)
+```
+
+### AI 챗봇 흐름
+
+```
+소비자 자연어 입력
+  └──► [백엔드] 세션 저장 + POST /ai/chat 호출
+            └──► [AI 서버 / FastAPI]
+                      ① 의도분류 · 조건추출 (Qwen3)
+                      ② 쿼리 임베딩 (KURE-v1 1024차원)
+                      ③ 하이브리드 검색 (Vector + BM25 + RRF)
+                      ④ 인증 등급 가중 랭킹
+                      ⑤ 근거 기반 추천이유 생성 (Qwen3)
+  └──► [백엔드] 상품 카드 조립 후 FE 응답
+```
+
+---
+
+## API 도메인 구조
+
 전체 명세: [`docs/장인몰_API_명세_v1.csv`](docs/장인몰_API_명세_v1.csv)
 
-| 도메인 | 기본 경로 | API 수 | 담당 |
-| --- | --- | --- | --- |
+| 도메인 | 기본 경로 | 엔드포인트 수 | 담당 |
+|---|---|:---:|---|
 | 회원 | `/api/member/**` | 36 | 유창민 |
 | 결제 | `/api/payments/**` | 17 | 유창민 |
-| 관리자 | `/api/admin/**` | 4 | 유창민 |
+| 관리자 | `/api/admin/**` | 6 | 유창민 |
 | 이미지 | `/api/images/**` | 3 | 유창민 |
 | 상품 | `/api/products/**` | 16 | 강정훈 |
-| 컨텐츠 | `/api/content/**` | 11 | 강정훈 |
+| 콘텐츠 | `/api/content/**` | 11 | 강정훈 |
 | 알림 | `/api/notifications/**` | 4 | 강정훈 |
 | 챗봇 | `/api/chatbot/**` | 4 | 강정훈 |
 
-### 주요 엔드포인트 요약
+### 인증 레벨
 
-#### 회원 (`/api/member`)
-| 메소드 | 경로 | 기능 |
-| --- | --- | --- |
-| `POST` | `/api/member/signup` | 이메일 회원가입 |
-| `POST` | `/api/member/login` | 로그인 |
-| `GET` | `/api/member/oauth2/kakao` | 카카오 OAuth2 로그인 |
-| `GET` | `/api/member/oauth2/google` | 구글 OAuth2 로그인 |
-| `GET` | `/api/member/me` | 내 정보 조회 |
-| `GET` | `/api/member/artisans/{artisanId}` | 장인 프로필 조회 |
-| `GET` | `/api/member/artisans` | 장인 목록 조회 (필터/정렬) |
-
-#### 상품 (`/api/products`)
-| 메소드 | 경로 | 기능 |
-| --- | --- | --- |
-| `GET` | `/api/products` | 상품 목록 검색/필터 (6종 정렬, 다중 필터) |
-| `GET` | `/api/products/{productId}` | 상품 상세 조회 |
-| `POST` | `/api/products` | 상품 등록 (ARTISAN) |
-| `PATCH` | `/api/products/{productId}` | 상품 수정 |
-| `POST` | `/api/products/{productId}/wish` | 찜 등록 |
-
-#### 결제 (`/api/payments`)
-| 메소드 | 경로 | 기능 |
-| --- | --- | --- |
-| `GET` | `/api/payments/cart` | 장바구니 조회 (게스트 허용) |
-| `POST` | `/api/payments/cart/items` | 장바구니 상품 추가 |
-| `POST` | `/api/payments/orders` | 주문 생성 |
-| `POST` | `/api/payments` | 결제 준비 (토스페이먼츠) |
-| `POST` | `/api/payments/confirm` | 결제 승인 |
-| `POST` | `/api/payments/{paymentId}/cancel` | 결제 취소/환불 |
-
-#### 컨텐츠 (`/api/content`)
-| 메소드 | 경로 | 기능 |
-| --- | --- | --- |
-| `POST` | `/api/content/products/{productId}/interview` | 취재 데이터 등록 |
-| `POST` | `/api/content/products/{productId}/generations` | AI 상세페이지 생성 요청 |
-| `GET` | `/api/content/products/{productId}/contents` | AI 생성 결과 조회 |
-| `POST` | `/api/content/products/{productId}/contents/{contentId}/approve` | 콘텐츠 장인 승인 |
-| `POST` | `/api/content/products/{productId}/publish` | 상품 게시 (AI파트 동기화 포함) |
-
-#### 챗봇 (`/api/chatbot`)
-| 메소드 | 경로 | 기능 |
-| --- | --- | --- |
-| `POST` | `/api/chatbot/sessions` | 챗봇 세션 생성 |
-| `POST` | `/api/chatbot/sessions/{sessionId}/messages` | 메시지 전송 (AI 추천 응답) |
-| `GET` | `/api/chatbot/sessions/{sessionId}/messages` | 대화 히스토리 조회 |
+| 레벨 | 설명 |
+|---|---|
+| `Public` | 인증 불필요 |
+| `Public (게스트)` | 비회원은 쿠키 `guestCartId`로 식별 |
+| `Authenticated` | JWT Bearer 필요 |
+| `USER / ARTISAN / ADMIN` | 역할 기반 접근 제어 |
 
 ---
 
-## 인증 체계
+## 핵심 설계 결정
 
-| 구분 | 설명 |
-| --- | --- |
-| `Public` | 인증 불필요 |
-| `Public (게스트 허용)` | 비회원은 쿠키의 `guestCartId`로 식별 |
-| `Authenticated` | JWT Bearer 토큰 필요 |
-| `USER` | 소비자 역할 |
-| `ARTISAN` | 장인(판매자) 역할 |
-| `ADMIN` | 관리자 역할 |
+### 동시성 제어 (16개 시나리오)
 
-공통 응답 포맷:
+전략별로 구분하여 DB 트랜잭션만으로 해결 가능한 범위를 먼저 확정하고, 분산 락은 필수 지점에만 제한 적용.
+
+| 전략 | 적용 시나리오 |
+|---|---|
+| 조건부 원자적 UPDATE | 재고 차감 (`stock >= qty` WHERE 조건으로 음수 방지) |
+| DB UNIQUE 제약 | 찜 중복 방지 `UNIQUE(member_id, product_id)`, Presigned URL 단일 소비 |
+| 낙관적 락 (`@Version`) | 콘텐츠 승인/반려 동시 처리, 결제 취소 중복 요청 |
+| Partial Unique Index | 장인 가입 중복 신청 — `PENDING` 상태에서만 유일 제약 |
+| UPSERT | 최근 본 상품 중복 기록 (`ON CONFLICT DO UPDATE`) |
+| 멱등키 | PG사 콜백 재전송, 주문 중복 생성 방지 |
+
+전체 시나리오: [`docs/장인몰_동시성_처리_전략.csv`](docs/장인몰_동시성_처리_전략.csv)
+
+### AI 상세페이지 자동 생성 파이프라인
+
+장인이 취재 데이터(제작과정·소재·관리법)를 입력하면 AI가 상품 상세페이지 블록(`h2 / p / img / video`)을 자동 생성하고, ADMIN 검수 → 장인 최종 승인 → 게시 단계를 거쳐 FE ISR 캐시를 재검증한다.
+
+```
+취재 데이터 입력
+  └──► AI 생성 요청 → PROCESSING → COMPLETED
+            └──► ADMIN 팩트체크 승인 (factCheckConfirmed)
+                      └──► 장인 최종 승인
+                                └──► 게시 (publish) → FE ISR 재검증 이벤트 발행
+```
+
+- 낙관적 락(`content.version`)으로 승인/반려 동시 요청 충돌 방지
+- 콘텐츠 이력(`content_edit_history`) 전 버전 보관
+
+### 실시간 알림 (SSE) — MVP 백로그
+
+Redis Stream(PEL 재처리) + Redis Pub/Sub(멀티 인스턴스 브로드캐스트) + Spring MVC `SseEmitter` 조합. 30초 heartbeat 기반 연결 유지.
+
+| 레이어 | 설정값 |
+|---|---|
+| ALB idle timeout | 3600s |
+| nginx `proxy_read_timeout` | 3600s + `proxy_buffering off` |
+| `spring.mvc.async.request-timeout` | `-1` (무제한) |
+| `SseEmitter` timeout | `-1L` (무제한) |
+| Redis `sse:online:{memberId}` TTL | 90s (heartbeat마다 갱신) |
+
+### 장인 온보딩 파이프라인 (4단계)
+
+```
+서류 접수 → 수공정성 심사 → 디지털 변환 지원 → 주문제작 시스템 연동
+```
+
+각 단계는 `PENDING / IN_PROGRESS / COMPLETED / FAILED` 상태로 추적. 수공정성 심사 완료 시 `qualificationTier` 확정 필수.
+
+| 등급 | 설명 |
+|---|---|
+| `NATIONAL_INTANGIBLE_HERITAGE` | 국가무형유산 보유자 |
+| `MASTER_CRAFTSMAN` | 전승교육사 |
+| `SENIOR_CRAFTSMAN` | 이수자 |
+| `YOUNG_CRAFTSMAN` | 일반 |
+
+---
+
+## 테스트 전략
+
+- **단위 테스트** — 비즈니스 규칙 검증, GIVEN-WHEN-THEN 패턴
+- **통합 테스트** — 실제 DB 연동 (Mock 금지)
+- **E2E 테스트** — API 전 엔드포인트 100% 커버
+- **코드·라인 커버리지** 95% 이상 목표
+- REST Docs 기반 API 문서 자동화 (빌드 시 OpenAPI 생성 → Redocly 퍼블리시)
+
+테스트 시나리오: [`docs/테스트 시나리오.md`](docs/테스트%20시나리오.md)
+
+---
+
+## 공통 응답 포맷
+
 ```json
 {
   "success": true,
   "status": 200,
-  "data": { ... }
+  "data": { }
 }
 ```
 
----
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorCode": "INVALID_INPUT"
+}
+```
 
-## FE-BE 캐시 재검증 계약
-
-백엔드는 상품·장인 정보 변경 커밋 후 FE ISR 캐시 재검증 이벤트를 전달합니다.
-
-| 이벤트 | 발생 시점 |
-| --- | --- |
-| `product.contentPublished` | `POST /api/content/products/{productId}/publish` 성공 |
-| `artisan.profileUpdated` | 장인 프로필 변경 커밋 |
-
-- Method: `POST`, HMAC-SHA256 서명 포함
-- 전송 실패 시 재시도 및 최종 실패 추적 필수
+오류 코드: `INVALID_INPUT` · `UNAUTHORIZED` · `FORBIDDEN` · `NOT_FOUND` · `CONFLICT` · `BUSINESS_RULE_VIOLATION` · `CONCURRENT_UPDATE` 등
 
 ---
 
-## RACI 매트릭스 요약
-
-| 태스크 | BE 역할 |
-| --- | --- |
-| API 명세 & DB 스키마 설계 | **R/A** (최종 책임) |
-| 백엔드 API 서버 개발 | **R/A** (최종 책임) |
-| AI 엔진 구현 & BE 통합 | **R** (실무 담당) |
-| 기능 통합 테스트 & QA | **R** (실무 담당) |
-| 보안 검토 | **C** (협의 대상) |
-
----
-
-## 관련 문서
+## 문서 목록
 
 | 문서 | 경로 |
-| --- | --- |
-| API 명세 (CSV) | [`docs/장인몰_API_명세_v1.csv`](docs/장인몰_API_명세_v1.csv) |
-| 백엔드 코드 규칙 | [`.claude/rules/java-spring-rules.md`](.claude/rules/java-spring-rules.md) |
-| 코드 스타일 | [`.claude/rules/java-code-style.md`](.claude/rules/java-code-style.md) |
+|---|---|
+| API 명세 (전체) | [`docs/장인몰_API_명세_v1.csv`](docs/장인몰_API_명세_v1.csv) |
+| API 공통 규칙 | [`docs/API_공통규칙.md`](docs/API_공통규칙.md) |
+| 공개 API 계약 | [`docs/장인몰_API_계약서_공개조회.md`](docs/장인몰_API_계약서_공개조회.md) |
+| 인증 정책 계약 | [`docs/PHASE2-2_인증_정책_계약서.md`](docs/PHASE2-2_인증_정책_계약서.md) |
+| AI 통합 계약 | [`docs/PHASE2-3_AI_통합_계약서.md`](docs/PHASE2-3_AI_통합_계약서.md) |
+| ERD 설계 | [`docs/ERD_설계.md`](docs/ERD_설계.md) |
+| 동시성 처리 전략 | [`docs/장인몰_동시성_처리_전략.csv`](docs/장인몰_동시성_처리_전략.csv) |
+| 서버 아키텍처 | [`docs/서버_아키텍처.md`](docs/서버_아키텍처.md) |
+| 도메인 아키텍처 | [`docs/장인몰_아키텍처_강정훈담당.md`](docs/장인몰_아키텍처_강정훈담당.md) |
+| 기술 스택 | [`docs/기술_스택.md`](docs/기술_스택.md) |
+| 테스트 시나리오 | [`docs/테스트 시나리오.md`](docs/테스트%20시나리오.md) |
+| 샘플 데이터 설계 | [`docs/장인몰_샘플데이터_아키텍처.md`](docs/장인몰_샘플데이터_아키텍처.md) |
