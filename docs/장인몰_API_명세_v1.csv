@@ -120,6 +120,24 @@
   ""status"": 200,
   ""data"": ""null""
 }",
+회원,유창민,POST,/api/member/token/refresh,액세스 토큰 재발급,"HttpOnly Cookie의 Refresh Token을 검증하여 새 Access Token을 재발급한다. Refresh Token도 만료된 경우 401을 반환한다(PHASE2-2 §4-4)",Public,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/token/refresh"",
+  ""headers"": {
+    ""Content-Type"": ""application/json""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""accessToken"": ""string — 새로 발급된 Access Token"",
+    ""expiresIn"": ""number — 만료까지 남은 초(기본 1800)""
+  }
+}","{
+  ""success"": false,
+  ""status"": 401,
+  ""errorCode"": ""UNAUTHORIZED""
+}"
 회원,유창민,GET,/api/member/me,내 정보 조회,현재 로그인한 회원 정보를 조회한다,Authenticated,예정,P0,"{
   ""method"": ""GET"",
   ""url"": ""/api/member/me"",
@@ -1778,6 +1796,28 @@
   ""status"": 200,
   ""data"": ""null""
 }",
+알림,강정훈,GET,/api/notifications/stream,알림 SSE 연결,"Server-Sent Events로 실시간 알림을 수신한다. 연결 시 Redis에 sse:online:{memberId}→instanceId를 등록(TTL)하여 멀티 인스턴스 브로드캐스트를 지원한다. Last-Event-ID 헤더로 재연결 시 누락 알림을 재전송한다(알림 아키텍처 V6 기준)",Authenticated,백로그(MVP 제외),P1,"{
+  ""method"": ""GET"",
+  ""url"": ""/api/notifications/stream"",
+  ""headers"": {
+    ""Authorization"": ""Bearer {accessToken}"",
+    ""Accept"": ""text/event-stream"",
+    ""Last-Event-ID"": ""string · 선택 — 재연결 시 마지막으로 수신한 알림 ID""
+  }
+}","{
+  ""Content-Type"": ""text/event-stream"",
+  ""data"": {
+    ""id"": ""number — 알림 고유 ID (Last-Event-ID로 재사용됨)"",
+    ""type"": ""string — 이벤트 타입(예: ORDER_STATUS_CHANGED)"",
+    ""title"": ""string — 알림 제목"",
+    ""message"": ""string — 알림 본문"",
+    ""createdAt"": ""string (ISO 8601)""
+  }
+}","{
+  ""success"": false,
+  ""status"": 401,
+  ""errorCode"": ""UNAUTHORIZED""
+}"
 회원,유창민,GET,/api/admin/seller-applications,장인 가입 신청 조회,장인 가입 신청 목록을 조회한다,ADMIN,예정,P1,"{
   ""method"": ""GET"",
   ""url"": ""/api/admin/seller-applications"",
