@@ -1796,7 +1796,7 @@
   ""status"": 200,
   ""data"": ""null""
 }",
-알림,강정훈,GET,/api/notifications/stream,알림 SSE 연결,"Server-Sent Events로 실시간 알림을 수신한다. 연결 시 Redis에 sse:online:{memberId}→instanceId를 등록(TTL)하여 멀티 인스턴스 브로드캐스트를 지원한다. Last-Event-ID 헤더로 재연결 시 누락 알림을 재전송한다(알림 아키텍처 V6 기준)",Authenticated,백로그(MVP 제외),P1,"{
+알림,강정훈,GET,/api/notifications/stream,알림 SSE 연결,"Server-Sent Events로 실시간 알림을 수신한다. 연결 시 Redis에 sse:online:{memberId}→instanceId를 등록(TTL 90s, heartbeat마다 갱신)하여 멀티 인스턴스 브로드캐스트를 지원한다. Last-Event-ID 헤더로 재연결 시 누락 알림을 재전송한다(알림 아키텍처 V6 기준). [타임아웃 체인] 서버는 30초 간격으로 type=ping 이벤트를 전송하여 nginx/ALB의 idle timeout 강제 종료를 방지한다. SseEmitter는 timeout=-1(무제한)로 생성하며 spring.mvc.async.request-timeout=-1 설정 필수(기본값 30s 미설정 시 Tomcat이 SSE 연결을 30s 후 종료함). nginx proxy_read_timeout=3600s + proxy_buffering=off 설정 필요. AWS ALB idle timeout=3600s 설정 필요. SSL은 nginx에서 TLS 종료 처리하며 별도 idle timeout 없음.",Authenticated,백로그(MVP 제외),P1,"{
   ""method"": ""GET"",
   ""url"": ""/api/notifications/stream"",
   ""headers"": {
@@ -1806,12 +1806,22 @@
   }
 }","{
   ""Content-Type"": ""text/event-stream"",
-  ""data"": {
-    ""id"": ""number — 알림 고유 ID (Last-Event-ID로 재사용됨)"",
-    ""type"": ""string — 이벤트 타입(예: ORDER_STATUS_CHANGED)"",
-    ""title"": ""string — 알림 제목"",
-    ""message"": ""string — 알림 본문"",
-    ""createdAt"": ""string (ISO 8601)""
+  ""events"": {
+    ""notification"": {
+      ""id"": ""number — 알림 고유 ID (Last-Event-ID로 재사용됨)"",
+      ""type"": ""notification"",
+      ""data"": {
+        ""notificationId"": ""number"",
+        ""eventType"": ""string — 이벤트 타입(예: ORDER_STATUS_CHANGED)"",
+        ""title"": ""string — 알림 제목"",
+        ""message"": ""string — 알림 본문"",
+        ""createdAt"": ""string (ISO 8601)""
+      }
+    },
+    ""ping"": {
+      ""type"": ""ping"",
+      ""comment"": "": heartbeat — 30초 간격 전송. nginx·ALB idle timeout 방어용. id 없음""
+    }
   }
 }","{
   ""success"": false,
