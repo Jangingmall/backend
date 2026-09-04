@@ -32,7 +32,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/health").permitAll()
+                .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex
