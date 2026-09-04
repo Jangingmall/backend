@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,10 +34,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(MemberController.class)
 @Import({SecurityConfig.class, GlobalExceptionHandler.class})
+@TestPropertySource(properties = "jwt.refresh-cookie-secure=true")
 class MemberControllerTest {
 
     @Autowired
@@ -137,7 +140,8 @@ class MemberControllerTest {
             .andExpect(jsonPath("$.data.member.memberId").value(1))
             .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie"))
                 .contains("refreshToken=refresh-token")
-                .contains("HttpOnly"));
+                .contains("HttpOnly")
+                .contains("Secure"));
     }
 
     @Test
@@ -186,6 +190,19 @@ class MemberControllerTest {
                 .isEqualTo("http://localhost:3000/"));
 
         verify(emailVerificationService).verify("verification-token");
+    }
+
+    @Test
+    @DisplayName("만료된 이메일 인증 링크도 계약에 따라 홈으로 리다이렉트한다")
+    void redirectExpiredEmailVerification() throws Exception {
+        doThrow(new DomainException(ErrorCode.TOKEN_EXPIRED))
+            .when(emailVerificationService).verify("expired-token");
+
+        mockMvc.perform(get("/api/member/email-verifications/verify")
+                .queryParam("token", "expired-token"))
+            .andExpect(status().isFound())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Location"))
+                .isEqualTo("http://localhost:3000/"));
     }
 
     @Test

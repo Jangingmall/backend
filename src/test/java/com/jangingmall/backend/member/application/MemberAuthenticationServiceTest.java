@@ -45,7 +45,12 @@ class MemberAuthenticationServiceTest {
             memberRepository,
             passwordEncoder,
             jwtTokenProvider,
-            new JwtProperties("local-dev-secret-key-minimum-256-bits-for-hs256-algorithm", 1_800_000, 604_800_000),
+            new JwtProperties(
+                "local-dev-secret-key-minimum-256-bits-for-hs256-algorithm",
+                1_800_000,
+                604_800_000,
+                false
+            ),
             refreshTokenStore
         );
     }
@@ -87,6 +92,44 @@ class MemberAuthenticationServiceTest {
         assertThatThrownBy(() -> memberAuthenticationService.login("artisan@example.com", "wrong-password"))
             .isInstanceOfSatisfying(DomainException.class,
                 exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.UNAUTHORIZED));
+    }
+
+    @Test
+    @DisplayName("유효한 Refresh Token은 회전되어 새 토큰 쌍을 발급한다")
+    void refreshRotatesToken() {
+        Member member = activeMember();
+        when(jwtTokenProvider.parseRefreshToken("refresh-token"))
+            .thenReturn(new JwtTokenProvider.JwtMemberClaims(1L, MemberRole.USER));
+        when(refreshTokenStore.matches(1L, "refresh-token")).thenReturn(true);
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+        when(jwtTokenProvider.createAccessToken(1L, MemberRole.USER)).thenReturn("new-access-token");
+        when(jwtTokenProvider.createRefreshToken(1L, MemberRole.USER)).thenReturn("new-refresh-token");
+
+        MemberSession session = memberAuthenticationService.refresh("refresh-token");
+
+        assertThat(session.accessToken()).isEqualTo("new-access-token");
+        assertThat(session.refreshToken()).isEqualTo("new-refresh-token");
+        verify(refreshTokenStore).save(1L, "new-refresh-token", java.time.Duration.ofDays(7));
+    }
+
+    @Test
+    @DisplayName("서버에서 무효화된 Refresh Token은 재사용할 수 없다")
+    void rejectsInvalidatedRefreshToken() {
+        when(jwtTokenProvider.parseRefreshToken("logged-out-token"))
+            .thenReturn(new JwtTokenProvider.JwtMemberClaims(1L, MemberRole.USER));
+        when(refreshTokenStore.matches(1L, "logged-out-token")).thenReturn(false);
+
+        assertThatThrownBy(() -> memberAuthenticationService.refresh("logged-out-token"))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.UNAUTHORIZED));
+    }
+
+    @Test
+    @DisplayName("로그아웃은 서버의 Refresh Token을 삭제한다")
+    void logoutInvalidatesRefreshToken() {
+        memberAuthenticationService.logout(1L);
+
+        verify(refreshTokenStore).delete(1L);
     }
 
     private Member activeMember() {

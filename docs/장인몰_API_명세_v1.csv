@@ -1,5 +1,5 @@
 ﻿도메인,담당자,메소드,엔드포인트,기능명,설명,인증,상태,우선순위,요청(Request),응답(Response),대표에러(Error)
-회원,유창민,POST,/api/member/signup,이메일 회원가입,"이메일/비밀번호/비밀번호확인/이름/전화번호와 약관 동의(만14세이상·이용약관·개인정보수집 필수, 마케팅수신 선택)를 받아 계정을 생성한다. 가입 직후 인증 이메일이 자동 발송되며, 인증 전까지는 로그인이 제한된다",Public,예정,P0,"{
+회원,유창민,POST,/api/member/signup,이메일 회원가입,"이메일/비밀번호/비밀번호확인/이름/전화번호와 약관 동의(만14세이상·이용약관·개인정보수집 필수, 마케팅수신 선택)를 받아 USER 계정을 생성한다. ARTISAN은 장인 가입 신청 후 ADMIN 승인으로만 전환된다(PHASE2-2 §4-11). 가입 직후 인증 이메일이 자동 발송되며, 인증 전까지는 로그인이 제한된다",Public,예정,P0,"{
   ""method"": ""POST"",
   ""url"": ""/api/member/signup"",
   ""headers"": {
@@ -11,7 +11,7 @@
     ""passwordConfirm"": ""string · 필수"",
     ""name"": ""string · 필수 — 이름/명칭"",
     ""phone"": ""string · 필수 — 전화번호(하이픈 제외 숫자만)"",
-    ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) · 필수 — 회원 역할"",
+    ""role"": ""string (enum: `USER`(소비자)) · 필수 — 공개 회원가입은 USER만 허용"",
     ""agreements"": {
       ""age14OrOlder"": ""boolean · 필수"",
       ""termsOfService"": ""boolean · 필수"",
@@ -78,7 +78,7 @@
 }","{
   ""description"": ""302 Redirect → OAuth2 Provider 인가 페이지로 이동 후 콜백에서 accessToken/refreshToken 발급""
 }",
-회원,유창민,POST,/api/member/login,로그인,이메일/비밀번호로 로그인한다. 이메일 인증 전 계정은 로그인이 거부된다(403),Public,예정,P0,"{
+회원,유창민,POST,/api/member/login,로그인,"이메일/비밀번호로 로그인한다. 이메일 인증 전 계정은 로그인이 거부된다(403). Refresh Token은 응답 Body가 아닌 HttpOnly Cookie로 전달한다(PHASE2-2 §4-4)",Public,예정,P0,"{
   ""method"": ""POST"",
   ""url"": ""/api/member/login"",
   ""headers"": {
@@ -93,7 +93,6 @@
   ""status"": 200,
   ""data"": {
     ""accessToken"": ""string"",
-    ""refreshToken"": ""string"",
     ""member"": {
       ""memberId"": ""number — 회원 고유 ID"",
       ""email"": ""string — 이메일 주소"",

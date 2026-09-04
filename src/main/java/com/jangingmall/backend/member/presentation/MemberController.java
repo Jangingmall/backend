@@ -85,7 +85,11 @@ public class MemberController {
 
     @GetMapping("/email-verifications/verify")
     public ResponseEntity<Void> verifyEmail(@RequestParam(required = false) String token) {
-        emailVerificationService.verify(token);
+        try {
+            emailVerificationService.verify(token);
+        } catch (DomainException ignored) {
+            // The API contract requires the browser flow to return to the frontend even on failure.
+        }
         return ResponseEntity.status(HttpStatus.FOUND)
             .location(emailVerificationProperties.successRedirectUrl())
             .build();
@@ -107,6 +111,7 @@ public class MemberController {
     private ResponseCookie refreshCookie(String refreshToken) {
         return ResponseCookie.from("refreshToken", refreshToken)
             .httpOnly(true)
+            .secure(jwtProperties.refreshCookieSecure())
             .sameSite("Strict")
             .path("/api/member")
             .maxAge(Duration.ofDays(7))
@@ -116,6 +121,7 @@ public class MemberController {
     private ResponseCookie expiredRefreshCookie() {
         return ResponseCookie.from("refreshToken", "")
             .httpOnly(true)
+            .secure(jwtProperties.refreshCookieSecure())
             .sameSite("Strict")
             .path("/api/member")
             .maxAge(Duration.ZERO)

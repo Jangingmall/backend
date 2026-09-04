@@ -14,7 +14,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 class JwtAuthenticationFilterTest {
 
     private final JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(
-        new JwtProperties("local-dev-secret-key-minimum-256-bits-for-hs256-algorithm", 1_800_000, 604_800_000)
+        new JwtProperties(
+            "local-dev-secret-key-minimum-256-bits-for-hs256-algorithm",
+            1_800_000,
+            604_800_000,
+            false
+        )
     );
     private final JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtTokenProvider);
 
@@ -38,5 +43,21 @@ class JwtAuthenticationFilterTest {
         assertThat(authentication.get().getAuthorities())
             .extracting("authority")
             .containsExactlyInAnyOrder("ROLE_USER", "ROLE_ARTISAN");
+    }
+
+    @Test
+    void doesNotAuthenticateTamperedToken() throws Exception {
+        String accessToken = jwtTokenProvider.createAccessToken(1L, MemberRole.USER);
+        char replacement = accessToken.endsWith("a") ? 'b' : 'a';
+        String tamperedToken = accessToken.substring(0, accessToken.length() - 1) + replacement;
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("Authorization", "Bearer " + tamperedToken);
+        AtomicReference<Authentication> authentication = new AtomicReference<>();
+
+        jwtAuthenticationFilter.doFilter(request, new MockHttpServletResponse(), (req, res) ->
+            authentication.set(SecurityContextHolder.getContext().getAuthentication())
+        );
+
+        assertThat(authentication.get()).isNull();
     }
 }
