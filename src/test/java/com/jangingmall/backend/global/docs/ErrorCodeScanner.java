@@ -1,14 +1,14 @@
 package com.jangingmall.backend.global.docs;
 
+import com.jangingmall.backend.global.exception.ErrorCode;
 import org.springframework.asm.*;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.lang.reflect.Method;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 빌드타임 ASM 바이트코드 스캐너.
@@ -21,10 +21,13 @@ import java.util.stream.Collectors;
  * <p>탐지 범위:
  * - NEW + INVOKESPECIAL(BusinessException 서브클래스 생성자) → 직접 throw
  * - 메서드 호출 → callee 바이트코드 재귀 분석 (depth 제한: 5)
+ * - @ApiErrorCodes 애노테이션 — ASM 탐지 불가 에러코드 수동 보충 후 병합
  *
- * <p>탐지 불가 (별도 @ApiErrorCodes 선언 필요):
+ * <p>탐지 불가 → @ApiErrorCodes 로 보충:
  * - Security 필터 예외 (UNAUTHORIZED, FORBIDDEN via Security)
- * - DataIntegrityViolationException, ObjectOptimisticLockingFailureException
+ * - DataIntegrityViolationException → CONFLICT
+ * - ObjectOptimisticLockingFailureException → CONCURRENT_UPDATE
+ * - CannotAcquireLockException → CONCURRENT_UPDATE
  */
 public class ErrorCodeScanner {
 
@@ -59,10 +62,59 @@ public class ErrorCodeScanner {
     /**
      * 주어진 패키지 접두사 하위의 모든 Controller 클래스를 스캔하여
      * "GET /api/notifications/{id}" → {"NOT_FOUND", "FORBIDDEN"} 형태의 맵을 반환한다.
+     *
+     * <p>ASM 탐지 결과에 @ApiErrorCodes 선언 값을 병합한다.
      */
     public Map<String, Set<String>> scan(String packagePrefix) throws IOException {
-        Map<String, Set<String>> result = new LinkedHashMap<>();
+        Map<String, Set<String>> asmResults = scanAsmOnly(packagePrefix);
+        Map<String, Set<String>> annotationResults = scanAnnotationsOnly(packagePrefix);
 
+        Map<String, Set<String>> result = new LinkedHashMap<>(asmResults);
+        for (Map.Entry<String, Set<String>> entry : annotationResults.entrySet()) {
+            result.computeIfAbsent(entry.getKey(), k -> new LinkedHashSet<>())
+                .addAll(entry.getValue());
+        }
+        return result;
+    }
+
+    /**
+     * ASM 바이트코드 분석만으로 탐지된 에러코드 맵을 반환한다 (@ApiErrorCodes 미포함).
+     * CoverageVerifier의 A 조건에 해당한다.
+     */
+    public Map<String, Set<String>> scanAsmOnly(String packagePrefix) throws IOException {
+        Map<String, Set<String>> result = new LinkedHashMap<>();
+        walkControllers(packagePrefix, (endpoint, ref) -> {
+            Set<String> errorCodes = new LinkedHashSet<>(
+                analyzeMethod(ref.owner(), ref.name(), ref.descriptor(), 0)
+            );
+            if (!errorCodes.isEmpty()) {
+                result.put(endpoint, errorCodes);
+            }
+        });
+        return result;
+    }
+
+    /**
+     * @ApiErrorCodes 애노테이션 선언만으로 구성된 에러코드 맵을 반환한다 (ASM 미포함).
+     * CoverageVerifier의 수동 보충 경로에 해당한다.
+     */
+    public Map<String, Set<String>> scanAnnotationsOnly(String packagePrefix) throws IOException {
+        Map<String, Set<String>> result = new LinkedHashMap<>();
+        walkControllers(packagePrefix, (endpoint, ref) -> {
+            Set<String> annotationCodes = resolveApiErrorCodes(ref);
+            if (!annotationCodes.isEmpty()) {
+                result.put(endpoint, annotationCodes);
+            }
+        });
+        return result;
+    }
+
+    @FunctionalInterface
+    private interface EndpointConsumer {
+        void accept(String endpoint, MethodRef ref) throws IOException;
+    }
+
+    private void walkControllers(String packagePrefix, EndpointConsumer consumer) throws IOException {
         String packagePath = packagePrefix.replace('.', '/');
         Files.walkFileTree(classesRoot, new SimpleFileVisitor<>() {
             @Override
@@ -74,7 +126,7 @@ public class ErrorCodeScanner {
                     .replace(".class", "");
 
                 if (!relative.startsWith(packagePath)) return FileVisitResult.CONTINUE;
-                if (relative.contains("$")) return FileVisitResult.CONTINUE; // 익명 클래스 제외
+                if (relative.contains("$")) return FileVisitResult.CONTINUE;
 
                 ControllerScanner scanner = new ControllerScanner();
                 try (InputStream in = Files.newInputStream(file)) {
@@ -82,19 +134,35 @@ public class ErrorCodeScanner {
                 }
 
                 for (Map.Entry<String, MethodRef> entry : scanner.endpointMethods().entrySet()) {
-                    String endpoint = entry.getKey();
-                    MethodRef ref = entry.getValue();
-                    Set<String> errorCodes = analyzeMethod(ref.owner(), ref.name(), ref.descriptor(), 0);
-                    if (!errorCodes.isEmpty()) {
-                        result.put(endpoint, errorCodes);
-                    }
+                    consumer.accept(entry.getKey(), entry.getValue());
                 }
 
                 return FileVisitResult.CONTINUE;
             }
         });
+    }
 
-        return result;
+    /**
+     * 런타임 리플렉션으로 @ApiErrorCodes 애노테이션 값을 읽어 ErrorCode 이름 Set으로 반환한다.
+     * 클래스 로드 실패 시 빈 Set을 반환해 스캔을 중단하지 않는다.
+     */
+    private Set<String> resolveApiErrorCodes(MethodRef ref) {
+        String className = ref.owner().replace('/', '.');
+        try {
+            Class<?> clazz = Class.forName(className);
+            for (Method method : clazz.getDeclaredMethods()) {
+                if (!method.getName().equals(ref.name())) continue;
+                ApiErrorCodes annotation = method.getAnnotation(ApiErrorCodes.class);
+                if (annotation == null) continue;
+                Set<String> codes = new LinkedHashSet<>();
+                for (ErrorCode code : annotation.value()) {
+                    codes.add(code.name());
+                }
+                return codes;
+            }
+        } catch (ClassNotFoundException ignored) {
+        }
+        return Set.of();
     }
 
     // ──────────────────────────────────────────────────────────────────────────
