@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final String TYPE_MISMATCH_SUFFIX = " 파라미터 형식이 올바르지 않습니다";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
@@ -41,7 +42,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ApiErrorResponse> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
-        String message = ex.getName() + " 파라미터 형식이 올바르지 않습니다";
+        String message = ex.getName() + TYPE_MISMATCH_SUFFIX;
         log.warn("Type mismatch: {}", message);
         return error(ErrorCode.INVALID_INPUT, message);
     }

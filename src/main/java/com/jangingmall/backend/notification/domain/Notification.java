@@ -46,7 +46,7 @@ public class Notification {
     // depth-4: Entity 상태 전이 검증 — BusinessRuleViolationException
     public void markAsRead() {
         if (this.status == NotificationStatus.DELETED) {
-            throw new BusinessRuleViolationException("삭제된 알림은 읽음 처리할 수 없습니다");
+            throw new BusinessRuleViolationException(NotificationErrorMessage.ALREADY_DELETED_READ);
         }
         this.status = NotificationStatus.READ;
     }
@@ -54,14 +54,14 @@ public class Notification {
     // depth-4: 소유권 검증 — ForbiddenException
     public void validateOwnership(Long requesterId) {
         if (!this.memberId.equals(requesterId)) {
-            throw new ForbiddenException("본인의 알림만 접근할 수 있습니다");
+            throw new ForbiddenException(NotificationErrorMessage.NOT_OWNER);
         }
     }
 
     // depth-4: 삭제 상태 전이 — BusinessRuleViolationException
     public void delete() {
         if (this.status == NotificationStatus.DELETED) {
-            throw new BusinessRuleViolationException("이미 삭제된 알림입니다");
+            throw new BusinessRuleViolationException(NotificationErrorMessage.ALREADY_DELETED);
         }
         this.status = NotificationStatus.DELETED;
     }
