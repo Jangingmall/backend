@@ -3,6 +3,7 @@ package com.jangingmall.backend.member.presentation;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,6 +16,7 @@ import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
 import com.jangingmall.backend.member.application.MemberAuthenticationService;
+import com.jangingmall.backend.member.application.EmailVerificationService;
 import com.jangingmall.backend.member.application.MemberProfile;
 import com.jangingmall.backend.member.application.MemberService;
 import com.jangingmall.backend.member.application.MemberSession;
@@ -22,6 +24,7 @@ import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.application.MemberSignupResult;
 import com.jangingmall.backend.member.domain.MemberStatus;
 import java.util.List;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +47,9 @@ class MemberControllerTest {
 
     @MockitoBean
     private MemberAuthenticationService memberAuthenticationService;
+
+    @MockitoBean
+    private EmailVerificationService emailVerificationService;
 
     @Test
     @DisplayName("정상 회원가입 요청은 201과 이메일 인증 대기 상태를 반환한다")
@@ -132,6 +138,54 @@ class MemberControllerTest {
             .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie"))
                 .contains("refreshToken=refresh-token")
                 .contains("HttpOnly"));
+    }
+
+    @Test
+    @DisplayName("Refresh Token 쿠키로 새 Access Token과 만료 초를 반환한다")
+    void refresh() throws Exception {
+        when(memberAuthenticationService.refresh("refresh-token")).thenReturn(
+            new MemberSession(
+                "new-access-token",
+                "new-refresh-token",
+                1L,
+                "artisan@example.com",
+                "김도공",
+                MemberRole.USER
+            )
+        );
+
+        mockMvc.perform(post("/api/member/token/refresh")
+                .cookie(new Cookie("refreshToken", "refresh-token")))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.accessToken").value("new-access-token"))
+            .andExpect(jsonPath("$.data.expiresIn").value(1800))
+            .andExpect(jsonPath("$.data.member").doesNotExist())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie"))
+                .contains("refreshToken=new-refresh-token"));
+    }
+
+    @Test
+    @DisplayName("인증 이메일 재전송은 토큰 유효시간을 반환한다")
+    void resendVerificationEmail() throws Exception {
+        when(emailVerificationService.sendVerification("artisan@example.com")).thenReturn(1800L);
+
+        mockMvc.perform(post("/api/member/email-verifications")
+                .contentType(APPLICATION_JSON)
+                .content("{\"email\":\"artisan@example.com\"}"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.expiresInSeconds").value(1800));
+    }
+
+    @Test
+    @DisplayName("유효한 이메일 인증 링크는 회원을 활성화하고 홈으로 리다이렉트한다")
+    void verifyEmail() throws Exception {
+        mockMvc.perform(get("/api/member/email-verifications/verify")
+                .queryParam("token", "verification-token"))
+            .andExpect(status().isFound())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Location"))
+                .isEqualTo("http://localhost:3000/"));
+
+        verify(emailVerificationService).verify("verification-token");
     }
 
     @Test

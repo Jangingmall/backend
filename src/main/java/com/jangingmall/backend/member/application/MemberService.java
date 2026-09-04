@@ -6,6 +6,7 @@ import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public MemberSignupResult signUp(MemberSignupCommand command) {
@@ -41,6 +43,7 @@ public class MemberService {
         );
 
         Member savedMember = memberRepository.save(member);
+        eventPublisher.publishEvent(new MemberRegisteredEvent(savedMember.getId(), savedMember.getEmail()));
         return new MemberSignupResult(savedMember.getId(), savedMember.getEmail(), savedMember.getStatus());
     }
 

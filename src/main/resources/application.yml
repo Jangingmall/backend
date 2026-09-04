@@ -24,6 +24,11 @@ spring:
     redis:
       host: localhost
       port: 6379
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
   security:
     oauth2:
       client:
@@ -51,6 +56,13 @@ jwt:
   access-token-expiry: 1800000
   refresh-token-expiry: 604800000
 
+member:
+  email-verification:
+    verification-url: ${EMAIL_VERIFICATION_URL:http://localhost:8080/api/member/email-verifications/verify}
+    success-redirect-url: ${EMAIL_VERIFICATION_SUCCESS_REDIRECT:http://localhost:3000/}
+    from: ${MAIL_FROM:no-reply@jangingmall.local}
+    token-expiry-seconds: 1800
+
 ai:
   base-url: http://localhost:8001
   timeout-seconds: 30
@@ -76,6 +88,17 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT:6379}
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   security:
     oauth2:
       client:
@@ -102,6 +125,13 @@ jwt:
   secret: ${JWT_SECRET}
   access-token-expiry: 1800000
   refresh-token-expiry: 604800000
+
+member:
+  email-verification:
+    verification-url: ${EMAIL_VERIFICATION_URL}
+    success-redirect-url: ${EMAIL_VERIFICATION_SUCCESS_REDIRECT}
+    from: ${MAIL_FROM}
+    token-expiry-seconds: ${EMAIL_VERIFICATION_TTL_SECONDS:1800}
 
 ai:
   base-url: ${AI_BASE_URL}

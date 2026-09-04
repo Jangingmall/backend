@@ -6,6 +6,7 @@ import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.global.security.JwtAuthenticationFilter;
 import com.jangingmall.backend.global.security.JwtProperties;
 import com.jangingmall.backend.global.security.JwtTokenProvider;
+import com.jangingmall.backend.member.application.EmailVerificationProperties;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 
 @Configuration
 @EnableWebSecurity
-@EnableConfigurationProperties(JwtProperties.class)
+@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;

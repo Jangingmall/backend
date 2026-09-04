@@ -19,6 +19,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -31,6 +32,9 @@ class MemberServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
     @Captor
     private ArgumentCaptor<Member> memberCaptor;
 
@@ -38,7 +42,7 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(memberRepository, passwordEncoder);
+        memberService = new MemberService(memberRepository, passwordEncoder, eventPublisher);
     }
 
     @Test
@@ -62,6 +66,7 @@ class MemberServiceTest {
         assertThat(savedMember.isMarketingAgreed()).isTrue();
         assertThat(result.memberId()).isEqualTo(1L);
         assertThat(result.email()).isEqualTo(command.email());
+        verify(eventPublisher).publishEvent(any(MemberRegisteredEvent.class));
     }
 
     @Test
