@@ -147,6 +147,7 @@ product_review,rating,SMALLINT,,,Y,,,CHECK(rating BETWEEN 1 AND 5),
 product_review,content,VARCHAR(1000),,,Y,,,,
 product_review,images,TEXT[],,,,,,,
 product_review,created_at,TIMESTAMP,,,Y,,now(),,
+product_review,(unique),-,,,,Y,,"UNIQUE(order_item_id)",후기 1회 작성 보장 — 동일 order_item에 중복 후기 방지
 interview,product_id,BIGINT,PK,product.product_id,Y,,,1:1,
 interview,process,TEXT,,,Y,,,,
 interview,materials,VARCHAR(255),,,Y,,,,
@@ -195,7 +196,7 @@ orders,zip_code,VARCHAR(10),,,Y,,,주문 시점 스냅샷,
 orders,address1,VARCHAR(255),,,Y,,,주문 시점 스냅샷,
 orders,address2,VARCHAR(255),,,,,,주문 시점 스냅샷,
 orders,delivery_request,VARCHAR(100),,,,,,,배송 요청사항
-orders,status,VARCHAR(20),,,Y,,'CREATED',"CHECK IN ('CREATED','PAID','PAYMENT_FAILED','CANCELED','DELIVERED')",
+orders,status,VARCHAR(20),,,Y,,'CREATED',"CHECK IN ('CREATED','PAID','PAYMENT_FAILED','CANCELED','DELIVERED','RETURN_REQUESTED')",
 orders,total_amount,BIGINT,,,Y,,,CHECK(total_amount >= 0),
 orders,created_at,TIMESTAMP,,,Y,,now(),,
 orders,canceled_at,TIMESTAMP,,,,,,,취소된 경우에만 값
@@ -209,6 +210,17 @@ order_item,quantity,INTEGER,,,Y,,,,
 order_item,total_price,BIGINT,,,Y,,,price_snapshot * quantity,
 order_item,production_period_days_snapshot,INTEGER,,,,,,,주문 시점 제작기간 스냅샷
 order_item,selected_options_snapshot,JSONB,,,,,,,
+order_return,return_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
+order_return,order_id,BIGINT,,orders.order_id,Y,Y,,"UNIQUE — 주문당 반품 1건 (CONC-017)",
+order_return,type,VARCHAR(20),,,Y,,,"CHECK IN ('RETURN','EXCHANGE')",반품/교환 구분
+order_return,reason,VARCHAR(30),,,Y,,,"CHECK IN ('CHANGE_OF_MIND','DEFECTIVE','WRONG_DELIVERY','OTHER')",반품 사유 enum (API 명세 기준)
+order_return,reason_detail,VARCHAR(500),,,,,,,reason=OTHER 시 필수 — 서비스 레이어 검증
+order_return,return_address_id,BIGINT,,address.address_id,Y,,,,회수지 주소 ID
+order_return,image_ids,TEXT[],,,,,,,reason=DEFECTIVE 시 필수 최대 5장 — 서비스 레이어 검증
+order_return,status,VARCHAR(20),,,Y,,'REQUESTED',"CHECK IN ('REQUESTED','APPROVED','REJECTED','COMPLETED')",
+order_return,version,INTEGER,,,Y,,0,낙관적 락(@Version),"중복 신청 CONFLICT 방지, CONC-017"
+order_return,created_at,TIMESTAMP,,,Y,,now(),,
+order_return,updated_at,TIMESTAMP,,,Y,,now(),JPA @LastModifiedDate로 자동 갱신,
 payments,payment_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
 payments,order_id,BIGINT,,orders.order_id,Y,Y,,,
 payments,amount,BIGINT,,,Y,,,,
