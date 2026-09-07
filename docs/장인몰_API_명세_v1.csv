@@ -326,7 +326,7 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
@@ -438,7 +438,7 @@
         ""orderItemId"": ""number"",
         ""productId"": ""number — 상품 고유 ID"",
         ""productName"": ""string"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
       }
     ],
     ""nextCursor"": ""string"",
@@ -503,7 +503,7 @@
     ""topProducts"": [
       {
         ""productId"": ""number — 상품 고유 ID"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
       }
     ],
     ""certifiedYear"": ""number — 지정 연도"",
@@ -549,7 +549,7 @@
     ""topProducts"": [
       {
         ""productId"": ""number — 상품 고유 ID"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
       }
     ],
     ""certifiedYear"": ""number — 지정 연도"",
@@ -604,7 +604,7 @@
     ""topProducts"": [
       {
         ""productId"": ""number — 상품 고유 ID"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
       }
     ],
     ""certifiedYear"": ""number — 지정 연도"",
@@ -669,7 +669,7 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
@@ -748,7 +748,7 @@
     ""productId"": ""number — 상품 고유 ID"",
     ""name"": ""string — 이름/명칭"",
     ""price"": ""number — 가격, 원 단위 정수"",
-    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
     ""subcategory"": ""string"",
@@ -789,7 +789,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -856,7 +856,7 @@
     ""productId"": ""number — 상품 고유 ID"",
     ""name"": ""string — 이름/명칭"",
     ""price"": ""number — 가격, 원 단위 정수"",
-    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
     ""subcategory"": ""string"",
@@ -897,7 +897,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -968,7 +968,7 @@
     ""productId"": ""number — 상품 고유 ID"",
     ""name"": ""string — 이름/명칭"",
     ""price"": ""number — 가격, 원 단위 정수"",
-    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
     ""subcategory"": ""string"",
@@ -1024,7 +1024,7 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
@@ -1063,7 +1063,7 @@
     ""productId"": ""number — 상품 고유 ID"",
     ""name"": ""string — 이름/명칭"",
     ""price"": ""number — 가격, 원 단위 정수"",
-    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
     ""subcategory"": ""string"",
@@ -1104,7 +1104,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -1338,7 +1338,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -1409,7 +1409,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -1471,7 +1471,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -1526,7 +1526,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -2093,7 +2093,7 @@
           ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
           ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
           ""hasImage"": ""boolean"",
-          ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+          ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
           ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
           ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
         }
@@ -2132,7 +2132,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -2186,7 +2186,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -2216,7 +2216,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -2293,7 +2293,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -2358,7 +2358,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -2420,7 +2420,7 @@
         ""topProducts"": [
           {
             ""productId"": ""number — 상품 고유 ID"",
-            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
           }
         ],
         ""newProductCount"": ""number""
@@ -2550,7 +2550,7 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
@@ -2825,7 +2825,7 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
@@ -2938,7 +2938,7 @@
         ""topProducts"": [
           {
             ""productId"": ""number — 상품 고유 ID"",
-            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
           }
         ]
       }
@@ -3003,7 +3003,7 @@
         ""name"": ""string — 한국어 카테고리명(예: 도자공예)"",
         ""artisanCount"": ""number — 해당 카테고리 활성 장인 수"",
         ""productCount"": ""number — 해당 카테고리 판매 중 상품 수"",
-        ""thumbnail"": ""array | null — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3], 이미지 없으면 null"
+        ""thumbnail"": ""array | null — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3], 이미지 없으면 null""
       }
     ],
     ""totalCount"": ""number""
