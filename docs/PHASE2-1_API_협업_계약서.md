@@ -107,7 +107,7 @@
     "artisanId": "string · 선택",
     "category": "string (enum: POTTERY 등) · 선택",
     "material": "string · 선택",
-    "giftTheme": "string (enum: HOUSEWARMING | WEDDING | PARENTS | PROMOTION | BIRTHDAY_60TH | BOSS | FRIEND | CORPORATE) · 선택",
+    "giftTheme": "string (enum: HOUSEWARMING | WEDDING | PARENTS | PROMOTION | BIRTHDAY_60TH | BOSS | FRIEND | CORPORATE | COUPLE) · 선택",
     "color": "string (enum: WHITE | BLACK | GRAY | RED | BLUE | GREEN | BROWN) · 선택",
     "sort": "string (enum: POPULAR | NEWEST | WISHLIST_COUNT | SALES_COUNT | PRICE_ASC | PRICE_DESC) · 선택",
     "minPrice": "string · 선택",
@@ -137,7 +137,7 @@
         "status": "string (enum: ON_SALE | SOLD_OUT | HIDDEN | DRAFT)",
         "category": "string",
         "color": "string",
-        "giftTheme": "string",
+        "giftTheme": "string (enum: HOUSEWARMING | WEDDING | PARENTS | PROMOTION | BIRTHDAY_60TH | BOSS | FRIEND | CORPORATE | COUPLE)",
         "rating": "number | null",
         "isLimited": "boolean",
         "isCustomOrder": "boolean",
@@ -187,7 +187,7 @@
     "status": "string (enum: ON_SALE | SOLD_OUT | HIDDEN | DRAFT)",
     "category": "string",
     "color": "string",
-    "giftTheme": "string",
+    "giftTheme": "string (enum: HOUSEWARMING | WEDDING | PARENTS | PROMOTION | BIRTHDAY_60TH | BOSS | FRIEND | CORPORATE | COUPLE)",
     "rating": "number | null",
     "isLimited": "boolean",
     "isCustomOrder": "boolean",
@@ -256,7 +256,7 @@
       "artisanId": "number",
       "businessName": "string",
       "introduction": "string",
-      "certificationLevel": "string (enum: 보유자 | 전승교육사 | 이수자 | 일반)"
+      "certificationLevel": "string (enum: 보유자 | 전승교육사 | 이수자 | 일반 — AI 내부 매핑: NATIONAL_INTANGIBLE_HERITAGE | MASTER_CRAFTSMAN | SENIOR_CRAFTSMAN | YOUNG_CRAFTSMAN)"
     }
   }
 }
@@ -376,11 +376,9 @@
     "messageId": "number",
     "reply": "string — 챗봇 대화형 응답 텍스트",
     "intent": "string — AI 의도분류 결과",
-    "extracted": {
-      "maxPrice": "number",
-      "purpose": ["string"],
-      "vibe": "string"
-    },
+    "suggestions": [
+      "string — 후속 질문 제안 (최대 3개)"
+    ],
     "products": [
       {
         "productId": "number",
