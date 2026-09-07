@@ -82,9 +82,20 @@
 | 4-4 | 판매자 상품 등록 | `POST` | `/api/products` | ARTISAN | P0 |
 | 4-5 | 판매자 상품 수정 | `PATCH` | `/api/products/{productId}` | ARTISAN | P0 |
 | 4-6 | 주문 생성 | `POST` | `/api/payments/orders` | USER | P0 |
-| 4-7 | 주문 조회 | `GET` | `/api/member/me/orders/{orderId}` | USER | P1 |
-| 4-8 | AI 추천 챗봇 메시지 전송 | `POST` | `/api/chatbot/sessions/{sessionId}/messages` | Public | P2 |
-| 4-9 | AI 상세페이지 생성 요청 | `POST` | `/api/content/products/{productId}/generations` | ARTISAN | P0 |
+| 4-7 | 주문 목록 조회 | `GET` | `/api/member/me/orders` | USER | P1 |
+| 4-8 | 주문 상세 조회 | `GET` | `/api/member/me/orders/{orderId}` | USER | P1 |
+| 4-9 | AI 추천 챗봇 메시지 전송 | `POST` | `/api/chatbot/sessions/{sessionId}/messages` | Public | P2 |
+| 4-10 | AI 상세페이지 생성 요청 | `POST` | `/api/content/products/{productId}/generations` | ARTISAN | P0 |
+| 4-11 | 장바구니 담기 | `POST` | `/api/payments/cart/items` | Public(게스트 허용) | P0 |
+| 4-12 | 장바구니 병합 (로그인 시) | `POST` | `/api/payments/cart/merge` | Authenticated | P0 |
+| 4-13 | 결제 준비 | `POST` | `/api/payments` | USER | P0 |
+| 4-14 | 결제 승인 | `POST` | `/api/payments/confirm` | USER | P0 |
+| 4-15 | 배송 조회 | `GET` | `/api/payments/orders/{orderId}/delivery` | Authenticated | P1 |
+| 4-16 | 반품 신청 | `POST` | `/api/payments/returns` | USER | P1 |
+| 4-17 | 상품 찜 등록 | `POST` | `/api/products/{productId}/wish` | USER | P1 |
+| 4-18 | 상품 찜 취소 | `DELETE` | `/api/products/{productId}/wish` | USER | P1 |
+| 4-19 | 찜 목록 조회 | `GET` | `/api/member/me/wishes` | USER | P1 |
+| 4-20 | 챗봇 세션 생성 | `POST` | `/api/chatbot/sessions` | Public | P2 |
 
 ---
 
@@ -447,6 +458,589 @@
 ```
 
 > 생성은 비동기. 완료 여부는 `GET /api/content/products/{productId}/generations/{generationId}` 로 폴링하거나 WebSocket 이벤트로 수신한다.
+
+---
+
+#### 5-7. 챗봇 세션 생성 `POST /api/chatbot/sessions`
+
+**Request**
+
+```json
+{
+  "method": "POST",
+  "url": "/api/chatbot/sessions",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {}
+}
+```
+
+**Response** `201 Created`
+
+```json
+{
+  "success": true,
+  "status": 201,
+  "data": {
+    "sessionId": "string",
+    "expiresInSeconds": "number"
+  }
+}
+```
+
+---
+
+#### 5-8. 장바구니 담기 `POST /api/payments/cart/items`
+
+> 비로그인(게스트) 허용. 게스트 cart key는 클라이언트가 로컬스토리지로 관리하고 로그인 시 `POST /api/payments/cart/merge`로 병합한다.
+
+**Request**
+
+```json
+{
+  "method": "POST",
+  "url": "/api/payments/cart/items",
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "productId": "number · 필수",
+    "quantity": "number · 필수",
+    "selectedOptions": [
+      {
+        "optionGroupId": "number · 필수",
+        "choiceId": "number · 필수"
+      }
+    ]
+  }
+}
+```
+
+**Response** `201 Created`
+
+```json
+{
+  "success": true,
+  "status": 201,
+  "data": {
+    "cartItemId": "number",
+    "productId": "number",
+    "productName": "string",
+    "quantity": "number",
+    "unitPrice": "number",
+    "totalPrice": "number",
+    "thumbnail": [{ "url": "string", "width": "number", "height": "number", "format": "string" }],
+    "selectedOptions": [
+      {
+        "optionGroupId": "number",
+        "optionGroupName": "string",
+        "choiceId": "number",
+        "choiceName": "string",
+        "priceDelta": "number"
+      }
+    ]
+  }
+}
+```
+
+**Error**
+
+```json
+{
+  "success": false,
+  "status": 422,
+  "errorCode": "BUSINESS_RULE_VIOLATION"
+}
+```
+
+---
+
+#### 5-9. 장바구니 병합 `POST /api/payments/cart/merge`
+
+> 로그인 직후 게스트 카트를 회원 카트로 병합한다. 동일 상품은 수량을 합산한다.
+
+**Request**
+
+```json
+{
+  "method": "POST",
+  "url": "/api/payments/cart/merge",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer {accessToken}"
+  },
+  "body": {
+    "guestCartItems": [
+      {
+        "productId": "number · 필수",
+        "quantity": "number · 필수",
+        "selectedOptions": [
+          {
+            "optionGroupId": "number",
+            "choiceId": "number"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Response** `200 OK`
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "mergedCount": "number",
+    "sections": [
+      {
+        "artisanId": "number",
+        "artisanName": "string",
+        "certificationLevel": "string",
+        "items": [
+          {
+            "cartItemId": "number",
+            "productId": "number",
+            "productName": "string",
+            "quantity": "number",
+            "unitPrice": "number",
+            "totalPrice": "number",
+            "thumbnail": [{ "url": "string", "width": "number", "height": "number", "format": "string" }]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+---
+
+#### 5-10. 결제 준비 `POST /api/payments`
+
+> 토스페이먼츠 위젯 초기화에 필요한 `tossClientKey`와 `paymentId`를 반환한다. FE는 이 값으로 위젯을 마운트한 후 사용자가 결제 수단을 선택하면 `POST /api/payments/confirm`을 호출한다.
+
+**Request**
+
+```json
+{
+  "method": "POST",
+  "url": "/api/payments",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer {accessToken}"
+  },
+  "body": {
+    "orderId": "number · 필수"
+  }
+}
+```
+
+**Response** `200 OK`
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "paymentId": "string",
+    "orderId": "number",
+    "amount": "number",
+    "tossClientKey": "string"
+  }
+}
+```
+
+**Error**
+
+```json
+{
+  "success": false,
+  "status": 404,
+  "errorCode": "NOT_FOUND"
+}
+```
+
+---
+
+#### 5-11. 결제 승인 `POST /api/payments/confirm`
+
+> 토스페이먼츠 결제 완료 후 FE가 전달받은 `paymentKey`, `orderId`, `amount`를 그대로 BE로 전달한다. BE는 토스페이먼츠 서버 측 승인 API를 호출하여 검증한다.
+
+**Request**
+
+```json
+{
+  "method": "POST",
+  "url": "/api/payments/confirm",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer {accessToken}"
+  },
+  "body": {
+    "paymentKey": "string · 필수 — 토스페이먼츠가 발급한 결제 키",
+    "orderId": "number · 필수",
+    "amount": "number · 필수"
+  }
+}
+```
+
+**Response** `200 OK`
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "paymentId": "string",
+    "orderId": "number",
+    "amount": "number",
+    "method": "string (예: 카드)",
+    "status": "string (enum: DONE | CANCELED | PARTIAL_CANCELED | ABORTED | EXPIRED)",
+    "approvedAt": "string (ISO 8601)"
+  }
+}
+```
+
+**Error**
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorCode": "MISMATCH"
+}
+```
+
+---
+
+#### 5-12. 주문 목록 조회 `GET /api/member/me/orders`
+
+**Request**
+
+```json
+{
+  "method": "GET",
+  "url": "/api/member/me/orders",
+  "headers": {
+    "Authorization": "Bearer {accessToken}"
+  },
+  "queryParams": {
+    "cursor": "string · 선택",
+    "limit": "number · 선택 (기본 20)"
+  }
+}
+```
+
+**Response** `200 OK`
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "items": [
+      {
+        "orderId": "number",
+        "orderNumber": "string",
+        "status": "string (enum: CREATED | PAID | PAYMENT_FAILED | CANCELED | DELIVERED)",
+        "totalAmount": "number",
+        "createdAt": "string (ISO 8601)",
+        "items": [
+          {
+            "orderItemId": "number",
+            "productId": "number",
+            "productName": "string",
+            "price": "number",
+            "quantity": "number",
+            "thumbnail": [{ "url": "string", "width": "number", "height": "number", "format": "string" }]
+          }
+        ]
+      }
+    ],
+    "nextCursor": "string | null",
+    "hasNext": "boolean"
+  }
+}
+```
+
+---
+
+#### 5-13. 주문 상세 조회 `GET /api/member/me/orders/{orderId}`
+
+**Request**
+
+```json
+{
+  "method": "GET",
+  "url": "/api/member/me/orders/{orderId}",
+  "headers": {
+    "Authorization": "Bearer {accessToken}"
+  }
+}
+```
+
+**Response** `200 OK`
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "orderId": "number",
+    "orderNumber": "string",
+    "status": "string (enum: CREATED | PAID | PAYMENT_FAILED | CANCELED | DELIVERED)",
+    "totalAmount": "number",
+    "createdAt": "string (ISO 8601)",
+    "items": [
+      {
+        "orderItemId": "number",
+        "productId": "number",
+        "productName": "string",
+        "price": "number",
+        "quantity": "number",
+        "thumbnail": [{ "url": "string", "width": "number", "height": "number", "format": "string" }]
+      }
+    ],
+    "address": {
+      "recipientName": "string",
+      "phone": "string",
+      "zipCode": "string",
+      "address1": "string",
+      "address2": "string"
+    },
+    "payment": {
+      "paymentId": "string",
+      "method": "string",
+      "status": "string",
+      "approvedAt": "string (ISO 8601) | null"
+    }
+  }
+}
+```
+
+**Error**
+
+```json
+{
+  "success": false,
+  "status": 404,
+  "errorCode": "NOT_FOUND"
+}
+```
+
+---
+
+#### 5-14. 배송 조회 `GET /api/payments/orders/{orderId}/delivery`
+
+**Request**
+
+```json
+{
+  "method": "GET",
+  "url": "/api/payments/orders/{orderId}/delivery",
+  "headers": {
+    "Authorization": "Bearer {accessToken}"
+  }
+}
+```
+
+**Response** `200 OK`
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "orderId": "number",
+    "carrier": "string (예: CJ대한통운)",
+    "trackingNumber": "string",
+    "status": "string (예: SHIPPED | IN_TRANSIT | DELIVERED)"
+  }
+}
+```
+
+**Error**
+
+```json
+{
+  "success": false,
+  "status": 404,
+  "errorCode": "NOT_FOUND"
+}
+```
+
+---
+
+#### 5-15. 반품 신청 `POST /api/payments/returns`
+
+> **주의:** 반품(return) 상태는 응답의 `status: REQUESTED`로 표현된다. 주문(order) 상태 Enum(`CREATED|PAID|PAYMENT_FAILED|CANCELED|DELIVERED`)과 별도 관리된다. 반품 수명주기 확장이 필요한 경우 BE 협의 필요.
+
+**Request**
+
+```json
+{
+  "method": "POST",
+  "url": "/api/payments/returns",
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer {accessToken}"
+  },
+  "body": {
+    "orderId": "number · 필수",
+    "reason": "string · 필수 (enum: CHANGE_OF_MIND | DEFECTIVE | WRONG_ITEM | OTHER)",
+    "type": "string · 필수 (enum: RETURN | EXCHANGE)",
+    "description": "string · 선택",
+    "returnPhotoKeys": ["string · 선택 — S3 presigned PUT 완료 후 object key 목록"]
+  }
+}
+```
+
+**Response** `201 Created`
+
+```json
+{
+  "success": true,
+  "status": 201,
+  "data": {
+    "returnId": "number",
+    "orderId": "number",
+    "type": "string (enum: RETURN | EXCHANGE)",
+    "status": "string (REQUESTED)",
+    "requestedAt": "string (ISO 8601)"
+  }
+}
+```
+
+**Error**
+
+```json
+{
+  "success": false,
+  "status": 422,
+  "errorCode": "BUSINESS_RULE_VIOLATION"
+}
+```
+
+---
+
+#### 5-16. 상품 찜 등록 `POST /api/products/{productId}/wish`
+
+**Request**
+
+```json
+{
+  "method": "POST",
+  "url": "/api/products/{productId}/wish",
+  "headers": {
+    "Authorization": "Bearer {accessToken}"
+  }
+}
+```
+
+**Response** `201 Created`
+
+```json
+{
+  "success": true,
+  "status": 201,
+  "data": null
+}
+```
+
+**Error**
+
+```json
+{
+  "success": false,
+  "status": 409,
+  "errorCode": "CONFLICT"
+}
+```
+
+---
+
+#### 5-17. 상품 찜 취소 `DELETE /api/products/{productId}/wish`
+
+**Request**
+
+```json
+{
+  "method": "DELETE",
+  "url": "/api/products/{productId}/wish",
+  "headers": {
+    "Authorization": "Bearer {accessToken}"
+  }
+}
+```
+
+**Response** `200 OK`
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": null
+}
+```
+
+**Error**
+
+```json
+{
+  "success": false,
+  "status": 404,
+  "errorCode": "NOT_FOUND"
+}
+```
+
+---
+
+#### 5-18. 찜 목록 조회 `GET /api/member/me/wishes`
+
+**Request**
+
+```json
+{
+  "method": "GET",
+  "url": "/api/member/me/wishes",
+  "headers": {
+    "Authorization": "Bearer {accessToken}"
+  },
+  "queryParams": {
+    "cursor": "string · 선택",
+    "limit": "number · 선택 (기본 20)"
+  }
+}
+```
+
+**Response** `200 OK`
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "items": [
+      {
+        "productId": "number",
+        "name": "string",
+        "price": "number",
+        "thumbnail": [{ "url": "string", "width": "number", "height": "number", "format": "string" }],
+        "status": "string (enum: ON_SALE | SOLD_OUT | HIDDEN | DRAFT)",
+        "artisanId": "number",
+        "artisanName": "string",
+        "wishedAt": "string (ISO 8601)"
+      }
+    ],
+    "nextCursor": "string | null",
+    "hasNext": "boolean"
+  }
+}
+```
 
 ---
 
