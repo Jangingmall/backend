@@ -145,7 +145,9 @@
 | 5-7 | 응답 지연 허용 범위 | 비동기 처리 — 단일 응답 타임아웃 없음. 생성 완료까지 최대 대기 기준은 추후 합의 |
 | 5-8 | 생성 실패 기준 | `status: FAILED` — FE에 실패 안내 및 재시도 CTA 표시 |
 | 5-9 | 재생성 방식 | `POST /api/content/products/{productId}/generations` 재호출 (동일 엔드포인트) |
-| 5-10 | 생성 결과 수정 방식 | 생성된 블록을 ARTISAN이 직접 편집 — `PATCH /api/content/products/{productId}/contents/{contentId}` |
+| 5-10 | 생성 결과 수정 방식 | 생성된 블록을 ARTISAN이 직접 편집 — 일괄: `PATCH .../contents/{contentId}`, 단건: `PATCH .../contents/{contentId}/blocks/{blockOrder}` |
+| 5-11 | imageUrl round-trip | FE는 `imageUrl`(원본 URL) 전송 → BE가 S3 처리 후 `imageVariants` 배열(`[{url,width,height,format}×3]`)로 응답 |
+| 5-12 | 버전 이력 editedBy | `AI`: AI 생성 버전, `ARTISAN`: 장인 수정 버전 — `GET .../contents/versions` 응답에서 구분 가능 |
 
 #### 5-3. 상품 게시 시점 AI 동기화 (BE → AI)
 

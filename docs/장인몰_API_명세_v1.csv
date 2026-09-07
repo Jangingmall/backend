@@ -2114,7 +2114,7 @@
         ""order"": ""number · 선택 — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) · 선택 — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean · 선택"",
-        ""imageUrl"": ""string · 선택 · nullable — 이미지 URL"",
+        ""imageUrl"": ""string · 선택 · nullable — 이미지 원본 URL(tag=img일 때만 유효, BE가 S3 presigned URL로 처리 후 응답은 imageVariants 배열로 반환됨)"",
         ""text"": ""string · 선택 — 텍스트 블록 내용(img/video 블록은 null)""
       }
     ]
@@ -2143,6 +2143,38 @@
   ""status"": 400,
   ""errorCode"": ""INVALID_INPUT""
 }"
+컨텐츠,강정훈,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder},단건 블록 수정,특정 순서(blockOrder)의 블록 하나만 수정한다. 텍스트 블록은 text만, 이미지 블록은 imageUrl만 전달한다,ARTISAN,예정,P0,"{
+  ""method"": ""PATCH"",
+  ""url"": ""/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder}"",
+  ""headers"": {
+    ""Content-Type"": ""application/json"",
+    ""Authorization"": ""Bearer {accessToken}""
+  },
+  ""body"": {
+    ""tag"": ""string (enum: `h2` | `p` | `img` | `video`) · 선택 — 블록 태그"",
+    ""text"": ""string · 선택 · nullable — 텍스트 블록 내용(img/video 블록은 null)"",
+    ""imageUrl"": ""string · 선택 · nullable — 이미지 원본 URL(tag=img일 때만 유효, BE가 S3 presigned URL로 처리 후 imageVariants 배열로 응답)""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""contentId"": ""number — 콘텐츠 ID"",
+    ""version"": ""number — 콘텐츠 버전 번호"",
+    ""block"": {
+      ""order"": ""number — 표시 순서"",
+      ""tag"": ""string (enum: `h2` | `p` | `img` | `video`)"",
+      ""hasImage"": ""boolean"",
+      ""imageVariants"": ""array · nullable — [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
+      ""videoUrl"": ""string · nullable"",
+      ""text"": ""string · nullable""
+    }
+  }
+}","{
+  ""success"": false,
+  ""status"": 404,
+  ""errorCode"": ""CONTENT_NOT_FOUND""
+}"
 컨텐츠,강정훈,GET,/api/content/products/{productId}/contents/versions,콘텐츠 버전 조회,콘텐츠 변경 이력을 조회한다,ARTISAN,예정,P0,"{
   ""method"": ""GET"",
   ""url"": ""/api/content/products/{productId}/contents/versions"",
@@ -2157,7 +2189,7 @@
     {
       ""version"": ""number — 콘텐츠 버전 번호"",
       ""editedAt"": ""string (ISO 8601 datetime)"",
-      ""editedBy"": ""string (enum: `AI`(AI 응답))""
+      ""editedBy"": ""string (enum: `AI`(AI 응답) | `ARTISAN`(장인 직접 수정))""
     }
   ]
 }",
