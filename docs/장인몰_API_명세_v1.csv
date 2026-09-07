@@ -326,12 +326,12 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
         ""isLimited"": ""boolean — 한정수량 여부"",
         ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -438,7 +438,7 @@
         ""orderItemId"": ""number"",
         ""productId"": ""number — 상품 고유 ID"",
         ""productName"": ""string"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
       }
     ],
     ""nextCursor"": ""string"",
@@ -503,7 +503,7 @@
     ""topProducts"": [
       {
         ""productId"": ""number — 상품 고유 ID"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
       }
     ],
     ""certifiedYear"": ""number — 지정 연도"",
@@ -549,7 +549,7 @@
     ""topProducts"": [
       {
         ""productId"": ""number — 상품 고유 ID"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
       }
     ],
     ""certifiedYear"": ""number — 지정 연도"",
@@ -604,7 +604,7 @@
     ""topProducts"": [
       {
         ""productId"": ""number — 상품 고유 ID"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
       }
     ],
     ""certifiedYear"": ""number — 지정 연도"",
@@ -669,12 +669,12 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
         ""isLimited"": ""boolean — 한정수량 여부"",
         ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -748,12 +748,12 @@
     ""productId"": ""number — 상품 고유 ID"",
     ""name"": ""string — 이름/명칭"",
     ""price"": ""number — 가격, 원 단위 정수"",
-    ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
     ""subcategory"": ""string"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
     ""rating"": ""number — 평균 평점(후기 없으면 null)"",
     ""isLimited"": ""boolean — 한정수량 여부"",
     ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -789,7 +789,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -856,12 +856,12 @@
     ""productId"": ""number — 상품 고유 ID"",
     ""name"": ""string — 이름/명칭"",
     ""price"": ""number — 가격, 원 단위 정수"",
-    ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
     ""subcategory"": ""string"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
     ""rating"": ""number — 평균 평점(후기 없으면 null)"",
     ""isLimited"": ""boolean — 한정수량 여부"",
     ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -897,7 +897,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -968,12 +968,12 @@
     ""productId"": ""number — 상품 고유 ID"",
     ""name"": ""string — 이름/명칭"",
     ""price"": ""number — 가격, 원 단위 정수"",
-    ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
     ""subcategory"": ""string"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
     ""rating"": ""number — 평균 평점(후기 없으면 null)"",
     ""isLimited"": ""boolean — 한정수량 여부"",
     ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -993,7 +993,7 @@
   ""status"": 404,
   ""errorCode"": ""NOT_FOUND""
 }"
-상품,강정훈,GET,/api/products,상품 목록 조회/검색/필터,"가격대(4구간)·선물테마(giftTheme, 8종)·선물포장가능(hasGiftWrap)·소재(material, 카테고리 기준 동적)·컬러(color)·카테고리(category)·종목(subcategory, 카테고리보다 세부적인 품목분류, PM 확정 필터)·품절제외(excludeSoldOut, 기본 true) 조건으로 검색·필터링. artisanId로 특정 장인 작품만 필터링 가능. 한정수량(isLimited)/주문제작(isCustomOrder)은 PM 확정으로 필터 목록에서 제외 — 개별 상품 속성(배지)으로만 노출, 응답 필드는 유지. sort 6종: POPULAR(인기순, 기본)/NEWEST(최신순)/WISHLIST_COUNT(찜많은순)/SALES_COUNT(판매많은순)/PRICE_ASC(낮은가격순)/PRICE_DESC(높은가격순). 응답의 primaryBadge는 서버가 우선순위(한정수량>신작>인기) 계산해서 내려줌(PM 최종 확정, 대표배지 1개만 노출)",Public,예정,P0,"{
+상품,강정훈,GET,/api/products,상품 목록 조회/검색/필터,"가격대(4구간)·선물테마(giftTheme, 9종)·선물포장가능(hasGiftWrap)·소재(material, 카테고리 기준 동적)·컬러(color)·카테고리(category)·종목(subcategory, 카테고리보다 세부적인 품목분류, PM 확정 필터)·품절제외(excludeSoldOut, 기본 true) 조건으로 검색·필터링. artisanId로 특정 장인 작품만 필터링 가능. 한정수량(isLimited)/주문제작(isCustomOrder)은 PM 확정으로 필터 목록에서 제외 — 개별 상품 속성(배지)으로만 노출, 응답 필드는 유지. sort 6종: POPULAR(인기순, 기본)/NEWEST(최신순)/WISHLIST_COUNT(찜많은순)/SALES_COUNT(판매많은순)/PRICE_ASC(낮은가격순)/PRICE_DESC(높은가격순). 응답의 primaryBadge는 서버가 우선순위(한정수량>신작>인기) 계산해서 내려줌(PM 최종 확정, 대표배지 1개만 노출)",Public,예정,P0,"{
   ""method"": ""GET"",
   ""url"": ""/api/products"",
   ""headers"": {
@@ -1006,7 +1006,7 @@
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) · 선택 — 종목/카테고리 코드"",
     ""subcategory"": ""string · 선택"",
     ""material"": ""string · 선택 — 소재 코드"",
-    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) · 선택 — 선물테마 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) · 선택 — 선물테마 코드"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) · 선택 — 컬러 코드"",
     ""sort"": ""string (enum: `POPULAR`(인기순(기본값)) | `NEWEST`(최신순) | `WISHLIST_COUNT`(찜많은순) | `SALES_COUNT`(판매많은순) | `PRICE_ASC`(낮은가격순) | `PRICE_DESC`(높은가격순)) · 선택"",
     ""minPrice"": ""string · 선택"",
@@ -1024,12 +1024,12 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
         ""isLimited"": ""boolean — 한정수량 여부"",
         ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -1063,12 +1063,12 @@
     ""productId"": ""number — 상품 고유 ID"",
     ""name"": ""string — 이름/명칭"",
     ""price"": ""number — 가격, 원 단위 정수"",
-    ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+    ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
     ""status"": ""string (enum: `DRAFT`(임시저장 — 등록만 됨, 콘텐츠 미게시, 공개 API 항상 404) | `ON_SALE`(판매중 — 콘텐츠 게시 완료, 공개 노출, 구매 가능) | `SOLD_OUT`(품절 — 공개 노출 유지, 구매 불가) | `HIDDEN`(비공개 — 장인이 직접 비공개 처리))"",
     ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
     ""subcategory"": ""string"",
     ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+    ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
     ""rating"": ""number — 평균 평점(후기 없으면 null)"",
     ""isLimited"": ""boolean — 한정수량 여부"",
     ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -1104,7 +1104,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -1338,7 +1338,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -1409,7 +1409,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -1471,7 +1471,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -1526,7 +1526,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -2093,7 +2093,7 @@
           ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
           ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
           ""hasImage"": ""boolean"",
-          ""imageUrl"": ""string · nullable — 이미지 URL"",
+          ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
           ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
           ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
         }
@@ -2132,7 +2132,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -2186,7 +2186,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -2216,7 +2216,7 @@
         ""order"": ""number — 표시 순서(드래그앤드롭 시 재정렬됨)"",
         ""tag"": ""string (enum: `h2`(소제목 블록) | `p`(본문 문단 블록) | `img`(이미지 블록) | `video`(영상 블록(URL 등록 방식))) — 블록 태그(h2/p/img/video)"",
         ""hasImage"": ""boolean"",
-        ""imageUrl"": ""string · nullable — 이미지 URL"",
+        ""imageVariants"": ""array · nullable — 이미지 variants, tag=img일 때만 값 [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""videoUrl"": ""string · nullable — 영상 URL(등록 방식)"",
         ""text"": ""string — 텍스트 블록 내용(img/video 블록은 null)""
       }
@@ -2293,7 +2293,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -2358,7 +2358,7 @@
             ""unitPrice"": ""number — 옵션 반영된 단가"",
             ""quantity"": ""number — 수량"",
             ""subtotal"": ""number — 항목별 소계"",
-            ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
             ""isCustomOrder"": ""boolean — 주문제작 여부"",
             ""soldOut"": ""boolean — 품절 스냅샷 여부"",
             ""selected"": ""boolean — 체크(선택) 상태"",
@@ -2420,7 +2420,7 @@
         ""topProducts"": [
           {
             ""productId"": ""number — 상품 고유 ID"",
-            ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
           }
         ],
         ""newProductCount"": ""number""
@@ -2550,12 +2550,12 @@
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
         ""isLimited"": ""boolean — 한정수량 여부"",
         ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -2715,6 +2715,8 @@
     ""fileName"": ""string · 필수"",
     ""contentType"": ""string · 필수"",
     ""purpose"": ""string (enum: `PRODUCT`(상품 이미지) | `ARTISAN`(장인 프로필 이미지) | `CONTENT`(AI 상세페이지 콘텐츠 이미지)) · 필수"",
+    ""sourceWidth"": ""number · 필수 — 원본 이미지 픽셀 너비 (FE Canvas API 리사이즈 전 원본)"",
+    ""sourceHeight"": ""number · 필수 — 원본 이미지 픽셀 높이 (aspect ratio 보존용, variant height 산출 기준)"",
     ""variants"": [
       ""string · 필수""
     ]
@@ -2811,24 +2813,20 @@
     ""messageId"": ""number"",
     ""reply"": ""string — 챗봇 대화형 응답 텍스트"",
     ""intent"": ""string — AI 의도분류 결과"",
-    ""extracted"": {
-      ""maxPrice"": ""number"",
-      ""purpose"": [
-        ""string""
-      ],
-      ""vibe"": ""string""
-    },
+    ""suggestions"": [
+      ""string — 후속 질문 제안 (최대 3개)""
+    ],
     ""products"": [
       {
         ""productId"": ""number — 상품 고유 ID"",
         ""name"": ""string — 이름/명칭"",
         ""price"": ""number — 가격, 원 단위 정수"",
-        ""thumbnailUrl"": ""string — 썸네일 이미지 URL"",
+        ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)"",
         ""status"": ""string (enum, 예: `ON_SALE`, 동적 값)"",
         ""category"": ""string (enum, 예: `POTTERY`, 동적 값) — 종목/카테고리 코드"",
         ""subcategory"": ""string"",
         ""color"": ""string (enum: `WHITE`(화이트) | `BLACK`(블랙) | `GRAY`(그레이) | `RED`(레드) | `BLUE`(블루) | `GREEN`(그린) | `BROWN`(브라운)) — 컬러 코드"",
-        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체)) — 선물테마 코드"",
+        ""giftTheme"": ""string (enum: `HOUSEWARMING`(집들이) | `WEDDING`(웨딩) | `PARENTS`(부모님) | `PROMOTION`(승진) | `BIRTHDAY_60TH`(돌·환갑) | `BOSS`(상사) | `FRIEND`(친구) | `CORPORATE`(기업·단체) | `COUPLE`(연인)) — 선물테마 코드"",
         ""rating"": ""number — 평균 평점(후기 없으면 null)"",
         ""isLimited"": ""boolean — 한정수량 여부"",
         ""isCustomOrder"": ""boolean — 주문제작 여부"",
@@ -2936,7 +2934,7 @@
         ""topProducts"": [
           {
             ""productId"": ""number — 상품 고유 ID"",
-            ""thumbnailUrl"": ""string — 썸네일 이미지 URL""
+            ""thumbnail"": ""array — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3] (320w·640w·1280w 순)""
           }
         ]
       }
@@ -3001,7 +2999,7 @@
         ""name"": ""string — 한국어 카테고리명(예: 도자공예)"",
         ""artisanCount"": ""number — 해당 카테고리 활성 장인 수"",
         ""productCount"": ""number — 해당 카테고리 판매 중 상품 수"",
-        ""thumbnailUrl"": ""string | null — 대표 이미지 URL""
+        ""thumbnail"": ""array | null — display_order=0 이미지의 variants [{url:string, width:number, height:number, format:webp}×3], 이미지 없으면 null""
       }
     ],
     ""totalCount"": ""number""

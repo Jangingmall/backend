@@ -88,6 +88,7 @@ Client
 
 ## API 도메인 구조
 
+URI: `midam.store`<br>
 전체 명세: [`docs/장인몰_API_명세_v1.csv`](docs/장인몰_API_명세_v1.csv)
 
 | 도메인 | 기본 경로 | 엔드포인트 수 | 담당 |
