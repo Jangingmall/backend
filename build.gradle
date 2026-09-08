@@ -95,7 +95,7 @@ tasks.named('test') {
 
 // ── OpenAPI 3.0 JSON 생성 (restdocs-api-spec) ────────────────────────────────
 openapi3 {
-    server = 'http://localhost:8080'
+    server = 'https://midam.store'
     title = '장인몰 (미담) API'
     description = '국가무형유산 장인 B2C 마켓플레이스 REST API'
     version = project.version

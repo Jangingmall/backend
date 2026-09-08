@@ -70,7 +70,9 @@ recent_view,(unique),-,,,,Y,,"UNIQUE(member_id, product_id)",재조회 시 viewe
 image_upload,image_id,VARCHAR(30),PK,,Y,,,ULID,
 image_upload,member_id,BIGINT,,member.member_id,Y,,,,
 image_upload,purpose,VARCHAR(20),,,Y,,,"CHECK IN ('PRODUCT','ARTISAN','CONTENT')",
-image_upload,variants,JSONB,,,Y,,,,320w/640w/1280w objectKey 묶음
+image_upload,source_width,INTEGER,,,Y,,,,원본 이미지 픽셀 너비 (FE 업로드 시 전달) — variant height 산출 기준
+image_upload,source_height,INTEGER,,,Y,,,,원본 이미지 픽셀 높이 (FE 업로드 시 전달) — variant height = round(variantWidth / sourceWidth * sourceHeight)
+image_upload,variants,JSONB,,,Y,,,,"{""320w"":{""objectKey"":string,""width"":320},""640w"":{""objectKey"":string,""width"":640},""1280w"":{""objectKey"":string,""width"":1280}} — height는 source_width/source_height로 런타임 산출"
 image_upload,consumed,BOOLEAN,,,Y,,false,,"원자적 UPDATE로 소비 처리, CONC-007"
 image_upload,created_at,TIMESTAMP,,,Y,,now(),,
 image_upload,expires_at,TIMESTAMP,,,Y,,,,미소비 시 배치 정리
