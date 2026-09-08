@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 @Repository
 public class RedisEmailVerificationTokenStore implements EmailVerificationTokenStore {
@@ -31,37 +32,34 @@ public class RedisEmailVerificationTokenStore implements EmailVerificationTokenS
         String tokenHash = hash(token);
         String memberKey = memberKey(memberId);
 
-        String previousHash = redisTemplate.opsForValue().get(memberKey);
-        if (previousHash != null) {
-            redisTemplate.delete(tokenKey(previousHash));
-        }
-
-        redisTemplate.opsForValue().set(memberKey, tokenHash, ttl);
-        redisTemplate.opsForValue().set(tokenKey(tokenHash), memberId.toString(), ttl);
+        var script = new DefaultRedisScript<Long>("""
+            local previous = redis.call('GET', KEYS[1])
+            if previous then redis.call('DEL', ARGV[4] .. previous) end
+            redis.call('SET', KEYS[1], ARGV[1], 'PX', ARGV[3])
+            redis.call('SET', KEYS[2], ARGV[2], 'PX', ARGV[3])
+            return 1
+            """, Long.class);
+        redisTemplate.execute(script, List.of(memberKey, tokenKey(tokenHash)), tokenHash, memberId.toString(),
+            Long.toString(ttl.toMillis()), TOKEN_KEY_PREFIX);
         return token;
     }
 
     @Override
     public Optional<Long> consume(String token) {
         String tokenHash = hash(token);
-        String tokenKey = tokenKey(tokenHash);
-        String memberId = redisTemplate.opsForValue().get(tokenKey);
-        if (memberId == null) {
-            return Optional.empty();
-        }
-
-        String memberKey = memberKey(Long.valueOf(memberId));
-        String currentHash = redisTemplate.opsForValue().get(memberKey);
-        if (!MessageDigest.isEqual(
-            tokenHash.getBytes(StandardCharsets.UTF_8),
-            currentHash == null ? new byte[0] : currentHash.getBytes(StandardCharsets.UTF_8)
-        )) {
-            redisTemplate.delete(tokenKey);
-            return Optional.empty();
-        }
-
-        redisTemplate.delete(List.of(tokenKey, memberKey));
-        return Optional.of(Long.valueOf(memberId));
+        var script = new DefaultRedisScript<String>("""
+            local member = redis.call('GET', KEYS[1])
+            if not member then return nil end
+            local memberKey = ARGV[2] .. member
+            if redis.call('GET', memberKey) ~= ARGV[1] then
+              redis.call('DEL', KEYS[1])
+              return nil
+            end
+            redis.call('DEL', KEYS[1], memberKey)
+            return member
+            """, String.class);
+        return Optional.ofNullable(redisTemplate.execute(script, List.of(tokenKey(tokenHash)),tokenHash,MEMBER_KEY_PREFIX))
+            .map(Long::valueOf);
     }
 
     private String generateToken() {

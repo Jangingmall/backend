@@ -43,7 +43,7 @@ spring:
             client-id: local-google-client-id
             client-secret: local-google-client-secret
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
-            scope: profile, email
+            scope: openid, profile, email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -63,6 +63,12 @@ member:
     success-redirect-url: ${EMAIL_VERIFICATION_SUCCESS_REDIRECT:http://localhost:3000/}
     from: ${MAIL_FROM:no-reply@jangingmall.local}
     token-expiry-seconds: 1800
+  oauth:
+    frontend-redirect-url: ${OAUTH_FRONTEND_REDIRECT_URL:http://localhost:3000/oauth/callback}
+    http-timeout-millis: ${OAUTH_HTTP_TIMEOUT_MILLIS:5000}
+  rate-limit:
+    attempts: ${MEMBER_RATE_LIMIT_ATTEMPTS:10}
+    window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
 
 ai:
   base-url: http://localhost:8001
@@ -114,7 +120,7 @@ spring:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
-            scope: profile, email
+            scope: openid, profile, email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -134,6 +140,12 @@ member:
     success-redirect-url: ${EMAIL_VERIFICATION_SUCCESS_REDIRECT}
     from: ${MAIL_FROM}
     token-expiry-seconds: ${EMAIL_VERIFICATION_TTL_SECONDS:1800}
+  oauth:
+    frontend-redirect-url: ${OAUTH_FRONTEND_REDIRECT_URL}
+    http-timeout-millis: ${OAUTH_HTTP_TIMEOUT_MILLIS:5000}
+  rate-limit:
+    attempts: ${MEMBER_RATE_LIMIT_ATTEMPTS:10}
+    window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
 
 ai:
   base-url: ${AI_BASE_URL}

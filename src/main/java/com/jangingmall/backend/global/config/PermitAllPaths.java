@@ -11,7 +11,10 @@ public final class PermitAllPaths {
         "/api/member/token/refresh",
         "/api/member/email-verifications",
         "/api/member/email-verifications/verify",
-        "/api/member/oauth2/**",
+        "/api/member/oauth2/kakao",
+        "/api/member/oauth2/google",
+        "/api/member/oauth2/exchange",
+        "/api/member/oauth2/complete-profile",
         "/oauth2/**",
         "/login/oauth2/**"
     );

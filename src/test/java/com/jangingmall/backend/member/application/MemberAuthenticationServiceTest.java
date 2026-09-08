@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
@@ -100,16 +102,16 @@ class MemberAuthenticationServiceTest {
         Member member = activeMember();
         when(jwtTokenProvider.parseRefreshToken("refresh-token"))
             .thenReturn(new JwtTokenProvider.JwtMemberClaims(1L, MemberRole.USER));
-        when(refreshTokenStore.matches(1L, "refresh-token")).thenReturn(true);
         when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
         when(jwtTokenProvider.createAccessToken(1L, MemberRole.USER)).thenReturn("new-access-token");
         when(jwtTokenProvider.createRefreshToken(1L, MemberRole.USER)).thenReturn("new-refresh-token");
+        when(refreshTokenStore.rotate(eq(1L), eq("refresh-token"), eq("new-refresh-token"), any())).thenReturn(true);
 
         MemberSession session = memberAuthenticationService.refresh("refresh-token");
 
         assertThat(session.accessToken()).isEqualTo("new-access-token");
         assertThat(session.refreshToken()).isEqualTo("new-refresh-token");
-        verify(refreshTokenStore).save(1L, "new-refresh-token", java.time.Duration.ofDays(7));
+        verify(refreshTokenStore).rotate(eq(1L), eq("refresh-token"), eq("new-refresh-token"), eq(java.time.Duration.ofDays(7)));
     }
 
     @Test
@@ -117,7 +119,10 @@ class MemberAuthenticationServiceTest {
     void rejectsInvalidatedRefreshToken() {
         when(jwtTokenProvider.parseRefreshToken("logged-out-token"))
             .thenReturn(new JwtTokenProvider.JwtMemberClaims(1L, MemberRole.USER));
-        when(refreshTokenStore.matches(1L, "logged-out-token")).thenReturn(false);
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(activeMember()));
+        when(jwtTokenProvider.createAccessToken(1L, MemberRole.USER)).thenReturn("new-access-token");
+        when(jwtTokenProvider.createRefreshToken(1L, MemberRole.USER)).thenReturn("new-refresh-token");
+        when(refreshTokenStore.rotate(eq(1L), eq("logged-out-token"), eq("new-refresh-token"), any())).thenReturn(false);
 
         assertThatThrownBy(() -> memberAuthenticationService.refresh("logged-out-token"))
             .isInstanceOfSatisfying(DomainException.class,

@@ -8,6 +8,9 @@ public record MemberSession(
     Long memberId,
     String email,
     String name,
-    MemberRole role
+    MemberRole role, String nickname, String profileImageUrl
 ) {
+    public MemberSession(String accessToken, String refreshToken, Long memberId, String email, String name, MemberRole role) {
+        this(accessToken, refreshToken, memberId, email, name, role, null, null);
+    }
 }

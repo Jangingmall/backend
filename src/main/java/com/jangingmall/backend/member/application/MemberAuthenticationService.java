@@ -47,17 +47,18 @@ public class MemberAuthenticationService {
             throw new DomainException(ErrorCode.UNAUTHORIZED);
         }
 
-        if (!refreshTokenStore.matches(claims.memberId(), refreshToken)) {
-            throw new DomainException(ErrorCode.UNAUTHORIZED);
-        }
-
         Member member = memberRepository.findById(claims.memberId())
             .orElseThrow(() -> new DomainException(ErrorCode.UNAUTHORIZED));
         if (!member.canLogIn()) {
             throw new DomainException(ErrorCode.UNAUTHORIZED);
         }
 
-        return issueSession(member);
+        MemberSession session = buildSession(member);
+        if (!refreshTokenStore.rotate(member.getId(), refreshToken, session.refreshToken(),
+            Duration.ofMillis(jwtProperties.refreshTokenExpiry()))) {
+            throw new DomainException(ErrorCode.UNAUTHORIZED);
+        }
+        return session;
     }
 
     public void logout(Long memberId) {
@@ -68,24 +69,35 @@ public class MemberAuthenticationService {
     public MemberProfile getProfile(Long memberId) {
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
-        return new MemberProfile(member.getId(), member.getEmail(), member.getName(), member.getRole());
+        if (!member.canLogIn()) {
+            throw new DomainException(ErrorCode.UNAUTHORIZED);
+        }
+        return MemberProfile.from(member);
     }
 
     private MemberSession issueSession(Member member) {
+        MemberSession session = buildSession(member);
+        refreshTokenStore.save(member.getId(), session.refreshToken(), Duration.ofMillis(jwtProperties.refreshTokenExpiry()));
+        return session;
+    }
+
+    @Transactional(readOnly = true)
+    public MemberSession socialSession(Long memberId) {
+        Member member = memberRepository.findById(memberId).filter(Member::canLogIn)
+            .orElseThrow(() -> new DomainException(ErrorCode.UNAUTHORIZED));
+        return issueSession(member);
+    }
+
+    private MemberSession buildSession(Member member) {
         String accessToken = jwtTokenProvider.createAccessToken(member.getId(), member.getRole());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId(), member.getRole());
-        refreshTokenStore.save(
-            member.getId(),
-            refreshToken,
-            Duration.ofMillis(jwtProperties.refreshTokenExpiry())
-        );
         return new MemberSession(
             accessToken,
             refreshToken,
             member.getId(),
             member.getEmail(),
             member.getName(),
-            member.getRole()
+            member.getRole(), member.getNickname(), member.getProfileImageUrl()
         );
     }
 

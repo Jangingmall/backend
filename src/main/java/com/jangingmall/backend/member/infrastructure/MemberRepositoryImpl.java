@@ -4,6 +4,7 @@ import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.LockModeType;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
@@ -47,6 +48,12 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public Optional<Member> findById(Long memberId) {
         return Optional.ofNullable(entityManager.find(Member.class, memberId))
+            .filter(member -> member.getDeletedAt() == null);
+    }
+
+    @Override
+    public Optional<Member> findByIdForUpdate(Long memberId) {
+        return Optional.ofNullable(entityManager.find(Member.class, memberId, LockModeType.PESSIMISTIC_WRITE))
             .filter(member -> member.getDeletedAt() == null);
     }
 }

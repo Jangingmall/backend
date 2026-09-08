@@ -21,6 +21,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.beans.factory.ObjectProvider;
+import com.jangingmall.backend.member.infrastructure.MemberOAuthSecurity;
+import org.springframework.http.HttpMethod;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -40,13 +43,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(
         HttpSecurity http,
-        JwtAuthenticationFilter jwtAuthenticationFilter
+        JwtAuthenticationFilter jwtAuthenticationFilter,
+        ObjectProvider<MemberOAuthSecurity> memberOAuthSecurity
     ) throws Exception {
+        if (memberOAuthSecurity.getIfAvailable() != null) {
+            memberOAuthSecurity.getObject().configure(http);
+        }
         http
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
+                .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex

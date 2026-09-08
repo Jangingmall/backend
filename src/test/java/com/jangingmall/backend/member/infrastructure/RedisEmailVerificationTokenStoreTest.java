@@ -1,6 +1,8 @@
 package com.jangingmall.backend.member.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,11 +17,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 
 @ExtendWith(MockitoExtension.class)
 class RedisEmailVerificationTokenStoreTest {
@@ -29,36 +30,23 @@ class RedisEmailVerificationTokenStoreTest {
     @Mock
     private StringRedisTemplate redisTemplate;
 
-    @Mock
-    private ValueOperations<String, String> valueOperations;
-
-    @Captor
-    private ArgumentCaptor<String> hashCaptor;
-
     private RedisEmailVerificationTokenStore tokenStore;
 
     @BeforeEach
     void setUp() {
         tokenStore = new RedisEmailVerificationTokenStore(redisTemplate);
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations);
     }
 
     @Test
     @DisplayName("원문 인증 토큰 대신 해시와 회원 ID만 Redis에 저장한다")
     void issuesHashedToken() {
         Duration ttl = Duration.ofMinutes(30);
-        when(valueOperations.get(MEMBER_KEY)).thenReturn(null);
-
         String token = tokenStore.issue(1L, ttl);
 
-        verify(valueOperations).set(eq(MEMBER_KEY), hashCaptor.capture(), eq(ttl));
-        String tokenHash = hashCaptor.getValue();
-        assertThat(tokenHash).isNotEqualTo(token);
-        verify(valueOperations).set(
-            "member:email-verification:token:" + tokenHash,
-            "1",
-            ttl
-        );
+        ArgumentCaptor<DefaultRedisScript<Long>> script=ArgumentCaptor.forClass(DefaultRedisScript.class);
+        verify(redisTemplate).execute(script.capture(), anyList(), any(), any(), any(), any());
+        assertThat(script.getValue().getScriptAsString()).contains("previous").contains("PX");
+        assertThat(token).isNotBlank();
     }
 
     @Test
@@ -67,12 +55,12 @@ class RedisEmailVerificationTokenStoreTest {
         String token = "verification-token";
         String tokenHash = hash(token);
         String tokenKey = "member:email-verification:token:" + tokenHash;
-        when(valueOperations.get(tokenKey)).thenReturn("1");
-        when(valueOperations.get(MEMBER_KEY)).thenReturn(tokenHash);
+        when(redisTemplate.execute(any(DefaultRedisScript.class), eq(List.of(tokenKey)), eq(tokenHash), eq("member:email-verification:member:")))
+            .thenReturn("1");
 
         assertThat(tokenStore.consume(token)).contains(1L);
 
-        verify(redisTemplate).delete(List.of(tokenKey, MEMBER_KEY));
+        verify(redisTemplate).execute(any(DefaultRedisScript.class), eq(List.of(tokenKey)), eq(tokenHash), eq("member:email-verification:member:"));
     }
 
     @Test
@@ -81,12 +69,12 @@ class RedisEmailVerificationTokenStoreTest {
         String token = "old-token";
         String tokenHash = hash(token);
         String tokenKey = "member:email-verification:token:" + tokenHash;
-        when(valueOperations.get(tokenKey)).thenReturn("1");
-        when(valueOperations.get(MEMBER_KEY)).thenReturn(hash("new-token"));
+        when(redisTemplate.execute(any(DefaultRedisScript.class), eq(List.of(tokenKey)), eq(tokenHash), eq("member:email-verification:member:")))
+            .thenReturn(null);
 
         assertThat(tokenStore.consume(token)).isEmpty();
 
-        verify(redisTemplate).delete(tokenKey);
+        verify(redisTemplate).execute(any(DefaultRedisScript.class), eq(List.of(tokenKey)), eq(tokenHash), eq("member:email-verification:member:"));
     }
 
     private String hash(String token) {

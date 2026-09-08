@@ -18,12 +18,10 @@ import com.jangingmall.backend.member.presentation.dto.MemberTokenRefreshRespons
 import com.jangingmall.backend.member.presentation.dto.MemberSignupRequest;
 import com.jangingmall.backend.member.presentation.dto.MemberSignupResponse;
 import jakarta.validation.Valid;
-import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -108,23 +106,11 @@ public class MemberController {
         return ApiResponse.ok(MemberProfileResponse.from(memberAuthenticationService.getProfile(memberId)));
     }
 
-    private ResponseCookie refreshCookie(String refreshToken) {
-        return ResponseCookie.from("refreshToken", refreshToken)
-            .httpOnly(true)
-            .secure(jwtProperties.refreshCookieSecure())
-            .sameSite("Strict")
-            .path("/api/member")
-            .maxAge(Duration.ofDays(7))
-            .build();
+    private org.springframework.http.ResponseCookie refreshCookie(String refreshToken) {
+        return MemberCookies.refresh(refreshToken, jwtProperties);
     }
 
-    private ResponseCookie expiredRefreshCookie() {
-        return ResponseCookie.from("refreshToken", "")
-            .httpOnly(true)
-            .secure(jwtProperties.refreshCookieSecure())
-            .sameSite("Strict")
-            .path("/api/member")
-            .maxAge(Duration.ZERO)
-            .build();
+    private org.springframework.http.ResponseCookie expiredRefreshCookie() {
+        return MemberCookies.clearRefresh(jwtProperties);
     }
 }

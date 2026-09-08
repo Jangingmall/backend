@@ -17,9 +17,9 @@ public record MemberProfileResponse(
             profile.memberId(),
             profile.email(),
             profile.name(),
-            null,
+            profile.nickname(),
             profile.role(),
-            null
+            profile.profileImageUrl()
         );
     }
 }

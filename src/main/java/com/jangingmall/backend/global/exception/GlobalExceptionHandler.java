@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiErrorResponse> handleNotReadable(HttpMessageNotReadableException ex) {
-        log.warn("Request body malformed: {}", ex.getMessage());
+        log.warn("Request body malformed");
         if (ex.getMessage() != null && ex.getMessage().contains("Required request body is missing")) {
             return error(ErrorCode.REQUEST_INVALID);
         }
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiErrorResponse> handleDataIntegrity(DataIntegrityViolationException ex) {
-        log.warn("Data integrity violation: {}", ex.getMessage());
+        log.warn("Data integrity constraint violation");
         return error(ErrorCode.CONFLICT);
     }
 

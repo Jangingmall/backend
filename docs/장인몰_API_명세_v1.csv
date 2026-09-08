@@ -67,7 +67,7 @@
     ""Content-Type"": ""application/json""
   }
 }","{
-  ""description"": ""302 Redirect → OAuth2 Provider 인가 페이지로 이동 후 콜백에서 accessToken/refreshToken 발급""
+  ""description"": ""302 Redirect → OAuth2 Provider 인가 페이지와 콜백을 거친 뒤 프론트 OAuth 콜백으로 이동한다. 세션 발급은 POST /api/member/oauth2/exchange가 담당한다.""
 }",
 회원,유창민,GET,/api/member/oauth2/google,구글 로그인,구글 OAuth2 로그인을 시작한다,Public,예정,P0,"{
   ""method"": ""GET"",
@@ -76,8 +76,26 @@
     ""Content-Type"": ""application/json""
   }
 }","{
-  ""description"": ""302 Redirect → OAuth2 Provider 인가 페이지로 이동 후 콜백에서 accessToken/refreshToken 발급""
+  ""description"": ""302 Redirect → OAuth2 Provider 인가 페이지와 콜백을 거친 뒤 프론트 OAuth 콜백으로 이동한다. 세션 발급은 POST /api/member/oauth2/exchange가 담당한다.""
 }",
+회원,유창민,POST,/api/member/oauth2/exchange,OAuth 결과 교환,"OAuth 콜백이 발급한 1회용 oauthTicket HttpOnly Cookie를 소비한다. 기존 회원이면 Access Token과 Refresh Cookie를 발급하고, 최초 회원이면 추가정보 입력용 oauthOnboarding HttpOnly Cookie만 발급한다.",Public,예정,P0,"{
+  ""method"": ""POST"",
+  ""url"": ""/api/member/oauth2/exchange"",
+  ""headers"": {
+    ""Cookie"": ""oauthTicket={opaqueToken} · 필수""
+  }
+}","{
+  ""success"": true,
+  ""status"": 200,
+  ""data"": {
+    ""onboardingRequired"": ""boolean — true면 oauthOnboarding Cookie로 추가정보 입력 필요"",
+    ""accessToken"": ""string | null — 기존 회원일 때만 반환""
+  }
+}","{
+  ""success"": false,
+  ""status"": 401,
+  ""errorCode"": ""UNAUTHORIZED""
+}"
 회원,유창민,POST,/api/member/login,로그인,"이메일/비밀번호로 로그인한다. 이메일 인증 전 계정은 로그인이 거부된다(403). Refresh Token은 응답 Body가 아닌 HttpOnly Cookie로 전달한다(PHASE2-2 §4-4)",Public,예정,P0,"{
   ""method"": ""POST"",
   ""url"": ""/api/member/login"",
@@ -620,7 +638,7 @@
     ]
   }
 }",
-회원,유창민,POST,/api/member/artisans/applications,장인 가입 신청,장인 가입 및 인증 심사를 신청한다,ARTISAN,예정,P1,"{
+회원,유창민,POST,/api/member/artisans/applications,장인 가입 신청,일반 USER가 장인 가입 및 인증 심사를 신청한다. ADMIN 승인 후에만 ARTISAN role로 전환된다,USER,예정,P1,"{
   ""method"": ""POST"",
   ""url"": ""/api/member/artisans/applications"",
   ""headers"": {
@@ -2247,7 +2265,7 @@
   ""url"": ""/api/member/oauth2/complete-profile"",
   ""headers"": {
     ""Content-Type"": ""application/json"",
-    ""Authorization"": ""Bearer {accessToken}""
+    ""Cookie"": ""oauthOnboarding={opaqueToken} · 필수 — 10분 1회용 HttpOnly Cookie""
   },
   ""body"": {
     ""name"": ""string · 필수 — 이름/명칭"",

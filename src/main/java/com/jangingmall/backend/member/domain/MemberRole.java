@@ -16,4 +16,8 @@ public enum MemberRole {
     public List<String> authorities() {
         return authorities;
     }
+
+    public boolean allows(MemberRole requiredRole) {
+        return authorities.contains("ROLE_" + requiredRole.name());
+    }
 }

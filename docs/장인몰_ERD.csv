@@ -3,6 +3,8 @@ member,member_id,BIGINT,PK,,,Y,,GENERATED ALWAYS AS IDENTITY,,
 member,email,VARCHAR(255),,,,Y,Y,,,
 member,password_hash,VARCHAR(255),,,,,,,"평문 저장 금지, BCrypt 등 단방향 해시",SNS 전용 가입자는 비밀번호가 없어 NULL 가능
 member,name,VARCHAR(50),,,,Y,,,,
+member,nickname,VARCHAR(50),,,,,,,선택 표시명
+member,profile_image_url,VARCHAR(500),,,,,,,프로필 이미지의 공개 URL
 member,phone,VARCHAR(20),,,,Y,,,,하이픈 제외 숫자만
 member,role,VARCHAR(20),,,,Y,,'USER',"CHECK IN ('USER','ARTISAN','ADMIN')",
 member,status,VARCHAR(30),,,,Y,,'PENDING_VERIFICATION',"CHECK IN ('PENDING_VERIFICATION','ACTIVE','WITHDRAWN')",
@@ -12,6 +14,8 @@ member,privacy_agreed,BOOLEAN,,,,Y,,,,
 member,marketing_agreed,BOOLEAN,,,,Y,,false,,
 member,created_at,TIMESTAMP,,,,Y,,now(),,
 member,updated_at,TIMESTAMP,,,,Y,,now(),JPA @LastModifiedDate로 자동 갱신,
+member,withdrawal_reason,VARCHAR(500),,,,,,,탈퇴 사유
+member,deleted_at,TIMESTAMP,,,,,,,소프트 삭제 시각
 address,address_id,BIGINT,PK,,,Y,,GENERATED ALWAYS AS IDENTITY,,
 address,member_id,BIGINT,,member.member_id,1:N,Y,,,,
 address,recipient_name,VARCHAR(50),,,,Y,,,,
@@ -31,6 +35,7 @@ artisan_profile,artisan_id,BIGINT,PK,member.member_id,1:1,Y,,,"1:1, member_id �
 artisan_profile,business_name,VARCHAR(100),,,,Y,,,,
 artisan_profile,introduction,VARCHAR(255),,,,,,,,
 artisan_profile,profile_image_id,VARCHAR(30),,image_upload.image_id,1:N,,,,,Presigned URL 시스템 통해 업로드(purpose=ARTISAN)
+artisan_profile,profile_image_url,VARCHAR(500),,,,,,,프로필 이미지 공개 URL
 artisan_profile,certification_level,VARCHAR(20),,,,Y,,,"CHECK IN ('보유자','전승교육사','이수자','일반')",
 artisan_profile,is_organization,BOOLEAN,,,,Y,,false,,(단체) 접미사 표기용
 artisan_profile,certified_year,SMALLINT,,,,,,,,
@@ -52,6 +57,7 @@ career_timeline,description,VARCHAR(500),,,,Y,,,,
 seller_application,application_id,BIGINT,PK,,,Y,,GENERATED ALWAYS AS IDENTITY,,
 seller_application,member_id,BIGINT,,member.member_id,1:N,Y,,,,
 seller_application,business_name,VARCHAR(100),,,,Y,,,,
+seller_application,introduction,VARCHAR(255),,,,Y,,,,
 seller_application,business_license_image_url,VARCHAR(500),,,,Y,,,,
 seller_application,status,VARCHAR(20),,,,Y,,'PENDING',"CHECK IN ('PENDING','APPROVED','REJECTED')",
 seller_application,version,INTEGER,,,,Y,,0,낙관적 락(@Version),"동시승인/반려 방지, CONC-005"
@@ -59,6 +65,11 @@ seller_application,submitted_at,TIMESTAMP,,,,Y,,now(),,
 seller_application,rejection_reason,TEXT,,,,,,,,반려 시에만 값
 seller_application,reviewed_by,BIGINT,,member.member_id,1:N,,,,"심사한 관리자, nullable",
 seller_application,reviewed_at,TIMESTAMP,,,,,,,,
+seller_application,document_review,VARCHAR(20),,,,Y,,'PENDING',"CHECK IN ('PENDING','IN_PROGRESS','COMPLETED','FAILED')",서류 심사 단계
+seller_application,craftsmanship_review,VARCHAR(20),,,,Y,,'PENDING',"CHECK IN ('PENDING','IN_PROGRESS','COMPLETED','FAILED')",수공정성 심사 단계
+seller_application,digital_conversion,VARCHAR(20),,,,Y,,'PENDING',"CHECK IN ('PENDING','IN_PROGRESS','COMPLETED','FAILED')",디지털 변환 지원 단계
+seller_application,order_system_integration,VARCHAR(20),,,,Y,,'PENDING',"CHECK IN ('PENDING','IN_PROGRESS','COMPLETED','FAILED')",주문제작 시스템 연동 단계
+seller_application,qualification_tier,VARCHAR(40),,,,,,"CHECK IN ('NATIONAL_INTANGIBLE_HERITAGE','MASTER_CRAFTSMAN','SENIOR_CRAFTSMAN','YOUNG_CRAFTSMAN')",수공정성 심사 완료 시 자격 등급
 member_settings,member_id,BIGINT,PK,member.member_id,1:1,Y,,,,
 member_settings,dark_mode,BOOLEAN,,,,Y,,false,,
 member_settings,marketing,BOOLEAN,,,,Y,,false,,
@@ -67,6 +78,12 @@ recent_view,member_id,BIGINT,,member.member_id,1:N,Y,,,,로그인 회원만 서�
 recent_view,product_id,BIGINT,,product.product_id,1:N,Y,,,,
 recent_view,viewed_at,TIMESTAMP,,,,Y,,now(),,
 recent_view,(unique),-,,,,,Y,,"UNIQUE(member_id, product_id)",재조회 시 viewed_at UPDATE(UPSERT)
+artisan_subscription,subscription_id,BIGINT,PK,,,Y,,GENERATED ALWAYS AS IDENTITY,,
+artisan_subscription,member_id,BIGINT,,member.member_id,1:N,Y,,,,구독한 회원
+artisan_subscription,artisan_id,BIGINT,,artisan_profile.artisan_id,1:N,Y,,,,구독 대상 장인
+artisan_subscription,notifications_enabled,BOOLEAN,,,,Y,,true,,신작 알림 수신 여부
+artisan_subscription,created_at,TIMESTAMP,,,,Y,,now(),,
+artisan_subscription,(unique),-,,,,,Y,,"UNIQUE(member_id, artisan_id)",중복 구독 방지
 image_upload,image_id,VARCHAR(30),PK,,,Y,,,ULID,
 image_upload,member_id,BIGINT,,member.member_id,1:N,Y,,,,
 image_upload,purpose,VARCHAR(20),,,,Y,,,"CHECK IN ('PRODUCT','ARTISAN','CONTENT')",

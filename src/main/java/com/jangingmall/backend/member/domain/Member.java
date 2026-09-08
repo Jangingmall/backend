@@ -12,6 +12,8 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.Optional;
+import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +37,15 @@ public class Member {
 
     @Column(nullable = false, length = 50)
     private String name;
+
+    @Column(length = 50)
+    private String nickname;
+
+    @Column(name = "profile_image_url", length = 500)
+    private String profileImageUrl;
+
+    @Column(name = "withdrawal_reason", length = 500)
+    private String withdrawalReason;
 
     @Column(nullable = false, length = 20)
     private String phone;
@@ -117,13 +128,40 @@ public class Member {
 
     public void activate() {
         if (status == MemberStatus.WITHDRAWN) {
-            throw new IllegalStateException("Withdrawn member cannot be activated.");
+            throw new BusinessRuleViolationException(MemberErrorMessage.WITHDRAWN);
         }
         status = MemberStatus.ACTIVE;
     }
 
     public boolean canLogIn() {
         return status == MemberStatus.ACTIVE && deletedAt == null;
+    }
+
+    public void updateProfile(Optional<String> name, Optional<String> nickname, Optional<String> phone) {
+        name.ifPresent(value -> this.name = value);
+        nickname.ifPresent(value -> this.nickname = value);
+        phone.ifPresent(value -> this.phone = value);
+    }
+
+    public void changePassword(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public void withdraw(String reason) {
+        status = MemberStatus.WITHDRAWN;
+        withdrawalReason = reason;
+        deletedAt = LocalDateTime.now();
+    }
+
+    public void approveArtisan() {
+        if (!canLogIn() || role != MemberRole.USER) {
+            throw new BusinessRuleViolationException(MemberErrorMessage.ARTISAN_TRANSITION);
+        }
+        role = MemberRole.ARTISAN;
+    }
+
+    public void agreeMarketing(boolean agreed) {
+        marketingAgreed = agreed;
     }
 
     private static String normalizeEmail(String email) {
