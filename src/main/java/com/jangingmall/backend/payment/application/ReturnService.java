@@ -5,6 +5,8 @@ import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.member.application.MemberAccess;
 import com.jangingmall.backend.member.domain.MemberRole;
+import com.jangingmall.backend.image.application.ImageService;
+import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.payment.domain.OrderReturn;
 import com.jangingmall.backend.payment.domain.OrderReturnRepository;
 import com.jangingmall.backend.payment.domain.OrderStatus;
@@ -29,6 +31,7 @@ public class ReturnService {
     private final ShippingAddressReader shippingAddresses;
     private final PurchaseOrderRepository orders;
     private final OrderReturnRepository returns;
+    private final ImageService images;
     private final OrderNotificationPublisher notifications;
 
     @Transactional
@@ -55,8 +58,7 @@ public class ReturnService {
         if (!ownedItemIds.containsAll(command.orderItemIds())) {
             throw new DomainException(ErrorCode.NOT_FOUND);
         }
-        List<String> imageIds = command.imageIds() == null ? List.of()
-            : command.imageIds().stream().map(String::trim).toList();
+        List<String> imageIds = images.consumeOwned(memberId, ImagePurpose.RETURN, command.imageIds());
 
         OrderReturn orderReturn = returns.save(new OrderReturn(order.getId(), command.type(), command.reason(),
             normalize(command.description()), returnAddressId, longIds(command.orderItemIds()), stringIds(imageIds)));

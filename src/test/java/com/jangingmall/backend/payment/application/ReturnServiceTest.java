@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.member.application.MemberAccess;
+import com.jangingmall.backend.image.application.ImageService;
+import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.payment.domain.OrderReturn;
 import com.jangingmall.backend.payment.domain.OrderReturnRepository;
 import com.jangingmall.backend.payment.domain.OrderStatus;
@@ -33,12 +35,13 @@ class ReturnServiceTest {
     @Mock private ShippingAddressReader shippingAddresses;
     @Mock private PurchaseOrderRepository orders;
     @Mock private OrderReturnRepository returns;
+    @Mock private ImageService images;
     @Mock private OrderNotificationPublisher notifications;
     private ReturnService service;
 
     @BeforeEach
     void setUp() {
-        service = new ReturnService(memberAccess, shippingAddresses, orders, returns, notifications);
+        service = new ReturnService(memberAccess, shippingAddresses, orders, returns, images, notifications);
     }
 
     @Test
@@ -47,6 +50,8 @@ class ReturnServiceTest {
         PurchaseOrder order = paidOrder(10L, 1L);
         when(orders.findByIdForUpdate(10L)).thenReturn(Optional.of(order));
         when(returns.findByOrderId(10L)).thenReturn(Optional.empty());
+        when(images.consumeOwned(1L, ImagePurpose.RETURN, List.of("01JRETURNIMAGE000000000000")))
+            .thenReturn(List.of("01JRETURNIMAGE000000000000"));
         when(returns.save(any(OrderReturn.class))).thenAnswer(invocation -> {
             OrderReturn orderReturn = invocation.getArgument(0);
             ReflectionTestUtils.setField(orderReturn, "id", 20L);
