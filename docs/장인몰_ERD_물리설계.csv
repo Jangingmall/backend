@@ -86,7 +86,7 @@ artisan_subscription,created_at,TIMESTAMP,,,Y,,now(),,
 artisan_subscription,(unique),-,,,,Y,,"UNIQUE(member_id, artisan_id)",중복 구독 방지
 image_upload,image_id,VARCHAR(30),PK,,Y,,,ULID,
 image_upload,member_id,BIGINT,,member.member_id,Y,,,,
-image_upload,purpose,VARCHAR(20),,,Y,,,"CHECK IN ('PRODUCT','ARTISAN','CONTENT')",
+image_upload,purpose,VARCHAR(20),,,Y,,,"CHECK IN ('PRODUCT','ARTISAN','CONTENT','RETURN')",
 image_upload,source_width,INTEGER,,,Y,,,,원본 이미지 픽셀 너비 (FE 업로드 시 전달) — variant height 산출 기준
 image_upload,source_height,INTEGER,,,Y,,,,원본 이미지 픽셀 높이 (FE 업로드 시 전달) — variant height = round(variantWidth / sourceWidth * sourceHeight)
 image_upload,variants,JSONB,,,Y,,,,"{""320w"":{""objectKey"":string,""width"":320},""640w"":{""objectKey"":string,""width"":640},""1280w"":{""objectKey"":string,""width"":1280}} — height는 source_width/source_height로 런타임 산출"
@@ -195,8 +195,8 @@ content_block,image_id,VARCHAR(30),,image_upload.image_id,,,,tag=img일 때만 �
 content_block,video_url,VARCHAR(500),,,,,,tag=video일 때만 값,
 content_block,text,VARCHAR(2000),,,,,,tag=h2|p일 때만 값,
 cart,cart_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
-cart,member_id,BIGINT,,member.member_id,,Y,,"R-02: 비회원 허용, nullable",
-cart,guest_cart_id,VARCHAR(50),,,,Y,,쿠키 기반,
+cart,member_id,BIGINT,,member.member_id,,Y,,"로그인 회원당 장바구니 1개, nullable",
+cart,guest_cart_id,VARCHAR(50),,,,Y,,"게스트 장바구니 1개 식별, nullable",
 cart,updated_at,TIMESTAMP,,,Y,,now(),JPA @LastModifiedDate로 자동 갱신,항목 추가/변경 시 갱신
 cart_item,cart_item_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
 cart_item,cart_id,BIGINT,,cart.cart_id,Y,,,,
@@ -206,7 +206,7 @@ cart_item,selected_options,JSONB,,,,,,,optionGroupId+choiceId 조합
 cart_item,text_inputs,JSONB,,,,,,,TEXT 타입 옵션 입력값
 cart_item,selected,BOOLEAN,,,Y,,true,,"체크 상태(사용자 지정). 품절 여부는 조회 시점에 재고와 함께 계산해서 응답에 반영, 별도 갱신 job 불필요"
 orders,order_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
-orders,order_number,VARCHAR(30),,,Y,Y,,,사람이 보는 주문번호
+orders,order_number,VARCHAR(64),,,Y,Y,,,토스 결제 orderId 규칙(6~64자)에 맞춘 주문번호
 orders,member_id,BIGINT,,member.member_id,Y,,,,구매(주문생성)는 로그인 필수
 orders,address_id,BIGINT,,address.address_id,,,,"참고용 참조, nullable(주소 삭제돼도 주문엔 영향없음)",
 orders,recipient_name,VARCHAR(50),,,Y,,,주문 시점 스냅샷,주소가 나중에 바뀌어도 과거 주문엔 영향없게
@@ -215,8 +215,12 @@ orders,zip_code,VARCHAR(10),,,Y,,,주문 시점 스냅샷,
 orders,address1,VARCHAR(255),,,Y,,,주문 시점 스냅샷,
 orders,address2,VARCHAR(255),,,,,,주문 시점 스냅샷,
 orders,delivery_request,VARCHAR(100),,,,,,,배송 요청사항
+orders,payment_method,VARCHAR(20),,,Y,,,CARD,"CHECK IN ('CARD','TRANSFER','VIRTUAL_ACCOUNT','MOBILE','EASY_PAY')"
 orders,status,VARCHAR(20),,,Y,,'CREATED',"CHECK IN ('CREATED','PAID','PAYMENT_FAILED','CANCELED','DELIVERED','RETURN_REQUESTED')",
 orders,total_amount,BIGINT,,,Y,,,CHECK(total_amount >= 0),
+orders,shipping_amount,BIGINT,,,Y,,0,CHECK(shipping_amount >= 0),장인별 배송비 합계
+orders,client_request_key,VARCHAR(100),,,,,,"Idempotency-Key, 주문 생성 중복 방지(CONC-003)"
+orders,"(unique)",-,,,,Y,,"UNIQUE(member_id, client_request_key)",회원 범위 멱등키
 orders,created_at,TIMESTAMP,,,Y,,now(),,
 orders,canceled_at,TIMESTAMP,,,,,,,취소된 경우에만 값
 orders,updated_at,TIMESTAMP,,,Y,,now(),JPA @LastModifiedDate로 자동 갱신,
@@ -229,40 +233,52 @@ order_item,quantity,INTEGER,,,Y,,,,
 order_item,total_price,BIGINT,,,Y,,,price_snapshot * quantity,
 order_item,production_period_days_snapshot,INTEGER,,,,,,,주문 시점 제작기간 스냅샷
 order_item,selected_options_snapshot,JSONB,,,,,,,
+order_delivery,order_delivery_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
+order_delivery,order_id,BIGINT,,orders.order_id,Y,Y,,주문당 배송 정보 1건
+order_delivery,carrier_code,VARCHAR(20),,,Y,,,스마트택배 택배사 코드
+order_delivery,carrier_name,VARCHAR(100),,,Y,,,고객 표시용 택배사명
+order_delivery,tracking_number,VARCHAR(100),,,Y,,,운송장 번호
+order_delivery,status,VARCHAR(20),,,Y,,'SHIPPED',"CHECK IN ('SHIPPED','IN_TRANSIT','DELIVERED')",
+order_delivery,updated_at,TIMESTAMP,,,Y,,now(),스마트택배 조회 시 최신 상태 반영
 order_return,return_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
 order_return,order_id,BIGINT,,orders.order_id,Y,Y,,"UNIQUE — 주문당 반품 1건 (CONC-017)",
 order_return,type,VARCHAR(20),,,Y,,,"CHECK IN ('RETURN','EXCHANGE')",반품/교환 구분
-order_return,reason,VARCHAR(30),,,Y,,,"CHECK IN ('CHANGE_OF_MIND','DEFECTIVE','WRONG_DELIVERY','OTHER')",반품 사유 enum (API 명세 기준)
+order_return,reason,VARCHAR(30),,,Y,,,"CHECK IN ('CHANGE_OF_MIND','DEFECTIVE','WRONG_ITEM','WRONG_DELIVERY','OTHER')",반품 사유 enum (API 명세 기준)
 order_return,reason_detail,VARCHAR(500),,,,,,,reason=OTHER 시 필수 — 서비스 레이어 검증
 order_return,return_address_id,BIGINT,,address.address_id,Y,,,,회수지 주소 ID
-order_return,image_ids,TEXT[],,,,,,,reason=DEFECTIVE 시 필수 최대 5장 — 서비스 레이어 검증
+order_return,order_item_ids,JSONB,,,Y,,[],,반품 대상 order_item_id 목록
+order_return,image_ids,JSONB,,,,,,,reason=DEFECTIVE 시 필수 최대 5장 — S3 object key 목록
 order_return,status,VARCHAR(20),,,Y,,'REQUESTED',"CHECK IN ('REQUESTED','APPROVED','REJECTED','COMPLETED')",
-order_return,version,INTEGER,,,Y,,0,낙관적 락(@Version),"중복 신청 CONFLICT 방지, CONC-017"
+order_return,version,BIGINT,,,Y,,0,낙관적 락(@Version),"중복 신청 CONFLICT 방지, CONC-017"
 order_return,created_at,TIMESTAMP,,,Y,,now(),,
 order_return,updated_at,TIMESTAMP,,,Y,,now(),JPA @LastModifiedDate로 자동 갱신,
 payments,payment_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
 payments,order_id,BIGINT,,orders.order_id,Y,Y,,,
 payments,amount,BIGINT,,,Y,,,,
 payments,method,VARCHAR(20),,,Y,,,,
-payments,payment_key,VARCHAR(255),,,Y,Y,,"멱등키, CONC-002",
-payments,status,VARCHAR(20),,,Y,,,"CHECK IN ('DONE','CANCELED','FAILED')",
+payments,payment_key,VARCHAR(255),,,,,Y,,"승인 전에는 NULL, 승인 완료 후 UNIQUE 멱등키, CONC-002",
+payments,status,VARCHAR(20),,,Y,,,"CHECK IN ('READY','DONE','CANCELED','FAILED')",
 payments,failure_code,VARCHAR(100),,,,,,FAILED일 때만 값,
 payments,failure_message,VARCHAR(255),,,,,,FAILED일 때만 값,
 payments,version,INTEGER,,,Y,,0,낙관적 락(@Version),"중복취소 방지, CONC-011"
 payments,approved_at,TIMESTAMP,,,,,,,
 payments,canceled_at,TIMESTAMP,,,,,,,취소된 경우에만 값
 payments,updated_at,TIMESTAMP,,,Y,,now(),JPA @LastModifiedDate로 자동 갱신,
-payment_method,payment_method_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,보류(추후 구현)
+payment_method,payment_method_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,구현완료
 payment_method,member_id,BIGINT,,member.member_id,Y,,,,
 payment_method,type,VARCHAR(20),,,Y,,,,
 payment_method,card_company,VARCHAR(50),,,,,,,
 payment_method,card_number_masked,VARCHAR(30),,,,,,,
+payment_method,card_fingerprint,VARCHAR(64),,,Y,Y,,,원문 카드번호 미저장·중복 검사용 SHA-256
 payment_method,is_default,BOOLEAN,,,Y,,false,,
-refund_account,refund_account_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,보류(추후 구현)
+payment_method,created_at,TIMESTAMP,,,Y,,now(),,
+refund_account,refund_account_id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,구현완료
 refund_account,member_id,BIGINT,,member.member_id,Y,,,,
 refund_account,bank_name,VARCHAR(50),,,Y,,,,
 refund_account,account_number_masked,VARCHAR(30),,,Y,,,,
+refund_account,account_fingerprint,VARCHAR(64),,,Y,,,,원문 계좌번호 미저장용 SHA-256
 refund_account,account_holder,VARCHAR(50),,,Y,,,,
+refund_account,created_at,TIMESTAMP,,,Y,,now(),,
 chat_session,session_id,VARCHAR(50),PK,,Y,,,,
 chat_session,member_id,BIGINT,,member.member_id,,,,"게스트 가능, nullable",
 chat_session,created_at,TIMESTAMP,,,Y,,now(),,
