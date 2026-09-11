@@ -24,7 +24,7 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
     @PersistenceContext private EntityManager entityManager;
 
     public MemberReadRepositoryImpl(DataSource dataSource, ObjectMapper json,
-                                    @Value("${image.base-url:}") String cdn) {
+                                    @Value("${member.image-base-url:http://localhost:8080/media}") String cdn) {
         jdbc = new NamedParameterJdbcTemplate(dataSource);
         this.json = json;
         this.cdn = cdn.replaceAll("/+$", "");

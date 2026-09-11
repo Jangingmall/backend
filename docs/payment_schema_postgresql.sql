@@ -1,4 +1,4 @@
--- 장인몰 결제/주문/배송/반품/이미지 업로드 운영 스키마 (PostgreSQL)
+-- 장인몰 결제/주문/배송/반품 운영 스키마 (PostgreSQL)
 -- 운영 반영 전 백업 후 실행하고, 애플리케이션의 ddl-auto=validate로 검증한다.
 
 begin;
@@ -128,21 +128,6 @@ create table if not exists order_delivery (
     constraint uk_order_delivery_order unique (order_id),
     constraint ck_order_delivery_status check (status in ('SHIPPED','IN_TRANSIT','DELIVERED'))
 );
-
-create table if not exists image_upload (
-    image_id varchar(30) primary key,
-    member_id bigint not null references member(member_id),
-    purpose varchar(20) not null,
-    source_width integer not null check (source_width > 0),
-    source_height integer not null check (source_height > 0),
-    variants jsonb not null,
-    consumed boolean not null default false,
-    created_at timestamp with time zone not null default current_timestamp,
-    expires_at timestamp with time zone not null,
-    constraint ck_image_upload_purpose check (purpose in ('PRODUCT','ARTISAN','CONTENT','RETURN'))
-);
-
-create index if not exists ix_image_upload_expiration on image_upload(consumed, expires_at);
 
 create table if not exists order_return (
     return_id bigint generated always as identity primary key,
