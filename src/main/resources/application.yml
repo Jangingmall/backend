@@ -70,8 +70,20 @@ member:
     attempts: ${MEMBER_RATE_LIMIT_ATTEMPTS:10}
     window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
 
+toss:
+  payments:
+    secret-key: ${TOSS_SECRET_KEY:}
+    client-key: ${TOSS_CLIENT_KEY:}
+    base-url: ${TOSS_API_BASE_URL:https://api.tosspayments.com}
+    order-expiration-seconds: ${PAYMENT_ORDER_EXPIRATION_SECONDS:1800}
+
+delivery:
+  sweet-tracker:
+    api-key: ${SWEET_TRACKER_API_KEY:}
+    base-url: ${SWEET_TRACKER_API_BASE_URL:https://info.sweettracker.co.kr}
+
 ai:
-  base-url: http://localhost:8001
+  base-url: ${AI_BASE_URL:}
   timeout-seconds: 30
 
 ---
@@ -146,6 +158,18 @@ member:
   rate-limit:
     attempts: ${MEMBER_RATE_LIMIT_ATTEMPTS:10}
     window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
+
+toss:
+  payments:
+    secret-key: ${TOSS_SECRET_KEY}
+    client-key: ${TOSS_CLIENT_KEY}
+    base-url: ${TOSS_API_BASE_URL:https://api.tosspayments.com}
+    order-expiration-seconds: ${PAYMENT_ORDER_EXPIRATION_SECONDS:1800}
+
+delivery:
+  sweet-tracker:
+    api-key: ${SWEET_TRACKER_API_KEY}
+    base-url: ${SWEET_TRACKER_API_BASE_URL:https://info.sweettracker.co.kr}
 
 ai:
   base-url: ${AI_BASE_URL}

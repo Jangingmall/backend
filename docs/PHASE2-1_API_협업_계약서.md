@@ -320,7 +320,7 @@
   "data": {
     "orderId": "number",
     "orderNumber": "string (예: ORD20260825001)",
-    "status": "string (enum: CREATED | PAID | PAYMENT_FAILED | CANCELED | DELIVERED)",
+    "status": "string (enum: CREATED | PAID | PAYMENT_FAILED | CANCELED | DELIVERED | RETURN_REQUESTED)",
     "totalAmount": "number",
     "createdAt": "string (ISO 8601)",
     "items": [
@@ -746,7 +746,7 @@
       {
         "orderId": "number",
         "orderNumber": "string",
-        "status": "string (enum: CREATED | PAID | PAYMENT_FAILED | CANCELED | DELIVERED)",
+        "status": "string (enum: CREATED | PAID | PAYMENT_FAILED | CANCELED | DELIVERED | RETURN_REQUESTED)",
         "totalAmount": "number",
         "createdAt": "string (ISO 8601)",
         "items": [
@@ -792,7 +792,7 @@
   "data": {
     "orderId": "number",
     "orderNumber": "string",
-    "status": "string (enum: CREATED | PAID | PAYMENT_FAILED | CANCELED | DELIVERED)",
+    "status": "string (enum: CREATED | PAID | PAYMENT_FAILED | CANCELED | DELIVERED | RETURN_REQUESTED)",
     "totalAmount": "number",
     "createdAt": "string (ISO 8601)",
     "items": [
@@ -877,7 +877,7 @@
 
 #### 5-15. 반품 신청 `POST /api/payments/returns`
 
-> **주의:** 반품(return) 상태는 응답의 `status: REQUESTED`로 표현된다. 주문(order) 상태 Enum(`CREATED|PAID|PAYMENT_FAILED|CANCELED|DELIVERED`)과 별도 관리된다. 반품 수명주기 확장이 필요한 경우 BE 협의 필요.
+> **주의:** 반품 상태는 `order_return.status`로 관리하며, 신청 시 주문 상태도 `RETURN_REQUESTED`로 전환된다. 주문당 반품·교환 신청은 한 건만 허용한다.
 
 **Request**
 
