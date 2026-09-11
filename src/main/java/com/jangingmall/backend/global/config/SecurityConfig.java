@@ -59,7 +59,11 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 auth.dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                     .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
-                    .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll();
+                    .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/payments/webhooks/toss").permitAll()
+                    .requestMatchers(HttpMethod.PATCH, "/api/payments/cart/items/*/options").authenticated()
+                    .requestMatchers(HttpMethod.POST, "/api/payments/cart/merge").authenticated()
+                    .requestMatchers("/api/payments/cart", "/api/payments/cart/items", "/api/payments/cart/items/*").permitAll();
                 if (isLocalProfile()) {
                     auth.requestMatchers("/dev/**").permitAll();
                 }
