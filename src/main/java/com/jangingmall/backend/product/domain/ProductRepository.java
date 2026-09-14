@@ -16,7 +16,5 @@ public interface ProductRepository {
 
     Page<Product> findByStatus(ProductStatus status, Pageable pageable);
 
-    List<String> findDistinctMaterialsBySubcategoryId(Long subcategoryId);
-
     void delete(Product product);
 }

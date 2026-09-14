@@ -6,8 +6,6 @@ import com.jangingmall.backend.product.domain.ProductStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,8 +16,6 @@ interface JpaProductRepositoryJpa extends JpaRepository<Product, Long> {
     Page<Product> findByArtisanId(Long artisanId, Pageable pageable);
     Page<Product> findByStatus(ProductStatus status, Pageable pageable);
 
-    @Query("SELECT DISTINCT p.material FROM Product p WHERE p.subcategory.id = :subcategoryId AND p.material IS NOT NULL")
-    List<String> findDistinctMaterialsBySubcategoryId(@Param("subcategoryId") Long subcategoryId);
 }
 
 @Repository
@@ -49,11 +45,6 @@ class JpaProductRepository implements ProductRepository {
     @Override
     public Page<Product> findByStatus(ProductStatus status, Pageable pageable) {
         return jpa.findByStatus(status, pageable);
-    }
-
-    @Override
-    public List<String> findDistinctMaterialsBySubcategoryId(Long subcategoryId) {
-        return jpa.findDistinctMaterialsBySubcategoryId(subcategoryId);
     }
 
     @Override
