@@ -34,7 +34,7 @@ class RestAiContentClient implements AiContentClient {
     }
 
     @Override
-    public void requestGeneration(Long generationId, Long productId, List<String> images, String productName, String howMade, String careTips) {
+    public String requestGeneration(Long generationId, Long productId, List<String> images, String productName, String howMade, String careTips) {
         Map<String, Object> body = Map.of(
             "generationId", generationId,
             "productId", productId,
@@ -43,11 +43,11 @@ class RestAiContentClient implements AiContentClient {
             "howMade", howMade,
             "careTips", careTips
         );
-        restClient.post()
+        log.info("AI 콘텐츠 생성 요청 전송 generationId={} productId={}", generationId, productId);
+        return restClient.post()
             .uri("/ai/products")
             .body(body)
             .retrieve()
-            .toBodilessEntity();
-        log.info("AI 콘텐츠 생성 요청 전송 generationId={} productId={}", generationId, productId);
+            .body(String.class);
     }
 }

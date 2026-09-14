@@ -58,7 +58,7 @@ public class GenerationService {
         ContentGeneration generation = generationRepository.findByIdAndProductId(generationId, command.productId())
             .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
         try {
-            aiContentClient.requestGeneration(
+            String generatedBlocks = aiContentClient.requestGeneration(
                 generationId,
                 command.productId(),
                 command.images(),
@@ -66,7 +66,7 @@ public class GenerationService {
                 command.howMade(),
                 command.careTips()
             );
-            generation.complete();
+            generation.complete(generatedBlocks);
             generationRepository.save(generation);
             log.info("AI 콘텐츠 생성 완료 generationId={}", generationId);
         } catch (Exception exception) {

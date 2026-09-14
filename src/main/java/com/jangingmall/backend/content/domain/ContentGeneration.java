@@ -49,6 +49,9 @@ public class ContentGeneration {
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
+    @Column(name = "generated_blocks", columnDefinition = "TEXT")
+    private String generatedBlocks;
+
     public static ContentGeneration create(Long productId, String images, String productName, String howMade, String careTips) {
         ContentGeneration generation = new ContentGeneration();
         generation.productId = productId;
@@ -61,8 +64,9 @@ public class ContentGeneration {
         return generation;
     }
 
-    public void complete() {
+    public void complete(String generatedBlocks) {
         this.status = GenerationStatus.COMPLETED;
+        this.generatedBlocks = generatedBlocks;
         this.completedAt = LocalDateTime.now();
     }
 

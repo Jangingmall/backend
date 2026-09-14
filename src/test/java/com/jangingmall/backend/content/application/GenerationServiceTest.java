@@ -117,17 +117,20 @@ class GenerationServiceTest {
     }
 
     @Test
-    @DisplayName("AI 호출 성공 시 executeAsync가 COMPLETED로 전환한다")
+    @DisplayName("AI 호출 성공 시 executeAsync가 블록 JSON과 함께 COMPLETED로 전환한다")
     void executeAsyncSuccess() {
         ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
         when(generationRepository.save(any())).thenReturn(generation);
+        String blocks = "[{\"order\":1,\"tag\":\"h2\",\"text\":\"청자 다완\"}]";
+        when(aiContentClient.requestGeneration(any(), any(), any(), any(), any(), any())).thenReturn(blocks);
 
         generationService.executeAsync(1L, sampleCommand(1L));
 
         verify(generationRepository).save(generationCaptor.capture());
         assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.COMPLETED);
+        assertThat(generationCaptor.getValue().getGeneratedBlocks()).isEqualTo(blocks);
         assertThat(generationCaptor.getValue().getCompletedAt()).isNotNull();
     }
 

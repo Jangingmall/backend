@@ -19,13 +19,15 @@ class ContentGenerationTest {
     }
 
     @Test
-    @DisplayName("complete() 호출 시 COMPLETED 상태로 전환되고 completedAt이 설정된다")
+    @DisplayName("complete() 호출 시 COMPLETED 상태로 전환되고 generatedBlocks와 completedAt이 설정된다")
     void complete() {
         ContentGeneration generation = ContentGeneration.create(1L, "img1", "상품명", "과정", "관리");
+        String blocks = "[{\"order\":1,\"tag\":\"h2\",\"text\":\"청자 다완\"}]";
 
-        generation.complete();
+        generation.complete(blocks);
 
         assertThat(generation.getStatus()).isEqualTo(GenerationStatus.COMPLETED);
+        assertThat(generation.getGeneratedBlocks()).isEqualTo(blocks);
         assertThat(generation.getCompletedAt()).isNotNull();
     }
 
