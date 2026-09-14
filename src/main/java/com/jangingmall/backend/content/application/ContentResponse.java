@@ -12,8 +12,7 @@ import java.util.List;
 public sealed interface ContentResponse permits
     ContentResponse.Detail,
     ContentResponse.BlockEdit,
-    ContentResponse.VersionHistory,
-    ContentResponse.StatusChanged {
+    ContentResponse.VersionHistory {
 
     record Detail(
         Long contentId,
@@ -45,16 +44,6 @@ public sealed interface ContentResponse permits
 
         public static VersionHistory from(ContentEditHistory history) {
             return new VersionHistory(history.getVersion(), history.getEditedAt(), history.getEditedByType());
-        }
-    }
-
-    record StatusChanged(
-        Long contentId,
-        ContentStatus status
-    ) implements ContentResponse {
-
-        public static StatusChanged from(Content content) {
-            return new StatusChanged(content.getId(), content.getStatus());
         }
     }
 

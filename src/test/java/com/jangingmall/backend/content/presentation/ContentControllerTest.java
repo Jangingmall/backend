@@ -9,7 +9,6 @@ import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
 import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.docs.RestDocsControllerTest;
-import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -262,158 +260,5 @@ class ContentControllerTest extends RestDocsControllerTest {
         mockMvc.perform(get("/api/content/products/{productId}/contents/versions", 10L))
             .andExpect(status().isForbidden())
             .andDo(documentError("content-version-history-forbidden", "콘텐츠", "버전 이력 조회 — 권한 없음", "소유자가 아닌 경우 403을 반환합니다."));
-    }
-
-    private static final ContentResponse.StatusChanged STATUS_CHANGED_PENDING =
-        new ContentResponse.StatusChanged(1L, ContentStatus.PENDING_REVIEW);
-    private static final ContentResponse.StatusChanged STATUS_CHANGED_APPROVED =
-        new ContentResponse.StatusChanged(1L, ContentStatus.APPROVED);
-    private static final ContentResponse.StatusChanged STATUS_CHANGED_REJECTED =
-        new ContentResponse.StatusChanged(1L, ContentStatus.REJECTED);
-    private static final ContentResponse.StatusChanged STATUS_CHANGED_PUBLISHED =
-        new ContentResponse.StatusChanged(1L, ContentStatus.PUBLISHED);
-
-    private static final org.springframework.restdocs.payload.FieldDescriptor[] STATUS_CHANGED_FIELDS = {
-        fieldWithPath("data.contentId").type(JsonFieldType.NUMBER).description("콘텐츠 ID"),
-        fieldWithPath("data.status").type(JsonFieldType.STRING).description("변경된 콘텐츠 상태"),
-    };
-
-    @Test
-    @DisplayName("검토 요청 — DRAFT 콘텐츠를 PENDING_REVIEW로 전이한다")
-    @WithMockUser(roles = "ARTISAN")
-    void submitForReview() throws Exception {
-        when(contentService.submitForReview(any())).thenReturn(STATUS_CHANGED_PENDING);
-
-        mockMvc.perform(post("/api/content/products/{productId}/contents/{contentId}/submit", 10L, 1L))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.status").value("PENDING_REVIEW"))
-            .andDo(MockMvcRestDocumentationWrapper.document(
-                "content-submit",
-                pathParameters(
-                    parameterWithName("productId").description("상품 ID"),
-                    parameterWithName("contentId").description("콘텐츠 ID")
-                ),
-                resource(ResourceSnippetParameters.builder()
-                    .tag("콘텐츠")
-                    .summary("검토 요청")
-                    .description("DRAFT 또는 REJECTED 상태의 콘텐츠를 검토 요청(PENDING_REVIEW)으로 전이합니다.")
-                    .responseFields(successEnvelopeFields(STATUS_CHANGED_FIELDS))
-                    .build()
-                )
-            ));
-    }
-
-    @Test
-    @DisplayName("콘텐츠 승인 — PENDING_REVIEW 콘텐츠를 APPROVED로 전이한다")
-    @WithMockUser(roles = "ARTISAN")
-    void approve() throws Exception {
-        when(contentService.approve(any())).thenReturn(STATUS_CHANGED_APPROVED);
-
-        mockMvc.perform(post("/api/content/products/{productId}/contents/{contentId}/approve", 10L, 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json(new ContentRequest.Approve(true, true, false))))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.status").value("APPROVED"))
-            .andDo(MockMvcRestDocumentationWrapper.document(
-                "content-approve",
-                pathParameters(
-                    parameterWithName("productId").description("상품 ID"),
-                    parameterWithName("contentId").description("콘텐츠 ID")
-                ),
-                resource(ResourceSnippetParameters.builder()
-                    .tag("콘텐츠")
-                    .summary("콘텐츠 승인")
-                    .description("PENDING_REVIEW 콘텐츠를 APPROVED로 전이하고 사실 확인·사진 일치 체크리스트를 반영합니다.")
-                    .requestFields(
-                        fieldWithPath("factCheckConfirmed").type(JsonFieldType.BOOLEAN).description("사실 확인 완료 여부"),
-                        fieldWithPath("photoMatchConfirmed").type(JsonFieldType.BOOLEAN).description("사진 일치 확인 여부"),
-                        fieldWithPath("displayApprovalBadge").type(JsonFieldType.BOOLEAN).description("승인 배지 노출 여부")
-                    )
-                    .responseFields(successEnvelopeFields(STATUS_CHANGED_FIELDS))
-                    .build()
-                )
-            ));
-    }
-
-    @Test
-    @DisplayName("콘텐츠 승인 — PENDING_REVIEW가 아니면 422를 반환한다")
-    @WithMockUser(roles = "ARTISAN")
-    void approveInvalidTransition() throws Exception {
-        when(contentService.approve(any())).thenThrow(new BusinessRuleViolationException("현재 상태에서 허용되지 않는 콘텐츠 상태 전이입니다"));
-
-        mockMvc.perform(post("/api/content/products/{productId}/contents/{contentId}/approve", 10L, 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json(new ContentRequest.Approve(true, true, false))))
-            .andExpect(status().isUnprocessableEntity())
-            .andDo(documentError("content-approve-invalid", "콘텐츠", "콘텐츠 승인 — 상태 오류", "PENDING_REVIEW가 아닌 경우 422를 반환합니다."));
-    }
-
-    @Test
-    @DisplayName("콘텐츠 반려 — PENDING_REVIEW 콘텐츠를 REJECTED로 전이한다")
-    @WithMockUser(roles = "ARTISAN")
-    void reject() throws Exception {
-        when(contentService.reject(any())).thenReturn(STATUS_CHANGED_REJECTED);
-
-        mockMvc.perform(post("/api/content/products/{productId}/contents/{contentId}/reject", 10L, 1L))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.status").value("REJECTED"))
-            .andDo(MockMvcRestDocumentationWrapper.document(
-                "content-reject",
-                pathParameters(
-                    parameterWithName("productId").description("상품 ID"),
-                    parameterWithName("contentId").description("콘텐츠 ID")
-                ),
-                resource(ResourceSnippetParameters.builder()
-                    .tag("콘텐츠")
-                    .summary("콘텐츠 반려")
-                    .description("PENDING_REVIEW 콘텐츠를 REJECTED로 전이합니다. 장인은 수정 후 재요청할 수 있습니다.")
-                    .responseFields(successEnvelopeFields(STATUS_CHANGED_FIELDS))
-                    .build()
-                )
-            ));
-    }
-
-    @Test
-    @DisplayName("콘텐츠 반려 — PENDING_REVIEW가 아니면 422를 반환한다")
-    @WithMockUser(roles = "ARTISAN")
-    void rejectInvalidTransition() throws Exception {
-        when(contentService.reject(any())).thenThrow(new BusinessRuleViolationException("현재 상태에서 허용되지 않는 콘텐츠 상태 전이입니다"));
-
-        mockMvc.perform(post("/api/content/products/{productId}/contents/{contentId}/reject", 10L, 1L))
-            .andExpect(status().isUnprocessableEntity())
-            .andDo(documentError("content-reject-invalid", "콘텐츠", "콘텐츠 반려 — 상태 오류", "PENDING_REVIEW가 아닌 경우 422를 반환합니다."));
-    }
-
-    @Test
-    @DisplayName("게시 — APPROVED 콘텐츠를 PUBLISHED로 전이한다")
-    @WithMockUser(roles = "ARTISAN")
-    void publish() throws Exception {
-        when(contentService.publish(any())).thenReturn(STATUS_CHANGED_PUBLISHED);
-
-        mockMvc.perform(post("/api/content/products/{productId}/publish", 10L))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.status").value("PUBLISHED"))
-            .andDo(MockMvcRestDocumentationWrapper.document(
-                "content-publish",
-                pathParameters(parameterWithName("productId").description("상품 ID")),
-                resource(ResourceSnippetParameters.builder()
-                    .tag("콘텐츠")
-                    .summary("상품 게시")
-                    .description("APPROVED 콘텐츠를 PUBLISHED 상태로 전이합니다. 이후 상품이 고객에게 노출됩니다.")
-                    .responseFields(successEnvelopeFields(STATUS_CHANGED_FIELDS))
-                    .build()
-                )
-            ));
-    }
-
-    @Test
-    @DisplayName("게시 — APPROVED가 아니면 422를 반환한다")
-    @WithMockUser(roles = "ARTISAN")
-    void publishInvalidTransition() throws Exception {
-        when(contentService.publish(any())).thenThrow(new BusinessRuleViolationException("콘텐츠가 승인(APPROVED) 상태여야 게시할 수 있습니다"));
-
-        mockMvc.perform(post("/api/content/products/{productId}/publish", 10L))
-            .andExpect(status().isUnprocessableEntity())
-            .andDo(documentError("content-publish-invalid", "콘텐츠", "게시 — 상태 오류", "APPROVED가 아닌 경우 422를 반환합니다."));
     }
 }

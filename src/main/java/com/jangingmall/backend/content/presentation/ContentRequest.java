@@ -7,10 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-public sealed interface ContentRequest permits
-    ContentRequest.BulkUpdate,
-    ContentRequest.BlockUpdate,
-    ContentRequest.Approve {
+public sealed interface ContentRequest permits ContentRequest.BulkUpdate, ContentRequest.BlockUpdate {
 
     record BulkUpdate(
         @NotEmpty @Valid List<BlockInput> blocks
@@ -29,10 +26,4 @@ public sealed interface ContentRequest permits
         String imageUrl,
         String videoUrl
     ) {}
-
-    record Approve(
-        @NotNull Boolean factCheckConfirmed,
-        @NotNull Boolean photoMatchConfirmed,
-        @NotNull Boolean displayApprovalBadge
-    ) implements ContentRequest {}
 }
