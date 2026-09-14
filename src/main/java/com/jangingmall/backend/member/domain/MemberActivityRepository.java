@@ -8,6 +8,9 @@ public interface MemberActivityRepository {
     MemberSettings saveSettings(MemberSettings settings);
     void recordView(Long memberId, Long productId, LocalDateTime viewedAt);
     void clearViews(Long memberId);
+    void wish(Long memberId, Long productId);
+    void unwish(Long memberId, Long productId);
+    boolean isWished(Long memberId, Long productId);
     void subscribe(Long memberId, Long artisanId);
     void unsubscribe(Long memberId, Long artisanId);
     void notifications(Long memberId, boolean enabled);
