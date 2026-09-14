@@ -46,9 +46,11 @@ ApiErrorResponse
 
 PagedResponse<T>
   items:       List<T>  - required, not nullable, 빈 배열 가능
-  nextCursor:  String   - optional, nullable, 다음 페이지 없으면 null
+  nextCursor:  String   - optional, nullable, page 모드이거나 다음 페이지 없으면 null
   hasNext:     Boolean  - required, not nullable
   totalCount:  Integer  - required, not nullable, >= 0
+  page:        Integer  - optional, nullable, page 모드일 때 현재 페이지 번호(1-based), cursor 모드는 null
+  totalPages:  Integer  - optional, nullable, page 모드일 때 전체 페이지 수, cursor 모드는 null
 ```
 
 ---
@@ -62,6 +64,13 @@ cursor: String
   - optional
   - nullable
   - 이전 응답의 nextCursor 값. 첫 페이지는 생략
+  - cursor와 page를 동시에 전달하면 cursor 우선
+
+page: Integer
+  - optional
+  - nullable
+  - 1-based 페이지 번호. 미제공 시 cursor 모드 동작
+  - default: 1 (page 모드 진입 시)
 
 limit: Integer
   - optional
@@ -274,6 +283,11 @@ ProductArtisanSummary
 ```
 cursor: String
   - optional / nullable / 이전 응답 nextCursor 값
+  - cursor와 page를 동시에 전달하면 cursor 우선
+
+page: Integer
+  - optional / nullable / 1-based 페이지 번호 / 미제공 시 cursor 모드
+  - page 모드는 내부 OFFSET 사용 — 대량 탐색 시 cursor 모드 권장
 
 limit: Integer
   - optional / not nullable / default: 20 / min: 1 / max: 100

@@ -36,23 +36,48 @@
 
 ### **페이지네이션 (공통)**
 
-목록 API는 Cursor 기반 페이지네이션 적용.
+목록 API는 기본적으로 Cursor 기반 페이지네이션을 사용한다. 아래 11개 API는 `page` 파라미터를 추가로 지원하여 페이지 번호 UI(이전/다음/번호)에도 대응한다.
+
+**page 모드 지원 API:** `/api/products`, `/api/products/me`, `/api/member/artisans`, `/api/member/recent-views`, `/api/member/me/orders`, `/api/member/me/wishes`, `/api/member/me/reviews`, `/api/member/me/reviews/writable`, `/api/admin/seller-applications`, `/api/products/{productId}/reviews`, `/api/products/{productId}/questions`
+
+#### **Cursor 모드** (기본 — `cursor` 제공 또는 파라미터 없음)
 
 | **파라미터** | **타입** | **필수** | **설명** |
 | --- | --- | --- | --- |
-| `cursor` | String | N | 이전 응답의 `nextCursor` 값 |
+| `cursor` | String | N | 이전 응답의 `nextCursor` 값. 미제공 시 첫 페이지 |
 | `limit` | Integer | N | 페이지 크기 (기본 20, 최대 100) |
-
-#### **목록 응답 구조**
 
 ```json
 {
   "items": [],
   "nextCursor": "eyJpZCI6MTAwfQ==",
   "hasNext": true,
-  "totalCount": 342
+  "totalCount": 342,
+  "page": null,
+  "totalPages": null
 }
 ```
+
+#### **Page 모드** (`page` 제공, `cursor` 미제공 — page 모드 지원 API 전용)
+
+| **파라미터** | **타입** | **필수** | **설명** |
+| --- | --- | --- | --- |
+| `page` | Integer | N | 1-based 페이지 번호 (기본 1) |
+| `limit` | Integer | N | 페이지 크기 (기본 20, 최대 100) |
+
+```json
+{
+  "items": [],
+  "nextCursor": null,
+  "hasNext": true,
+  "totalCount": 342,
+  "page": 2,
+  "totalPages": 18
+}
+```
+
+> `cursor`와 `page`를 동시에 전달하면 `cursor`가 우선 적용된다.
+> `/api/member/artisans`, `/api/member/recent-views`의 page 모드는 내부적으로 OFFSET을 사용하므로 대량 데이터 탐색 시 cursor 모드 대비 성능이 저하될 수 있다.
 
 #### 권한
 
