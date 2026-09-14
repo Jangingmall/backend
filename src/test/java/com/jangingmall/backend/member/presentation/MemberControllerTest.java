@@ -1,0 +1,252 @@
+package com.jangingmall.backend.member.presentation;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.jangingmall.backend.global.config.SecurityConfig;
+import com.jangingmall.backend.global.exception.DomainException;
+import com.jangingmall.backend.global.exception.ErrorCode;
+import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
+import com.jangingmall.backend.member.application.MemberAuthenticationService;
+import com.jangingmall.backend.member.application.EmailVerificationService;
+import com.jangingmall.backend.member.application.MemberProfile;
+import com.jangingmall.backend.member.application.MemberService;
+import com.jangingmall.backend.member.application.MemberSession;
+import com.jangingmall.backend.member.domain.MemberRole;
+import com.jangingmall.backend.member.application.MemberSignupResult;
+import com.jangingmall.backend.member.domain.MemberStatus;
+import java.util.List;
+import jakarta.servlet.http.Cookie;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
+
+@WebMvcTest(MemberController.class)
+@Import({SecurityConfig.class, GlobalExceptionHandler.class})
+@TestPropertySource(properties = "jwt.refresh-cookie-secure=true")
+class MemberControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private MemberService memberService;
+
+    @MockitoBean
+    private MemberAuthenticationService memberAuthenticationService;
+
+    @MockitoBean
+    private EmailVerificationService emailVerificationService;
+
+    @Test
+    @DisplayName("정상 회원가입 요청은 201과 이메일 인증 대기 상태를 반환한다")
+    void signUp() throws Exception {
+        when(memberService.signUp(any())).thenReturn(
+            new MemberSignupResult(1L, "artisan@example.com", MemberStatus.PENDING_VERIFICATION)
+        );
+
+        mockMvc.perform(post("/api/member/signup")
+                .contentType(APPLICATION_JSON)
+                .content(validRequest()))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.status").value(201))
+            .andExpect(jsonPath("$.data.memberId").value(1))
+            .andExpect(jsonPath("$.data.email").value("artisan@example.com"))
+            .andExpect(jsonPath("$.data.status").value("PENDING_VERIFICATION"))
+            .andExpect(result -> assertThat(result.getResponse().getContentAsString())
+                .doesNotContain("\\\"errorCode\\\""));
+    }
+
+    @Test
+    @DisplayName("형식이 올바르지 않은 요청값은 INVALID_INPUT을 반환한다")
+    void signUpWithInvalidInput() throws Exception {
+        mockMvc.perform(post("/api/member/signup")
+                .contentType(APPLICATION_JSON)
+                .content(validRequest().replace("01012345678", "010-1234-5678")))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errorCode").value("INVALID_INPUT"));
+    }
+
+    @Test
+    @DisplayName("중복 이메일은 CONFLICT를 반환한다")
+    void signUpWithDuplicateEmail() throws Exception {
+        when(memberService.signUp(any())).thenThrow(new DomainException(ErrorCode.CONFLICT));
+
+        mockMvc.perform(post("/api/member/signup")
+                .contentType(APPLICATION_JSON)
+                .content(validRequest()))
+            .andExpect(status().isConflict())
+            .andExpect(jsonPath("$.success").value(false))
+            .andExpect(jsonPath("$.status").value(409))
+            .andExpect(jsonPath("$.errorCode").value("CONFLICT"));
+    }
+
+    @Test
+    @DisplayName("Request Body가 없으면 REQUEST_INVALID을 반환한다")
+    void signUpWithoutRequestBody() throws Exception {
+        mockMvc.perform(post("/api/member/signup").contentType(APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errorCode").value("REQUEST_INVALID"));
+    }
+
+    @Test
+    @DisplayName("잘못된 JSON이면 REQUEST_BODY_MALFORMED를 반환한다")
+    void signUpWithMalformedRequestBody() throws Exception {
+        mockMvc.perform(post("/api/member/signup")
+                .contentType(APPLICATION_JSON)
+                .content("{\"email\":"))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errorCode").value("REQUEST_BODY_MALFORMED"));
+    }
+
+    @Test
+    @DisplayName("정상 로그인은 Access Token과 HttpOnly Refresh Token 쿠키를 반환한다")
+    void login() throws Exception {
+        when(memberAuthenticationService.login("artisan@example.com", "password")).thenReturn(
+            new MemberSession(
+                "access-token",
+                "refresh-token",
+                1L,
+                "artisan@example.com",
+                "김도공",
+                MemberRole.USER
+            )
+        );
+
+        mockMvc.perform(post("/api/member/login")
+                .contentType(APPLICATION_JSON)
+                .content("""
+                    {"email":"artisan@example.com","password":"password"}
+                    """))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.accessToken").value("access-token"))
+            .andExpect(jsonPath("$.data.member.memberId").value(1))
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie"))
+                .contains("refreshToken=refresh-token")
+                .contains("HttpOnly")
+                .contains("Secure"));
+    }
+
+    @Test
+    @DisplayName("Refresh Token 쿠키로 새 Access Token과 만료 초를 반환한다")
+    void refresh() throws Exception {
+        when(memberAuthenticationService.refresh("refresh-token")).thenReturn(
+            new MemberSession(
+                "new-access-token",
+                "new-refresh-token",
+                1L,
+                "artisan@example.com",
+                "김도공",
+                MemberRole.USER
+            )
+        );
+
+        mockMvc.perform(post("/api/member/token/refresh")
+                .cookie(new Cookie("refreshToken", "refresh-token")))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.accessToken").value("new-access-token"))
+            .andExpect(jsonPath("$.data.expiresIn").value(1800))
+            .andExpect(jsonPath("$.data.member").doesNotExist())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie"))
+                .contains("refreshToken=new-refresh-token"));
+    }
+
+    @Test
+    @DisplayName("인증 이메일 재전송은 토큰 유효시간을 반환한다")
+    void resendVerificationEmail() throws Exception {
+        when(emailVerificationService.sendVerification("artisan@example.com")).thenReturn(1800L);
+
+        mockMvc.perform(post("/api/member/email-verifications")
+                .contentType(APPLICATION_JSON)
+                .content("{\"email\":\"artisan@example.com\"}"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.expiresInSeconds").value(1800));
+    }
+
+    @Test
+    @DisplayName("유효한 이메일 인증 링크는 회원을 활성화하고 홈으로 리다이렉트한다")
+    void verifyEmail() throws Exception {
+        mockMvc.perform(get("/api/member/email-verifications/verify")
+                .queryParam("token", "verification-token"))
+            .andExpect(status().isFound())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Location"))
+                .isEqualTo("http://localhost:3000/"));
+
+        verify(emailVerificationService).verify("verification-token");
+    }
+
+    @Test
+    @DisplayName("만료된 이메일 인증 링크도 계약에 따라 홈으로 리다이렉트한다")
+    void redirectExpiredEmailVerification() throws Exception {
+        doThrow(new DomainException(ErrorCode.TOKEN_EXPIRED))
+            .when(emailVerificationService).verify("expired-token");
+
+        mockMvc.perform(get("/api/member/email-verifications/verify")
+                .queryParam("token", "expired-token"))
+            .andExpect(status().isFound())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Location"))
+                .isEqualTo("http://localhost:3000/"));
+    }
+
+    @Test
+    @DisplayName("인증된 사용자는 내 정보를 조회한다")
+    void getMe() throws Exception {
+        when(memberAuthenticationService.getProfile(1L)).thenReturn(
+            new MemberProfile(1L, "artisan@example.com", "김도공", MemberRole.USER)
+        );
+        mockMvc.perform(get("/api/member/me")
+                .with(authentication(new UsernamePasswordAuthenticationToken(
+                    1L,
+                    null,
+                    List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                ))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.memberId").value(1))
+            .andExpect(jsonPath("$.data.email").value("artisan@example.com"))
+            .andExpect(jsonPath("$.data.role").value("USER"));
+    }
+
+    @Test
+    @DisplayName("Access Token 없이 내 정보를 조회하면 UNAUTHORIZED를 반환한다")
+    void getMeWithoutAccessToken() throws Exception {
+        mockMvc.perform(get("/api/member/me"))
+            .andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.errorCode").value("UNAUTHORIZED"));
+    }
+
+    private String validRequest() {
+        return """
+            {
+              "email": "artisan@example.com",
+              "password": "password",
+              "passwordConfirm": "password",
+              "name": "김도공",
+              "phone": "01012345678",
+              "role": "USER",
+              "agreements": {
+                "age14OrOlder": true,
+                "termsOfService": true,
+                "privacyCollection": true,
+                "marketing": true
+              }
+            }
+            """;
+    }
+}
