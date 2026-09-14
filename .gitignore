@@ -18,3 +18,5 @@
 *.env
 
 /pr-output.md
+/docs/wiki/
+/pr-output/pr-output.md
