@@ -1,0 +1,87 @@
+package com.jangingmall.backend.member.presentation;
+
+import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.jangingmall.backend.global.config.SecurityConfig;
+import com.jangingmall.backend.global.docs.RestDocsControllerTest;
+import com.jangingmall.backend.member.application.CursorPage;
+import com.jangingmall.backend.member.application.MemberQueryService;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import java.util.List;
+import java.util.Map;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(MemberQueryController.class)
+@Import(SecurityConfig.class)
+class MemberQueryControllerTest extends RestDocsControllerTest {
+
+    @MockitoBean
+    private MemberQueryService queries;
+
+    private static final Map<String, Object> WISH_ITEM = Map.of(
+        "productId", 1L,
+        "name", "청자 다완",
+        "price", 85000,
+        "status", "ON_SALE",
+        "artisanId", 10L,
+        "artisanName", "김도공 도예"
+    );
+
+    @Test
+    @DisplayName("찜 목록 조회 — 유저가 찜한 상품 목록을 커서 페이지로 반환한다")
+    @WithMockUser(roles = "USER")
+    void wishes() throws Exception {
+        CursorPage<Map<String, Object>> page = new CursorPage<>(List.of(WISH_ITEM), null, false, 1L);
+        when(queries.wishes(any(), any())).thenReturn(page);
+
+        mockMvc.perform(get("/api/member/me/wishes")
+                .param("limit", "20"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.items").isArray())
+            .andExpect(jsonPath("$.data.totalCount").value(1))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "member-wish-list",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("찜")
+                    .summary("찜 목록 조회")
+                    .description("유저가 찜한 상품 목록을 커서 페이지네이션으로 반환합니다.")
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.items").type(JsonFieldType.ARRAY).description("찜 목록"),
+                        fieldWithPath("data.items[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                        fieldWithPath("data.items[].name").type(JsonFieldType.STRING).description("상품명"),
+                        fieldWithPath("data.items[].price").type(JsonFieldType.NUMBER).description("가격"),
+                        fieldWithPath("data.items[].status").type(JsonFieldType.STRING).description("상태"),
+                        fieldWithPath("data.items[].artisanId").type(JsonFieldType.NUMBER).description("장인 ID"),
+                        fieldWithPath("data.items[].artisanName").type(JsonFieldType.STRING).description("장인 이름"),
+                        fieldWithPath("data.nextCursor").type(JsonFieldType.STRING).optional().description("다음 페이지 커서 (없으면 null)"),
+                        fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
+                        fieldWithPath("data.totalCount").type(JsonFieldType.NUMBER).description("전체 찜 수")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("찜 목록 조회 — ARTISAN 역할이면 403을 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void wishesForbidden() throws Exception {
+        mockMvc.perform(get("/api/member/me/wishes"))
+            .andExpect(status().isForbidden())
+            .andDo(documentError("member-wish-list-forbidden", "찜", "찜 목록 — 권한 없음", "USER 역할이 없으면 403을 반환합니다."));
+    }
+}

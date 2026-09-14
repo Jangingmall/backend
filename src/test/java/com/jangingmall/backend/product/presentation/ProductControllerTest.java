@@ -4,6 +4,7 @@ import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.docs.RestDocsControllerTest;
+import com.jangingmall.backend.member.application.MemberActivityService;
 import com.jangingmall.backend.product.application.ProductResponse;
 import com.jangingmall.backend.product.application.ProductService;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +39,9 @@ class ProductControllerTest extends RestDocsControllerTest {
 
     @MockitoBean
     private ProductService productService;
+
+    @MockitoBean
+    private MemberActivityService memberActivityService;
 
     private static final ProductResponse SAMPLE = new ProductResponse(
         1L, 10L, 1L, "도자기", 2L, "청자", "청자 다완", "고려 청자 다완", 85000, 10,
@@ -280,5 +284,60 @@ class ProductControllerTest extends RestDocsControllerTest {
                 "상품 등록 — 권한 없음",
                 "ARTISAN 역할이 없는 계정이 접근하면 403을 반환합니다."
             ));
+    }
+
+    @Test
+    @DisplayName("찜 등록 — 유저가 상품을 찜 목록에 추가한다")
+    @WithMockUser(roles = "USER")
+    void wish() throws Exception {
+        doNothing().when(memberActivityService).wish(any(), any());
+
+        mockMvc.perform(post("/api/products/{productId}/wish", 1L))
+            .andExpect(status().isOk())
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "product-wish",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("찜")
+                    .summary("찜 등록")
+                    .description("유저가 상품을 찜 목록에 추가합니다. 이미 찜한 상품은 중복 등록되지 않습니다.")
+                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("찜 취소 — 유저가 상품을 찜 목록에서 제거한다")
+    @WithMockUser(roles = "USER")
+    void unwish() throws Exception {
+        doNothing().when(memberActivityService).unwish(any(), any());
+
+        mockMvc.perform(delete("/api/products/{productId}/wish", 1L))
+            .andExpect(status().isOk())
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "product-unwish",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("찜")
+                    .summary("찜 취소")
+                    .description("유저가 상품을 찜 목록에서 제거합니다. 찜하지 않은 상품을 취소해도 에러가 발생하지 않습니다.")
+                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("찜 등록 — 비회원(ARTISAN)이 찜 시도하면 403을 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void wishForbidden() throws Exception {
+        mockMvc.perform(post("/api/products/{productId}/wish", 1L))
+            .andExpect(status().isForbidden())
+            .andDo(documentError("product-wish-forbidden", "찜", "찜 등록 — 권한 없음", "USER 역할이 없으면 403을 반환합니다."));
     }
 }
