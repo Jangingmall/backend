@@ -268,3 +268,8 @@ member:
 ai:
   base-url: ${AI_BASE_URL}
   timeout-seconds: 30
+
+logging:
+  structured:
+    format:
+      console: ecs
