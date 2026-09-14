@@ -3,6 +3,7 @@ package com.jangingmall.backend.notification.presentation;
 import com.jangingmall.backend.global.common.response.ApiResponse;
 import com.jangingmall.backend.notification.application.NotificationResponse;
 import com.jangingmall.backend.notification.application.NotificationService;
+import com.jangingmall.backend.notification.application.UnreadCountResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,6 +29,23 @@ public class NotificationController {
         @AuthenticationPrincipal Long memberId
     ) {
         return ApiResponse.ok(notificationService.findAll(memberId));
+    }
+
+    @GetMapping("/unread-count")
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<UnreadCountResponse> countUnread(
+        @AuthenticationPrincipal Long memberId
+    ) {
+        return ApiResponse.ok(notificationService.countUnread(memberId));
+    }
+
+    @PatchMapping("/read-all")
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<Void> markAllAsRead(
+        @AuthenticationPrincipal Long memberId
+    ) {
+        notificationService.markAllAsRead(memberId);
+        return ApiResponse.noContent();
     }
 
     @GetMapping("/{notificationId}")

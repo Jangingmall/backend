@@ -2,6 +2,7 @@ package com.jangingmall.backend.notification.infrastructure;
 
 import com.jangingmall.backend.notification.domain.Notification;
 import com.jangingmall.backend.notification.domain.NotificationRepository;
+import com.jangingmall.backend.notification.domain.NotificationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,16 @@ class NotificationRepositoryAdapter implements NotificationRepository {
     @Override
     public List<Notification> findByMemberIdOrderByCreatedAtDesc(Long memberId) {
         return jpa.findByMemberIdOrderByCreatedAtDesc(memberId);
+    }
+
+    @Override
+    public List<Notification> findByMemberIdAndStatus(Long memberId, NotificationStatus status) {
+        return jpa.findByMemberIdAndStatus(memberId, status);
+    }
+
+    @Override
+    public long countByMemberIdAndStatus(Long memberId, NotificationStatus status) {
+        return jpa.countByMemberIdAndStatus(memberId, status);
     }
 
     @Override
