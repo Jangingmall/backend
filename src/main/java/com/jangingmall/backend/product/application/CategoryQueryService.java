@@ -1,29 +1,21 @@
 package com.jangingmall.backend.product.application;
 
 import com.jangingmall.backend.product.domain.CategoryRepository;
-import com.jangingmall.backend.product.domain.ProductRepository;
+import com.jangingmall.backend.product.domain.SubcategoryMaterialRepository;
 import com.jangingmall.backend.product.domain.SubcategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryQueryService {
 
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;
-    private final ProductRepository productRepository;
-
-    public CategoryQueryService(
-        CategoryRepository categoryRepository,
-        SubcategoryRepository subcategoryRepository,
-        ProductRepository productRepository
-    ) {
-        this.categoryRepository = categoryRepository;
-        this.subcategoryRepository = subcategoryRepository;
-        this.productRepository = productRepository;
-    }
+    private final SubcategoryMaterialRepository subcategoryMaterialRepository;
 
     @Transactional(readOnly = true)
     public List<CategoryResponse.CategoryItem> findAllCategories() {
@@ -44,6 +36,6 @@ public class CategoryQueryService {
         if (subcategoryId == null) {
             return List.of();
         }
-        return productRepository.findDistinctMaterialsBySubcategoryId(subcategoryId);
+        return subcategoryMaterialRepository.findNamesBySubcategoryId(subcategoryId);
     }
 }

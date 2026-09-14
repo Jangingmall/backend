@@ -5,6 +5,7 @@ import com.jangingmall.backend.product.application.ProductCommand;
 import com.jangingmall.backend.product.application.ProductResponse;
 import com.jangingmall.backend.product.application.ProductService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,13 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/products")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @PostMapping
     @PreAuthorize("hasRole('ARTISAN')")
