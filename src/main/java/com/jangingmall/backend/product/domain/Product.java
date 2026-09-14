@@ -48,6 +48,9 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(length = 50)
+    private String material;
+
     @Column(nullable = false)
     private int price;
 
