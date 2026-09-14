@@ -1,9 +1,11 @@
 package com.jangingmall.backend.image.application;
 
+import com.jangingmall.backend.image.domain.ImagePurpose;
 import java.time.Duration;
 
 public interface ImageStorage {
-    String presignPut(String objectKey, String contentType, Duration validFor);
-    boolean exists(String objectKey);
-    void delete(String objectKey);
+    String presignPut(ImagePurpose purpose, String objectKey, String contentType, long contentLength,
+                      Duration validFor);
+    boolean isValid(ImagePurpose purpose, String objectKey, String contentType, long maxContentLength);
+    void delete(ImagePurpose purpose, String objectKey);
 }

@@ -39,5 +39,9 @@ class HealthControllerTest extends RestDocsControllerTest {
                     .build()
                 )
             ));
+
+        mockMvc.perform(get("/healthz"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.status").value("ok"));
     }
 }

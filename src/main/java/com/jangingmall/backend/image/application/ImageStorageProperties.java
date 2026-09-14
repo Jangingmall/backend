@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 @Setter
 public class ImageStorageProperties {
     private String bucket = "";
+    private String returnBucket = "";
     private String region = "ap-northeast-2";
     private String keyPrefix = "images";
     private int presignExpirySeconds = 300;
+    private long maxFileSizeBytes = 10L * 1024 * 1024;
 }

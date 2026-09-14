@@ -3,6 +3,7 @@ package com.jangingmall.backend.image.infrastructure;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.image.application.ImageStorage;
 import com.jangingmall.backend.image.application.ImageStorageProperties;
+import com.jangingmall.backend.image.domain.ImagePurpose;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,19 +25,23 @@ public class S3ImageStorage implements ImageStorage {
     private final ImageStorageProperties properties;
 
     @Override
-    public String presignPut(String objectKey, String contentType, Duration validFor) {
+    public String presignPut(ImagePurpose purpose, String objectKey, String contentType, long contentLength,
+                             Duration validFor) {
         PresignedPutObjectRequest request = presigner.presignPutObject(PutObjectPresignRequest.builder()
             .signatureDuration(validFor)
-            .putObjectRequest(PutObjectRequest.builder().bucket(bucket()).key(objectKey).contentType(contentType).build())
+            .putObjectRequest(PutObjectRequest.builder().bucket(bucket(purpose)).key(objectKey)
+                .contentType(contentType).contentLength(contentLength).build())
             .build());
         return request.url().toString();
     }
 
     @Override
-    public boolean exists(String objectKey) {
+    public boolean isValid(ImagePurpose purpose, String objectKey, String contentType, long maxContentLength) {
         try {
-            s3.headObject(HeadObjectRequest.builder().bucket(bucket()).key(objectKey).build());
-            return true;
+            var object = s3.headObject(HeadObjectRequest.builder().bucket(bucket(purpose)).key(objectKey).build());
+            return object.contentLength() != null && object.contentLength() > 0
+                && object.contentLength() <= maxContentLength
+                && contentType.equalsIgnoreCase(object.contentType());
         } catch (NoSuchKeyException exception) {
             return false;
         } catch (S3Exception exception) {
@@ -48,18 +53,20 @@ public class S3ImageStorage implements ImageStorage {
     }
 
     @Override
-    public void delete(String objectKey) {
+    public void delete(ImagePurpose purpose, String objectKey) {
         try {
-            s3.deleteObject(request -> request.bucket(bucket()).key(objectKey));
+            s3.deleteObject(request -> request.bucket(bucket(purpose)).key(objectKey));
         } catch (S3Exception exception) {
             throw new BusinessRuleViolationException("S3 이미지를 삭제할 수 없습니다.");
         }
     }
 
-    private String bucket() {
-        if (properties.getBucket() == null || properties.getBucket().isBlank()) {
-            throw new BusinessRuleViolationException("이미지 S3 버킷이 설정되지 않았습니다.");
+    private String bucket(ImagePurpose purpose) {
+        String bucket = purpose == ImagePurpose.RETURN ? properties.getReturnBucket() : properties.getBucket();
+        if (bucket == null || bucket.isBlank()) {
+            String type = purpose == ImagePurpose.RETURN ? "반품 이미지" : "공개 이미지";
+            throw new BusinessRuleViolationException(type + " S3 버킷이 설정되지 않았습니다.");
         }
-        return properties.getBucket();
+        return bucket;
     }
 }

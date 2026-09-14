@@ -104,6 +104,8 @@ class ImageControllerTest {
     private String validRequest() {
         return "{\"fileName\":\"bowl.webp\",\"contentType\":\"image/webp\","
             + "\"purpose\":\"PRODUCT\",\"sourceWidth\":1200,\"sourceHeight\":800,"
-            + "\"variants\":[\"320w\",\"640w\",\"1280w\"]}";
+            + "\"variants\":[{\"name\":\"320w\",\"sizeBytes\":1024},"
+            + "{\"name\":\"640w\",\"sizeBytes\":2048},"
+            + "{\"name\":\"1280w\",\"sizeBytes\":4096}]}";
     }
 }

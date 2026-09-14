@@ -43,29 +43,53 @@ class ImageServiceTest {
         ImageStorageProperties properties = new ImageStorageProperties();
         properties.setKeyPrefix("images");
         properties.setPresignExpirySeconds(300);
-        service = new ImageService(memberAccess, uploads, storage, properties, new UlidGenerator(), objectMapper);
+        service = new ImageService(memberAccess, uploads, storage, properties, new UlidGenerator(),
+            new UuidGenerator(), objectMapper);
     }
 
     @Test
     @DisplayName("IMG-P0-001 WebP 3종 variant 요청은 각 S3 객체 키의 Presigned PUT URL을 함께 발급한다")
     void createsPresignedUploadForAllVariants() {
         when(objectMapper.writeValueAsString(any())).thenReturn("{\"320w\":\"images/product/1/a/320w.webp\"}");
-        when(storage.presignPut(any(), eq("image/webp"), any(Duration.class))).thenAnswer(invocation ->
-            "https://s3.example/" + invocation.getArgument(0));
+        when(storage.presignPut(eq(ImagePurpose.PRODUCT), any(), eq("image/webp"), any(Long.class),
+            any(Duration.class)))
+            .thenAnswer(invocation -> "https://s3.example/" + invocation.getArgument(1));
         when(uploads.save(any(ImageUpload.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         ImageService.PresignedUpload result = service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("bowl.webp", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
-                List.of("320w", "640w", "1280w")));
+                publicVariants()));
 
         assertThat(result.imageId()).hasSize(26);
         assertThat(result.uploads()).extracting(ImageService.VariantUpload::variant)
             .containsExactly("320w", "640w", "1280w");
         assertThat(result.uploads()).allSatisfy(upload -> {
-            assertThat(upload.objectKey()).startsWith("images/product/1/" + result.imageId() + "/");
+            assertThat(upload.objectKey()).matches("images/product/[0-9a-f-]{36}/(320w|640w|1280w)\\.webp");
             assertThat(upload.presignedUrl()).contains(upload.objectKey());
         });
         verify(uploads).save(any(ImageUpload.class));
+    }
+
+    @Test
+    @DisplayName("IMG-P0-019 반품 이미지는 비공개 반품 버킷에 1280w 단일 variant URL을 발급한다")
+    void createsSinglePresignedUploadForReturnImage() {
+        when(objectMapper.writeValueAsString(any())).thenReturn("{\"1280w\":{}}");
+        when(storage.presignPut(eq(ImagePurpose.RETURN), any(), eq("image/webp"), any(Long.class),
+            any(Duration.class)))
+            .thenAnswer(invocation -> "https://returns.s3.example/" + invocation.getArgument(1));
+        when(uploads.save(any(ImageUpload.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ImageService.PresignedUpload result = service.createPresignedUpload(1L,
+            new ImageService.CreatePresignedUpload("damage.webp", "image/webp", ImagePurpose.RETURN, 1200, 800,
+                returnVariants()));
+
+        assertThat(result.uploads()).singleElement().satisfies(upload -> {
+            assertThat(upload.variant()).isEqualTo("1280w");
+            assertThat(upload.objectKey()).matches("images/return/[0-9a-f-]{36}/1280w\\.webp");
+            assertThat(upload.presignedUrl()).startsWith("https://returns.s3.example/");
+        });
+        verify(storage).presignPut(eq(ImagePurpose.RETURN), any(), eq("image/webp"), eq(4096L),
+            any(Duration.class));
     }
 
     @Test
@@ -73,10 +97,10 @@ class ImageServiceTest {
     void rejectsNonWebpUpload() {
         assertThatThrownBy(() -> service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("bowl.jpg", "image/jpeg", ImagePurpose.PRODUCT, 1200, 800,
-                List.of("320w"))))
+                List.of(new ImageService.UploadVariant("320w", 1024L)))))
             .isInstanceOf(BusinessRuleViolationException.class);
 
-        verify(storage, never()).presignPut(any(), any(), any());
+        verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
 
     @Test
@@ -84,10 +108,23 @@ class ImageServiceTest {
     void rejectsIncompleteVariants() {
         assertThatThrownBy(() -> service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("bowl.webp", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
-                List.of("320w", "640w"))))
+                List.of(new ImageService.UploadVariant("320w", 1024L),
+                    new ImageService.UploadVariant("640w", 2048L)))))
             .isInstanceOf(BusinessRuleViolationException.class);
 
-        verify(storage, never()).presignPut(any(), any(), any());
+        verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
+    }
+
+    @Test
+    @DisplayName("IMG-P0-020 반품 이미지에 공개 이미지용 3종 variant를 요청하면 거부한다")
+    void rejectsPublicVariantsForReturnImage() {
+        assertThatThrownBy(() -> service.createPresignedUpload(1L,
+            new ImageService.CreatePresignedUpload("damage.webp", "image/webp", ImagePurpose.RETURN, 1200, 800,
+                publicVariants())))
+            .isInstanceOf(BusinessRuleViolationException.class)
+            .hasMessageContaining("1280w");
+
+        verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
 
     @Test
@@ -97,10 +134,9 @@ class ImageServiceTest {
             1200, 800, "{}", Instant.now().plusSeconds(300));
         when(uploads.findById(upload.getId())).thenReturn(Optional.of(upload));
         when(objectMapper.readValue("{}", Map.class)).thenReturn(Map.of(
-            "320w", Map.of("objectKey", "images/return/1/image/320w.webp"),
-            "640w", Map.of("objectKey", "images/return/1/image/640w.webp"),
             "1280w", Map.of("objectKey", "images/return/1/image/1280w.webp")));
-        when(storage.exists(any())).thenReturn(true);
+        when(storage.isValid(eq(ImagePurpose.RETURN), any(), eq("image/webp"), eq(10L * 1024 * 1024)))
+            .thenReturn(true);
         when(uploads.consumeIfOwnedAndActive(eq(upload.getId()), eq(1L), any(Instant.class))).thenReturn(1);
 
         assertThat(service.consumeOwned(1L, ImagePurpose.RETURN, List.of(upload.getId())))
@@ -128,7 +164,8 @@ class ImageServiceTest {
             1200, 800, "{}", Instant.now().plusSeconds(300));
         when(uploads.findById(upload.getId())).thenReturn(Optional.of(upload));
         when(objectMapper.readValue("{}", Map.class)).thenReturn(completeVariants("product"));
-        when(storage.exists(any())).thenReturn(true);
+        when(storage.isValid(eq(ImagePurpose.PRODUCT), any(), eq("image/webp"), eq(10L * 1024 * 1024)))
+            .thenReturn(true);
         when(uploads.consumeIfOwnedAndActive(eq(upload.getId()), eq(1L), any(Instant.class))).thenReturn(0);
 
         assertThatThrownBy(() -> service.consumeOwned(1L, ImagePurpose.PRODUCT, List.of(upload.getId())))
@@ -146,7 +183,7 @@ class ImageServiceTest {
         assertThatThrownBy(() -> service.deleteUnused(1L, upload.getId()))
             .isInstanceOfSatisfying(DomainException.class,
                 exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN));
-        verify(storage, never()).delete(any());
+        verify(storage, never()).delete(any(), any());
     }
 
     @Test
@@ -159,9 +196,9 @@ class ImageServiceTest {
         when(objectMapper.readValue("{}", Map.class)).thenReturn(completeVariants("content"));
 
         assertThat(service.deleteExpiredUnused()).isOne();
-        verify(storage).delete("images/content/1/image/320w.webp");
-        verify(storage).delete("images/content/1/image/640w.webp");
-        verify(storage).delete("images/content/1/image/1280w.webp");
+        verify(storage).delete(ImagePurpose.CONTENT, "images/content/1/image/320w.webp");
+        verify(storage).delete(ImagePurpose.CONTENT, "images/content/1/image/640w.webp");
+        verify(storage).delete(ImagePurpose.CONTENT, "images/content/1/image/1280w.webp");
         verify(uploads).delete(upload);
     }
 
@@ -186,7 +223,7 @@ class ImageServiceTest {
 
         assertThat(service.verifyAndConsume(1L, upload.getId()))
             .isEqualTo(new ImageService.Verification(true, false, List.of()));
-        verify(storage, never()).exists(any());
+        verify(storage, never()).isValid(any(), any(), any(), any(Long.class));
     }
 
     @Test
@@ -196,8 +233,10 @@ class ImageServiceTest {
             1200, 800, "{}", Instant.now().plusSeconds(300));
         when(uploads.findById(upload.getId())).thenReturn(Optional.of(upload));
         when(objectMapper.readValue("{}", Map.class)).thenReturn(completeVariants("product"));
-        when(storage.exists(any())).thenReturn(true);
-        when(storage.exists("images/product/1/image/640w.webp")).thenReturn(false);
+        when(storage.isValid(eq(ImagePurpose.PRODUCT), any(), eq("image/webp"), eq(10L * 1024 * 1024)))
+            .thenReturn(true);
+        when(storage.isValid(ImagePurpose.PRODUCT, "images/product/1/image/640w.webp", "image/webp",
+            10L * 1024 * 1024)).thenReturn(false);
 
         ImageService.Verification result = service.verifyAndConsume(1L, upload.getId());
 
@@ -216,9 +255,9 @@ class ImageServiceTest {
 
         service.deleteUnused(1L, upload.getId());
 
-        verify(storage).delete("images/artisan/1/image/320w.webp");
-        verify(storage).delete("images/artisan/1/image/640w.webp");
-        verify(storage).delete("images/artisan/1/image/1280w.webp");
+        verify(storage).delete(ImagePurpose.ARTISAN, "images/artisan/1/image/320w.webp");
+        verify(storage).delete(ImagePurpose.ARTISAN, "images/artisan/1/image/640w.webp");
+        verify(storage).delete(ImagePurpose.ARTISAN, "images/artisan/1/image/1280w.webp");
         verify(uploads).delete(upload);
     }
 
@@ -234,7 +273,7 @@ class ImageServiceTest {
         assertThatThrownBy(() -> service.deleteUnused(1L, upload.getId()))
             .isInstanceOfSatisfying(DomainException.class,
                 exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN));
-        verify(storage, never()).delete(any());
+        verify(storage, never()).delete(any(), any());
     }
 
     @Test
@@ -242,9 +281,20 @@ class ImageServiceTest {
     void rejectsOversizedDimensions() {
         assertThatThrownBy(() -> service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("huge.webp", "image/webp", ImagePurpose.CONTENT, 10_001, 800,
-                List.of("320w", "640w", "1280w"))))
+                publicVariants())))
             .isInstanceOf(BusinessRuleViolationException.class);
-        verify(storage, never()).presignPut(any(), any(), any());
+        verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
+    }
+
+    @Test
+    @DisplayName("IMG-P0-022 variant 파일이 10MB를 초과하면 URL을 발급하지 않는다")
+    void rejectsOversizedVariantFile() {
+        assertThatThrownBy(() -> service.createPresignedUpload(1L,
+            new ImageService.CreatePresignedUpload("huge.webp", "image/webp", ImagePurpose.RETURN, 1200, 800,
+                List.of(new ImageService.UploadVariant("1280w", 10L * 1024 * 1024 + 1)))))
+            .isInstanceOf(BusinessRuleViolationException.class)
+            .hasMessageContaining("10485760");
+        verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
 
     private Map<String, Object> completeVariants(String purpose) {
@@ -252,5 +302,16 @@ class ImageServiceTest {
             "320w", Map.of("objectKey", "images/" + purpose + "/1/image/320w.webp"),
             "640w", Map.of("objectKey", "images/" + purpose + "/1/image/640w.webp"),
             "1280w", Map.of("objectKey", "images/" + purpose + "/1/image/1280w.webp"));
+    }
+
+    private List<ImageService.UploadVariant> publicVariants() {
+        return List.of(
+            new ImageService.UploadVariant("320w", 1024L),
+            new ImageService.UploadVariant("640w", 2048L),
+            new ImageService.UploadVariant("1280w", 4096L));
+    }
+
+    private List<ImageService.UploadVariant> returnVariants() {
+        return List.of(new ImageService.UploadVariant("1280w", 4096L));
     }
 }

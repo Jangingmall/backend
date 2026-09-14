@@ -23,8 +23,9 @@ import tools.jackson.databind.ObjectMapper;
 public class ImageService {
 
     private static final String WEBP = "image/webp";
-    private static final List<String> ALLOWED_VARIANTS = List.of("320w", "640w", "1280w");
-    private static final Set<String> REQUIRED_VARIANTS = Set.copyOf(ALLOWED_VARIANTS);
+    private static final List<String> PUBLIC_VARIANTS = List.of("320w", "640w", "1280w");
+    private static final Set<String> REQUIRED_PUBLIC_VARIANTS = Set.copyOf(PUBLIC_VARIANTS);
+    private static final Set<String> REQUIRED_RETURN_VARIANTS = Set.of("1280w");
     private static final int MAX_DIMENSION = 10_000;
 
     private final MemberAccess memberAccess;
@@ -32,6 +33,7 @@ public class ImageService {
     private final ImageStorage storage;
     private final ImageStorageProperties properties;
     private final UlidGenerator ulids;
+    private final UuidGenerator uuids;
     private final ObjectMapper objectMapper;
 
     @Transactional
@@ -39,15 +41,20 @@ public class ImageService {
         memberAccess.active(memberId);
         validate(command);
         String imageId = ulids.next();
+        String objectKeyId = uuids.next();
         Duration validFor = Duration.ofSeconds(properties.getPresignExpirySeconds());
-        Map<String, String> objectKeys = new LinkedHashMap<>();
+        Map<String, Map<String, Object>> metadata = new LinkedHashMap<>();
         List<VariantUpload> uploadUrls = command.variants().stream().map(variant -> {
-            String objectKey = objectKey(command.purpose(), memberId, imageId, variant);
-            objectKeys.put(variant, objectKey);
-            return new VariantUpload(variant, objectKey, storage.presignPut(objectKey, WEBP, validFor));
+            String objectKey = objectKey(command.purpose(), objectKeyId, variant.name());
+            metadata.put(variant.name(), Map.of(
+                "objectKey", objectKey,
+                "contentType", WEBP,
+                "sizeBytes", variant.sizeBytes()));
+            return new VariantUpload(variant.name(), objectKey,
+                storage.presignPut(command.purpose(), objectKey, WEBP, variant.sizeBytes(), validFor));
         }).toList();
         uploads.save(new ImageUpload(imageId, memberId, command.purpose(), command.sourceWidth(), command.sourceHeight(),
-            json(variantMetadata(objectKeys)), Instant.now().plus(validFor)));
+            json(metadata), Instant.now().plus(validFor)));
         return new PresignedUpload(imageId, uploadUrls, properties.getPresignExpirySeconds());
     }
 
@@ -62,7 +69,7 @@ public class ImageService {
         }
         List<String> objectKeys = objectKeys(upload);
         if (!hasRequiredVariants(upload) || upload.isConsumed()
-            || objectKeys.stream().anyMatch(key -> !storage.exists(key))) {
+            || objectKeys.stream().anyMatch(key -> !isValidUpload(upload.getPurpose(), key))) {
             return new Verification(false, true, objectKeys);
         }
         if (uploads.consumeIfOwnedAndActive(imageId, requesterId, Instant.now()) != 1) {
@@ -98,10 +105,10 @@ public class ImageService {
                 throw new DomainException(ErrorCode.RESOURCE_EXPIRED);
             }
             if (!hasRequiredVariants(upload)) {
-                throw new BusinessRuleViolationException("320w, 640w, 1280w 이미지가 모두 필요합니다.");
+                throw new BusinessRuleViolationException(requiredVariantsMessage(upload.getPurpose()));
             }
-            if (objectKeys(upload).stream().anyMatch(key -> !storage.exists(key))) {
-                throw new BusinessRuleViolationException("업로드가 완료되지 않은 이미지가 있습니다.");
+            if (objectKeys(upload).stream().anyMatch(key -> !isValidUpload(upload.getPurpose(), key))) {
+                throw new BusinessRuleViolationException("업로드가 완료되지 않았거나 형식·크기가 올바르지 않은 이미지가 있습니다.");
             }
             return upload;
         }).toList();
@@ -124,7 +131,7 @@ public class ImageService {
         if (upload.isConsumed()) {
             throw new DomainException(ErrorCode.FORBIDDEN);
         }
-        objectKeys(upload).forEach(storage::delete);
+        objectKeys(upload).forEach(key -> storage.delete(upload.getPurpose(), key));
         uploads.delete(upload);
     }
 
@@ -137,7 +144,7 @@ public class ImageService {
         List<ImageUpload> expired = uploads
             .findTop100ByConsumedFalseAndExpiresAtLessThanEqualOrderByExpiresAtAsc(Instant.now());
         for (ImageUpload upload : expired) {
-            objectKeys(upload).forEach(storage::delete);
+            objectKeys(upload).forEach(key -> storage.delete(upload.getPurpose(), key));
             uploads.delete(upload);
         }
         return expired.size();
@@ -154,25 +161,33 @@ public class ImageService {
         if (command.sourceWidth() > MAX_DIMENSION || command.sourceHeight() > MAX_DIMENSION) {
             throw new BusinessRuleViolationException("이미지 해상도는 10000px 이하여야 합니다.");
         }
-        if (command.variants().stream().anyMatch(variant -> !ALLOWED_VARIANTS.contains(variant))
-            || command.variants().stream().distinct().count() != command.variants().size()
-            || !Set.copyOf(command.variants()).equals(REQUIRED_VARIANTS)) {
-            throw new BusinessRuleViolationException("이미지 variant는 320w, 640w, 1280w를 각각 한 번씩 요청해야 합니다.");
+        if (command.variants().stream().anyMatch(variant -> variant == null || variant.name() == null)) {
+            throw new BusinessRuleViolationException("이미지 variant 요청값이 올바르지 않습니다.");
+        }
+        Set<String> requiredVariants = requiredVariants(command.purpose());
+        List<String> variantNames = command.variants().stream().map(UploadVariant::name).toList();
+        if (variantNames.stream().anyMatch(variant -> !PUBLIC_VARIANTS.contains(variant))
+            || variantNames.stream().distinct().count() != variantNames.size()
+            || !Set.copyOf(variantNames).equals(requiredVariants)) {
+            throw new BusinessRuleViolationException(requiredVariantsMessage(command.purpose()));
+        }
+        if (command.variants().stream().anyMatch(variant -> variant.sizeBytes() <= 0
+            || variant.sizeBytes() > properties.getMaxFileSizeBytes())) {
+            throw new BusinessRuleViolationException(
+                "이미지 파일 크기는 1바이트 이상 " + properties.getMaxFileSizeBytes() + "바이트 이하여야 합니다.");
         }
     }
 
-    private String objectKey(ImagePurpose purpose, Long memberId, String imageId, String variant) {
+    private String objectKey(ImagePurpose purpose, String objectKeyId, String variant) {
         String prefix = properties.getKeyPrefix().replaceAll("^/+|/+$", "");
-        return prefix + "/" + purpose.name().toLowerCase() + "/" + memberId + "/" + imageId + "/" + variant + ".webp";
+        return prefix + "/" + purpose.name().toLowerCase() + "/" + objectKeyId + "/" + variant + ".webp";
     }
 
-    private Map<String, Map<String, String>> variantMetadata(Map<String, String> objectKeys) {
-        Map<String, Map<String, String>> metadata = new LinkedHashMap<>();
-        objectKeys.forEach((variant, objectKey) -> metadata.put(variant, Map.of("objectKey", objectKey)));
-        return metadata;
+    private boolean isValidUpload(ImagePurpose purpose, String objectKey) {
+        return storage.isValid(purpose, objectKey, WEBP, properties.getMaxFileSizeBytes());
     }
 
-    private String json(Map<String, Map<String, String>> variants) {
+    private String json(Map<String, Map<String, Object>> variants) {
         try {
             return objectMapper.writeValueAsString(variants);
         } catch (Exception exception) {
@@ -186,7 +201,17 @@ public class ImageService {
     }
 
     private boolean hasRequiredVariants(ImageUpload upload) {
-        return variants(upload).keySet().equals(REQUIRED_VARIANTS);
+        return variants(upload).keySet().equals(requiredVariants(upload.getPurpose()));
+    }
+
+    private Set<String> requiredVariants(ImagePurpose purpose) {
+        return purpose == ImagePurpose.RETURN ? REQUIRED_RETURN_VARIANTS : REQUIRED_PUBLIC_VARIANTS;
+    }
+
+    private String requiredVariantsMessage(ImagePurpose purpose) {
+        return purpose == ImagePurpose.RETURN
+            ? "반품 이미지는 1280w variant를 한 번만 요청해야 합니다."
+            : "이미지 variant는 320w, 640w, 1280w를 각각 한 번씩 요청해야 합니다.";
     }
 
     @SuppressWarnings("unchecked")
@@ -206,8 +231,10 @@ public class ImageService {
         return String.valueOf(metadata);
     }
 
+    public record UploadVariant(String name, long sizeBytes) {}
+
     public record CreatePresignedUpload(String fileName, String contentType, ImagePurpose purpose,
-                                        int sourceWidth, int sourceHeight, List<String> variants) {}
+                                        int sourceWidth, int sourceHeight, List<UploadVariant> variants) {}
 
     public record VariantUpload(String variant, String objectKey, String presignedUrl) {}
 

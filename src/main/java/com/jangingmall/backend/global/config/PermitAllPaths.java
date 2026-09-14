@@ -6,6 +6,9 @@ public final class PermitAllPaths {
 
     public static final Set<String> PATHS = Set.of(
         "/api/health",
+        "/healthz",
+        "/actuator/health/liveness",
+        "/actuator/health/readiness",
         "/api/member/signup",
         "/api/member/login",
         "/api/member/token/refresh",

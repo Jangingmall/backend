@@ -2721,7 +2721,7 @@
     ""accountHolder"": ""string — 예금주명""
   }
 }",
-이미지,유창민,POST,/api/images/presigned-url,이미지 업로드 Presigned URL 발급(다중 variant),320w/640w/1280w 등 요청한 variant별로 WebP 업로드용 Presigned URL을 한 번에 발급한다(유효시간 5분). imageId로 variant 그룹을 묶어 소유권을 내부 기록한다,Authenticated,예정,P0,"{
+이미지,유창민,POST,/api/images/presigned-url,이미지 업로드 Presigned URL 발급(다중 variant),PRODUCT/ARTISAN/CONTENT는 320w·640w·1280w 3종을 공개 이미지 버킷에 저장하고 RETURN은 1280w 단일 파일을 별도 비공개 반품 버킷에 저장한다. WebP 파일은 variant당 최대 10MB이며 UUID objectKey와 5분 유효 Presigned PUT URL을 발급한다,Authenticated,예정,P0,"{
   ""method"": ""POST"",
   ""url"": ""/api/images/presigned-url"",
   ""headers"": {
@@ -2731,11 +2731,14 @@
   ""body"": {
     ""fileName"": ""string · 필수"",
     ""contentType"": ""string · 필수"",
-    ""purpose"": ""string (enum: `PRODUCT`(상품 이미지) | `ARTISAN`(장인 프로필 이미지) | `CONTENT`(AI 상세페이지 콘텐츠 이미지)) · 필수"",
+    ""purpose"": ""string (enum: `PRODUCT`(상품 이미지) | `ARTISAN`(장인 프로필 이미지) | `CONTENT`(AI 상세페이지 콘텐츠 이미지) | `RETURN`(반품 증빙 이미지)) · 필수"",
     ""sourceWidth"": ""number · 필수 — 원본 이미지 픽셀 너비 (FE Canvas API 리사이즈 전 원본)"",
     ""sourceHeight"": ""number · 필수 — 원본 이미지 픽셀 높이 (aspect ratio 보존용, variant height 산출 기준)"",
     ""variants"": [
-      ""string · 필수""
+      {
+        ""name"": ""string · 필수 — PRODUCT/ARTISAN/CONTENT는 320w·640w·1280w, RETURN은 1280w 고정"",
+        ""sizeBytes"": ""number · 필수 — 실제 PUT할 파일 크기, variant당 최대 10485760바이트(10MB)""
+      }
     ]
   }
 }","{
