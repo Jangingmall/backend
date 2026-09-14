@@ -97,7 +97,7 @@ public class ProductService {
 
     private Product getProduct(Long productId) {
         return productRepository.findById(productId)
-            .orElseThrow(() -> new NotFoundException(ProductErrorMessage.NOT_FOUND));
+            .orElseThrow(() -> new NotFoundException(ProductErrorMessage.NOT_FOUND.message()));
     }
 
     private Category resolveCategory(Long categoryId) {

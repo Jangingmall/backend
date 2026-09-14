@@ -122,19 +122,19 @@ public class Product {
 
     public void verifyOwner(Long requesterId) {
         if (!artisanId.equals(requesterId)) {
-            throw new ForbiddenException(ProductErrorMessage.FORBIDDEN);
+            throw new ForbiddenException(ProductErrorMessage.FORBIDDEN.message());
         }
     }
 
     private static void validatePrice(int price) {
         if (price <= 0) {
-            throw new com.jangingmall.backend.global.exception.BusinessRuleViolationException(ProductErrorMessage.INVALID_PRICE);
+            throw new com.jangingmall.backend.global.exception.BusinessRuleViolationException(ProductErrorMessage.INVALID_PRICE.message());
         }
     }
 
     private static void validateStock(int stock) {
         if (stock < 0) {
-            throw new com.jangingmall.backend.global.exception.BusinessRuleViolationException(ProductErrorMessage.INVALID_STOCK);
+            throw new com.jangingmall.backend.global.exception.BusinessRuleViolationException(ProductErrorMessage.INVALID_STOCK.message());
         }
     }
 

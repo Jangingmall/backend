@@ -20,7 +20,7 @@ public enum ProductStatus {
             case HIDDEN -> next == ON_SALE || next == DRAFT;
         };
         if (!allowed) {
-            throw new BusinessRuleViolationException(ProductErrorMessage.INVALID_STATUS_TRANSITION);
+            throw new BusinessRuleViolationException(ProductErrorMessage.INVALID_STATUS_TRANSITION.message());
         }
     }
 }
