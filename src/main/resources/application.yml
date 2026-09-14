@@ -110,6 +110,88 @@ ai:
 spring:
   config:
     activate:
+      on-profile: local-h2
+  datasource:
+    url: jdbc:h2:mem:jangingmall;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  flyway:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+    show-sql: true
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  mail:
+    host: localhost
+    port: 1025
+    username:
+    password:
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: local-kakao-client-id
+            client-secret: local-kakao-client-secret
+            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, account_email
+          google:
+            client-id: local-google-client-id
+            client-secret: local-google-client-secret
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+            scope: openid, profile, email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  secret: local-h2-secret-key-minimum-256-bits-for-hs256-algorithm
+  access-token-expiry: 1800000
+  refresh-token-expiry: 604800000
+  refresh-cookie-secure: false
+
+member:
+  email-verification:
+    verification-url: http://localhost:8080/api/member/email-verifications/verify
+    success-redirect-url: http://localhost:3000/
+    from: no-reply@jangingmall.local
+    token-expiry-seconds: 1800
+  oauth:
+    frontend-redirect-url: http://localhost:3000/oauth/callback
+    http-timeout-millis: 5000
+  rate-limit:
+    attempts: 10
+    window-seconds: 60
+
+ai:
+  base-url: http://localhost:8001
+  timeout-seconds: 30
+
+---
+spring:
+  config:
+    activate:
       on-profile: prod
   datasource:
     url: ${DB_URL}
