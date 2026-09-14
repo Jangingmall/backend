@@ -1,5 +1,6 @@
 package com.jangingmall.backend.content.application;
 
+import tools.jackson.databind.ObjectMapper;
 import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
@@ -19,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,6 +44,8 @@ class GenerationServiceTest {
 
     @Captor
     private ArgumentCaptor<ContentGeneration> generationCaptor;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private GenerationService generationService;
     private Product artisanProduct;
@@ -118,12 +122,14 @@ class GenerationServiceTest {
 
     @Test
     @DisplayName("AI 호출 성공 시 executeAsync가 블록 JSON과 함께 COMPLETED로 전환한다")
-    void executeAsyncSuccess() {
+    void executeAsyncSuccess() throws Exception {
         ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
         when(generationRepository.save(any())).thenReturn(generation);
-        String blocks = "[{\"order\":1,\"tag\":\"h2\",\"text\":\"청자 다완\"}]";
+        String blocks = objectMapper.writeValueAsString(
+            List.of(Map.of("order", 1, "tag", "h2", "text", "청자 다완"))
+        );
         when(aiContentClient.requestGeneration(any(), any(), any(), any(), any(), any())).thenReturn(blocks);
 
         generationService.executeAsync(1L, sampleCommand(1L));

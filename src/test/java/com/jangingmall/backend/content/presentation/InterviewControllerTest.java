@@ -57,14 +57,7 @@ class InterviewControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(post("/api/content/products/{productId}/interview", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "process": "손으로 직접 빚음",
-                      "materials": "청자",
-                      "technique": "청자기법",
-                      "story": "300년 가문의 전통"
-                    }
-                    """))
+                .content(json(new InterviewRequest.Create("손으로 직접 빚음", "청자", "청자기법", "300년 가문의 전통"))))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data.productId").value(10))
             .andDo(MockMvcRestDocumentationWrapper.document(
@@ -94,14 +87,7 @@ class InterviewControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(post("/api/content/products/{productId}/interview", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "process": "과정",
-                      "materials": "소재",
-                      "technique": "기법",
-                      "story": "스토리"
-                    }
-                    """))
+                .content(json(new InterviewRequest.Create("과정", "소재", "기법", "스토리"))))
             .andExpect(status().isConflict())
             .andDo(documentError("interview-create-conflict", "콘텐츠", "취재 데이터 등록 — 중복", "이미 취재 데이터가 존재하는 상품입니다."));
     }
@@ -114,14 +100,7 @@ class InterviewControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(post("/api/content/products/{productId}/interview", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "process": "과정",
-                      "materials": "소재",
-                      "technique": "기법",
-                      "story": "스토리"
-                    }
-                    """))
+                .content(json(new InterviewRequest.Create("과정", "소재", "기법", "스토리"))))
             .andExpect(status().isForbidden())
             .andDo(documentError("interview-create-forbidden", "콘텐츠", "취재 데이터 등록 — 권한 없음", "소유자가 아닌 장인이 접근한 경우입니다."));
     }
@@ -168,12 +147,7 @@ class InterviewControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(patch("/api/content/products/{productId}/interview", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "process": "새 과정",
-                      "materials": "새 소재"
-                    }
-                    """))
+                .content(json(new InterviewRequest.Update("새 과정", "새 소재", null, null))))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.process").value("새 과정"))
             .andDo(MockMvcRestDocumentationWrapper.document(
@@ -203,11 +177,7 @@ class InterviewControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(patch("/api/content/products/{productId}/interview", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "process": "새 과정"
-                    }
-                    """))
+                .content(json(new InterviewRequest.Update("새 과정", null, null, null))))
             .andExpect(status().isNotFound())
             .andDo(documentError("interview-update-not-found", "콘텐츠", "취재 데이터 수정 — 없음", "취재 데이터가 등록되지 않은 상품입니다."));
     }
@@ -220,11 +190,7 @@ class InterviewControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(patch("/api/content/products/{productId}/interview", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "process": "새 과정"
-                    }
-                    """))
+                .content(json(new InterviewRequest.Update("새 과정", null, null, null))))
             .andExpect(status().isForbidden())
             .andDo(documentError("interview-update-forbidden", "콘텐츠", "취재 데이터 수정 — 권한 없음", "소유자가 아닌 장인이 접근한 경우입니다."));
     }

@@ -19,6 +19,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
@@ -65,14 +66,7 @@ class GenerationControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(post("/api/content/products/{productId}/generations", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "images": ["imageId1", "imageId2"],
-                      "productName": "청자 다완",
-                      "howMade": "손으로 직접 빚음",
-                      "careTips": "물기 닦아서 보관"
-                    }
-                    """))
+                .content(json(new GenerationRequest.Create(List.of("imageId1", "imageId2"), "청자 다완", "손으로 직접 빚음", "물기 닦아서 보관"))))
             .andExpect(status().isAccepted())
             .andExpect(jsonPath("$.data.status").value("PROCESSING"))
             .andExpect(jsonPath("$.data.completedAt").doesNotExist())
@@ -103,14 +97,7 @@ class GenerationControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(post("/api/content/products/{productId}/generations", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "images": ["imageId1"],
-                      "productName": "청자 다완",
-                      "howMade": "손으로 빚음",
-                      "careTips": "물 닦기"
-                    }
-                    """))
+                .content(json(new GenerationRequest.Create(List.of("imageId1"), "청자 다완", "손으로 빚음", "물 닦기"))))
             .andExpect(status().isForbidden())
             .andDo(documentError("generation-request-forbidden", "AI 콘텐츠 생성", "AI 생성 요청 — 권한 없음", "소유자가 아닌 장인이 요청한 경우입니다."));
     }
