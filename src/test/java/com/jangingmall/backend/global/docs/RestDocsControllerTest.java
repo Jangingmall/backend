@@ -2,6 +2,7 @@ package com.jangingmall.backend.global.docs;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import tools.jackson.databind.ObjectMapper;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +40,9 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 public abstract class RestDocsControllerTest {
 
     protected MockMvc mockMvc;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     @Autowired
     private WebApplicationContext context;
@@ -115,5 +119,16 @@ public abstract class RestDocsControllerTest {
     protected static org.springframework.test.web.servlet.ResultMatcher errorStatus(ErrorCode errorCode) {
         return org.springframework.test.web.servlet.result.MockMvcResultMatchers
             .status().is(errorCode.httpStatus().value());
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // JSON 직렬화 헬퍼 — 테스트에서 JSON 문자열 리터럴 대신 사용
+    // ──────────────────────────────────────────────────────────────────────────
+    protected String json(Object object) {
+        try {
+            return objectMapper.writeValueAsString(object);
+        } catch (Exception exception) {
+            throw new IllegalArgumentException("JSON 직렬화 실패: " + object.getClass().getSimpleName(), exception);
+        }
     }
 }

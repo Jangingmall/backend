@@ -99,17 +99,7 @@ class ProductControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "categoryId": 1,
-                      "subcategoryId": 2,
-                      "title": "청자 다완",
-                      "description": "고려 청자 다완",
-                      "price": 85000,
-                      "stock": 10,
-                      "thumbnailUrl": "https://example.com/thumb.jpg"
-                    }
-                    """))
+                .content(json(new ProductRequest.Create(1L, 2L, "청자 다완", "고려 청자 다완", 85000, 10, "https://example.com/thumb.jpg"))))
             .andExpect(status().isCreated())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "product-create",
@@ -201,17 +191,7 @@ class ProductControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(patch("/api/products/{productId}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    {
-                      "categoryId": 1,
-                      "subcategoryId": 2,
-                      "title": "청자 다완 (수정)",
-                      "description": "수정된 설명",
-                      "price": 90000,
-                      "stock": 8,
-                      "thumbnailUrl": "https://example.com/thumb2.jpg"
-                    }
-                    """))
+                .content(json(new ProductRequest.Update(1L, 2L, "청자 다완 (수정)", "수정된 설명", 90000, 8, "https://example.com/thumb2.jpg"))))
             .andExpect(status().isOk())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "product-update",
@@ -243,9 +223,7 @@ class ProductControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(patch("/api/products/{productId}/status", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    { "status": "ON_SALE" }
-                    """))
+                .content(json(new ProductRequest.ChangeStatus("ON_SALE"))))
             .andExpect(status().isOk())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "product-change-status",
@@ -294,9 +272,7 @@ class ProductControllerTest extends RestDocsControllerTest {
     void createProductForbidden() throws Exception {
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                    { "title": "청자 다완", "price": 85000, "stock": 10 }
-                    """))
+                .content(json(new ProductRequest.Create(null, null, "청자 다완", null, 85000, 10, null))))
             .andExpect(status().isForbidden())
             .andDo(documentError(
                 "product-create-forbidden",

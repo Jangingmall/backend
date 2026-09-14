@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import tools.jackson.databind.ObjectMapper;
 import com.jangingmall.backend.global.common.response.GlobalResponseAdvice;
 import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
@@ -19,6 +20,7 @@ import com.jangingmall.backend.member.application.OAuthIdentity;
 import com.jangingmall.backend.member.application.OAuthMemberService;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.domain.MemberStatus;
+import com.jangingmall.backend.member.presentation.dto.MemberSignupRequest;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +38,7 @@ import org.springframework.test.web.servlet.MockMvc;
 class OAuthControllerTest {
 
     @Autowired private MockMvc mockMvc;
+    @Autowired private ObjectMapper objectMapper;
     @MockitoBean private OAuthMemberService oauth;
     @MockitoBean private MemberAuthenticationService authentication;
 
@@ -64,10 +67,10 @@ class OAuthControllerTest {
         mockMvc.perform(post("/api/member/oauth2/complete-profile")
                 .cookie(new Cookie("oauthOnboarding", "onboarding-token"))
                 .contentType(APPLICATION_JSON)
-                .content("""
-                    {"name":"김도공","phone":"01012345678","agreements":{
-                      "age14OrOlder":true,"termsOfService":true,"privacyCollection":true,"marketing":false}}
-                    """))
+                .content(objectMapper.writeValueAsString(new OAuthController.CompleteProfile(
+                    "김도공", "01012345678",
+                    new MemberSignupRequest.Agreements(true, true, true, false)
+                ))))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data.memberId").value(7))
             .andExpect(jsonPath("$.data.accessToken").value("access-token"))

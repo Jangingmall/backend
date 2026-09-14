@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import tools.jackson.databind.ObjectMapper;
 import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
@@ -24,6 +25,9 @@ import com.jangingmall.backend.member.application.MemberSession;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.application.MemberSignupResult;
 import com.jangingmall.backend.member.domain.MemberStatus;
+import com.jangingmall.backend.member.presentation.dto.EmailVerificationRequest;
+import com.jangingmall.backend.member.presentation.dto.MemberLoginRequest;
+import com.jangingmall.backend.member.presentation.dto.MemberSignupRequest;
 import java.util.List;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
@@ -44,6 +48,9 @@ class MemberControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockitoBean
     private MemberService memberService;
@@ -132,9 +139,7 @@ class MemberControllerTest {
 
         mockMvc.perform(post("/api/member/login")
                 .contentType(APPLICATION_JSON)
-                .content("""
-                    {"email":"artisan@example.com","password":"password"}
-                    """))
+                .content(objectMapper.writeValueAsString(new MemberLoginRequest("artisan@example.com", "password"))))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.accessToken").value("access-token"))
             .andExpect(jsonPath("$.data.member.memberId").value(1))
@@ -175,7 +180,7 @@ class MemberControllerTest {
 
         mockMvc.perform(post("/api/member/email-verifications")
                 .contentType(APPLICATION_JSON)
-                .content("{\"email\":\"artisan@example.com\"}"))
+                .content(objectMapper.writeValueAsString(new EmailVerificationRequest("artisan@example.com"))))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.expiresInSeconds").value(1800));
     }
@@ -232,21 +237,13 @@ class MemberControllerTest {
     }
 
     private String validRequest() {
-        return """
-            {
-              "email": "artisan@example.com",
-              "password": "password",
-              "passwordConfirm": "password",
-              "name": "김도공",
-              "phone": "01012345678",
-              "role": "USER",
-              "agreements": {
-                "age14OrOlder": true,
-                "termsOfService": true,
-                "privacyCollection": true,
-                "marketing": true
-              }
-            }
-            """;
+        try {
+            return objectMapper.writeValueAsString(new MemberSignupRequest(
+                "artisan@example.com", "password", "password", "김도공", "01012345678",
+                MemberRole.USER, new MemberSignupRequest.Agreements(true, true, true, true)
+            ));
+        } catch (Exception exception) {
+            throw new IllegalStateException(exception);
+        }
     }
 }

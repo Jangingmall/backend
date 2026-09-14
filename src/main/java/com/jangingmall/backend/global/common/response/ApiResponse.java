@@ -10,6 +10,10 @@ public record ApiResponse<T>(boolean success, int status, T data) {
         return new ApiResponse<>(true, 201, data);
     }
 
+    public static <T> ApiResponse<T> accepted(T data) {
+        return new ApiResponse<>(true, 202, data);
+    }
+
     public static ApiResponse<Void> noContent() {
         return new ApiResponse<>(true, 204, null);
     }
