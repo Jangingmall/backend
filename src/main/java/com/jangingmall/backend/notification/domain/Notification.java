@@ -2,11 +2,21 @@ package com.jangingmall.backend.notification.domain;
 
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notifications")
+@Getter
 public class Notification {
 
     @Id
@@ -43,33 +53,23 @@ public class Notification {
         return new Notification(memberId, title, content);
     }
 
-    // depth-4: Entity 상태 전이 검증 — BusinessRuleViolationException
     public void markAsRead() {
         if (this.status == NotificationStatus.DELETED) {
-            throw new BusinessRuleViolationException(NotificationErrorMessage.ALREADY_DELETED_READ);
+            throw new BusinessRuleViolationException(NotificationErrorMessage.ALREADY_DELETED_READ.message());
         }
         this.status = NotificationStatus.READ;
     }
 
-    // depth-4: 소유권 검증 — ForbiddenException
     public void validateOwnership(Long requesterId) {
         if (!this.memberId.equals(requesterId)) {
-            throw new ForbiddenException(NotificationErrorMessage.NOT_OWNER);
+            throw new ForbiddenException(NotificationErrorMessage.NOT_OWNER.message());
         }
     }
 
-    // depth-4: 삭제 상태 전이 — BusinessRuleViolationException
     public void delete() {
         if (this.status == NotificationStatus.DELETED) {
-            throw new BusinessRuleViolationException(NotificationErrorMessage.ALREADY_DELETED);
+            throw new BusinessRuleViolationException(NotificationErrorMessage.ALREADY_DELETED.message());
         }
         this.status = NotificationStatus.DELETED;
     }
-
-    public Long id() { return id; }
-    public Long memberId() { return memberId; }
-    public String title() { return title; }
-    public String content() { return content; }
-    public NotificationStatus status() { return status; }
-    public LocalDateTime createdAt() { return createdAt; }
 }

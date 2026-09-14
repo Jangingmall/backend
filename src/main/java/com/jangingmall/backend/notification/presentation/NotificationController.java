@@ -1,62 +1,61 @@
 package com.jangingmall.backend.notification.presentation;
 
+import com.jangingmall.backend.global.common.response.ApiResponse;
 import com.jangingmall.backend.notification.application.NotificationResponse;
 import com.jangingmall.backend.notification.application.NotificationService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
+@RequiredArgsConstructor
 public class NotificationController {
 
     private final NotificationService notificationService;
 
-    public NotificationController(NotificationService notificationService) {
-        this.notificationService = notificationService;
-    }
-
-    // depth-1: Controller → depth-2: Service.findAll → (에러 없음)
     @GetMapping
-    public ResponseEntity<List<NotificationResponse>> findAll(@RequestParam Long memberId) {
-        return ResponseEntity.ok(notificationService.findAll(memberId));
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<List<NotificationResponse>> findAll(
+        @AuthenticationPrincipal Long memberId
+    ) {
+        return ApiResponse.ok(notificationService.findAll(memberId));
     }
 
-    // depth-1: Controller → depth-2: Service.findOne
-    //   → depth-3: findOrThrow → NotFoundException
-    //   → depth-4: validateOwnership → ForbiddenException
     @GetMapping("/{notificationId}")
-    public ResponseEntity<NotificationResponse> findOne(
-        @PathVariable Long notificationId,
-        @RequestParam Long requesterId
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<NotificationResponse> findOne(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long notificationId
     ) {
-        return ResponseEntity.ok(notificationService.findOne(notificationId, requesterId));
+        return ApiResponse.ok(notificationService.findOne(notificationId, memberId));
     }
 
-    // depth-1: Controller → depth-2: Service.markAsRead
-    //   → depth-3: findOrThrow → NotFoundException
-    //   → depth-4: validateOwnership → ForbiddenException
-    //   → depth-4: markAsRead() → BusinessRuleViolationException
     @PatchMapping("/{notificationId}/read")
-    public ResponseEntity<Void> markAsRead(
-        @PathVariable Long notificationId,
-        @RequestParam Long requesterId
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<Void> markAsRead(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long notificationId
     ) {
-        notificationService.markAsRead(notificationId, requesterId);
-        return ResponseEntity.noContent().build();
+        notificationService.markAsRead(notificationId, memberId);
+        return ApiResponse.noContent();
     }
 
-    // depth-1: Controller → depth-2: Service.delete
-    //   → depth-3: findOrThrow → NotFoundException
-    //   → depth-4: validateOwnership → ForbiddenException
-    //   → depth-4: delete() → BusinessRuleViolationException
     @DeleteMapping("/{notificationId}")
-    public ResponseEntity<Void> delete(
-        @PathVariable Long notificationId,
-        @RequestParam Long requesterId
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<Void> delete(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long notificationId
     ) {
-        notificationService.delete(notificationId, requesterId);
-        return ResponseEntity.noContent().build();
+        notificationService.delete(notificationId, memberId);
+        return ApiResponse.noContent();
     }
 }
