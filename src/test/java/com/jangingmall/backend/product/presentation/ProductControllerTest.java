@@ -4,8 +4,10 @@ import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.docs.RestDocsControllerTest;
+import com.jangingmall.backend.product.application.ProductQnaService;
 import com.jangingmall.backend.member.application.MemberActivityService;
 import com.jangingmall.backend.product.application.ProductResponse;
+import com.jangingmall.backend.product.application.ProductReviewService;
 import com.jangingmall.backend.product.application.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,10 @@ class ProductControllerTest extends RestDocsControllerTest {
 
     @MockitoBean
     private ProductService productService;
+    @MockitoBean
+    private ProductQnaService productQnaService;
+    @MockitoBean
+    private ProductReviewService productReviewService;
 
     @MockitoBean
     private MemberActivityService memberActivityService;

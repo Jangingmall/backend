@@ -3,7 +3,13 @@ package com.jangingmall.backend.product.presentation;
 import com.jangingmall.backend.global.common.response.ApiResponse;
 import com.jangingmall.backend.member.application.MemberActivityService;
 import com.jangingmall.backend.product.application.ProductCommand;
+import com.jangingmall.backend.product.application.ProductQnaCommand;
+import com.jangingmall.backend.product.application.ProductQnaResponse;
+import com.jangingmall.backend.product.application.ProductQnaService;
 import com.jangingmall.backend.product.application.ProductResponse;
+import com.jangingmall.backend.product.application.ProductReviewCommand;
+import com.jangingmall.backend.product.application.ProductReviewResponse;
+import com.jangingmall.backend.product.application.ProductReviewService;
 import com.jangingmall.backend.product.application.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductQnaService productQnaService;
+    private final ProductReviewService productReviewService;
     private final MemberActivityService memberActivityService;
 
     @PostMapping
@@ -131,5 +139,62 @@ public class ProductController {
     ) {
         memberActivityService.unwish(memberId, productId);
         return ApiResponse.noContent();
+    }
+
+    @GetMapping("/{productId}/questions")
+    public ApiResponse<Page<ProductQnaResponse.QuestionView>> questions(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long productId,
+        @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.ok(productQnaService.findQuestions(productId, memberId, pageable));
+    }
+
+    @PostMapping("/{productId}/questions")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ApiResponse<ProductQnaResponse.QuestionView>> ask(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long productId,
+        @Valid @RequestBody ProductQnaRequest.Ask request
+    ) {
+        ProductQnaResponse.QuestionView response = productQnaService.ask(
+            new ProductQnaCommand.Ask(productId, memberId, request.content(), request.secret())
+        );
+        return ResponseEntity.status(201).body(ApiResponse.created(response));
+    }
+
+    @PostMapping("/{productId}/questions/{questionId}/answer")
+    @PreAuthorize("hasRole('ARTISAN')")
+    public ResponseEntity<ApiResponse<ProductQnaResponse.AnswerView>> answer(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long productId,
+        @PathVariable Long questionId,
+        @Valid @RequestBody ProductQnaRequest.Answer request
+    ) {
+        ProductQnaResponse.AnswerView response = productQnaService.answer(
+            new ProductQnaCommand.Answer(questionId, memberId, request.content())
+        );
+        return ResponseEntity.status(201).body(ApiResponse.created(response));
+    }
+
+    @GetMapping("/{productId}/reviews")
+    public ApiResponse<Page<ProductReviewResponse.ReviewView>> reviews(
+        @PathVariable Long productId,
+        @PageableDefault(size = 20) Pageable pageable
+    ) {
+        return ApiResponse.ok(productReviewService.findReviews(productId, pageable));
+    }
+
+    @PostMapping("/{productId}/reviews")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ApiResponse<ProductReviewResponse.ReviewView>> writeReview(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long productId,
+        @Valid @RequestBody ProductReviewRequest.Write request
+    ) {
+        ProductReviewResponse.ReviewView response = productReviewService.write(
+            new ProductReviewCommand.Write(productId, memberId, request.orderItemId(), request.rating(), request.content())
+        );
+        return ResponseEntity.status(201).body(ApiResponse.created(response));
     }
 }
