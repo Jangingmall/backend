@@ -326,13 +326,15 @@ public class ErrorCodeScanner {
                 @Override
                 public void visitMethodInsn(int opcode, String owner, String mname, String mdesc, boolean itf) {
                     // 직접 new XxxException() 생성자 호출
-                    if (opcode == Opcodes.INVOKESPECIAL && "<init>".equals(mname) && lastNewClass != null) {
-                        String errorCode = CLASS_TO_ERROR_CODE.get(lastNewClass);
-                        if (errorCode != null) found.add(errorCode);
+                    // lastNewClass는 INVOKESPECIAL <init> 에서만 리셋 — 중간에 끼는 INVOKEVIRTUAL(e.g. message())에서 리셋하지 않음
+                    if (opcode == Opcodes.INVOKESPECIAL && "<init>".equals(mname)) {
+                        if (lastNewClass != null) {
+                            String errorCode = CLASS_TO_ERROR_CODE.get(lastNewClass);
+                            if (errorCode != null) found.add(errorCode);
+                        }
                         lastNewClass = null;
                         return;
                     }
-                    lastNewClass = null;
 
                     // 메서드 참조 (method reference로 넘기는 경우: orElseThrow(NotFoundException::new))
                     // INVOKEDYNAMIC은 별도 처리가 필요하나, 여기서는 INVOKESPECIAL <init> 패턴으로 충분
@@ -350,12 +352,19 @@ public class ErrorCodeScanner {
 
                 @Override
                 public void visitInvokeDynamicInsn(String name, String descriptor, Handle bsm, Object... bsmArgs) {
-                    // method reference: NotFoundException::new → 생성자 핸들 추출
                     for (Object arg : bsmArgs) {
                         if (arg instanceof Handle handle) {
+                            // NotFoundException::new 직접 생성자 참조
                             if ("<init>".equals(handle.getName()) && BUSINESS_EXCEPTION_SUBCLASSES.contains(handle.getOwner())) {
                                 String errorCode = CLASS_TO_ERROR_CODE.get(handle.getOwner());
                                 if (errorCode != null) found.add(errorCode);
+                            }
+                            // lambda$xxx$0 같은 synthetic 메서드 → 재귀 분석
+                            if (handle.getOwner().startsWith("com/jangingmall/backend")) {
+                                try {
+                                    found.addAll(analyzeMethod(handle.getOwner(), handle.getName(), handle.getDesc(), depth + 1));
+                                } catch (IOException ignored) {
+                                }
                             }
                         }
                     }
