@@ -9,6 +9,7 @@ import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.notification.application.NotificationResponse;
 import com.jangingmall.backend.notification.application.NotificationService;
+import com.jangingmall.backend.notification.application.UnreadCountResponse;
 import com.jangingmall.backend.notification.domain.NotificationStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -199,6 +200,53 @@ class NotificationControllerTest extends RestDocsControllerTest {
                 "notification-read-422", TAG,
                 "알림 읽음 처리 - 비즈니스 규칙 위반",
                 "삭제된 알림은 읽음 처리할 수 없습니다."
+            ));
+    }
+
+    // ────────────────────────────── GET /api/notifications/unread-count ──────────────────────────────
+
+    @Test
+    @DisplayName("읽지 않은 알림 수 조회 — 200 성공")
+    @WithMockUser(roles = "USER")
+    void countUnread_success() throws Exception {
+        when(notificationService.countUnread(any())).thenReturn(new UnreadCountResponse(3L));
+
+        mockMvc.perform(get("/api/notifications/unread-count"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.unreadCount").value(3))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "notification-unread-count-200",
+                resource(ResourceSnippetParameters.builder()
+                    .tag(TAG)
+                    .summary("읽지 않은 알림 수 조회")
+                    .description("로그인한 회원의 읽지 않은 알림 수를 반환합니다.")
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.unreadCount").type(JsonFieldType.NUMBER).description("읽지 않은 알림 수")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
+    // ────────────────────────────── PATCH /api/notifications/read-all ──────────────────────────────
+
+    @Test
+    @DisplayName("전체 읽음 처리 — 200 성공")
+    @WithMockUser(roles = "USER")
+    void markAllAsRead_success() throws Exception {
+        mockMvc.perform(patch("/api/notifications/read-all"))
+            .andExpect(status().isOk())
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "notification-read-all-200",
+                resource(ResourceSnippetParameters.builder()
+                    .tag(TAG)
+                    .summary("전체 읽음 처리")
+                    .description("로그인한 회원의 읽지 않은 알림을 모두 읽음 처리합니다.")
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
+                    ))
+                    .build()
+                )
             ));
     }
 
