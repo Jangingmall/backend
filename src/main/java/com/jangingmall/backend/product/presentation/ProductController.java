@@ -1,6 +1,7 @@
 package com.jangingmall.backend.product.presentation;
 
 import com.jangingmall.backend.global.common.response.ApiResponse;
+import com.jangingmall.backend.member.application.MemberActivityService;
 import com.jangingmall.backend.product.application.ProductCommand;
 import com.jangingmall.backend.product.application.ProductResponse;
 import com.jangingmall.backend.product.application.ProductService;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private final ProductService productService;
+    private final MemberActivityService memberActivityService;
 
     @PostMapping
     @PreAuthorize("hasRole('ARTISAN')")
@@ -108,6 +110,26 @@ public class ProductController {
         @PathVariable Long productId
     ) {
         productService.delete(productId, memberId);
+        return ApiResponse.noContent();
+    }
+
+    @PostMapping("/{productId}/wish")
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<Void> wish(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long productId
+    ) {
+        memberActivityService.wish(memberId, productId);
+        return ApiResponse.noContent();
+    }
+
+    @DeleteMapping("/{productId}/wish")
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<Void> unwish(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long productId
+    ) {
+        memberActivityService.unwish(memberId, productId);
         return ApiResponse.noContent();
     }
 }

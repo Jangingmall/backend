@@ -60,6 +60,19 @@ public class MemberActivityService {
     }
 
     @Transactional
+    public void wish(Long memberId, Long productId) {
+        access.lockRole(memberId, MemberRole.USER);
+        requireProduct(productId);
+        activities.wish(memberId, productId);
+    }
+
+    @Transactional
+    public void unwish(Long memberId, Long productId) {
+        access.lockRole(memberId, MemberRole.USER);
+        activities.unwish(memberId, productId);
+    }
+
+    @Transactional
     public void subscribe(Long memberId, Long artisanId) {
         access.lockRole(memberId, MemberRole.USER);
         reads.artisan(artisanId).orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));

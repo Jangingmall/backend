@@ -38,6 +38,29 @@ public class MemberActivityRepositoryImpl implements MemberActivityRepository {
     }
 
     @Override
+    public void wish(Long memberId, Long productId) {
+        entityManager.createNativeQuery("""
+            INSERT INTO wishlist(member_id, product_id, created_at)
+            VALUES (:memberId, :productId, CURRENT_TIMESTAMP)
+            ON CONFLICT (member_id, product_id) DO NOTHING
+            """).setParameter("memberId", memberId).setParameter("productId", productId).executeUpdate();
+    }
+
+    @Override
+    public void unwish(Long memberId, Long productId) {
+        entityManager.createNativeQuery("DELETE FROM wishlist WHERE member_id=:memberId AND product_id=:productId")
+            .setParameter("memberId", memberId).setParameter("productId", productId).executeUpdate();
+    }
+
+    @Override
+    public boolean isWished(Long memberId, Long productId) {
+        Long count = (Long) entityManager.createNativeQuery(
+                "SELECT COUNT(*) FROM wishlist WHERE member_id=:memberId AND product_id=:productId", Long.class)
+            .setParameter("memberId", memberId).setParameter("productId", productId).getSingleResult();
+        return count > 0;
+    }
+
+    @Override
     public void subscribe(Long memberId, Long artisanId) {
         entityManager.createNativeQuery("""
             INSERT INTO artisan_subscription(member_id, artisan_id, notifications_enabled, created_at)
