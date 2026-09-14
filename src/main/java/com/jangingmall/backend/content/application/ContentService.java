@@ -125,6 +125,42 @@ public class ContentService {
         return saved;
     }
 
+    @Transactional
+    public ContentResponse.StatusChanged submitForReview(ContentCommand.SubmitForReview command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
+        content.submitForReview();
+        return ContentResponse.StatusChanged.from(contentRepository.save(content));
+    }
+
+    @Transactional
+    public ContentResponse.StatusChanged approve(ContentCommand.Approve command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
+        content.approve(command.factCheckConfirmed(), command.photoMatchConfirmed(), command.displayApprovalBadge());
+        return ContentResponse.StatusChanged.from(contentRepository.save(content));
+    }
+
+    @Transactional
+    public ContentResponse.StatusChanged reject(ContentCommand.Reject command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
+        content.reject();
+        return ContentResponse.StatusChanged.from(contentRepository.save(content));
+    }
+
+    @Transactional
+    public ContentResponse.StatusChanged publish(ContentCommand.Publish command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByProductId(command.productId())
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
+        content.publish();
+        return ContentResponse.StatusChanged.from(contentRepository.save(content));
+    }
+
     private void applyBlockUpdate(ContentBlock block, ContentCommand.BlockUpdate command) {
         BlockTag tag = command.tag() != null ? command.tag() : block.getTag();
         block.replaceWith(tag, command.text(), command.imageUrl(), null);

@@ -6,7 +6,11 @@ import java.util.List;
 
 public sealed interface ContentCommand permits
     ContentCommand.BulkUpdate,
-    ContentCommand.BlockUpdate {
+    ContentCommand.BlockUpdate,
+    ContentCommand.SubmitForReview,
+    ContentCommand.Approve,
+    ContentCommand.Reject,
+    ContentCommand.Publish {
 
     record BulkUpdate(
         Long productId,
@@ -32,4 +36,30 @@ public sealed interface ContentCommand permits
         String imageUrl,
         String videoUrl
     ) {}
+
+    record SubmitForReview(
+        Long productId,
+        Long contentId,
+        Long requesterId
+    ) implements ContentCommand {}
+
+    record Approve(
+        Long productId,
+        Long contentId,
+        Long requesterId,
+        boolean factCheckConfirmed,
+        boolean photoMatchConfirmed,
+        boolean displayApprovalBadge
+    ) implements ContentCommand {}
+
+    record Reject(
+        Long productId,
+        Long contentId,
+        Long requesterId
+    ) implements ContentCommand {}
+
+    record Publish(
+        Long productId,
+        Long requesterId
+    ) implements ContentCommand {}
 }

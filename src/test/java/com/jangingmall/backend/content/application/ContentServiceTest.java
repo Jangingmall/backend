@@ -9,6 +9,7 @@ import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
+import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.product.domain.Product;
@@ -206,5 +207,98 @@ class ContentServiceTest {
         assertThat(result.getProductId()).isEqualTo(10L);
         verify(historyRepository).save(historyCaptor.capture());
         assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.AI);
+    }
+
+    @Test
+    @DisplayName("검토 요청 — DRAFT 콘텐츠를 PENDING_REVIEW로 전이한다")
+    void submitForReview() {
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+
+        ContentCommand.SubmitForReview command = new ContentCommand.SubmitForReview(10L, 1L, 1L);
+        ContentResponse.StatusChanged result = contentService.submitForReview(command);
+
+        assertThat(result.status()).isEqualTo(ContentStatus.PENDING_REVIEW);
+    }
+
+    @Test
+    @DisplayName("검토 요청 — 이미 PENDING_REVIEW이면 BusinessRuleViolationException이 발생한다")
+    void submitForReviewInvalidTransition() {
+        sampleContent.submitForReview();
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+
+        ContentCommand.SubmitForReview command = new ContentCommand.SubmitForReview(10L, 1L, 1L);
+
+        assertThatThrownBy(() -> contentService.submitForReview(command))
+            .isInstanceOf(BusinessRuleViolationException.class);
+    }
+
+    @Test
+    @DisplayName("콘텐츠 승인 — PENDING_REVIEW 콘텐츠를 APPROVED로 전이하고 체크리스트를 반영한다")
+    void approve() {
+        sampleContent.submitForReview();
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+
+        ContentCommand.Approve command = new ContentCommand.Approve(10L, 1L, 1L, true, true, false);
+        ContentResponse.StatusChanged result = contentService.approve(command);
+
+        assertThat(result.status()).isEqualTo(ContentStatus.APPROVED);
+    }
+
+    @Test
+    @DisplayName("콘텐츠 승인 — PENDING_REVIEW가 아니면 BusinessRuleViolationException이 발생한다")
+    void approveInvalidTransition() {
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+
+        ContentCommand.Approve command = new ContentCommand.Approve(10L, 1L, 1L, true, true, false);
+
+        assertThatThrownBy(() -> contentService.approve(command))
+            .isInstanceOf(BusinessRuleViolationException.class);
+    }
+
+    @Test
+    @DisplayName("콘텐츠 반려 — PENDING_REVIEW 콘텐츠를 REJECTED로 전이한다")
+    void reject() {
+        sampleContent.submitForReview();
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+
+        ContentCommand.Reject command = new ContentCommand.Reject(10L, 1L, 1L);
+        ContentResponse.StatusChanged result = contentService.reject(command);
+
+        assertThat(result.status()).isEqualTo(ContentStatus.REJECTED);
+    }
+
+    @Test
+    @DisplayName("콘텐츠 게시 — APPROVED 콘텐츠를 PUBLISHED로 전이한다")
+    void publish() {
+        sampleContent.submitForReview();
+        sampleContent.approve(true, true, true);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+
+        ContentCommand.Publish command = new ContentCommand.Publish(10L, 1L);
+        ContentResponse.StatusChanged result = contentService.publish(command);
+
+        assertThat(result.status()).isEqualTo(ContentStatus.PUBLISHED);
+    }
+
+    @Test
+    @DisplayName("콘텐츠 게시 — APPROVED가 아니면 BusinessRuleViolationException이 발생한다")
+    void publishInvalidTransition() {
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+
+        ContentCommand.Publish command = new ContentCommand.Publish(10L, 1L);
+
+        assertThatThrownBy(() -> contentService.publish(command))
+            .isInstanceOf(BusinessRuleViolationException.class);
     }
 }
