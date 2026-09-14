@@ -9,27 +9,19 @@ import com.jangingmall.backend.product.domain.ProductRepository;
 import com.jangingmall.backend.product.domain.ProductStatus;
 import com.jangingmall.backend.product.domain.Subcategory;
 import com.jangingmall.backend.product.domain.SubcategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;
-
-    public ProductService(
-        ProductRepository productRepository,
-        CategoryRepository categoryRepository,
-        SubcategoryRepository subcategoryRepository
-    ) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.subcategoryRepository = subcategoryRepository;
-    }
 
     @Transactional
     public ProductResponse create(ProductCommand.Create command) {
