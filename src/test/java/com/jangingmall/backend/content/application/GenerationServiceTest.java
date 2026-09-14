@@ -5,6 +5,7 @@ import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
+import org.mockito.Mockito;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.product.domain.Product;
@@ -41,6 +42,8 @@ class GenerationServiceTest {
     private ProductRepository productRepository;
     @Mock
     private AiContentClient aiContentClient;
+    @Mock
+    private ContentService contentService;
 
     @Captor
     private ArgumentCaptor<ContentGeneration> generationCaptor;
@@ -52,7 +55,7 @@ class GenerationServiceTest {
 
     @BeforeEach
     void setUp() {
-        generationService = org.mockito.Mockito.spy(new GenerationService(generationRepository, productRepository, aiContentClient));
+        generationService = org.mockito.Mockito.spy(new GenerationService(generationRepository, productRepository, aiContentClient, contentService, objectMapper));
         artisanProduct = Product.create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
         ReflectionTestUtils.setField(artisanProduct, "id", 10L);
     }
