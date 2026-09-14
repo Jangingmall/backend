@@ -5,7 +5,9 @@ public enum ContentErrorMessage {
     BLOCK_NOT_FOUND("블록을 찾을 수 없습니다"),
     FORBIDDEN("콘텐츠에 대한 접근 권한이 없습니다"),
     INVALID_BLOCK_TAG("텍스트 블록은 text만, 이미지 블록은 imageUrl만 전달할 수 있습니다"),
-    CONCURRENT_UPDATE("다른 사용자가 먼저 수정했습니다. 최신 내용을 다시 조회해 주세요");
+    CONCURRENT_UPDATE("다른 사용자가 먼저 수정했습니다. 최신 내용을 다시 조회해 주세요"),
+    INVALID_STATUS_TRANSITION("현재 상태에서 허용되지 않는 콘텐츠 상태 전이입니다"),
+    CONTENT_NOT_APPROVED("콘텐츠가 승인(APPROVED) 상태여야 게시할 수 있습니다");
 
     private final String text;
 
