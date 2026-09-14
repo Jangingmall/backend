@@ -33,7 +33,7 @@
 | 3-7 | HTTP Status Code | 2xx (성공), 3xx (리다이렉트), 4xx (클라이언트 오류), 5xx (서버 오류) |
 | 3-8 | 공통 성공 응답 포맷 | `{ "success": true, "status": 200, "data": { ... } }` |
 | 3-9 | 공통 에러 응답 포맷 | `{ "success": false, "status": 4xx, "errorCode": "CODE" }` |
-| 3-10 | 페이지네이션 | Cursor 기반 (`cursor`, `limit` 쿼리 파라미터) |
+| 3-10 | 페이지네이션 | Cursor 기반 기본 (`cursor`, `limit`). 아래 11개 API는 `page`, `limit` page 모드도 지원: `/api/products`, `/api/products/me`, `/api/member/artisans`, `/api/member/recent-views`, `/api/member/me/orders`, `/api/member/me/wishes`, `/api/member/me/reviews`, `/api/member/me/reviews/writable`, `/api/admin/seller-applications`, `/api/products/{productId}/reviews`, `/api/products/{productId}/questions` |
 | 3-11 | 정렬/필터 파라미터 | 쿼리 파라미터 (`sort`, `category`, `minPrice` 등) |
 | 3-12 | 인증 정보 전달 방식 | JWT Bearer Token — `Authorization: Bearer {accessToken}` |
 
