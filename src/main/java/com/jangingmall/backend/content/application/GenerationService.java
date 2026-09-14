@@ -1,6 +1,7 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.BlockTag;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
@@ -14,6 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,6 +29,8 @@ public class GenerationService {
     private final ContentGenerationRepository generationRepository;
     private final ProductRepository productRepository;
     private final AiContentClient aiContentClient;
+    private final ContentService contentService;
+    private final ObjectMapper objectMapper;
 
     @Transactional
     public GenerationResponse request(GenerationCommand.Request command) {
@@ -68,6 +76,7 @@ public class GenerationService {
             );
             generation.complete(generatedBlocks);
             generationRepository.save(generation);
+            materializeContent(command.productId(), generatedBlocks, command.requesterId());
             log.info("AI 콘텐츠 생성 완료 generationId={}", generationId);
         } catch (Exception exception) {
             generation.fail();
@@ -84,6 +93,26 @@ public class GenerationService {
     private void verifyOwner(Product product, Long requesterId) {
         if (!product.getArtisanId().equals(requesterId)) {
             throw new ForbiddenException(GenerationErrorMessage.FORBIDDEN.message());
+        }
+    }
+
+    private void materializeContent(Long productId, String generatedBlocksJson, Long requesterId) {
+        try {
+            JsonNode array = objectMapper.readTree(generatedBlocksJson);
+            List<ContentCommand.BlockInput> blockInputs = new ArrayList<>();
+            for (JsonNode node : array) {
+                BlockTag tag = BlockTag.valueOf(node.path("tag").asText("p"));
+                blockInputs.add(new ContentCommand.BlockInput(
+                    node.path("order").asInt(),
+                    tag,
+                    node.path("text").asText(null),
+                    node.path("imageUrl").asText(null),
+                    node.path("videoUrl").asText(null)
+                ));
+            }
+            contentService.materializeFromBlocks(productId, blockInputs, requesterId);
+        } catch (Exception exception) {
+            log.error("콘텐츠 정규화 실패 productId={} reason={}", productId, exception.getMessage());
         }
     }
 }
