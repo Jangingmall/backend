@@ -109,10 +109,10 @@ openapi3 {
     outputFileNamePrefix = 'openapi'
 }
 
-// ── 후처리: 공백·개행 정규화 + 샘플 데이터 주입 ─────────────────────────────
+// ── 후처리: example 정규화 + 공통 에러 주입 + Actuator + 문서 보강 ────────────
 tasks.register('processOpenapi') {
     dependsOn 'openapi3'
-    description = 'Pretty-print openapi.json and inject x-sample-data extensions'
+    description = 'Post-process openapi.json: parse example values, inject common errors, add Actuator paths, enrich description'
 
     def inputFile  = file('build/api-spec/openapi.json')
     def outputFile = file('api-spec/openapi.json')
@@ -121,13 +121,256 @@ tasks.register('processOpenapi') {
     outputs.file(outputFile)
 
     doLast {
-        def json = new groovy.json.JsonSlurper().parse(inputFile)
+        def slurper = new groovy.json.JsonSlurper()
+        def json = slurper.parse(inputFile)
 
-        // x-sample-data 최상위 extension 주입
+        // ── 1. info.description 보강 ─────────────────────────────────────────
+        json.info.description = '''\
+## 공통 에러 응답 형식
+
+모든 에러 응답은 아래 형식으로 반환됩니다.
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorCode": "INVALID_INPUT",
+  "message": "입력값이 올바르지 않습니다"
+}
+```
+
+## 공통 에러 코드
+
+| HTTP | errorCode | 설명 |
+|------|-----------|------|
+| 400 | INVALID_INPUT | @Valid 필드 검증 실패 |
+| 400 | REQUEST_INVALID | 요청 형식 오류 |
+| 400 | REQUEST_BODY_MALFORMED | 파싱 불가한 요청 바디 |
+| 401 | UNAUTHORIZED | 인증 토큰 없음 또는 만료 |
+| 403 | FORBIDDEN | 권한 없음 (타 사용자 리소스 접근 등) |
+| 404 | NOT_FOUND | 리소스를 찾을 수 없음 |
+| 409 | CONFLICT | 중복 리소스 (이메일, 찜 등) |
+| 422 | BUSINESS_RULE_VIOLATION | 비즈니스 규칙 위반 (상태 전이 불가 등) |
+| 429 | TOO_MANY_REQUESTS | 요청 횟수 초과 |
+| 500 | INTERNAL_ERROR | 서버 내부 오류 |
+
+## 페이지네이션
+
+### 오프셋 페이지네이션 (Page\\<T\\>)
+
+Query parameter로 `page`(0-based), `size`(기본 20) 전달.
+
+```
+GET /api/products?page=0&size=20
+```
+
+응답:
+
+```json
+{
+  "content": [...],
+  "totalElements": 100,
+  "totalPages": 5,
+  "number": 0,
+  "size": 20,
+  "first": true,
+  "last": false
+}
+```
+
+### 커서 페이지네이션 (CursorPage\\<T\\>)
+
+Query parameter로 `cursor`(첫 요청 시 생략), `size`(기본 20) 전달.
+
+```
+GET /api/artisans/subscriptions?size=20
+GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
+```
+
+응답:
+
+```json
+{
+  "items": [...],
+  "nextCursor": "eyJpZCI6MX0=",
+  "hasNext": true,
+  "totalCount": 100
+}
+```
+
+`hasNext`가 `false`이면 마지막 페이지입니다. `nextCursor`는 불투명 Base64 토큰으로 순서 보장을 위해 파싱하지 말고 그대로 전달하세요.
+
+## 헬스체크 / 인프라
+
+| 경로 | 포트 | 용도 |
+|------|------|------|
+| `/healthz` | 8080 | ALB 헬스체크 (ping) |
+| `/actuator/health/liveness` | 9090 | K8s liveness probe |
+| `/actuator/health/readiness` | 9090 | K8s readiness probe |
+| `/actuator/health` | 9090 | 전체 헬스 상세 (인증 필요) |
+| `/actuator/prometheus` | 9090 | Prometheus 메트릭 스크레이핑 |
+'''
+
+        // ── 2. example value 문자열 → JSON 객체 파싱 ───────────────────────────
+        def parseExampleValue = { Map example ->
+            def val = example['value']
+            if (val instanceof String) {
+                try {
+                    example['value'] = slurper.parseText(val)
+                } catch (ignored) {
+                    // intentionally invalid JSON (e.g. REQUEST_BODY_MALFORMED test) — leave as-is
+                }
+            }
+        }
+
+        def walkExamples = { Map operation ->
+            // request body examples
+            operation?.requestBody?.content?.each { contentType, mediaType ->
+                mediaType?.examples?.each { name, example -> parseExampleValue(example) }
+            }
+            // response examples
+            operation?.responses?.each { status, response ->
+                response?.content?.each { contentType, mediaType ->
+                    mediaType?.examples?.each { name, example -> parseExampleValue(example) }
+                }
+            }
+        }
+
+        json.paths?.each { path, pathItem ->
+            ['get','post','put','patch','delete','head','options'].each { method ->
+                if (pathItem[method]) walkExamples(pathItem[method])
+            }
+        }
+
+        // ── 3. 공통 에러 응답 모든 operation에 주입 ────────────────────────────
+        def errorSchema = [
+            '\$ref': '#/components/schemas/ApiErrorResponse'
+        ]
+
+        def makeErrorResponse = { int httpStatus, String errorCode, String message ->
+            [
+                description: message,
+                content: [
+                    'application/json': [
+                        schema: ['\$ref': '#/components/schemas/ApiErrorResponse'],
+                        examples: [
+                            (errorCode): [
+                                value: [
+                                    success  : false,
+                                    status   : httpStatus,
+                                    errorCode: errorCode,
+                                    message  : message
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        }
+
+        def commonErrors = [
+            '400': makeErrorResponse(400, 'INVALID_INPUT',            '입력값이 올바르지 않습니다'),
+            '401': makeErrorResponse(401, 'UNAUTHORIZED',             '인증이 필요합니다'),
+            '403': makeErrorResponse(403, 'FORBIDDEN',                '접근 권한이 없습니다'),
+            '404': makeErrorResponse(404, 'NOT_FOUND',                '리소스를 찾을 수 없습니다'),
+            '409': makeErrorResponse(409, 'CONFLICT',                 '이미 존재하는 리소스입니다'),
+            '422': makeErrorResponse(422, 'BUSINESS_RULE_VIOLATION',  '비즈니스 규칙 위반입니다'),
+            '429': makeErrorResponse(429, 'TOO_MANY_REQUESTS',        '요청 횟수를 초과하였습니다'),
+            '500': makeErrorResponse(500, 'INTERNAL_ERROR',           '서버 내부 오류가 발생하였습니다'),
+        ]
+
+        json.paths?.each { path, pathItem ->
+            ['get','post','put','patch','delete'].each { method ->
+                def operation = pathItem[method]
+                if (!operation) return
+                if (!operation.responses) operation.responses = [:]
+                commonErrors.each { statusCode, response ->
+                    if (!operation.responses[statusCode]) {
+                        operation.responses[statusCode] = response
+                    }
+                }
+            }
+        }
+
+        // ── 4. ApiErrorResponse 컴포넌트 스키마 등록 ───────────────────────────
+        if (!json.components) json.components = [:]
+        if (!json.components.schemas) json.components.schemas = [:]
+        json.components.schemas['ApiErrorResponse'] = [
+            type      : 'object',
+            properties: [
+                success  : [type: 'boolean', example: false],
+                status   : [type: 'integer', example: 400],
+                errorCode: [type: 'string',  example: 'INVALID_INPUT'],
+                message  : [type: 'string',  example: '입력값이 올바르지 않습니다']
+            ]
+        ]
+
+        // ── 5. Actuator / 인프라 헬스 경로 추가 ────────────────────────────────
+        if (!json.paths) json.paths = [:]
+
+        json.paths['/healthz'] = [
+            get: [
+                tags       : ['인프라'],
+                summary    : 'ALB 헬스체크',
+                description: 'Application Load Balancer가 호출하는 ping 헬스체크 엔드포인트. 포트 8080. 인증 불필요.',
+                operationId: 'healthz-ping',
+                responses  : [
+                    '200': [
+                        description: 'OK',
+                        content    : [
+                            'application/json': [
+                                schema  : [type: 'object', properties: [status: [type: 'string', example: 'UP']]],
+                                examples: [UP: [value: [status: 'UP']]]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+        json.paths['/actuator/health/liveness'] = [
+            get: [
+                tags       : ['인프라'],
+                summary    : 'K8s Liveness Probe',
+                description: 'Kubernetes liveness probe. 포트 9090. 실패 시 컨테이너 재시작.',
+                operationId: 'actuator-health-liveness',
+                responses  : [
+                    '200': [description: 'Alive', content: ['application/json': [schema: [type: 'object'], examples: [UP: [value: [status: 'UP']]]]]],
+                    '503': [description: 'Not alive']
+                ]
+            ]
+        ]
+
+        json.paths['/actuator/health/readiness'] = [
+            get: [
+                tags       : ['인프라'],
+                summary    : 'K8s Readiness Probe',
+                description: 'Kubernetes readiness probe. 포트 9090. 실패 시 트래픽 차단.',
+                operationId: 'actuator-health-readiness',
+                responses  : [
+                    '200': [description: 'Ready',    content: ['application/json': [schema: [type: 'object'], examples: [UP: [value: [status: 'UP', components: [db: [status: 'UP'], redis: [status: 'UP']]]]]]]],
+                    '503': [description: 'Not ready']
+                ]
+            ]
+        ]
+
+        json.paths['/actuator/prometheus'] = [
+            get: [
+                tags       : ['인프라'],
+                summary    : 'Prometheus 메트릭',
+                description: 'Prometheus 스크레이핑용 메트릭 엔드포인트. 포트 9090. 내부 네트워크 전용.',
+                operationId: 'actuator-prometheus',
+                responses  : [
+                    '200': [description: 'Prometheus text format', content: ['text/plain': [schema: [type: 'string']]]]
+                ]
+            ]
+        ]
+
+        // ── 6. x-sample-data 주입 ──────────────────────────────────────────────
         json['x-sample-data'] = [
-            member   : [email: 'artisan@example.com', name: '김도공'],
-            product  : [title: '청자 상감 다완', price: 85000, category: 'POTTERY'],
-            chatbot  : [message: '어머니 생신 선물 추천해줘', sessionKey: 'sess-abc123']
+            member : [email: 'artisan@example.com', name: '김도공'],
+            product: [title: '청자 상감 다완', price: 85000, category: 'POTTERY'],
+            chatbot: [message: '어머니 생신 선물 추천해줘', sessionKey: 'sess-abc123']
         ]
 
         def outputDir = file('api-spec')
