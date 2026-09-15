@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
@@ -20,6 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,17 +31,32 @@ class NotificationServiceTest {
     @Mock
     private NotificationRepository notificationRepository;
 
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
     private NotificationService notificationService;
 
     @BeforeEach
     void setUp() {
-        notificationService = new NotificationService(notificationRepository);
+        notificationService = new NotificationService(notificationRepository, eventPublisher);
     }
 
     private Notification createNotification(Long id, Long memberId) {
         Notification notification = Notification.create(memberId, "알림 제목", "알림 내용");
         ReflectionTestUtils.setField(notification, "id", id);
         return notification;
+    }
+
+    @Test
+    @DisplayName("알림 생성 시 저장 후 이벤트를 발행한다")
+    void create_savesAndPublishesEvent() {
+        Notification saved = createNotification(1L, 1L);
+        when(notificationRepository.save(any())).thenReturn(saved);
+
+        NotificationResponse result = notificationService.create(1L, new NotificationCreateRequest("알림 제목", "알림 내용"));
+
+        assertThat(result.title()).isEqualTo("알림 제목");
+        verify(eventPublisher).publishEvent(any(NotificationCreatedEvent.class));
     }
 
     @Test
@@ -113,5 +131,50 @@ class NotificationServiceTest {
 
         assertThatThrownBy(() -> notificationService.delete(999L, 1L))
             .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("읽지 않은 알림 수를 반환한다")
+    void countUnread_returnsCount() {
+        when(notificationRepository.countByMemberIdAndStatus(1L, NotificationStatus.UNREAD)).thenReturn(3L);
+
+        UnreadCountResponse result = notificationService.countUnread(1L);
+
+        assertThat(result.unreadCount()).isEqualTo(3L);
+    }
+
+    @Test
+    @DisplayName("읽지 않은 알림이 없으면 0을 반환한다")
+    void countUnread_returnsZeroWhenNone() {
+        when(notificationRepository.countByMemberIdAndStatus(1L, NotificationStatus.UNREAD)).thenReturn(0L);
+
+        UnreadCountResponse result = notificationService.countUnread(1L);
+
+        assertThat(result.unreadCount()).isZero();
+    }
+
+    @Test
+    @DisplayName("전체 읽음 처리 시 UNREAD 알림이 모두 READ로 변경된다")
+    void markAllAsRead_marksAllUnread() {
+        Notification n1 = createNotification(1L, 1L);
+        Notification n2 = createNotification(2L, 1L);
+        when(notificationRepository.findByMemberIdAndStatus(1L, NotificationStatus.UNREAD))
+            .thenReturn(List.of(n1, n2));
+
+        notificationService.markAllAsRead(1L);
+
+        assertThat(n1.getStatus()).isEqualTo(NotificationStatus.READ);
+        assertThat(n2.getStatus()).isEqualTo(NotificationStatus.READ);
+    }
+
+    @Test
+    @DisplayName("전체 읽음 처리 시 UNREAD 알림이 없으면 아무것도 변경되지 않는다")
+    void markAllAsRead_doesNothingWhenNoUnread() {
+        when(notificationRepository.findByMemberIdAndStatus(1L, NotificationStatus.UNREAD))
+            .thenReturn(List.of());
+
+        notificationService.markAllAsRead(1L);
+
+        verify(notificationRepository).findByMemberIdAndStatus(eq(1L), eq(NotificationStatus.UNREAD));
     }
 }

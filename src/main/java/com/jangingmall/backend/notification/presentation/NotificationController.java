@@ -1,17 +1,25 @@
 package com.jangingmall.backend.notification.presentation;
 
 import com.jangingmall.backend.global.common.response.ApiResponse;
+import com.jangingmall.backend.notification.application.NotificationCreateRequest;
 import com.jangingmall.backend.notification.application.NotificationResponse;
 import com.jangingmall.backend.notification.application.NotificationService;
+import com.jangingmall.backend.notification.application.NotificationSseService;
+import com.jangingmall.backend.notification.application.UnreadCountResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -21,6 +29,24 @@ import java.util.List;
 public class NotificationController {
 
     private final NotificationService notificationService;
+    private final NotificationSseService notificationSseService;
+
+    @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public SseEmitter stream(
+        @AuthenticationPrincipal Long memberId
+    ) {
+        return notificationSseService.subscribe(memberId);
+    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<NotificationResponse> create(
+        @AuthenticationPrincipal Long memberId,
+        @RequestBody @Valid NotificationCreateRequest request
+    ) {
+        return ApiResponse.ok(notificationService.create(memberId, request));
+    }
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
@@ -28,6 +54,23 @@ public class NotificationController {
         @AuthenticationPrincipal Long memberId
     ) {
         return ApiResponse.ok(notificationService.findAll(memberId));
+    }
+
+    @GetMapping("/unread-count")
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<UnreadCountResponse> countUnread(
+        @AuthenticationPrincipal Long memberId
+    ) {
+        return ApiResponse.ok(notificationService.countUnread(memberId));
+    }
+
+    @PatchMapping("/read-all")
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<Void> markAllAsRead(
+        @AuthenticationPrincipal Long memberId
+    ) {
+        notificationService.markAllAsRead(memberId);
+        return ApiResponse.noContent();
     }
 
     @GetMapping("/{notificationId}")
