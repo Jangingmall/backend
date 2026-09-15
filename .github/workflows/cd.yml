@@ -1,0 +1,78 @@
+name: CD
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: backend
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build JAR (skip tests — CI already ran)
+        run: ./gradlew bootJar --no-daemon -x test
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image to ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: sha-${{ github.sha }}
+        run: |
+          SHORT_SHA=${IMAGE_TAG:0:10}  # sha-<7자리>
+          IMAGE_URI=$ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA
+
+          docker build -t $IMAGE_URI .
+          docker push $IMAGE_URI
+
+          # latest도 함께 push (롤백은 sha 태그 기준)
+          docker tag $IMAGE_URI $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+          echo "image=$IMAGE_URI" >> $GITHUB_OUTPUT
+
+      - name: Deploy to EC2 via SSM Run Command
+        env:
+          IMAGE_URI: ${{ steps.build-image.outputs.image }}
+          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
+        run: |
+          aws ssm send-command \
+            --instance-ids "$EC2_INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --parameters "commands=[
+              'aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}',
+              'docker pull ${{ env.IMAGE_URI }}',
+              'docker stop backend || true',
+              'docker rm backend || true',
+              'docker run -d --name backend --restart unless-stopped \
+                -p 8080:8080 -p 9090:9090 \
+                --env-file /etc/backend/.env \
+                ${{ env.IMAGE_URI }}'
+            ]" \
+            --comment "Deploy ${{ env.IMAGE_URI }}" \
+            --output text
