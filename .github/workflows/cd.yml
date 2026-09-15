@@ -10,9 +10,13 @@ concurrency:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: backend
+  ECR_REPOSITORY: jangin-app
   S3_BUCKET: ${{ secrets.S3_DEPLOY_BUCKET }}
   REPO_DIR: /opt/backend
+
+permissions:
+  id-token: write  # OIDC 토큰 발급 필수
+  contents: read
 
 jobs:
   build-and-push:
@@ -38,11 +42,10 @@ jobs:
           ./gradlew bootJar --no-daemon --build-cache -x test
           java -Djarmode=layertools -jar build/libs/*.jar extract --destination build/extracted
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -55,7 +58,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          IMAGE_URI="${ECR_REGISTRY}/${ECR_REPOSITORY}:sha-${SHORT_SHA}"
+          IMAGE_URI="${ECR_REGISTRY}/${ECR_REPOSITORY}:staging-${SHORT_SHA}"
           echo "image-uri=${IMAGE_URI}" >> $GITHUB_OUTPUT
           echo "ecr-registry=${ECR_REGISTRY}" >> $GITHUB_OUTPUT
 
@@ -77,19 +80,20 @@ jobs:
 
       - name: Upload deploy scripts and monitoring config to S3
         run: |
-          aws s3 sync scripts/   s3://${S3_BUCKET}/deploy/scripts/   --delete
-          aws s3 sync monitoring/ s3://${S3_BUCKET}/deploy/monitoring/ --delete
+          aws s3 sync scripts/    s3://${S3_BUCKET}/deploy/scripts/    --delete
+          aws s3 sync monitoring/ s3://${S3_BUCKET}/deploy/monitoring/  --delete
 
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
+    # EC2 Instance ID 확보 후 활성화 (인프라팀 프로비저닝 완료 대기)
+    if: ${{ secrets.EC2_INSTANCE_ID != '' }}
 
     steps:
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy to EC2 via SSM Run Command
