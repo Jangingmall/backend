@@ -10,9 +10,15 @@
     "list": [
       {
         "name": "job",
-        "type": "constant",
-        "current": { "value": "backend" },
-        "hide": 2
+        "type": "custom",
+        "label": "환경",
+        "query": "backend-local,backend-prod",
+        "current": { "text": "backend-local", "value": "backend-local" },
+        "options": [
+          { "text": "backend-local", "value": "backend-local", "selected": true },
+          { "text": "backend-prod",  "value": "backend-prod",  "selected": false }
+        ],
+        "hide": 0
       }
     ]
   },
