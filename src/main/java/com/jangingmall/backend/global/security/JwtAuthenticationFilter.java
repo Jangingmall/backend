@@ -14,13 +14,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final String SSE_PATH = "/api/notifications/stream";
+
     private final JwtTokenProvider jwtTokenProvider;
 
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
-    private static final String SSE_PATH = "/api/notifications/stream";
 
     @Override
     protected void doFilterInternal(
