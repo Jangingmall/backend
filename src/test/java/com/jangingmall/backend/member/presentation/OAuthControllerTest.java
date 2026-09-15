@@ -5,7 +5,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,9 +42,17 @@ class OAuthControllerTest {
     @MockitoBean private MemberAuthenticationService authentication;
 
     @Test
+    @DisplayName("네이버 로그인 시작 API는 네이버 OAuth2 인가 경로로 이동한다")
+    void startsNaverLogin() throws Exception {
+        mockMvc.perform(get("/api/member/oauth2/naver"))
+            .andExpect(status().isFound())
+            .andExpect(header().string("Location", "/oauth2/authorization/naver"));
+    }
+
+    @Test
     @DisplayName("최초 소셜 로그인 교환은 임시 가입 토큰을 HttpOnly 쿠키로만 전달한다")
     void exchangesFirstLoginTicket() throws Exception {
-        OAuthIdentity identity = new OAuthIdentity("google", "provider-subject", "social@example.com");
+        OAuthIdentity identity = new OAuthIdentity("naver", "provider-subject", "social@example.com");
         when(oauth.exchange("ticket")).thenReturn(new OAuthMemberService.Grant(null, identity));
         when(oauth.onboarding(identity)).thenReturn("onboarding-token");
 

@@ -1,6 +1,7 @@
 package com.jangingmall.backend.image.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -18,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
@@ -73,5 +75,18 @@ class S3ImageStorageTest {
             10L * 1024 * 1024)).isFalse();
         assertThat(storage.isValid(ImagePurpose.PRODUCT, "images/product/id/1280w.webp", "image/webp",
             10L * 1024 * 1024)).isFalse();
+    }
+
+    @Test
+    @DisplayName("IMG-P0-016 S3 HeadObject 장애는 서버 오류로 전파한다")
+    void propagatesHeadObjectFailureAsServerError() {
+        S3Exception failure = org.mockito.Mockito.mock(S3Exception.class);
+        when(failure.statusCode()).thenReturn(500);
+        when(s3.headObject(any(HeadObjectRequest.class))).thenThrow(failure);
+
+        assertThatThrownBy(() -> storage.isValid(ImagePurpose.PRODUCT,
+            "images/product/id/1280w.webp", "image/webp", 10L * 1024 * 1024))
+            .isInstanceOf(IllegalStateException.class)
+            .hasCause(failure);
     }
 }

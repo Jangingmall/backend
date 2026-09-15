@@ -9,7 +9,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.image.domain.ImagePurpose;
@@ -43,6 +42,7 @@ class ImageServiceTest {
         ImageStorageProperties properties = new ImageStorageProperties();
         properties.setKeyPrefix("images");
         properties.setPresignExpirySeconds(300);
+        properties.setUnusedRetentionSeconds(86_400);
         service = new ImageService(memberAccess, uploads, storage, properties, new UlidGenerator(),
             new UuidGenerator(), objectMapper);
     }
@@ -56,9 +56,11 @@ class ImageServiceTest {
             .thenAnswer(invocation -> "https://s3.example/" + invocation.getArgument(1));
         when(uploads.save(any(ImageUpload.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
+        Instant before = Instant.now();
         ImageService.PresignedUpload result = service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("bowl.webp", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
                 publicVariants()));
+        Instant after = Instant.now();
 
         assertThat(result.imageId()).hasSize(26);
         assertThat(result.uploads()).extracting(ImageService.VariantUpload::variant)
@@ -67,7 +69,11 @@ class ImageServiceTest {
             assertThat(upload.objectKey()).matches("images/product/[0-9a-f-]{36}/(320w|640w|1280w)\\.webp");
             assertThat(upload.presignedUrl()).contains(upload.objectKey());
         });
-        verify(uploads).save(any(ImageUpload.class));
+        assertThat(result.expiresInSeconds()).isEqualTo(300);
+        var saved = org.mockito.ArgumentCaptor.forClass(ImageUpload.class);
+        verify(uploads).save(saved.capture());
+        assertThat(saved.getValue().getExpiresAt())
+            .isBetween(before.plusSeconds(86_400), after.plusSeconds(86_400));
     }
 
     @Test
@@ -98,7 +104,20 @@ class ImageServiceTest {
         assertThatThrownBy(() -> service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("bowl.jpg", "image/jpeg", ImagePurpose.PRODUCT, 1200, 800,
                 List.of(new ImageService.UploadVariant("320w", 1024L)))))
-            .isInstanceOf(BusinessRuleViolationException.class);
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_INPUT));
+
+        verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
+    }
+
+    @Test
+    @DisplayName("IMG-P0-007 WebP MIME이더라도 파일 확장자가 WebP가 아니면 거부한다")
+    void rejectsMismatchedFileExtension() {
+        assertThatThrownBy(() -> service.createPresignedUpload(1L,
+            new ImageService.CreatePresignedUpload("bowl.jpg", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
+                publicVariants())))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_INPUT));
 
         verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
@@ -110,7 +129,8 @@ class ImageServiceTest {
             new ImageService.CreatePresignedUpload("bowl.webp", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
                 List.of(new ImageService.UploadVariant("320w", 1024L),
                     new ImageService.UploadVariant("640w", 2048L)))))
-            .isInstanceOf(BusinessRuleViolationException.class);
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_INPUT));
 
         verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
@@ -121,8 +141,8 @@ class ImageServiceTest {
         assertThatThrownBy(() -> service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("damage.webp", "image/webp", ImagePurpose.RETURN, 1200, 800,
                 publicVariants())))
-            .isInstanceOf(BusinessRuleViolationException.class)
-            .hasMessageContaining("1280w");
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_INPUT));
 
         verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
@@ -153,7 +173,8 @@ class ImageServiceTest {
             "320w", Map.of("objectKey", "images/product/1/image/320w.webp")));
 
         assertThatThrownBy(() -> service.consumeOwned(1L, ImagePurpose.PRODUCT, List.of(upload.getId())))
-            .isInstanceOf(BusinessRuleViolationException.class);
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_INPUT));
         verify(uploads, never()).consumeIfOwnedAndActive(any(), any(), any());
     }
 
@@ -203,27 +224,46 @@ class ImageServiceTest {
     }
 
     @Test
-    @DisplayName("IMG-P0-013 만료된 이미지 검증은 존재하지 않는 결과를 반환하고 소비하지 않는다")
-    void doesNotVerifyExpiredUpload() {
+    @DisplayName("IMG-P0-011 만료되었거나 존재하지 않는 이미지 검증은 404 NOT_FOUND다")
+    void rejectsExpiredUploadVerification() {
         ImageUpload upload = new ImageUpload("01JEXPIREDVERIFY0000000000", 1L, ImagePurpose.PRODUCT,
             1200, 800, "{}", Instant.now().minusSeconds(1));
         when(uploads.findById(upload.getId())).thenReturn(Optional.of(upload));
 
-        assertThat(service.verifyAndConsume(1L, upload.getId()))
-            .isEqualTo(new ImageService.Verification(false, false, List.of()));
+        assertThatThrownBy(() -> service.verifyAndConsume(1L, upload.getId()))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND));
         verify(uploads, never()).consumeIfOwnedAndActive(any(), any(), any());
     }
 
     @Test
-    @DisplayName("IMG-P0-014 다른 소유자의 이미지 검증은 ownerMatched=false다")
-    void reportsOwnerMismatch() {
+    @DisplayName("IMG-P0-012 다른 소유자의 이미지 검증은 403 FORBIDDEN이다")
+    void rejectsOwnerMismatch() {
         ImageUpload upload = new ImageUpload("01JOWNERVERIFY00000000000", 2L, ImagePurpose.PRODUCT,
             1200, 800, "{}", Instant.now().plusSeconds(300));
         when(uploads.findById(upload.getId())).thenReturn(Optional.of(upload));
 
-        assertThat(service.verifyAndConsume(1L, upload.getId()))
-            .isEqualTo(new ImageService.Verification(true, false, List.of()));
+        assertThatThrownBy(() -> service.verifyAndConsume(1L, upload.getId()))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN));
         verify(storage, never()).isValid(any(), any(), any(), any(Long.class));
+    }
+
+    @Test
+    @DisplayName("IMG-P0-017 이미 소비된 이미지의 반복 검증은 409 CONFLICT다")
+    void rejectsVerificationOfConsumedUpload() {
+        ImageUpload upload = mock(ImageUpload.class);
+        when(upload.getId()).thenReturn("01JCONSUMEDVERIFY00000000");
+        when(upload.getMemberId()).thenReturn(1L);
+        when(upload.getExpiresAt()).thenReturn(Instant.now().plusSeconds(300));
+        when(upload.isConsumed()).thenReturn(true);
+        when(uploads.findById(upload.getId())).thenReturn(Optional.of(upload));
+
+        assertThatThrownBy(() -> service.verifyAndConsume(1L, upload.getId()))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.CONFLICT));
+        verify(storage, never()).isValid(any(), any(), any(), any(Long.class));
+        verify(uploads, never()).consumeIfOwnedAndActive(any(), any(), any());
     }
 
     @Test
@@ -262,7 +302,7 @@ class ImageServiceTest {
     }
 
     @Test
-    @DisplayName("IMG-P2-017 이미 소비된 이미지는 삭제할 수 없다")
+    @DisplayName("IMG-P2-004 이미 소비된 이미지는 409 CONFLICT로 삭제를 거부한다")
     void rejectsDeletingConsumedImage() {
         ImageUpload upload = mock(ImageUpload.class);
         when(upload.getId()).thenReturn("01JCONSUMEDIMAGE000000000");
@@ -272,7 +312,7 @@ class ImageServiceTest {
 
         assertThatThrownBy(() -> service.deleteUnused(1L, upload.getId()))
             .isInstanceOfSatisfying(DomainException.class,
-                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN));
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.CONFLICT));
         verify(storage, never()).delete(any(), any());
     }
 
@@ -282,7 +322,8 @@ class ImageServiceTest {
         assertThatThrownBy(() -> service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("huge.webp", "image/webp", ImagePurpose.CONTENT, 10_001, 800,
                 publicVariants())))
-            .isInstanceOf(BusinessRuleViolationException.class);
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_INPUT));
         verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
 
@@ -292,8 +333,8 @@ class ImageServiceTest {
         assertThatThrownBy(() -> service.createPresignedUpload(1L,
             new ImageService.CreatePresignedUpload("huge.webp", "image/webp", ImagePurpose.RETURN, 1200, 800,
                 List.of(new ImageService.UploadVariant("1280w", 10L * 1024 * 1024 + 1)))))
-            .isInstanceOf(BusinessRuleViolationException.class)
-            .hasMessageContaining("10485760");
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_INPUT));
         verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
 

@@ -91,6 +91,30 @@ class ImageControllerTest {
             .andExpect(jsonPath("$.data.ownerMatched").value(true));
     }
 
+    @Test
+    @DisplayName("IMG-P0-011 존재하지 않는 이미지 검증은 404 NOT_FOUND다")
+    void reportsMissingImageDuringVerification() throws Exception {
+        String request = "{\"imageId\":\"01JMISSING0000000000000000\",\"requesterId\":1}";
+        when(images.verifyAndConsume(1L, "01JMISSING0000000000000000"))
+            .thenThrow(new DomainException(ErrorCode.NOT_FOUND));
+
+        mockMvc.perform(post("/api/internal/images/verify").with(admin()).contentType(APPLICATION_JSON)
+                .content(request))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.errorCode").value("NOT_FOUND"));
+    }
+
+    @Test
+    @DisplayName("IMG-P2-004 사용 중인 이미지 삭제는 409 CONFLICT다")
+    void rejectsDeletingConsumedImage() throws Exception {
+        doThrow(new DomainException(ErrorCode.CONFLICT)).when(images)
+            .deleteUnused(1L, "01JCONSUMED000000000000000");
+
+        mockMvc.perform(delete("/api/images/01JCONSUMED000000000000000").with(user()))
+            .andExpect(status().isConflict())
+            .andExpect(jsonPath("$.errorCode").value("CONFLICT"));
+    }
+
     private RequestPostProcessor user() {
         return authentication(new UsernamePasswordAuthenticationToken(
             1L, null, List.of(new SimpleGrantedAuthority("ROLE_USER"))));

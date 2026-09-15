@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -54,21 +55,25 @@ public class ImageService {
                 storage.presignPut(command.purpose(), objectKey, WEBP, variant.sizeBytes(), validFor));
         }).toList();
         uploads.save(new ImageUpload(imageId, memberId, command.purpose(), command.sourceWidth(), command.sourceHeight(),
-            json(metadata), Instant.now().plus(validFor)));
+            json(metadata), Instant.now().plusSeconds(properties.getUnusedRetentionSeconds())));
         return new PresignedUpload(imageId, uploadUrls, properties.getPresignExpirySeconds());
     }
 
     @Transactional
     public Verification verifyAndConsume(Long requesterId, String imageId) {
-        ImageUpload upload = uploads.findById(imageId).orElse(null);
-        if (upload == null || upload.getExpiresAt().isBefore(Instant.now())) {
-            return Verification.notFound();
+        ImageUpload upload = uploads.findById(imageId)
+            .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
+        if (!upload.getExpiresAt().isAfter(Instant.now())) {
+            throw new DomainException(ErrorCode.NOT_FOUND);
         }
         if (!upload.getMemberId().equals(requesterId)) {
-            return new Verification(true, false, List.of());
+            throw new DomainException(ErrorCode.FORBIDDEN);
+        }
+        if (upload.isConsumed()) {
+            throw new DomainException(ErrorCode.CONFLICT);
         }
         List<String> objectKeys = objectKeys(upload);
-        if (!hasRequiredVariants(upload) || upload.isConsumed()
+        if (!hasRequiredVariants(upload)
             || objectKeys.stream().anyMatch(key -> !isValidUpload(upload.getPurpose(), key))) {
             return new Verification(false, true, objectKeys);
         }
@@ -88,7 +93,7 @@ public class ImageService {
         }
         if (imageIds.stream().anyMatch(id -> id == null || id.isBlank())
             || imageIds.stream().distinct().count() != imageIds.size()) {
-            throw new BusinessRuleViolationException("이미지 ID는 중복 없이 입력해야 합니다.");
+            throw new DomainException(ErrorCode.INVALID_INPUT);
         }
 
         Instant now = Instant.now();
@@ -105,7 +110,7 @@ public class ImageService {
                 throw new DomainException(ErrorCode.RESOURCE_EXPIRED);
             }
             if (!hasRequiredVariants(upload)) {
-                throw new BusinessRuleViolationException(requiredVariantsMessage(upload.getPurpose()));
+                throw new DomainException(ErrorCode.INVALID_INPUT);
             }
             if (objectKeys(upload).stream().anyMatch(key -> !isValidUpload(upload.getPurpose(), key))) {
                 throw new BusinessRuleViolationException("업로드가 완료되지 않았거나 형식·크기가 올바르지 않은 이미지가 있습니다.");
@@ -129,7 +134,7 @@ public class ImageService {
             throw new DomainException(ErrorCode.FORBIDDEN);
         }
         if (upload.isConsumed()) {
-            throw new DomainException(ErrorCode.FORBIDDEN);
+            throw new DomainException(ErrorCode.CONFLICT);
         }
         objectKeys(upload).forEach(key -> storage.delete(upload.getPurpose(), key));
         uploads.delete(upload);
@@ -153,28 +158,29 @@ public class ImageService {
     private void validate(CreatePresignedUpload command) {
         if (command == null || command.variants() == null || command.purpose() == null
             || command.sourceWidth() <= 0 || command.sourceHeight() <= 0) {
-            throw new BusinessRuleViolationException("이미지 업로드 요청값이 올바르지 않습니다.");
+            throw new DomainException(ErrorCode.INVALID_INPUT);
         }
-        if (!WEBP.equalsIgnoreCase(command.contentType())) {
-            throw new BusinessRuleViolationException("이미지 variant는 WebP 형식만 업로드할 수 있습니다.");
+        if (command.fileName() == null
+            || !command.fileName().trim().toLowerCase(Locale.ROOT).endsWith(".webp")
+            || !WEBP.equalsIgnoreCase(command.contentType())) {
+            throw new DomainException(ErrorCode.INVALID_INPUT);
         }
         if (command.sourceWidth() > MAX_DIMENSION || command.sourceHeight() > MAX_DIMENSION) {
-            throw new BusinessRuleViolationException("이미지 해상도는 10000px 이하여야 합니다.");
+            throw new DomainException(ErrorCode.INVALID_INPUT);
         }
         if (command.variants().stream().anyMatch(variant -> variant == null || variant.name() == null)) {
-            throw new BusinessRuleViolationException("이미지 variant 요청값이 올바르지 않습니다.");
+            throw new DomainException(ErrorCode.INVALID_INPUT);
         }
         Set<String> requiredVariants = requiredVariants(command.purpose());
         List<String> variantNames = command.variants().stream().map(UploadVariant::name).toList();
         if (variantNames.stream().anyMatch(variant -> !PUBLIC_VARIANTS.contains(variant))
             || variantNames.stream().distinct().count() != variantNames.size()
             || !Set.copyOf(variantNames).equals(requiredVariants)) {
-            throw new BusinessRuleViolationException(requiredVariantsMessage(command.purpose()));
+            throw new DomainException(ErrorCode.INVALID_INPUT);
         }
         if (command.variants().stream().anyMatch(variant -> variant.sizeBytes() <= 0
             || variant.sizeBytes() > properties.getMaxFileSizeBytes())) {
-            throw new BusinessRuleViolationException(
-                "이미지 파일 크기는 1바이트 이상 " + properties.getMaxFileSizeBytes() + "바이트 이하여야 합니다.");
+            throw new DomainException(ErrorCode.INVALID_INPUT);
         }
     }
 
@@ -240,9 +246,5 @@ public class ImageService {
 
     public record PresignedUpload(String imageId, List<VariantUpload> uploads, int expiresInSeconds) {}
 
-    public record Verification(boolean exists, boolean ownerMatched, List<String> variants) {
-        static Verification notFound() {
-            return new Verification(false, false, List.of());
-        }
-    }
+    public record Verification(boolean exists, boolean ownerMatched, List<String> variants) {}
 }

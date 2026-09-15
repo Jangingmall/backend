@@ -46,7 +46,7 @@
 | Framework | Spring Boot 4.0.3, Spring Security, Spring Data JPA |
 | ORM | JPA + QueryDSL (성능 이슈 시 Native Query) |
 | Database | PostgreSQL 18, Redis 8 |
-| Auth | JWT (Access 30분 / Refresh 7일 HttpOnly Cookie), OAuth2 (Kakao · Google) |
+| Auth | JWT (Access 30분 / Refresh 7일 HttpOnly Cookie), OAuth2 (Kakao · Naver) |
 | API 문서 | Spring REST Docs → OpenAPI → Redocly |
 | 결제 | 토스페이먼츠 |
 | 인프라 | AWS EC2 · ALB · S3, nginx, GitHub Actions |

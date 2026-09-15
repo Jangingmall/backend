@@ -25,9 +25,9 @@ public class OAuthController {
         return ResponseEntity.status(302).location(URI.create("/oauth2/authorization/kakao")).build();
     }
 
-    @GetMapping("/google")
-    public ResponseEntity<Void> google() {
-        return ResponseEntity.status(302).location(URI.create("/oauth2/authorization/google")).build();
+    @GetMapping("/naver")
+    public ResponseEntity<Void> naver() {
+        return ResponseEntity.status(302).location(URI.create("/oauth2/authorization/naver")).build();
     }
 
     @PostMapping("/exchange")

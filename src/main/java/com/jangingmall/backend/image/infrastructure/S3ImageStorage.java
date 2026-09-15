@@ -1,6 +1,5 @@
 package com.jangingmall.backend.image.infrastructure;
 
-import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.image.application.ImageStorage;
 import com.jangingmall.backend.image.application.ImageStorageProperties;
 import com.jangingmall.backend.image.domain.ImagePurpose;
@@ -48,7 +47,7 @@ public class S3ImageStorage implements ImageStorage {
             if (exception.statusCode() == 404) {
                 return false;
             }
-            throw new BusinessRuleViolationException("S3 이미지 존재 여부를 확인할 수 없습니다.");
+            throw new IllegalStateException("S3 이미지 존재 여부를 확인할 수 없습니다.", exception);
         }
     }
 
@@ -57,7 +56,7 @@ public class S3ImageStorage implements ImageStorage {
         try {
             s3.deleteObject(request -> request.bucket(bucket(purpose)).key(objectKey));
         } catch (S3Exception exception) {
-            throw new BusinessRuleViolationException("S3 이미지를 삭제할 수 없습니다.");
+            throw new IllegalStateException("S3 이미지를 삭제할 수 없습니다.", exception);
         }
     }
 
@@ -65,7 +64,7 @@ public class S3ImageStorage implements ImageStorage {
         String bucket = purpose == ImagePurpose.RETURN ? properties.getReturnBucket() : properties.getBucket();
         if (bucket == null || bucket.isBlank()) {
             String type = purpose == ImagePurpose.RETURN ? "반품 이미지" : "공개 이미지";
-            throw new BusinessRuleViolationException(type + " S3 버킷이 설정되지 않았습니다.");
+            throw new IllegalStateException(type + " S3 버킷이 설정되지 않았습니다.");
         }
         return bucket;
     }

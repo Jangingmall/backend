@@ -15,5 +15,6 @@ public class ImageStorageProperties {
     private String region = "ap-northeast-2";
     private String keyPrefix = "images";
     private int presignExpirySeconds = 300;
+    private long unusedRetentionSeconds = 24L * 60 * 60;
     private long maxFileSizeBytes = 10L * 1024 * 1024;
 }
