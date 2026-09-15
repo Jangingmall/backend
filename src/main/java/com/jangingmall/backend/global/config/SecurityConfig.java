@@ -7,6 +7,7 @@ import com.jangingmall.backend.global.security.JwtAuthenticationFilter;
 import com.jangingmall.backend.global.security.JwtProperties;
 import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.member.application.EmailVerificationProperties;
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -53,6 +54,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                 .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll()
                 .anyRequest().authenticated()

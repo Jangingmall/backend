@@ -18,6 +18,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -415,5 +416,27 @@ class ContentControllerTest extends RestDocsControllerTest {
         mockMvc.perform(post("/api/content/products/{productId}/publish", 10L))
             .andExpect(status().isUnprocessableEntity())
             .andDo(documentError("content-publish-invalid", "콘텐츠", "게시 — 상태 오류", "APPROVED가 아닌 경우 422를 반환합니다."));
+    }
+
+    @Test
+    @DisplayName("콘텐츠 조회 — 미인증 요청은 401을 반환한다")
+    @WithAnonymousUser
+    void getContentUnauthorized() throws Exception {
+        mockMvc.perform(get("/api/content/products/{productId}", 10L))
+            .andExpect(status().isUnauthorized())
+            .andDo(documentError("content-get-unauthorized", "콘텐츠", "콘텐츠 조회 — 인증 없음",
+                "인증 없이 콘텐츠를 조회하면 401을 반환합니다."));
+    }
+
+    @Test
+    @DisplayName("문단 일괄 수정 — 미인증 요청은 401을 반환한다")
+    @WithAnonymousUser
+    void bulkUpdateUnauthorized() throws Exception {
+        mockMvc.perform(patch("/api/content/products/{productId}/contents/{contentId}", 10L, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new ContentRequest.BulkUpdate(List.of()))))
+            .andExpect(status().isUnauthorized())
+            .andDo(documentError("content-bulk-update-unauthorized", "콘텐츠", "문단 일괄 수정 — 인증 없음",
+                "인증 없이 문단을 수정하면 401을 반환합니다."));
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -345,5 +346,39 @@ class ProductControllerTest extends RestDocsControllerTest {
         mockMvc.perform(post("/api/products/{productId}/wish", 1L))
             .andExpect(status().isForbidden())
             .andDo(documentError("product-wish-forbidden", "찜", "찜 등록 — 권한 없음", "USER 역할이 없으면 403을 반환합니다."));
+    }
+
+    @Test
+    @DisplayName("상품 등록 — 미인증 요청은 401을 반환한다")
+    @WithAnonymousUser
+    void createProductUnauthorized() throws Exception {
+        mockMvc.perform(post("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new ProductRequest.Create(null, null, "청자 다완", null, 85000, 10, null))))
+            .andExpect(status().isUnauthorized())
+            .andDo(documentError("product-create-unauthorized", "상품", "상품 등록 — 인증 없음",
+                "인증 없이 상품을 등록하면 401을 반환합니다."));
+    }
+
+    @Test
+    @DisplayName("상품 상태 변경 — 미인증 요청은 401을 반환한다")
+    @WithAnonymousUser
+    void changeStatusUnauthorized() throws Exception {
+        mockMvc.perform(patch("/api/products/{productId}/status", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new ProductRequest.ChangeStatus("ON_SALE"))))
+            .andExpect(status().isUnauthorized())
+            .andDo(documentError("product-change-status-unauthorized", "상품", "상품 상태 변경 — 인증 없음",
+                "인증 없이 상태를 변경하면 401을 반환합니다."));
+    }
+
+    @Test
+    @DisplayName("찜 등록 — 미인증 요청은 401을 반환한다")
+    @WithAnonymousUser
+    void wishUnauthorized() throws Exception {
+        mockMvc.perform(post("/api/products/{productId}/wish", 1L))
+            .andExpect(status().isUnauthorized())
+            .andDo(documentError("product-wish-unauthorized", "찜", "찜 등록 — 인증 없음",
+                "인증 없이 찜하면 401을 반환합니다."));
     }
 }
