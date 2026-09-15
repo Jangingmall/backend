@@ -20,18 +20,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    private static final String SSE_PATH = "/api/notifications/stream";
+
     @Override
     protected void doFilterInternal(
         HttpServletRequest request,
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authorization != null && authorization.startsWith("Bearer ")) {
+        String token = resolveToken(request);
+        if (token != null) {
             try {
-                JwtTokenProvider.JwtMemberClaims claims = jwtTokenProvider.parseAccessToken(
-                    authorization.substring(7)
-                );
+                JwtTokenProvider.JwtMemberClaims claims = jwtTokenProvider.parseAccessToken(token);
                 var authorities = claims.role().authorities().stream()
                     .map(SimpleGrantedAuthority::new)
                     .toList();
@@ -43,5 +43,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (authorization != null && authorization.startsWith("Bearer ")) {
+            return authorization.substring(7);
+        }
+        if (SSE_PATH.equals(request.getServletPath())) {
+            return request.getParameter("token");
+        }
+        return null;
     }
 }

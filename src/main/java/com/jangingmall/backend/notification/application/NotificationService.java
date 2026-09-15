@@ -6,6 +6,7 @@ import com.jangingmall.backend.notification.domain.NotificationErrorMessage;
 import com.jangingmall.backend.notification.domain.NotificationRepository;
 import com.jangingmall.backend.notification.domain.NotificationStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,17 @@ import java.util.List;
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final ApplicationEventPublisher eventPublisher;
+
+    @Transactional
+    public NotificationResponse create(Long memberId, NotificationCreateRequest request) {
+        Notification notification = notificationRepository.save(
+            Notification.create(memberId, request.title(), request.content())
+        );
+        NotificationResponse response = NotificationResponse.from(notification);
+        eventPublisher.publishEvent(new NotificationCreatedEvent(memberId, response));
+        return response;
+    }
 
     @Transactional(readOnly = true)
     public List<NotificationResponse> findAll(Long memberId) {
