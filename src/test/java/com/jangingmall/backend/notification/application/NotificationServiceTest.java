@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
@@ -30,17 +31,32 @@ class NotificationServiceTest {
     @Mock
     private NotificationRepository notificationRepository;
 
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
     private NotificationService notificationService;
 
     @BeforeEach
     void setUp() {
-        notificationService = new NotificationService(notificationRepository);
+        notificationService = new NotificationService(notificationRepository, eventPublisher);
     }
 
     private Notification createNotification(Long id, Long memberId) {
         Notification notification = Notification.create(memberId, "알림 제목", "알림 내용");
         ReflectionTestUtils.setField(notification, "id", id);
         return notification;
+    }
+
+    @Test
+    @DisplayName("알림 생성 시 저장 후 이벤트를 발행한다")
+    void create_savesAndPublishesEvent() {
+        Notification saved = createNotification(1L, 1L);
+        when(notificationRepository.save(any())).thenReturn(saved);
+
+        NotificationResponse result = notificationService.create(1L, new NotificationCreateRequest("알림 제목", "알림 내용"));
+
+        assertThat(result.title()).isEqualTo("알림 제목");
+        verify(eventPublisher).publishEvent(any(NotificationCreatedEvent.class));
     }
 
     @Test
