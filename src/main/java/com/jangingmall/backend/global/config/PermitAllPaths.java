@@ -5,13 +5,18 @@ import java.util.Set;
 public final class PermitAllPaths {
 
     public static final Set<String> PATHS = Set.of(
+        "/healthz",
+        "/redoc.html",
+        "/actuator/health/liveness",
+        "/actuator/health/readiness",
+        "/actuator/prometheus",
         "/api/member/signup",
         "/api/member/login",
         "/api/member/token/refresh",
         "/api/member/email-verifications",
         "/api/member/email-verifications/verify",
         "/api/member/oauth2/kakao",
-        "/api/member/oauth2/google",
+        "/api/member/oauth2/naver",
         "/api/member/oauth2/exchange",
         "/api/member/oauth2/complete-profile",
         "/oauth2/**",

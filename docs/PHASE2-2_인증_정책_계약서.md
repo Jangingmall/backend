@@ -44,7 +44,7 @@
 | 4-7 | 로그아웃 처리 | 서버 측 Refresh Token 무효화 + 브라우저 메모리에서 Access Token 제거 |
 | 4-8 | 세션 만료 처리 | Access Token 만료 시 Refresh Token으로 자동 재발급 시도, Refresh Token도 만료 시 로그인 페이지로 리다이렉트 |
 | 4-9 | 비인증 접근 허용 범위 | 상품·장인 목록/상세 조회, 챗봇, 장바구니(게스트), 로그인·회원가입 |
-| 4-10 | OAuth 소셜 로그인 | 카카오 / 구글 OAuth2 — 최초 로그인 시 추가 정보 입력 후 `USER` role 부여 |
+| 4-10 | OAuth 소셜 로그인 | 카카오 / 네이버 OAuth2 — 최초 로그인 시 추가 정보 입력 후 `USER` role 부여 |
 | 4-11 | ARTISAN role 전환 | 장인 가입 신청(`POST /api/member/artisans/applications`) → ADMIN 승인 후 role 전환 |
 
 ---

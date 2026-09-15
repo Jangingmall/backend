@@ -2,9 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [ develop, 'feat/**', 'hotfix/**' ]
+    branches: [ 'feat/**', 'hotfix/**' ]
   pull_request:
     branches: [ develop ]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -23,11 +27,11 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run tests
-        run: ./gradlew test --no-daemon
+        run: ./gradlew test --no-daemon --build-cache
 
       - name: Upload test report
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: test-report
+          name: test-report-${{ github.run_id }}
           path: build/reports/tests/test/

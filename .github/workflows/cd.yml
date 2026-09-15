@@ -4,13 +4,19 @@ on:
   push:
     branches: [ main ]
 
+concurrency:
+  group: cd-main
+  cancel-in-progress: false
+
 env:
   AWS_REGION: ap-northeast-2
   ECR_REPOSITORY: backend
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
+    outputs:
+      image-uri: ${{ steps.meta.outputs.image-uri }}
 
     steps:
       - uses: actions/checkout@v4
@@ -24,8 +30,10 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build JAR (skip tests — CI already ran)
-        run: ./gradlew bootJar --no-daemon -x test
+      - name: Build JAR and extract layers
+        run: |
+          ./gradlew bootJar --no-daemon --build-cache -x test
+          java -Djarmode=layertools -jar build/libs/*.jar extract --destination build/extracted
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -38,41 +46,93 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag, and push image to ECR
-        id: build-image
+      - name: Set image metadata
+        id: meta
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: sha-${{ github.sha }}
         run: |
-          SHORT_SHA=${IMAGE_TAG:0:10}  # sha-<7자리>
-          IMAGE_URI=$ECR_REGISTRY/$ECR_REPOSITORY:$SHORT_SHA
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          IMAGE_URI="${ECR_REGISTRY}/${ECR_REPOSITORY}:sha-${SHORT_SHA}"
+          echo "image-uri=${IMAGE_URI}" >> $GITHUB_OUTPUT
+          echo "ecr-registry=${ECR_REGISTRY}" >> $GITHUB_OUTPUT
 
-          docker build -t $IMAGE_URI .
-          docker push $IMAGE_URI
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-          # latest도 함께 push (롤백은 sha 태그 기준)
-          docker tag $IMAGE_URI $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      - name: Build and push image to ECR
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: ci
+          push: true
+          build-args: EXTRACTED=build/extracted
+          tags: |
+            ${{ steps.meta.outputs.image-uri }}
+            ${{ steps.meta.outputs.ecr-registry }}/${{ env.ECR_REPOSITORY }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-          echo "image=$IMAGE_URI" >> $GITHUB_OUTPUT
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Deploy to EC2 via SSM Run Command
+        id: ssm
         env:
-          IMAGE_URI: ${{ steps.build-image.outputs.image }}
-          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
+          IMAGE_URI: ${{ needs.build-and-push.outputs.image-uri }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          aws ssm send-command \
-            --instance-ids "$EC2_INSTANCE_ID" \
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
             --document-name "AWS-RunShellScript" \
             --parameters "commands=[
-              'aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}',
-              'docker pull ${{ env.IMAGE_URI }}',
+              'aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${ECR_REGISTRY}',
+              'docker pull ${IMAGE_URI}',
               'docker stop backend || true',
               'docker rm backend || true',
-              'docker run -d --name backend --restart unless-stopped \
-                -p 8080:8080 -p 9090:9090 \
-                --env-file /etc/backend/.env \
-                ${{ env.IMAGE_URI }}'
+              'docker run -d --name backend --restart unless-stopped -p 8080:8080 -p 9090:9090 --env-file /etc/backend/.env ${IMAGE_URI}'
             ]" \
-            --comment "Deploy ${{ env.IMAGE_URI }}" \
-            --output text
+            --comment "Deploy ${IMAGE_URI}" \
+            --query "Command.CommandId" \
+            --output text)
+          echo "command-id=${COMMAND_ID}" >> $GITHUB_OUTPUT
+
+      - name: Wait for SSM command to complete
+        run: |
+          aws ssm wait command-executed \
+            --command-id "${{ steps.ssm.outputs.command-id }}" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
+
+      - name: Verify deployment health
+        run: |
+          for i in $(seq 1 12); do
+            STATUS=$(aws ssm get-command-invocation \
+              --command-id "${{ steps.ssm.outputs.command-id }}" \
+              --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
+              --query "Status" --output text)
+            if [ "$STATUS" = "Success" ]; then
+              echo "SSM command succeeded"
+              break
+            elif [ "$STATUS" = "Failed" ] || [ "$STATUS" = "Cancelled" ] || [ "$STATUS" = "TimedOut" ]; then
+              echo "SSM command failed with status: $STATUS"
+              aws ssm get-command-invocation \
+                --command-id "${{ steps.ssm.outputs.command-id }}" \
+                --instance-id "${{ secrets.EC2_INSTANCE_ID }}" \
+                --query "StandardErrorContent" --output text
+              exit 1
+            fi
+            echo "Waiting... ($i/12)"
+            sleep 10
+          done
