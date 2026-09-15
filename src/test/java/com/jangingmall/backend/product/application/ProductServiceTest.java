@@ -108,4 +108,41 @@ class ProductServiceTest {
         assertThatThrownBy(() -> productService.changeStatus(new ProductCommand.ChangeStatus(999L, 1L, "ON_SALE")))
             .isInstanceOf(NotFoundException.class);
     }
+
+    @Test
+    @DisplayName("타 장인이 상태를 변경하면 ForbiddenException이 발생한다")
+    void changeStatusForbidden() {
+        Product product = Product.create(1L, null, null, "제목", "설명", 1000, 5, null);
+        ReflectionTestUtils.setField(product, "id", 1L);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+
+        assertThatThrownBy(() -> productService.changeStatus(new ProductCommand.ChangeStatus(1L, 999L, "ON_SALE")))
+            .isInstanceOf(ForbiddenException.class);
+    }
+
+    @Test
+    @DisplayName("판매 중 상품 목록을 페이징으로 조회할 수 있다")
+    void findOnSale() {
+        Product product = Product.create(1L, null, null, "제목", "설명", 1000, 5, null);
+        ReflectionTestUtils.setField(product, "status", ProductStatus.ON_SALE);
+        Page<Product> page = new PageImpl<>(List.of(product));
+        when(productRepository.findByStatus(eq(ProductStatus.ON_SALE), any())).thenReturn(page);
+
+        Page<ProductResponse> result = productService.findOnSale(PageRequest.of(0, 20));
+
+        assertThat(result.getTotalElements()).isEqualTo(1);
+        assertThat(result.getContent().get(0).status()).isEqualTo("ON_SALE");
+    }
+
+    @Test
+    @DisplayName("상태 변경 성공 — DRAFT에서 ON_SALE로 전이된다")
+    void changeStatusSuccess() {
+        Product product = Product.create(1L, null, null, "제목", "설명", 1000, 5, null);
+        ReflectionTestUtils.setField(product, "id", 1L);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+
+        productService.changeStatus(new ProductCommand.ChangeStatus(1L, 1L, "ON_SALE"));
+
+        assertThat(product.getStatus()).isEqualTo(ProductStatus.ON_SALE);
+    }
 }
