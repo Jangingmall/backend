@@ -2,6 +2,7 @@ package com.jangingmall.backend.notification.application;
 
 import com.jangingmall.backend.notification.domain.NotificationStatus;
 import com.jangingmall.backend.notification.infrastructure.NotificationSseEmitterRepository;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ class NotificationSseServiceTest {
 
     @BeforeEach
     void setUp() {
-        sseService = new NotificationSseService(emitterRepository);
+        sseService = new NotificationSseService(emitterRepository, new SimpleMeterRegistry());
     }
 
     @Test

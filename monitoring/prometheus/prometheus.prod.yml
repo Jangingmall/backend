@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: backend-prod
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets:
+          - <APP_EC2_INTERNAL_IP>:9090
