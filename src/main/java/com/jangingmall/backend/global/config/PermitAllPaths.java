@@ -5,7 +5,6 @@ import java.util.Set;
 public final class PermitAllPaths {
 
     public static final Set<String> PATHS = Set.of(
-        "/api/health",
         "/api/member/signup",
         "/api/member/login",
         "/api/member/token/refresh",
