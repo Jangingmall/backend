@@ -1,7 +1,8 @@
 package com.jangingmall.backend.notification.application;
 
 import com.jangingmall.backend.notification.infrastructure.NotificationSseEmitterRepository;
-import lombok.RequiredArgsConstructor;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,23 @@ import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class NotificationSseService {
 
     private static final long SSE_TIMEOUT_MILLIS = 30 * 60 * 1000L;
 
     private final NotificationSseEmitterRepository emitterRepository;
+    private final Counter sseSentCounter;
+    private final Counter sseFailedCounter;
+
+    public NotificationSseService(NotificationSseEmitterRepository emitterRepository, MeterRegistry meterRegistry) {
+        this.emitterRepository = emitterRepository;
+        this.sseSentCounter = Counter.builder("sse.sent.total")
+            .description("SSE 전송 성공 누적")
+            .register(meterRegistry);
+        this.sseFailedCounter = Counter.builder("sse.failed.total")
+            .description("SSE 전송 실패 누적")
+            .register(meterRegistry);
+    }
 
     public SseEmitter subscribe(Long memberId) {
         SseEmitter emitter = new SseEmitter(SSE_TIMEOUT_MILLIS);
@@ -50,8 +62,10 @@ public class NotificationSseService {
                 emitter.send(SseEmitter.event()
                     .name("notification")
                     .data(notification));
+                sseSentCounter.increment();
             } catch (IOException | IllegalStateException exception) {
                 log.warn("SSE send failed for memberId={}, removing emitter: {}", memberId, exception.getMessage());
+                sseFailedCounter.increment();
                 emitterRepository.remove(memberId, emitter);
             }
         }
