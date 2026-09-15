@@ -109,10 +109,10 @@ openapi3 {
     outputFileNamePrefix = 'openapi'
 }
 
-// ── 후처리: example 정규화 + 공통 에러 주입 + Actuator + 문서 보강 ────────────
+// ── 후처리: example 정규화 + Actuator 경로 추가 + 문서 보강 ──────────────────
 tasks.register('processOpenapi') {
     dependsOn 'openapi3'
-    description = 'Post-process openapi.json: parse example values, inject common errors, add Actuator paths, enrich description'
+    description = 'Post-process openapi.json: parse example values, add Actuator paths, enrich description'
 
     def inputFile  = file('build/api-spec/openapi.json')
     def outputFile = file('api-spec/openapi.json')
@@ -126,9 +126,12 @@ tasks.register('processOpenapi') {
 
         // ── 1. info.description 보강 ─────────────────────────────────────────
         json.info.description = '''\
-## 공통 에러 응답 형식
+## 공통 에러 응답
 
-모든 에러 응답은 아래 형식으로 반환됩니다.
+**아래 에러 코드는 명시 여부와 무관하게 모든 API 엔드포인트에 공통 적용됩니다.**
+각 엔드포인트 응답 목록에는 해당 비즈니스 로직에 특화된 에러만 추가로 표시됩니다.
+
+### 응답 형식
 
 ```json
 {
@@ -139,12 +142,12 @@ tasks.register('processOpenapi') {
 }
 ```
 
-## 공통 에러 코드
+### 공통 에러 코드 목록
 
-| HTTP | errorCode | 설명 |
-|------|-----------|------|
-| 400 | INVALID_INPUT | @Valid 필드 검증 실패 |
-| 400 | REQUEST_INVALID | 요청 형식 오류 |
+| HTTP | errorCode | 발생 조건 |
+|------|-----------|-----------|
+| 400 | INVALID_INPUT | `@Valid` 필드 검증 실패 |
+| 400 | REQUEST_INVALID | Content-Type 불일치, 타입 변환 실패 |
 | 400 | REQUEST_BODY_MALFORMED | 파싱 불가한 요청 바디 |
 | 401 | UNAUTHORIZED | 인증 토큰 없음 또는 만료 |
 | 403 | FORBIDDEN | 권한 없음 (타 사용자 리소스 접근 등) |
@@ -153,6 +156,8 @@ tasks.register('processOpenapi') {
 | 422 | BUSINESS_RULE_VIOLATION | 비즈니스 규칙 위반 (상태 전이 불가 등) |
 | 429 | TOO_MANY_REQUESTS | 요청 횟수 초과 |
 | 500 | INTERNAL_ERROR | 서버 내부 오류 |
+
+---
 
 ## 페이지네이션
 
@@ -218,17 +223,15 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
                 try {
                     example['value'] = slurper.parseText(val)
                 } catch (ignored) {
-                    // intentionally invalid JSON (e.g. REQUEST_BODY_MALFORMED test) — leave as-is
+                    // intentionally invalid JSON (REQUEST_BODY_MALFORMED 케이스) — leave as-is
                 }
             }
         }
 
         def walkExamples = { Map operation ->
-            // request body examples
             operation?.requestBody?.content?.each { contentType, mediaType ->
                 mediaType?.examples?.each { name, example -> parseExampleValue(example) }
             }
-            // response examples
             operation?.responses?.each { status, response ->
                 response?.content?.each { contentType, mediaType ->
                     mediaType?.examples?.each { name, example -> parseExampleValue(example) }
@@ -242,70 +245,27 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
             }
         }
 
-        // ── 3. 공통 에러 응답 모든 operation에 주입 ────────────────────────────
-        def errorSchema = [
-            '\$ref': '#/components/schemas/ApiErrorResponse'
-        ]
-
-        def makeErrorResponse = { int httpStatus, String errorCode, String message ->
-            [
-                description: message,
-                content: [
-                    'application/json': [
-                        schema: ['\$ref': '#/components/schemas/ApiErrorResponse'],
-                        examples: [
-                            (errorCode): [
-                                value: [
-                                    success  : false,
-                                    status   : httpStatus,
-                                    errorCode: errorCode,
-                                    message  : message
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ]
-        }
-
-        def commonErrors = [
-            '400': makeErrorResponse(400, 'INVALID_INPUT',            '입력값이 올바르지 않습니다'),
-            '401': makeErrorResponse(401, 'UNAUTHORIZED',             '인증이 필요합니다'),
-            '403': makeErrorResponse(403, 'FORBIDDEN',                '접근 권한이 없습니다'),
-            '404': makeErrorResponse(404, 'NOT_FOUND',                '리소스를 찾을 수 없습니다'),
-            '409': makeErrorResponse(409, 'CONFLICT',                 '이미 존재하는 리소스입니다'),
-            '422': makeErrorResponse(422, 'BUSINESS_RULE_VIOLATION',  '비즈니스 규칙 위반입니다'),
-            '429': makeErrorResponse(429, 'TOO_MANY_REQUESTS',        '요청 횟수를 초과하였습니다'),
-            '500': makeErrorResponse(500, 'INTERNAL_ERROR',           '서버 내부 오류가 발생하였습니다'),
-        ]
-
-        json.paths?.each { path, pathItem ->
-            ['get','post','put','patch','delete'].each { method ->
-                def operation = pathItem[method]
-                if (!operation) return
-                if (!operation.responses) operation.responses = [:]
-                commonErrors.each { statusCode, response ->
-                    if (!operation.responses[statusCode]) {
-                        operation.responses[statusCode] = response
-                    }
-                }
-            }
-        }
-
-        // ── 4. ApiErrorResponse 컴포넌트 스키마 등록 ───────────────────────────
+        // ── 3. ApiErrorResponse 컴포넌트 스키마 (공통 에러 형식 참조용) ──────────
         if (!json.components) json.components = [:]
         if (!json.components.schemas) json.components.schemas = [:]
         json.components.schemas['ApiErrorResponse'] = [
             type      : 'object',
+            description: '모든 에러 응답의 공통 형식. 에러 코드 목록은 상단 Overview를 참조하세요.',
             properties: [
                 success  : [type: 'boolean', example: false],
                 status   : [type: 'integer', example: 400],
                 errorCode: [type: 'string',  example: 'INVALID_INPUT'],
                 message  : [type: 'string',  example: '입력값이 올바르지 않습니다']
+            ],
+            example: [
+                success  : false,
+                status   : 400,
+                errorCode: 'INVALID_INPUT',
+                message  : '입력값이 올바르지 않습니다'
             ]
         ]
 
-        // ── 5. Actuator / 인프라 헬스 경로 추가 ────────────────────────────────
+        // ── 4. Actuator / 인프라 헬스 경로 추가 ────────────────────────────────
         if (!json.paths) json.paths = [:]
 
         json.paths['/healthz'] = [
@@ -366,7 +326,7 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
             ]
         ]
 
-        // ── 6. x-sample-data 주입 ──────────────────────────────────────────────
+        // ── 5. x-sample-data 주입 ──────────────────────────────────────────────
         json['x-sample-data'] = [
             member : [email: 'artisan@example.com', name: '김도공'],
             product: [title: '청자 상감 다완', price: 85000, category: 'POTTERY'],
