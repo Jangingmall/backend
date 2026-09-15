@@ -26,7 +26,7 @@ address,address2,VARCHAR(255),,,,,,,
 address,is_default,BOOLEAN,,,Y,,false,,
 member_social_account,id,BIGINT,PK,,Y,,GENERATED ALWAYS AS IDENTITY,,
 member_social_account,member_id,BIGINT,,member.member_id,Y,,,,
-member_social_account,registration_id,VARCHAR(20),,,Y,,,"CHECK IN ('kakao','google')","Spring Security OAuth2Client의 registrationId와 동일 값(소문자) — application.yml의 spring.security.oauth2.client.registration.{id} 키, /oauth2/authorization/{id} 경로와 그대로 매칭"
+member_social_account,registration_id,VARCHAR(20),,,Y,,,"CHECK IN ('kakao','naver')","Spring Security OAuth2Client의 registrationId와 동일 값(소문자) — application.yml의 spring.security.oauth2.client.registration.{id} 키, /oauth2/authorization/{id} 경로와 그대로 매칭"
 member_social_account,provider_user_id,VARCHAR(255),,,Y,,,,OAuth2User.getName() / OIDC sub claim
 member_social_account,provider_email,VARCHAR(255),,,,,,,"제공받은 이메일. 계정 연동/중복 확인용, member.email과 다를 수 있음"
 member_social_account,created_at,TIMESTAMP,,,Y,,now(),,

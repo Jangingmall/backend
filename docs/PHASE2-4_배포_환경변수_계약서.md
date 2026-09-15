@@ -30,8 +30,8 @@
 | `MAIL_FROM` | `/prod/backend/mail-from` | 발신 이메일 주소 | `no-reply@midam.store` |
 | `KAKAO_CLIENT_ID` | `/prod/backend/kakao-client-id` | 카카오 OAuth2 Client ID | *(SecureString)* |
 | `KAKAO_CLIENT_SECRET` | `/prod/backend/kakao-client-secret` | 카카오 OAuth2 Client Secret | *(SecureString)* |
-| `GOOGLE_CLIENT_ID` | `/prod/backend/google-client-id` | Google OAuth2 Client ID | *(SecureString)* |
-| `GOOGLE_CLIENT_SECRET` | `/prod/backend/google-client-secret` | Google OAuth2 Client Secret | *(SecureString)* |
+| `NAVER_CLIENT_ID` | `/prod/backend/naver-client-id` | 네이버 OAuth2 Client ID | *(SecureString)* |
+| `NAVER_CLIENT_SECRET` | `/prod/backend/naver-client-secret` | 네이버 OAuth2 Client Secret | *(SecureString)* |
 | `EMAIL_VERIFICATION_URL` | `/prod/backend/email-verification-url` | 이메일 인증 콜백 URL | `https://api.midam.store/api/member/email-verifications/verify` |
 | `EMAIL_VERIFICATION_SUCCESS_REDIRECT` | `/prod/backend/email-verification-success-redirect` | 인증 완료 후 리다이렉트 URL | `https://midam.store/` |
 | `EMAIL_VERIFICATION_TTL_SECONDS` | `/prod/backend/email-verification-ttl-seconds` | 이메일 인증 토큰 유효 시간(초) | `1800` |

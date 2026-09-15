@@ -69,9 +69,9 @@
 }","{
   ""description"": ""302 Redirect → OAuth2 Provider 인가 페이지와 콜백을 거친 뒤 프론트 OAuth 콜백으로 이동한다. 세션 발급은 POST /api/member/oauth2/exchange가 담당한다.""
 }",
-회원,유창민,GET,/api/member/oauth2/google,구글 로그인,구글 OAuth2 로그인을 시작한다,Public,예정,P0,"{
+회원,유창민,GET,/api/member/oauth2/naver,네이버 로그인,네이버 OAuth2 로그인을 시작한다,Public,예정,P0,"{
   ""method"": ""GET"",
-  ""url"": ""/api/member/oauth2/google"",
+  ""url"": ""/api/member/oauth2/naver"",
   ""headers"": {
     ""Content-Type"": ""application/json""
   }
@@ -2317,7 +2317,7 @@
   ""status"": 422,
   ""errorCode"": ""BUSINESS_RULE_VIOLATION""
 }"
-회원,유창민,POST,/api/member/oauth2/complete-profile,SNS 회원가입 추가정보 입력,카카오/구글 최초 로그인 직후 배송에 필요한 이름·전화번호와 약관 동의를 추가로 입력받아 가입을 완료한다,Authenticated(OAuth 임시세션),예정,P0,"{
+회원,유창민,POST,/api/member/oauth2/complete-profile,SNS 회원가입 추가정보 입력,카카오/네이버 최초 로그인 직후 배송에 필요한 이름·전화번호와 약관 동의를 추가로 입력받아 가입을 완료한다,Authenticated(OAuth 임시세션),예정,P0,"{
   ""method"": ""POST"",
   ""url"": ""/api/member/oauth2/complete-profile"",
   ""headers"": {
