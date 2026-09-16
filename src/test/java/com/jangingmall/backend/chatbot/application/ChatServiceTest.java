@@ -2,6 +2,7 @@ package com.jangingmall.backend.chatbot.application;
 
 import com.jangingmall.backend.chatbot.domain.AiChatClient;
 import com.jangingmall.backend.chatbot.domain.AiChatClient.AiChatResult;
+import com.jangingmall.backend.chatbot.domain.AiChatClient.ProductCard;
 import com.jangingmall.backend.chatbot.domain.ChatMessage;
 import com.jangingmall.backend.chatbot.domain.ChatMessageRepository;
 import com.jangingmall.backend.chatbot.domain.ChatSender;
@@ -10,6 +11,9 @@ import com.jangingmall.backend.chatbot.domain.ChatSessionRepository;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
+import com.jangingmall.backend.product.domain.Category;
+import com.jangingmall.backend.product.domain.Product;
+import com.jangingmall.backend.product.domain.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,12 +40,14 @@ class ChatServiceTest {
     private ChatMessageRepository messageRepository;
     @Mock
     private AiChatClient aiChatClient;
+    @Mock
+    private ProductRepository productRepository;
 
     private ChatService chatService;
 
     @BeforeEach
     void setUp() {
-        chatService = new ChatService(sessionRepository, messageRepository, aiChatClient);
+        chatService = new ChatService(sessionRepository, messageRepository, aiChatClient, productRepository);
     }
 
     @Test
@@ -57,7 +63,7 @@ class ChatServiceTest {
     }
 
     @Test
-    @DisplayName("메시지 전송 시 AI 응답이 포함된 결과를 반환한다")
+    @DisplayName("메시지 전송 시 AI 응답 상품카드가 조립되어 반환된다")
     void sendMessage_success() {
         UUID sessionId = UUID.randomUUID();
         ChatSession session = ChatSession.create(1L);
@@ -68,19 +74,55 @@ class ChatServiceTest {
         ChatMessage botMsg = ChatMessage.of(sessionId, ChatSender.ADMIN, "다음 상품을 추천드려요");
         ReflectionTestUtils.setField(botMsg, "messageId", 2L);
 
+        Product product = Product.create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
+        ReflectionTestUtils.setField(product, "id", 1L);
+
         when(sessionRepository.findById(sessionId)).thenReturn(Optional.of(session));
         when(messageRepository.save(any())).thenReturn(userMsg).thenReturn(botMsg);
         when(messageRepository.findBySessionId(sessionId)).thenReturn(List.of());
         when(aiChatClient.chat(any(), any(), any())).thenReturn(
-            new AiChatResult("다음 상품을 추천드려요", "gift_recommendation", List.of(1L, 2L), List.of("다른 종류로"))
+            new AiChatResult("다음 상품을 추천드려요", "gift_recommendation",
+                List.of(new ProductCard(1L, "경력 60년의 장인이 직접 제작")),
+                List.of("다른 종류로"))
         );
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
         ChatResponse.SendResult result = chatService.sendMessage(
             new ChatCommand.SendMessage(sessionId, 1L, "엄마 선물 추천해줘")
         );
 
-        assertThat(result.recommendedProductIds()).containsExactly(1L, 2L);
+        assertThat(result.recommendedProducts()).hasSize(1);
+        assertThat(result.recommendedProducts().get(0).productId()).isEqualTo(1L);
+        assertThat(result.recommendedProducts().get(0).reason()).isEqualTo("경력 60년의 장인이 직접 제작");
         assertThat(result.suggestions()).containsExactly("다른 종류로");
+    }
+
+    @Test
+    @DisplayName("AI 응답에 없는 상품 ID는 카드에서 제외된다")
+    void sendMessage_skipsUnknownProduct() {
+        UUID sessionId = UUID.randomUUID();
+        ChatSession session = ChatSession.create(1L);
+        ReflectionTestUtils.setField(session, "sessionId", sessionId);
+
+        ChatMessage userMsg = ChatMessage.of(sessionId, ChatSender.USER, "질문");
+        ReflectionTestUtils.setField(userMsg, "messageId", 1L);
+        ChatMessage botMsg = ChatMessage.of(sessionId, ChatSender.ADMIN, "응답");
+        ReflectionTestUtils.setField(botMsg, "messageId", 2L);
+
+        when(sessionRepository.findById(sessionId)).thenReturn(Optional.of(session));
+        when(messageRepository.save(any())).thenReturn(userMsg).thenReturn(botMsg);
+        when(messageRepository.findBySessionId(sessionId)).thenReturn(List.of());
+        when(aiChatClient.chat(any(), any(), any())).thenReturn(
+            new AiChatResult("응답", "intent",
+                List.of(new ProductCard(999L, "이유")), List.of())
+        );
+        when(productRepository.findById(999L)).thenReturn(Optional.empty());
+
+        ChatResponse.SendResult result = chatService.sendMessage(
+            new ChatCommand.SendMessage(sessionId, 1L, "질문")
+        );
+
+        assertThat(result.recommendedProducts()).isEmpty();
     }
 
     @Test

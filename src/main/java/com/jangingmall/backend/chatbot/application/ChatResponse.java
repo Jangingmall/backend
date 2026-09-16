@@ -46,10 +46,18 @@ public sealed interface ChatResponse {
         }
     }
 
+    record ProductCard(
+        Long productId,
+        String productName,
+        String thumbnailUrl,
+        int price,
+        String reason
+    ) implements ChatResponse {}
+
     record SendResult(
         MessageView userMessage,
         MessageView botMessage,
-        List<Long> recommendedProductIds,
+        List<ProductCard> recommendedProducts,
         List<String> suggestions
     ) implements ChatResponse {}
 }

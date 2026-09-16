@@ -11,13 +11,18 @@ import com.jangingmall.backend.chatbot.domain.ChatSessionRepository;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
+import com.jangingmall.backend.product.domain.Product;
+import com.jangingmall.backend.product.domain.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatService {
@@ -25,6 +30,7 @@ public class ChatService {
     private final ChatSessionRepository sessionRepository;
     private final ChatMessageRepository messageRepository;
     private final AiChatClient aiChatClient;
+    private final ProductRepository productRepository;
 
     @Transactional
     public ChatResponse.SessionView createSession(ChatCommand.CreateSession command) {
@@ -50,10 +56,12 @@ public class ChatService {
             ChatMessage.of(command.sessionId(), ChatSender.ADMIN, result.reply())
         );
 
+        List<ChatResponse.ProductCard> productCards = assembleProductCards(result.products());
+
         return new ChatResponse.SendResult(
             ChatResponse.MessageView.from(userMessage),
             ChatResponse.MessageView.from(botMessage),
-            result.productIds(),
+            productCards,
             result.suggestions()
         );
     }
@@ -76,6 +84,30 @@ public class ChatService {
             throw new BusinessRuleViolationException(ChatErrorMessage.SESSION_ALREADY_ENDED.message());
         }
         session.end();
+    }
+
+    private List<ChatResponse.ProductCard> assembleProductCards(List<AiChatClient.ProductCard> aiCards) {
+        return aiCards.stream()
+            .map(card -> toProductCard(card))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
+    }
+
+    private Optional<ChatResponse.ProductCard> toProductCard(AiChatClient.ProductCard card) {
+        Optional<Product> found = productRepository.findById(card.productId());
+        if (found.isEmpty()) {
+            log.warn("AI 추천 상품 미존재 productId={}", card.productId());
+            return Optional.empty();
+        }
+        Product product = found.get();
+        return Optional.of(new ChatResponse.ProductCard(
+            product.getId(),
+            product.getTitle(),
+            product.getThumbnailUrl(),
+            product.getPrice(),
+            card.reason()
+        ));
     }
 
     private ChatSession getSession(UUID sessionId) {

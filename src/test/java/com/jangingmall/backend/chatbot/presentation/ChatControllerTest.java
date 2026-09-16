@@ -53,7 +53,12 @@ class ChatControllerTest extends RestDocsControllerTest {
     );
 
     private static final ChatResponse.SendResult SAMPLE_SEND_RESULT = new ChatResponse.SendResult(
-        USER_MSG, BOT_MSG, List.of(1L, 2L, 3L), List.of("3만원 이하로", "다른 재질로")
+        USER_MSG, BOT_MSG,
+        List.of(
+            new ChatResponse.ProductCard(1L, "청자 다완", "https://example.com/img1.jpg", 85000, "60년 경력의 장인이 빚은 청자"),
+            new ChatResponse.ProductCard(2L, "백자 찻잔", "https://example.com/img2.jpg", 45000, "순백의 아름다움")
+        ),
+        List.of("3만원 이하로", "다른 재질로")
     );
 
     @Test
@@ -112,7 +117,12 @@ class ChatControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.botMessage.sender").type(JsonFieldType.STRING).description("발신자 (ADMIN)"),
                         fieldWithPath("data.botMessage.content").type(JsonFieldType.STRING).description("AI 추천 코멘트"),
                         fieldWithPath("data.botMessage.sentAt").type(JsonFieldType.STRING).description("전송일시"),
-                        fieldWithPath("data.recommendedProductIds").type(JsonFieldType.ARRAY).description("추천 상품 ID 목록 (최대 3개)"),
+                        fieldWithPath("data.recommendedProducts").type(JsonFieldType.ARRAY).description("추천 상품 카드 목록 (최대 3개)"),
+                        fieldWithPath("data.recommendedProducts[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                        fieldWithPath("data.recommendedProducts[].productName").type(JsonFieldType.STRING).description("상품명"),
+                        fieldWithPath("data.recommendedProducts[].thumbnailUrl").type(JsonFieldType.VARIES).optional().description("썸네일 URL"),
+                        fieldWithPath("data.recommendedProducts[].price").type(JsonFieldType.NUMBER).description("가격"),
+                        fieldWithPath("data.recommendedProducts[].reason").type(JsonFieldType.STRING).description("추천 이유"),
                         fieldWithPath("data.suggestions").type(JsonFieldType.ARRAY).description("후속 제안 칩 (최대 3개)")
                     ))
                     .build()
