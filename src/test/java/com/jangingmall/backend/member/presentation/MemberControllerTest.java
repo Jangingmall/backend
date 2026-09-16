@@ -1,6 +1,7 @@
 package com.jangingmall.backend.member.presentation;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -62,10 +63,18 @@ class MemberControllerTest {
     private EmailVerificationService emailVerificationService;
 
     @Test
-    @DisplayName("정상 회원가입 요청은 201과 이메일 인증 대기 상태를 반환한다")
+    @DisplayName("정상 회원가입 요청은 201과 로그인 응답 형태의 회원 정보를 반환한다")
     void signUp() throws Exception {
         when(memberService.signUp(any())).thenReturn(
-            new MemberSignupResult(1L, "artisan@example.com", MemberStatus.PENDING_VERIFICATION)
+            new MemberSignupResult(
+                1L,
+                "artisan@example.com",
+                "김도공",
+                null,
+                MemberRole.USER,
+                null,
+                MemberStatus.PENDING_VERIFICATION
+            )
         );
 
         mockMvc.perform(post("/api/member/signup")
@@ -74,9 +83,13 @@ class MemberControllerTest {
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.status").value(201))
-            .andExpect(jsonPath("$.data.memberId").value(1))
-            .andExpect(jsonPath("$.data.email").value("artisan@example.com"))
-            .andExpect(jsonPath("$.data.status").value("PENDING_VERIFICATION"))
+            .andExpect(jsonPath("$.data.accessToken").value(nullValue()))
+            .andExpect(jsonPath("$.data.member.memberId").value(1))
+            .andExpect(jsonPath("$.data.member.email").value("artisan@example.com"))
+            .andExpect(jsonPath("$.data.member.name").value("김도공"))
+            .andExpect(jsonPath("$.data.member.role").value("USER"))
+            .andExpect(jsonPath("$.data.status").doesNotExist())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie")).isNull())
             .andExpect(result -> assertThat(result.getResponse().getContentAsString())
                 .doesNotContain("\\\"errorCode\\\""));
     }
