@@ -398,7 +398,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-chatbot-sessions391111845"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-881852531"
                                 },
                                 "examples": {
                                     "chatbot-session-create": {
@@ -407,9 +407,7 @@
                                             "status": 201,
                                             "data": {
                                                 "sessionId": "11111111-1111-1111-1111-111111111111",
-                                                "memberId": 1,
-                                                "createdAt": "2026-09-03T10:00:00",
-                                                "endedAt": null
+                                                "expiresInSeconds": 3600
                                             }
                                         }
                                     }
@@ -1194,10 +1192,10 @@
                                             "data": {
                                                 "items": [
                                                     {
-                                                        "newProductCount": 2,
                                                         "notificationsEnabled": true,
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "artisanId": 10
+                                                        "newProductCount": 2,
+                                                        "artisanId": 10,
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                                     }
                                                 ],
                                                 "nextCursor": null,
@@ -1258,11 +1256,11 @@
                                                 "items": [
                                                     {
                                                         "name": "\uccad\uc790 \ub2e4\uc644",
-                                                        "artisanId": 10,
-                                                        "productId": 1,
-                                                        "status": "ON_SALE",
+                                                        "price": 85000,
                                                         "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "price": 85000
+                                                        "status": "ON_SALE",
+                                                        "productId": 1,
+                                                        "artisanId": 10
                                                     }
                                                 ],
                                                 "nextCursor": null,
@@ -1929,7 +1927,7 @@
                     "\ucc57\ubd07"
                 ],
                 "summary": "\ucc57\ubd07 \uba54\uc2dc\uc9c0 \uc804\uc1a1",
-                "description": "\uc18c\ube44\uc790 \uba54\uc2dc\uc9c0\ub97c \uc804\uc1a1\ud558\uba74 AI\uac00 \ucd94\ucc9c \uc0c1\ud488\uacfc \ub2f5\ubcc0\uc744 \ubc18\ud658\ud569\ub2c8\ub2e4. \ucd5c\uadfc 6\ud134 \ub300\ud654 \uc774\ub825\uc744 \ub9e5\ub77d\uc73c\ub85c \ud65c\uc6a9\ud569\ub2c8\ub2e4.",
+                "description": "\uc18c\ube44\uc790 \uba54\uc2dc\uc9c0\ub97c \uc804\uc1a1\ud558\uba74 AI\uac00 \ucd94\ucc9c \uc0c1\ud488\uacfc \ub2f5\ubcc0\uc744 \ubc18\ud658\ud569\ub2c8\ub2e4.",
                 "operationId": "chatbot-message-send",
                 "parameters": [
                     {
@@ -1964,7 +1962,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-messages-472528780"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-messages-1772920178"
                                 },
                                 "examples": {
                                     "chatbot-message-send": {
@@ -1972,39 +1970,60 @@
                                             "success": true,
                                             "status": 201,
                                             "data": {
-                                                "userMessage": {
-                                                    "messageId": 1,
-                                                    "sessionId": "11111111-1111-1111-1111-111111111111",
-                                                    "sender": "USER",
-                                                    "content": "\uc5c4\ub9c8 \ud658\uac11 \uc120\ubb3c \ucd94\ucc9c\ud574\uc918",
-                                                    "sentAt": "2026-09-03T10:01:00"
-                                                },
-                                                "botMessage": {
-                                                    "messageId": 2,
-                                                    "sessionId": "11111111-1111-1111-1111-111111111111",
-                                                    "sender": "ADMIN",
-                                                    "content": "\uace0\uae09\uc2a4\ub7ec\uc6b4 \ub3c4\uc790\uae30\ub97c \ucd94\ucc9c\ub4dc\ub9bd\ub2c8\ub2e4.",
-                                                    "sentAt": "2026-09-03T10:01:00"
-                                                },
-                                                "recommendedProducts": [
-                                                    {
-                                                        "productId": 1,
-                                                        "productName": "\uccad\uc790 \ub2e4\uc644",
-                                                        "thumbnailUrl": "https://example.com/img1.jpg",
-                                                        "price": 85000,
-                                                        "reason": "60\ub144 \uacbd\ub825\uc758 \uc7a5\uc778\uc774 \ube5a\uc740 \uccad\uc790"
-                                                    },
-                                                    {
-                                                        "productId": 2,
-                                                        "productName": "\ubc31\uc790 \ucc3b\uc794",
-                                                        "thumbnailUrl": "https://example.com/img2.jpg",
-                                                        "price": 45000,
-                                                        "reason": "\uc21c\ubc31\uc758 \uc544\ub984\ub2e4\uc6c0"
-                                                    }
-                                                ],
+                                                "sessionId": "11111111-1111-1111-1111-111111111111",
+                                                "messageId": 2,
+                                                "reply": "\uace0\uae09\uc2a4\ub7ec\uc6b4 \ub3c4\uc790\uae30\ub97c \ucd94\ucc9c\ub4dc\ub9bd\ub2c8\ub2e4.",
+                                                "intent": "GIFT_RECOMMENDATION",
                                                 "suggestions": [
                                                     "3\ub9cc\uc6d0 \uc774\ud558\ub85c",
                                                     "\ub2e4\ub978 \uc7ac\uc9c8\ub85c"
+                                                ],
+                                                "products": [
+                                                    {
+                                                        "productId": 1,
+                                                        "name": "\uccad\uc790 \ub2e4\uc644",
+                                                        "price": 85000,
+                                                        "thumbnail": [
+                                                            {
+                                                                "url": "https://example.com/img_320.webp",
+                                                                "width": 320,
+                                                                "height": 320,
+                                                                "format": "webp"
+                                                            },
+                                                            {
+                                                                "url": "https://example.com/img_640.webp",
+                                                                "width": 640,
+                                                                "height": 640,
+                                                                "format": "webp"
+                                                            },
+                                                            {
+                                                                "url": "https://example.com/img_1280.webp",
+                                                                "width": 1280,
+                                                                "height": 1280,
+                                                                "format": "webp"
+                                                            }
+                                                        ],
+                                                        "status": "ON_SALE",
+                                                        "category": "POTTERY",
+                                                        "subcategory": "BOWL",
+                                                        "color": "WHITE",
+                                                        "giftTheme": "PARENTS",
+                                                        "rating": 4.8,
+                                                        "isLimited": false,
+                                                        "isCustomOrder": false,
+                                                        "isSingleItem": false,
+                                                        "isNew": false,
+                                                        "hasGiftWrap": true,
+                                                        "hasOptions": false,
+                                                        "purposeTags": [
+                                                            "\ub2e4\ub3c4",
+                                                            "\uc120\ubb3c"
+                                                        ],
+                                                        "primaryBadge": "NEW",
+                                                        "artisanId": 10,
+                                                        "artisanName": "\ub3c4\uc608\uac00 \uae40\uc7a5\uc778",
+                                                        "reason": "60\ub144 \uacbd\ub825\uc758 \uc7a5\uc778\uc774 \ube5a\uc740 \uccad\uc790"
+                                                    }
                                                 ]
                                             }
                                         }
@@ -4855,6 +4874,231 @@
                     }
                 }
             },
+            "api-chatbot-sessions-sessionId-messages-1772920178": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "messageId",
+                            "products",
+                            "reply",
+                            "sessionId",
+                            "suggestions"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "messageId": {
+                                "type": "number",
+                                "description": "\ubd07 \uba54\uc2dc\uc9c0 ID"
+                            },
+                            "suggestions": {
+                                "type": "array",
+                                "description": "\ud6c4\uc18d \uc9c8\ubb38 \uc81c\uc548 (\ucd5c\ub300 3\uac1c)",
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object"
+                                        },
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                }
+                            },
+                            "sessionId": {
+                                "type": "string",
+                                "description": "\uc138\uc158 ID"
+                            },
+                            "reply": {
+                                "type": "string",
+                                "description": "AI \ub300\ud654 \uc751\ub2f5 \ud14d\uc2a4\ud2b8"
+                            },
+                            "intent": {
+                                "type": "object",
+                                "description": "AI \uc758\ub3c4 \ubd84\ub958 \uacb0\uacfc",
+                                "nullable": true
+                            },
+                            "products": {
+                                "type": "array",
+                                "description": "\ucd94\ucc9c \uc0c1\ud488 \uce74\ub4dc \ubaa9\ub85d",
+                                "items": {
+                                    "required": [
+                                        "artisanId",
+                                        "artisanName",
+                                        "hasGiftWrap",
+                                        "hasOptions",
+                                        "isCustomOrder",
+                                        "isLimited",
+                                        "isNew",
+                                        "isSingleItem",
+                                        "name",
+                                        "price",
+                                        "productId",
+                                        "purposeTags",
+                                        "reason",
+                                        "status",
+                                        "thumbnail"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "isLimited": {
+                                            "type": "boolean",
+                                            "description": "\ud55c\uc815\uc218\ub7c9 \uc5ec\ubd80"
+                                        },
+                                        "reason": {
+                                            "type": "string",
+                                            "description": "AI \ucd94\ucc9c \uc774\uc720"
+                                        },
+                                        "hasGiftWrap": {
+                                            "type": "boolean",
+                                            "description": "\uc120\ubb3c\ud3ec\uc7a5 \uac00\ub2a5 \uc5ec\ubd80"
+                                        },
+                                        "thumbnail": {
+                                            "type": "array",
+                                            "description": "\uc378\ub124\uc77c variants (320w\u00b7640w\u00b71280w)",
+                                            "items": {
+                                                "required": [
+                                                    "format",
+                                                    "height",
+                                                    "url",
+                                                    "width"
+                                                ],
+                                                "type": "object",
+                                                "properties": {
+                                                    "format": {
+                                                        "type": "string",
+                                                        "description": "\ud3ec\ub9f7 (webp)"
+                                                    },
+                                                    "width": {
+                                                        "type": "number",
+                                                        "description": "\ub108\ube44(px)"
+                                                    },
+                                                    "url": {
+                                                        "type": "string",
+                                                        "description": "\uc774\ubbf8\uc9c0 URL"
+                                                    },
+                                                    "height": {
+                                                        "type": "number",
+                                                        "description": "\ub192\uc774(px)"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "artisanId": {
+                                            "type": "number",
+                                            "description": "\uc7a5\uc778 ID"
+                                        },
+                                        "color": {
+                                            "type": "object",
+                                            "description": "\uceec\ub7ec \ucf54\ub4dc",
+                                            "nullable": true
+                                        },
+                                        "productId": {
+                                            "type": "number",
+                                            "description": "\uc0c1\ud488 ID"
+                                        },
+                                        "rating": {
+                                            "type": "object",
+                                            "description": "\ud3c9\uade0 \ud3c9\uc810 (\ud6c4\uae30 \uc5c6\uc73c\uba74 null)",
+                                            "nullable": true
+                                        },
+                                        "isNew": {
+                                            "type": "boolean",
+                                            "description": "\uc2e0\uc791 \uc5ec\ubd80"
+                                        },
+                                        "isCustomOrder": {
+                                            "type": "boolean",
+                                            "description": "\uc8fc\ubb38\uc81c\uc791 \uc5ec\ubd80"
+                                        },
+                                        "hasOptions": {
+                                            "type": "boolean",
+                                            "description": "\uc635\uc158 \uc874\uc7ac \uc5ec\ubd80"
+                                        },
+                                        "primaryBadge": {
+                                            "type": "object",
+                                            "description": "\ub300\ud45c \ubc30\uc9c0 (LIMITED/NEW/POPULAR)",
+                                            "nullable": true
+                                        },
+                                        "purposeTags": {
+                                            "type": "array",
+                                            "description": "\uc6a9\ub3c4 \ud0dc\uadf8",
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "description": "\uac00\uaca9 (\uc6d0)"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "description": "\uc0c1\ud488\uba85"
+                                        },
+                                        "artisanName": {
+                                            "type": "string",
+                                            "description": "\uc7a5\uc778 \uc774\ub984"
+                                        },
+                                        "giftTheme": {
+                                            "type": "object",
+                                            "description": "\uc120\ubb3c\ud14c\ub9c8 \ucf54\ub4dc",
+                                            "nullable": true
+                                        },
+                                        "subcategory": {
+                                            "type": "object",
+                                            "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac",
+                                            "nullable": true
+                                        },
+                                        "category": {
+                                            "type": "object",
+                                            "description": "\uce74\ud14c\uace0\ub9ac",
+                                            "nullable": true
+                                        },
+                                        "isSingleItem": {
+                                            "type": "boolean",
+                                            "description": "\ub2e8\ud558\ub098 \uc5ec\ubd80"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "description": "\uc0c1\ud488 \uc0c1\ud0dc"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
             "api-products-productId-questions-148092557": {
                 "required": [
                     "status",
@@ -5035,7 +5279,7 @@
                     }
                 }
             },
-            "api-chatbot-sessions-sessionId-messages-472528780": {
+            "api-chatbot-sessions-881852531": {
                 "required": [
                     "status",
                     "success"
@@ -5044,130 +5288,18 @@
                 "properties": {
                     "data": {
                         "required": [
-                            "recommendedProducts",
-                            "suggestions"
+                            "expiresInSeconds",
+                            "sessionId"
                         ],
                         "type": "object",
                         "properties": {
-                            "userMessage": {
-                                "required": [
-                                    "content",
-                                    "messageId",
-                                    "sender",
-                                    "sentAt",
-                                    "sessionId"
-                                ],
-                                "type": "object",
-                                "properties": {
-                                    "sender": {
-                                        "type": "string",
-                                        "description": "\ubc1c\uc2e0\uc790 (USER)"
-                                    },
-                                    "messageId": {
-                                        "type": "number",
-                                        "description": "\uc0ac\uc6a9\uc790 \uba54\uc2dc\uc9c0 ID"
-                                    },
-                                    "sentAt": {
-                                        "type": "string",
-                                        "description": "\uc804\uc1a1\uc77c\uc2dc"
-                                    },
-                                    "sessionId": {
-                                        "type": "string",
-                                        "description": "\uc138\uc158 ID"
-                                    },
-                                    "content": {
-                                        "type": "string",
-                                        "description": "\uba54\uc2dc\uc9c0 \ub0b4\uc6a9"
-                                    }
-                                }
+                            "sessionId": {
+                                "type": "string",
+                                "description": "\uc138\uc158 ID (UUID)"
                             },
-                            "botMessage": {
-                                "required": [
-                                    "content",
-                                    "messageId",
-                                    "sender",
-                                    "sentAt",
-                                    "sessionId"
-                                ],
-                                "type": "object",
-                                "properties": {
-                                    "sender": {
-                                        "type": "string",
-                                        "description": "\ubc1c\uc2e0\uc790 (ADMIN)"
-                                    },
-                                    "messageId": {
-                                        "type": "number",
-                                        "description": "\ubd07 \uba54\uc2dc\uc9c0 ID"
-                                    },
-                                    "sentAt": {
-                                        "type": "string",
-                                        "description": "\uc804\uc1a1\uc77c\uc2dc"
-                                    },
-                                    "sessionId": {
-                                        "type": "string",
-                                        "description": "\uc138\uc158 ID"
-                                    },
-                                    "content": {
-                                        "type": "string",
-                                        "description": "AI \ucd94\ucc9c \ucf54\uba58\ud2b8"
-                                    }
-                                }
-                            },
-                            "suggestions": {
-                                "type": "array",
-                                "description": "\ud6c4\uc18d \uc81c\uc548 \uce69 (\ucd5c\ub300 3\uac1c)",
-                                "items": {
-                                    "oneOf": [
-                                        {
-                                            "type": "object"
-                                        },
-                                        {
-                                            "type": "boolean"
-                                        },
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "number"
-                                        }
-                                    ]
-                                }
-                            },
-                            "recommendedProducts": {
-                                "type": "array",
-                                "description": "\ucd94\ucc9c \uc0c1\ud488 \uce74\ub4dc \ubaa9\ub85d (\ucd5c\ub300 3\uac1c)",
-                                "items": {
-                                    "required": [
-                                        "price",
-                                        "productId",
-                                        "productName",
-                                        "reason"
-                                    ],
-                                    "type": "object",
-                                    "properties": {
-                                        "reason": {
-                                            "type": "string",
-                                            "description": "\ucd94\ucc9c \uc774\uc720"
-                                        },
-                                        "productId": {
-                                            "type": "number",
-                                            "description": "\uc0c1\ud488 ID"
-                                        },
-                                        "price": {
-                                            "type": "number",
-                                            "description": "\uac00\uaca9"
-                                        },
-                                        "productName": {
-                                            "type": "string",
-                                            "description": "\uc0c1\ud488\uba85"
-                                        },
-                                        "thumbnailUrl": {
-                                            "type": "object",
-                                            "description": "\uc378\ub124\uc77c URL",
-                                            "nullable": true
-                                        }
-                                    }
-                                }
+                            "expiresInSeconds": {
+                                "type": "number",
+                                "description": "\uc138\uc158 \uc720\ud6a8\uc2dc\uac04(\ucd08)"
                             }
                         }
                     },
@@ -5480,50 +5612,6 @@
                     "content": {
                         "type": "string",
                         "description": "\ub2f5\ubcc0 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)"
-                    }
-                }
-            },
-            "api-chatbot-sessions391111845": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "createdAt",
-                            "memberId",
-                            "sessionId"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "createdAt": {
-                                "type": "string",
-                                "description": "\uc138\uc158 \uc0dd\uc131\uc77c\uc2dc"
-                            },
-                            "endedAt": {
-                                "type": "object",
-                                "description": "\uc138\uc158 \uc885\ub8cc\uc77c\uc2dc (\uc885\ub8cc \uc804 null)",
-                                "nullable": true
-                            },
-                            "sessionId": {
-                                "type": "string",
-                                "description": "\uc138\uc158 ID (UUID)"
-                            },
-                            "memberId": {
-                                "type": "number",
-                                "description": "\ud68c\uc6d0 ID"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
                     }
                 }
             },
