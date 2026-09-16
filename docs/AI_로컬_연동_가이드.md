@@ -49,11 +49,24 @@ docker run -d -p 6379:6379 redis:7
 
 ---
 
-## 3. AI 서버가 구현해야 할 API
+## 3. 백엔드 챗봇 API와의 접점
 
-### 3-1. 챗봇: `POST /ai/chat`
+세션 관리·대화 이력은 백엔드 담당입니다. AI 서버는 `/ai/chat` 하나만 구현하면 됩니다.
 
-백엔드가 호출합니다. AI 서버가 이 엔드포인트를 제공해야 합니다.
+| 메서드 | 경로 | AI 연동 |
+|--------|------|---------|
+| POST | /api/chatbot/sessions | — |
+| POST | /api/chatbot/sessions/{sessionId}/messages | **내부에서 /ai/chat 호출** |
+| GET | /api/chatbot/sessions/{sessionId}/messages | — |
+| DELETE | /api/chatbot/sessions/{sessionId} | — |
+
+---
+
+## 4. AI 서버가 구현해야 할 API
+
+### 4-1. 챗봇: `POST /ai/chat`
+
+백엔드가 내부적으로 호출합니다. AI 서버가 이 엔드포인트를 제공해야 합니다.
 
 **Request**
 
@@ -76,10 +89,7 @@ docker run -d -p 6379:6379 redis:7
 {
   "reply": "어머니께 도자기 찻잔 세트를 추천드립니다.",
   "intent": "GIFT_RECOMMENDATION",
-  "products": [
-    { "product_id": 1, "reason": "60년 경력 도예가가 직접 빚은 청자" },
-    { "product_id": 2, "reason": "순백의 백자로 격조 있는 선물" }
-  ],
+  "product_ids": [1, 2, 5],
   "suggestions": [
     "3만원 이하로 보여줘",
     "목칠공예 작품도 있어?"
@@ -88,13 +98,13 @@ docker run -d -p 6379:6379 redis:7
 ```
 
 - `intent`: 자유 문자열 (예: `GIFT_RECOMMENDATION`, `PRODUCT_SEARCH`)
-- `products[].product_id`: 백엔드 DB에 존재하는 상품 ID여야 카드로 조립됩니다. 없는 ID는 자동으로 제외됩니다.
+- `product_ids`: 백엔드 DB에 존재하는 상품 ID 배열. 없는 ID는 자동으로 제외됩니다.
 - `suggestions`: 후속 질문 제안, 최대 3개
 - 응답 실패·타임아웃 시 백엔드가 최대 2회 재시도 후 fallback 메시지를 반환합니다.
 
 ---
 
-### 3-2. 콘텐츠 생성 요청: `POST /ai/products`
+### 4-2. 콘텐츠 생성 요청: `POST /ai/products`
 
 장인이 콘텐츠 생성을 요청할 때 백엔드가 호출합니다.
 
@@ -116,11 +126,11 @@ docker run -d -p 6379:6379 redis:7
 
 **Response**: 형식 자유 (백엔드에서 사용하지 않음)
 
-생성이 완료되면 아래 콜백으로 결과를 전송합니다 (3-5 참조).
+생성이 완료되면 아래 콜백으로 결과를 전송합니다 (4-5 참조).
 
 ---
 
-### 3-3. 상품 동기화: `POST /ai/products/sync`
+### 4-3. 상품 동기화: `POST /ai/products/sync`
 
 상품이 게시(`ON_SALE`)될 때 백엔드가 자동으로 호출합니다.
 
@@ -129,23 +139,25 @@ docker run -d -p 6379:6379 redis:7
 ```json
 {
   "artisan": {
-    "artisanId": 10,
-    "name": "김도예",
-    "certificationLevel": "명장",
-    "introduction": "40년 경력의 도자기 장인"
+    "artisan_id": 10,
+    "business_name": "김도예공방",
+    "certification_level": "명장",
+    "region": "경기도 이천시"
   },
   "product": {
-    "productId": 7,
-    "title": "청자 다완",
-    "category": "도자공예",
+    "product_id": 7,
+    "name": "청자 다완",
+    "category_code": "도자공예",
+    "subcategory_code": "다기",
     "material": "청자토",
     "price": 85000,
-    "giftTheme": ["PARENTS", "WEDDING"],
-    "purposeTags": ["다도", "선물"],
-    "makingStory": "전통 물레 성형 후 1280도 환원소성",
-    "usageCare": "중성세제로 손세척",
-    "productionPeriodDays": 14,
-    "color": ["WHITE"]
+    "color": "WHITE",
+    "gift_theme": ["PARENTS", "WEDDING"],
+    "purpose_tags": ["다도", "선물"],
+    "making_story": "전통 물레 성형 후 1280도 환원소성",
+    "usage_care": "중성세제로 손세척, 자연건조",
+    "production_period_days": 14,
+    "status": "ON_SALE"
   }
 }
 ```
@@ -154,7 +166,7 @@ docker run -d -p 6379:6379 redis:7
 
 ---
 
-### 3-4. 상품 수정 동기화: `PUT /ai/products/{productId}`
+### 4-4. 상품 수정 동기화: `PUT /ai/products/{productId}`
 
 상품 정보가 수정될 때 백엔드가 자동으로 호출합니다.
 
@@ -162,16 +174,18 @@ docker run -d -p 6379:6379 redis:7
 
 ```json
 {
-  "title": "청자 다완 (개정판)",
-  "category": "도자공예",
-  "material": "청자토",
-  "price": 90000,
-  "giftTheme": ["PARENTS"],
-  "purposeTags": ["다도"],
-  "makingStory": "전통 물레 성형",
-  "usageCare": "손세척 권장",
-  "productionPeriodDays": 21,
-  "color": ["WHITE", "GRAY"]
+  "product": {
+    "name": "청자 다완 (개정판)",
+    "category_code": "도자공예",
+    "material": "청자토",
+    "price": 90000,
+    "color": "WHITE",
+    "gift_theme": ["PARENTS"],
+    "purpose_tags": ["다도"],
+    "making_story": "전통 물레 성형",
+    "usage_care": "손세척 권장",
+    "production_period_days": 21
+  }
 }
 ```
 
@@ -179,7 +193,7 @@ docker run -d -p 6379:6379 redis:7
 
 ---
 
-### 3-5. 상품 삭제 동기화: `DELETE /ai/products/{productId}`
+### 4-5. 상품 삭제 동기화: `DELETE /ai/products/{productId}`
 
 상품이 삭제될 때 백엔드가 자동으로 호출합니다.
 

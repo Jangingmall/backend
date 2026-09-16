@@ -80,20 +80,18 @@ class RestAiChatClient implements AiChatClient {
     }
 
     private AiChatResult toResult(AiResponse response) {
-        List<ProductCard> products = response.products() == null
+        List<ProductCard> products = response.product_ids() == null
             ? List.of()
-            : response.products().stream()
-                .map(p -> new ProductCard(p.product_id(), p.reason()))
+            : response.product_ids().stream()
+                .map(id -> new ProductCard(id, null))
                 .toList();
         return new AiChatResult(response.reply(), response.intent(), products, response.suggestions());
     }
 
-    private record AiProductEntry(Long product_id, String reason) {}
-
     private record AiResponse(
         String reply,
         String intent,
-        List<AiProductEntry> products,
+        List<Long> product_ids,
         List<String> suggestions
     ) {}
 }

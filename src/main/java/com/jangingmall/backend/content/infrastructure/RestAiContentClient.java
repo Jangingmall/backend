@@ -61,9 +61,9 @@ class RestAiContentClient implements AiContentClient {
                 .body(payload)
                 .retrieve()
                 .toBodilessEntity();
-            log.info("AI 상품 동기화 완료 productId={}", payload.product().productId());
+            log.info("AI 상품 동기화 완료 productId={}", payload.product().product_id());
         } catch (RestClientException e) {
-            log.error("AI 상품 동기화 실패 productId={} reason={}", payload.product().productId(), e.getMessage());
+            log.error("AI 상품 동기화 실패 productId={} reason={}", payload.product().product_id(), e.getMessage());
         }
     }
 

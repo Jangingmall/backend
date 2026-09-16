@@ -202,12 +202,18 @@ public class ContentService {
         String usageCare = interview.map(Interview::getMaterials).orElse("");
         String categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
 
+        String subcategoryCode = product.getSubcategory() != null ? product.getSubcategory().getName() : null;
+        String color = product.getColors().isEmpty() ? null : product.getColors().get(0);
+        String statusCode = product.getStatus() != null ? product.getStatus().name() : null;
+
         AiProductSyncPayload.ArtisanInfo artisanInfo = new AiProductSyncPayload.ArtisanInfo(
-            artisan.getId(), artisan.getBusinessName(), artisan.getCertificationLevel(), artisan.getIntroduction()
+            artisan.getId(), artisan.getBusinessName(), artisan.getCertificationLevel(), artisan.getRegion()
         );
         AiProductSyncPayload.ProductInfo productInfo = new AiProductSyncPayload.ProductInfo(
-            product.getId(), product.getTitle(), categoryName, product.getMaterial(),
-            product.getPrice(), List.of(), List.of(), makingStory, usageCare, null, List.of()
+            product.getId(), product.getTitle(), categoryName, subcategoryCode,
+            product.getMaterial(), product.getPrice(), color,
+            product.getGiftThemes(), product.getPurposeTags(),
+            makingStory, usageCare, product.getProductionPeriodDays(), statusCode
         );
         return new AiProductSyncPayload(artisanInfo, productInfo);
     }
