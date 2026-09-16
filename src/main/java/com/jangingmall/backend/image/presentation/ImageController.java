@@ -50,9 +50,16 @@ public class ImageController {
                                       @NotNull ImagePurpose purpose,
                                       @Positive int sourceWidth,
                                       @Positive int sourceHeight,
-                                      @NotEmpty @Size(max = 3) List<@NotBlank String> variants) {
+                                      @NotEmpty @Size(max = 3) List<@Valid @NotNull VariantRequest> variants) {
         ImageService.CreatePresignedUpload toCommand() {
-            return new ImageService.CreatePresignedUpload(fileName, contentType, purpose, sourceWidth, sourceHeight, variants);
+            return new ImageService.CreatePresignedUpload(fileName, contentType, purpose, sourceWidth, sourceHeight,
+                variants.stream().map(VariantRequest::toCommand).toList());
+        }
+    }
+
+    public record VariantRequest(@NotBlank String name, @Positive long sizeBytes) {
+        ImageService.UploadVariant toCommand() {
+            return new ImageService.UploadVariant(name, sizeBytes);
         }
     }
 
