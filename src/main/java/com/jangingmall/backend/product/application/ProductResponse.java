@@ -3,6 +3,7 @@ package com.jangingmall.backend.product.application;
 import com.jangingmall.backend.product.domain.Product;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record ProductResponse(
     Long productId,
@@ -18,7 +19,11 @@ public record ProductResponse(
     String thumbnailUrl,
     String status,
     LocalDateTime createdAt,
-    LocalDateTime updatedAt
+    LocalDateTime updatedAt,
+    List<String> giftThemes,
+    List<String> purposeTags,
+    Integer productionPeriodDays,
+    List<String> colors
 ) {
     public static ProductResponse from(Product product) {
         return new ProductResponse(
@@ -35,7 +40,11 @@ public record ProductResponse(
             product.getThumbnailUrl(),
             product.getStatus().name(),
             product.getCreatedAt(),
-            product.getUpdatedAt()
+            product.getUpdatedAt(),
+            product.getGiftThemes(),
+            product.getPurposeTags(),
+            product.getProductionPeriodDays(),
+            product.getColors()
         );
     }
 }

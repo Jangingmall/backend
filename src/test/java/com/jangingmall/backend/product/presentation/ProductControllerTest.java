@@ -53,7 +53,8 @@ class ProductControllerTest extends RestDocsControllerTest {
     private static final ProductResponse SAMPLE = new ProductResponse(
         1L, 10L, 1L, "도자기", 2L, "청자", "청자 다완", "고려 청자 다완", 85000, 10,
         "https://example.com/thumb.jpg", "DRAFT",
-        LocalDateTime.of(2026, 9, 3, 10, 0), LocalDateTime.of(2026, 9, 3, 10, 0)
+        LocalDateTime.of(2026, 9, 3, 10, 0), LocalDateTime.of(2026, 9, 3, 10, 0),
+        List.of("BIRTHDAY_60TH"), List.of("다도"), 14, List.of("BLUE")
     );
 
     private static final org.springframework.restdocs.payload.FieldDescriptor[] PRODUCT_FIELDS = {
@@ -71,6 +72,10 @@ class ProductControllerTest extends RestDocsControllerTest {
         fieldWithPath("data.content[].status").type(JsonFieldType.STRING).description("상태 (DRAFT/ON_SALE/SOLD_OUT/HIDDEN)"),
         fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("생성일시"),
         fieldWithPath("data.content[].updatedAt").type(JsonFieldType.STRING).description("수정일시"),
+        fieldWithPath("data.content[].giftThemes").type(JsonFieldType.ARRAY).optional().description("선물 테마 목록"),
+        fieldWithPath("data.content[].purposeTags").type(JsonFieldType.ARRAY).optional().description("용도 태그 목록"),
+        fieldWithPath("data.content[].productionPeriodDays").type(JsonFieldType.NUMBER).optional().description("제작 기간(일)"),
+        fieldWithPath("data.content[].colors").type(JsonFieldType.ARRAY).optional().description("색상 목록"),
         fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 수"),
         fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
         fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
@@ -100,6 +105,10 @@ class ProductControllerTest extends RestDocsControllerTest {
         fieldWithPath("data.status").type(JsonFieldType.STRING).description("상태"),
         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("생성일시"),
         fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("수정일시"),
+        fieldWithPath("data.giftThemes").type(JsonFieldType.ARRAY).optional().description("선물 테마 목록"),
+        fieldWithPath("data.purposeTags").type(JsonFieldType.ARRAY).optional().description("용도 태그 목록"),
+        fieldWithPath("data.productionPeriodDays").type(JsonFieldType.NUMBER).optional().description("제작 기간(일)"),
+        fieldWithPath("data.colors").type(JsonFieldType.ARRAY).optional().description("색상 목록"),
     };
 
     @Test

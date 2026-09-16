@@ -156,7 +156,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-me382875151"
+                                    "$ref": "#/components/schemas/api-products-me-794862261"
                                 },
                                 "examples": {
                                     "product-list": {
@@ -179,7 +179,17 @@
                                                         "thumbnailUrl": "https://example.com/thumb.jpg",
                                                         "status": "DRAFT",
                                                         "createdAt": "2026-09-03T10:00:00",
-                                                        "updatedAt": "2026-09-03T10:00:00"
+                                                        "updatedAt": "2026-09-03T10:00:00",
+                                                        "giftThemes": [
+                                                            "BIRTHDAY_60TH"
+                                                        ],
+                                                        "purposeTags": [
+                                                            "\ub2e4\ub3c4"
+                                                        ],
+                                                        "productionPeriodDays": 14,
+                                                        "colors": [
+                                                            "BLUE"
+                                                        ]
                                                     }
                                                 ],
                                                 "empty": false,
@@ -216,7 +226,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/api-products-663409318"
+                                "$ref": "#/components/schemas/api-products956821534"
                             },
                             "examples": {
                                 "product-create": {
@@ -227,7 +237,17 @@
                                         "description": "\uace0\ub824 \uccad\uc790 \ub2e4\uc644",
                                         "price": 85000,
                                         "stock": 10,
-                                        "thumbnailUrl": "https://example.com/thumb.jpg"
+                                        "thumbnailUrl": "https://example.com/thumb.jpg",
+                                        "giftThemes": [
+                                            "BIRTHDAY_60TH"
+                                        ],
+                                        "purposeTags": [
+                                            "\ub2e4\ub3c4"
+                                        ],
+                                        "productionPeriodDays": 14,
+                                        "colors": [
+                                            "BLUE"
+                                        ]
                                     }
                                 },
                                 "product-create-unauthorized": {
@@ -238,7 +258,17 @@
                                         "description": null,
                                         "price": 85000,
                                         "stock": 10,
-                                        "thumbnailUrl": null
+                                        "thumbnailUrl": null,
+                                        "giftThemes": [
+                                            
+                                        ],
+                                        "purposeTags": [
+                                            
+                                        ],
+                                        "productionPeriodDays": null,
+                                        "colors": [
+                                            
+                                        ]
                                     }
                                 },
                                 "product-create-forbidden": {
@@ -249,7 +279,17 @@
                                         "description": null,
                                         "price": 85000,
                                         "stock": 10,
-                                        "thumbnailUrl": null
+                                        "thumbnailUrl": null,
+                                        "giftThemes": [
+                                            
+                                        ],
+                                        "purposeTags": [
+                                            
+                                        ],
+                                        "productionPeriodDays": null,
+                                        "colors": [
+                                            
+                                        ]
                                     }
                                 }
                             }
@@ -262,7 +302,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-946390492"
+                                    "$ref": "#/components/schemas/api-products1950243800"
                                 },
                                 "examples": {
                                     "product-create": {
@@ -283,7 +323,17 @@
                                                 "thumbnailUrl": "https://example.com/thumb.jpg",
                                                 "status": "DRAFT",
                                                 "createdAt": "2026-09-03T10:00:00",
-                                                "updatedAt": "2026-09-03T10:00:00"
+                                                "updatedAt": "2026-09-03T10:00:00",
+                                                "giftThemes": [
+                                                    "BIRTHDAY_60TH"
+                                                ],
+                                                "purposeTags": [
+                                                    "\ub2e4\ub3c4"
+                                                ],
+                                                "productionPeriodDays": 14,
+                                                "colors": [
+                                                    "BLUE"
+                                                ]
                                             }
                                         }
                                     }
@@ -709,7 +759,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-me382875151"
+                                    "$ref": "#/components/schemas/api-products-me-794862261"
                                 },
                                 "examples": {
                                     "product-my-list": {
@@ -732,7 +782,17 @@
                                                         "thumbnailUrl": "https://example.com/thumb.jpg",
                                                         "status": "DRAFT",
                                                         "createdAt": "2026-09-03T10:00:00",
-                                                        "updatedAt": "2026-09-03T10:00:00"
+                                                        "updatedAt": "2026-09-03T10:00:00",
+                                                        "giftThemes": [
+                                                            "BIRTHDAY_60TH"
+                                                        ],
+                                                        "purposeTags": [
+                                                            "\ub2e4\ub3c4"
+                                                        ],
+                                                        "productionPeriodDays": 14,
+                                                        "colors": [
+                                                            "BLUE"
+                                                        ]
                                                     }
                                                 ],
                                                 "empty": false,
@@ -826,7 +886,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-946390492"
+                                    "$ref": "#/components/schemas/api-products1950243800"
                                 },
                                 "examples": {
                                     "product-detail": {
@@ -847,7 +907,17 @@
                                                 "thumbnailUrl": "https://example.com/thumb.jpg",
                                                 "status": "DRAFT",
                                                 "createdAt": "2026-09-03T10:00:00",
-                                                "updatedAt": "2026-09-03T10:00:00"
+                                                "updatedAt": "2026-09-03T10:00:00",
+                                                "giftThemes": [
+                                                    "BIRTHDAY_60TH"
+                                                ],
+                                                "purposeTags": [
+                                                    "\ub2e4\ub3c4"
+                                                ],
+                                                "productionPeriodDays": 14,
+                                                "colors": [
+                                                    "BLUE"
+                                                ]
                                             }
                                         }
                                     }
@@ -919,7 +989,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/api-products-productId847871697"
+                                "$ref": "#/components/schemas/api-products-productId-1826864747"
                             },
                             "examples": {
                                 "product-update": {
@@ -930,7 +1000,17 @@
                                         "description": "\uc218\uc815\ub41c \uc124\uba85",
                                         "price": 90000,
                                         "stock": 8,
-                                        "thumbnailUrl": "https://example.com/thumb2.jpg"
+                                        "thumbnailUrl": "https://example.com/thumb2.jpg",
+                                        "giftThemes": [
+                                            
+                                        ],
+                                        "purposeTags": [
+                                            
+                                        ],
+                                        "productionPeriodDays": null,
+                                        "colors": [
+                                            
+                                        ]
                                     }
                                 }
                             }
@@ -943,7 +1023,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-946390492"
+                                    "$ref": "#/components/schemas/api-products1950243800"
                                 },
                                 "examples": {
                                     "product-update": {
@@ -964,7 +1044,17 @@
                                                 "thumbnailUrl": "https://example.com/thumb.jpg",
                                                 "status": "DRAFT",
                                                 "createdAt": "2026-09-03T10:00:00",
-                                                "updatedAt": "2026-09-03T10:00:00"
+                                                "updatedAt": "2026-09-03T10:00:00",
+                                                "giftThemes": [
+                                                    "BIRTHDAY_60TH"
+                                                ],
+                                                "purposeTags": [
+                                                    "\ub2e4\ub3c4"
+                                                ],
+                                                "productionPeriodDays": 14,
+                                                "colors": [
+                                                    "BLUE"
+                                                ]
                                             }
                                         }
                                     }
@@ -1104,10 +1194,10 @@
                                             "data": {
                                                 "items": [
                                                     {
-                                                        "notificationsEnabled": true,
                                                         "newProductCount": 2,
-                                                        "artisanId": 10,
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
+                                                        "notificationsEnabled": true,
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                        "artisanId": 10
                                                     }
                                                 ],
                                                 "nextCursor": null,
@@ -1168,11 +1258,11 @@
                                                 "items": [
                                                     {
                                                         "name": "\uccad\uc790 \ub2e4\uc644",
-                                                        "price": 85000,
-                                                        "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "status": "ON_SALE",
+                                                        "artisanId": 10,
                                                         "productId": 1,
-                                                        "artisanId": 10
+                                                        "status": "ON_SALE",
+                                                        "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                        "price": 85000
                                                     }
                                                 ],
                                                 "nextCursor": null,
@@ -3966,6 +4056,116 @@
                     }
                 }
             },
+            "api-products-productId-1826864747": {
+                "required": [
+                    "price",
+                    "stock",
+                    "title"
+                ],
+                "type": "object",
+                "properties": {
+                    "giftThemes": {
+                        "type": "array",
+                        "description": "\uc120\ubb3c \ud14c\ub9c8 \ubaa9\ub85d",
+                        "nullable": true,
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    "purposeTags": {
+                        "type": "array",
+                        "description": "\uc6a9\ub3c4 \ud0dc\uadf8 \ubaa9\ub85d",
+                        "nullable": true,
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "\uac00\uaca9"
+                    },
+                    "productionPeriodDays": {
+                        "type": "number",
+                        "description": "\uc81c\uc791 \uae30\uac04(\uc77c)",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "\uc124\uba85",
+                        "nullable": true
+                    },
+                    "subcategoryId": {
+                        "type": "number",
+                        "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac ID",
+                        "nullable": true
+                    },
+                    "stock": {
+                        "type": "number",
+                        "description": "\uc7ac\uace0"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "\uc0c1\ud488\uba85"
+                    },
+                    "colors": {
+                        "type": "array",
+                        "description": "\uc0c9\uc0c1 \ubaa9\ub85d",
+                        "nullable": true,
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    "categoryId": {
+                        "type": "number",
+                        "description": "\uce74\ud14c\uace0\ub9ac ID",
+                        "nullable": true
+                    },
+                    "thumbnailUrl": {
+                        "type": "string",
+                        "description": "\uc378\ub124\uc77c URL",
+                        "nullable": true
+                    }
+                }
+            },
             "api-content-products-productId-contents-contentId-blocks-blockOrder-723983469": {
                 "type": "object",
                 "properties": {
@@ -4254,101 +4454,7 @@
                     }
                 }
             },
-            "api-notifications-977530391": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "type": "array",
-                        "items": {
-                            "required": [
-                                "content",
-                                "createdAt",
-                                "id",
-                                "status",
-                                "title"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "createdAt": {
-                                    "type": "string",
-                                    "description": "\uc0dd\uc131 \uc77c\uc2dc"
-                                },
-                                "id": {
-                                    "type": "number",
-                                    "description": "\uc54c\ub9bc ID"
-                                },
-                                "title": {
-                                    "type": "string",
-                                    "description": "\uc54c\ub9bc \uc81c\ubaa9"
-                                },
-                                "content": {
-                                    "type": "string",
-                                    "description": "\uc54c\ub9bc \ub0b4\uc6a9"
-                                },
-                                "status": {
-                                    "type": "string",
-                                    "description": "\uc54c\ub9bc \uc0c1\ud0dc (UNREAD/READ/DELETED)"
-                                }
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-products-productId847871697": {
-                "required": [
-                    "price",
-                    "stock",
-                    "title"
-                ],
-                "type": "object",
-                "properties": {
-                    "price": {
-                        "type": "number",
-                        "description": "\uac00\uaca9"
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "\uc124\uba85",
-                        "nullable": true
-                    },
-                    "subcategoryId": {
-                        "type": "number",
-                        "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac ID",
-                        "nullable": true
-                    },
-                    "stock": {
-                        "type": "number",
-                        "description": "\uc7ac\uace0"
-                    },
-                    "title": {
-                        "type": "string",
-                        "description": "\uc0c1\ud488\uba85"
-                    },
-                    "categoryId": {
-                        "type": "number",
-                        "description": "\uce74\ud14c\uace0\ub9ac ID",
-                        "nullable": true
-                    },
-                    "thumbnailUrl": {
-                        "type": "string",
-                        "description": "\uc378\ub124\uc77c URL",
-                        "nullable": true
-                    }
-                }
-            },
-            "api-products-me382875151": {
+            "api-products-me-794862261": {
                 "required": [
                     "status",
                     "success"
@@ -4456,18 +4562,86 @@
                                             "description": "\uce74\ud14c\uace0\ub9ac\uba85",
                                             "nullable": true
                                         },
+                                        "colors": {
+                                            "type": "array",
+                                            "description": "\uc0c9\uc0c1 \ubaa9\ub85d",
+                                            "nullable": true,
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            }
+                                        },
                                         "createdAt": {
                                             "type": "string",
                                             "description": "\uc0dd\uc131\uc77c\uc2dc"
+                                        },
+                                        "giftThemes": {
+                                            "type": "array",
+                                            "description": "\uc120\ubb3c \ud14c\ub9c8 \ubaa9\ub85d",
+                                            "nullable": true,
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            }
                                         },
                                         "subcategoryName": {
                                             "type": "string",
                                             "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac\uba85",
                                             "nullable": true
                                         },
+                                        "purposeTags": {
+                                            "type": "array",
+                                            "description": "\uc6a9\ub3c4 \ud0dc\uadf8 \ubaa9\ub85d",
+                                            "nullable": true,
+                                            "items": {
+                                                "oneOf": [
+                                                    {
+                                                        "type": "object"
+                                                    },
+                                                    {
+                                                        "type": "boolean"
+                                                    },
+                                                    {
+                                                        "type": "string"
+                                                    },
+                                                    {
+                                                        "type": "number"
+                                                    }
+                                                ]
+                                            }
+                                        },
                                         "price": {
                                             "type": "number",
                                             "description": "\uac00\uaca9"
+                                        },
+                                        "productionPeriodDays": {
+                                            "type": "number",
+                                            "description": "\uc81c\uc791 \uae30\uac04(\uc77c)",
+                                            "nullable": true
                                         },
                                         "subcategoryId": {
                                             "type": "number",
@@ -4516,6 +4690,168 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
+            "api-notifications-977530391": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "content",
+                                "createdAt",
+                                "id",
+                                "status",
+                                "title"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "createdAt": {
+                                    "type": "string",
+                                    "description": "\uc0dd\uc131 \uc77c\uc2dc"
+                                },
+                                "id": {
+                                    "type": "number",
+                                    "description": "\uc54c\ub9bc ID"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "description": "\uc54c\ub9bc \uc81c\ubaa9"
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "\uc54c\ub9bc \ub0b4\uc6a9"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "description": "\uc54c\ub9bc \uc0c1\ud0dc (UNREAD/READ/DELETED)"
+                                }
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
+            "api-products956821534": {
+                "required": [
+                    "price",
+                    "stock",
+                    "title"
+                ],
+                "type": "object",
+                "properties": {
+                    "giftThemes": {
+                        "type": "array",
+                        "description": "\uc120\ubb3c \ud14c\ub9c8 \ubaa9\ub85d",
+                        "nullable": true,
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    "purposeTags": {
+                        "type": "array",
+                        "description": "\uc6a9\ub3c4 \ud0dc\uadf8 \ubaa9\ub85d",
+                        "nullable": true,
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "\uac00\uaca9 (1 \uc774\uc0c1)"
+                    },
+                    "productionPeriodDays": {
+                        "type": "number",
+                        "description": "\uc81c\uc791 \uae30\uac04(\uc77c)",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "\uc0c1\ud488 \uc124\uba85",
+                        "nullable": true
+                    },
+                    "subcategoryId": {
+                        "type": "number",
+                        "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac ID",
+                        "nullable": true
+                    },
+                    "stock": {
+                        "type": "number",
+                        "description": "\uc7ac\uace0 (0 \uc774\uc0c1)"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "\uc0c1\ud488\uba85 (\ucd5c\ub300 200\uc790)"
+                    },
+                    "colors": {
+                        "type": "array",
+                        "description": "\uc0c9\uc0c1 \ubaa9\ub85d",
+                        "nullable": true,
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    "categoryId": {
+                        "type": "number",
+                        "description": "\uce74\ud14c\uace0\ub9ac ID",
+                        "nullable": true
+                    },
+                    "thumbnailUrl": {
+                        "type": "string",
+                        "description": "\uc378\ub124\uc77c URL",
+                        "nullable": true
                     }
                 }
             },
@@ -4955,6 +5291,168 @@
                     }
                 }
             },
+            "api-products1950243800": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "artisanId",
+                            "createdAt",
+                            "price",
+                            "productId",
+                            "status",
+                            "stock",
+                            "title",
+                            "updatedAt"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "artisanId": {
+                                "type": "number",
+                                "description": "\uc7a5\uc778 ID"
+                            },
+                            "productId": {
+                                "type": "number",
+                                "description": "\uc0c1\ud488 ID"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "\uc124\uba85",
+                                "nullable": true
+                            },
+                            "title": {
+                                "type": "string",
+                                "description": "\uc81c\ubaa9"
+                            },
+                            "categoryName": {
+                                "type": "string",
+                                "description": "\uce74\ud14c\uace0\ub9ac\uba85",
+                                "nullable": true
+                            },
+                            "colors": {
+                                "type": "array",
+                                "description": "\uc0c9\uc0c1 \ubaa9\ub85d",
+                                "nullable": true,
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object"
+                                        },
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                }
+                            },
+                            "createdAt": {
+                                "type": "string",
+                                "description": "\uc0dd\uc131\uc77c\uc2dc"
+                            },
+                            "giftThemes": {
+                                "type": "array",
+                                "description": "\uc120\ubb3c \ud14c\ub9c8 \ubaa9\ub85d",
+                                "nullable": true,
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object"
+                                        },
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                }
+                            },
+                            "subcategoryName": {
+                                "type": "string",
+                                "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac\uba85",
+                                "nullable": true
+                            },
+                            "purposeTags": {
+                                "type": "array",
+                                "description": "\uc6a9\ub3c4 \ud0dc\uadf8 \ubaa9\ub85d",
+                                "nullable": true,
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object"
+                                        },
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                }
+                            },
+                            "price": {
+                                "type": "number",
+                                "description": "\uac00\uaca9"
+                            },
+                            "productionPeriodDays": {
+                                "type": "number",
+                                "description": "\uc81c\uc791 \uae30\uac04(\uc77c)",
+                                "nullable": true
+                            },
+                            "subcategoryId": {
+                                "type": "number",
+                                "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac ID",
+                                "nullable": true
+                            },
+                            "stock": {
+                                "type": "number",
+                                "description": "\uc7ac\uace0"
+                            },
+                            "categoryId": {
+                                "type": "number",
+                                "description": "\uce74\ud14c\uace0\ub9ac ID",
+                                "nullable": true
+                            },
+                            "updatedAt": {
+                                "type": "string",
+                                "description": "\uc218\uc815\uc77c\uc2dc"
+                            },
+                            "status": {
+                                "type": "string",
+                                "description": "\uc0c1\ud0dc"
+                            },
+                            "thumbnailUrl": {
+                                "type": "string",
+                                "description": "\uc378\ub124\uc77c URL",
+                                "nullable": true
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
             "api-products-productId-status-1487972696": {
                 "required": [
                     "data",
@@ -5075,48 +5573,6 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-products-663409318": {
-                "required": [
-                    "price",
-                    "stock",
-                    "title"
-                ],
-                "type": "object",
-                "properties": {
-                    "price": {
-                        "type": "number",
-                        "description": "\uac00\uaca9 (1 \uc774\uc0c1)"
-                    },
-                    "description": {
-                        "type": "string",
-                        "description": "\uc0c1\ud488 \uc124\uba85",
-                        "nullable": true
-                    },
-                    "subcategoryId": {
-                        "type": "number",
-                        "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac ID",
-                        "nullable": true
-                    },
-                    "stock": {
-                        "type": "number",
-                        "description": "\uc7ac\uace0 (0 \uc774\uc0c1)"
-                    },
-                    "title": {
-                        "type": "string",
-                        "description": "\uc0c1\ud488\uba85 (\ucd5c\ub300 200\uc790)"
-                    },
-                    "categoryId": {
-                        "type": "number",
-                        "description": "\uce74\ud14c\uace0\ub9ac ID",
-                        "nullable": true
-                    },
-                    "thumbnailUrl": {
-                        "type": "string",
-                        "description": "\uc378\ub124\uc77c URL",
-                        "nullable": true
                     }
                 }
             },
@@ -5385,100 +5841,6 @@
                             "totalElements": {
                                 "type": "number",
                                 "description": "\uc804\uccb4 \uc218"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-products-productId-946390492": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "artisanId",
-                            "createdAt",
-                            "price",
-                            "productId",
-                            "status",
-                            "stock",
-                            "title",
-                            "updatedAt"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "artisanId": {
-                                "type": "number",
-                                "description": "\uc7a5\uc778 ID"
-                            },
-                            "productId": {
-                                "type": "number",
-                                "description": "\uc0c1\ud488 ID"
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "\uc124\uba85",
-                                "nullable": true
-                            },
-                            "title": {
-                                "type": "string",
-                                "description": "\uc81c\ubaa9"
-                            },
-                            "categoryName": {
-                                "type": "string",
-                                "description": "\uce74\ud14c\uace0\ub9ac\uba85",
-                                "nullable": true
-                            },
-                            "createdAt": {
-                                "type": "string",
-                                "description": "\uc0dd\uc131\uc77c\uc2dc"
-                            },
-                            "subcategoryName": {
-                                "type": "string",
-                                "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac\uba85",
-                                "nullable": true
-                            },
-                            "price": {
-                                "type": "number",
-                                "description": "\uac00\uaca9"
-                            },
-                            "subcategoryId": {
-                                "type": "number",
-                                "description": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac ID",
-                                "nullable": true
-                            },
-                            "stock": {
-                                "type": "number",
-                                "description": "\uc7ac\uace0"
-                            },
-                            "categoryId": {
-                                "type": "number",
-                                "description": "\uce74\ud14c\uace0\ub9ac ID",
-                                "nullable": true
-                            },
-                            "updatedAt": {
-                                "type": "string",
-                                "description": "\uc218\uc815\uc77c\uc2dc"
-                            },
-                            "status": {
-                                "type": "string",
-                                "description": "\uc0c1\ud0dc"
-                            },
-                            "thumbnailUrl": {
-                                "type": "string",
-                                "description": "\uc378\ub124\uc77c URL",
-                                "nullable": true
                             }
                         }
                     },
