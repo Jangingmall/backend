@@ -44,7 +44,7 @@ public class MemberService {
 
         Member savedMember = memberRepository.save(member);
         eventPublisher.publishEvent(new MemberRegisteredEvent(savedMember.getId(), savedMember.getEmail()));
-        return new MemberSignupResult(savedMember.getId(), savedMember.getEmail(), savedMember.getStatus());
+        return MemberSignupResult.from(savedMember);
     }
 
     private void validate(MemberSignupCommand command) {

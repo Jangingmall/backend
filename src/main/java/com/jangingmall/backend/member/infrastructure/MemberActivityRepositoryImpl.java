@@ -1,83 +1,73 @@
 package com.jangingmall.backend.member.infrastructure;
 
 import com.jangingmall.backend.member.domain.*;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class MemberActivityRepositoryImpl implements MemberActivityRepository {
-    @PersistenceContext private EntityManager entityManager;
+    private final MemberSettingsJpaRepository settings;
+    private final RecentViewJpaRepository recentViews;
+    private final WishlistJpaRepository wishlists;
+    private final ArtisanSubscriptionJpaRepository subscriptions;
 
     @Override
     public Optional<MemberSettings> settings(Long memberId) {
-        return Optional.ofNullable(entityManager.find(MemberSettings.class, memberId));
+        return settings.findById(memberId);
     }
 
     @Override
     public MemberSettings saveSettings(MemberSettings settings) {
-        return entityManager.merge(settings);
+        return this.settings.save(settings);
     }
 
     @Override
     public void recordView(Long memberId, Long productId, LocalDateTime viewedAt) {
-        entityManager.createNativeQuery("""
-            INSERT INTO recent_view(member_id, product_id, viewed_at) VALUES (:memberId, :productId, :viewedAt)
-            ON CONFLICT (member_id, product_id) DO UPDATE
-            SET viewed_at = GREATEST(recent_view.viewed_at, EXCLUDED.viewed_at)
-            """).setParameter("memberId", memberId).setParameter("productId", productId)
-            .setParameter("viewedAt", viewedAt).executeUpdate();
+        RecentView recentView = recentViews.findByMemberIdAndProductId(memberId, productId)
+            .orElseGet(() -> RecentView.create(memberId, productId, viewedAt));
+        recentView.record(viewedAt);
+        recentViews.save(recentView);
     }
 
     @Override
     public void clearViews(Long memberId) {
-        entityManager.createNativeQuery("DELETE FROM recent_view WHERE member_id = :memberId")
-            .setParameter("memberId", memberId).executeUpdate();
+        recentViews.deleteByMemberId(memberId);
     }
 
     @Override
     public void wish(Long memberId, Long productId) {
-        entityManager.createNativeQuery("""
-            INSERT INTO wishlist(member_id, product_id, created_at)
-            VALUES (:memberId, :productId, CURRENT_TIMESTAMP)
-            ON CONFLICT (member_id, product_id) DO NOTHING
-            """).setParameter("memberId", memberId).setParameter("productId", productId).executeUpdate();
+        if (!wishlists.existsByMemberIdAndProductId(memberId, productId)) {
+            wishlists.save(Wishlist.create(memberId, productId));
+        }
     }
 
     @Override
     public void unwish(Long memberId, Long productId) {
-        entityManager.createNativeQuery("DELETE FROM wishlist WHERE member_id=:memberId AND product_id=:productId")
-            .setParameter("memberId", memberId).setParameter("productId", productId).executeUpdate();
+        wishlists.deleteByMemberIdAndProductId(memberId, productId);
     }
 
     @Override
     public boolean isWished(Long memberId, Long productId) {
-        Long count = (Long) entityManager.createNativeQuery(
-                "SELECT COUNT(*) FROM wishlist WHERE member_id=:memberId AND product_id=:productId", Long.class)
-            .setParameter("memberId", memberId).setParameter("productId", productId).getSingleResult();
-        return count > 0;
+        return wishlists.existsByMemberIdAndProductId(memberId, productId);
     }
 
     @Override
     public void subscribe(Long memberId, Long artisanId) {
-        entityManager.createNativeQuery("""
-            INSERT INTO artisan_subscription(member_id, artisan_id, notifications_enabled, created_at)
-            VALUES (:memberId, :artisanId, true, CURRENT_TIMESTAMP)
-            ON CONFLICT (member_id, artisan_id) DO NOTHING
-            """).setParameter("memberId", memberId).setParameter("artisanId", artisanId).executeUpdate();
+        if (!subscriptions.existsByMemberIdAndArtisanId(memberId, artisanId)) {
+            subscriptions.save(ArtisanSubscription.create(memberId, artisanId));
+        }
     }
 
     @Override
     public void unsubscribe(Long memberId, Long artisanId) {
-        entityManager.createNativeQuery("DELETE FROM artisan_subscription WHERE member_id=:memberId AND artisan_id=:artisanId")
-            .setParameter("memberId", memberId).setParameter("artisanId", artisanId).executeUpdate();
+        subscriptions.deleteByMemberIdAndArtisanId(memberId, artisanId);
     }
 
     @Override
     public void notifications(Long memberId, boolean enabled) {
-        entityManager.createNativeQuery("UPDATE artisan_subscription SET notifications_enabled=:enabled WHERE member_id=:memberId")
-            .setParameter("memberId", memberId).setParameter("enabled", enabled).executeUpdate();
+        subscriptions.findAllByMemberId(memberId).forEach(subscription -> subscription.changeNotifications(enabled));
     }
 }

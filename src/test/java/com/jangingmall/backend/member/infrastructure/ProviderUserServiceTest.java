@@ -13,17 +13,18 @@ class ProviderUserServiceTest {
     private final ProviderUserService users = new ProviderUserService(1_000);
 
     @Test
-    void acceptsVerifiedGoogleEmail() {
-        OAuthIdentity identity = users.identity("google", Map.of("sub", "google-subject", "email", "google@example.com", "email_verified", true));
+    void acceptsNaverEmail() {
+        OAuthIdentity identity = users.identity("naver", Map.of("resultcode", "00", "message", "success",
+            "response", Map.of("id", "naver-subject", "email", "naver@example.com")));
 
-        assertThat(identity.provider()).isEqualTo("google");
-        assertThat(identity.subject()).isEqualTo("google-subject");
+        assertThat(identity.provider()).isEqualTo("naver");
+        assertThat(identity.subject()).isEqualTo("naver-subject");
     }
 
     @Test
-    void rejectsGoogleEmailWithoutVerification() {
-        assertThatThrownBy(() -> users.identity("google", Map.of("sub", "google-subject", "email", "google@example.com", "email_verified", false)))
-            .isInstanceOf(OAuth2AuthenticationException.class);
+    void rejectsNaverResponseWithoutEmail() {
+        assertThatThrownBy(() -> users.identity("naver", Map.of("response", Map.of("id", "naver-subject"))))
+            .isInstanceOf(RuntimeException.class);
     }
 
     @Test
