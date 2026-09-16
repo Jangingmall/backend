@@ -32,15 +32,20 @@ docker run -d -p 6379:6379 redis:7
 
 ## 2. AI 서버 URL 설정
 
-백엔드는 AI 서버 URL을 `application.yml`의 `ai.base-url`로 읽습니다.
+백엔드는 기능별로 **두 개의 AI 서버 URL**을 분리해서 사용합니다.
 
-기본값: `http://localhost:8001`
+| 환경변수 | 용도 | 기본값 |
+|----------|------|--------|
+| `AI_SGLANG_URL` | 챗봇 추천 (`POST /ai/chat`) | `http://localhost:8001` |
+| `AI_OLLAMA_URL` | 콘텐츠 생성·상품 동기화 (`POST /ai/products`, `/ai/products/sync`, `PUT`, `DELETE`) | `http://localhost:8002` |
 
-AI 서버 포트가 다르다면 실행 시 오버라이드합니다.
+로컬 실행 시 포트가 다르다면 오버라이드합니다.
 
 ```bash
-./gradlew bootRun --args='--spring.profiles.active=local-h2 --ai.base-url=http://localhost:YOUR_PORT'
+./gradlew bootRun --args='--spring.profiles.active=local-h2 --ai.sglang-url=http://localhost:YOUR_SGLANG_PORT --ai.ollama-url=http://localhost:YOUR_OLLAMA_PORT'
 ```
+
+두 서버가 같은 호스트라면 동일한 URL을 지정해도 됩니다.
 
 ---
 
