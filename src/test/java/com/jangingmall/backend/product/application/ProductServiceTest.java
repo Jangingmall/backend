@@ -1,5 +1,7 @@
 package com.jangingmall.backend.product.application;
 
+import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.InterviewRepository;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.product.domain.Product;
@@ -39,6 +41,10 @@ class ProductServiceTest {
     private CategoryRepository categoryRepository;
     @Mock
     private SubcategoryRepository subcategoryRepository;
+    @Mock
+    private AiContentClient aiContentClient;
+    @Mock
+    private InterviewRepository interviewRepository;
 
     @Captor
     private ArgumentCaptor<Product> productCaptor;
@@ -47,7 +53,7 @@ class ProductServiceTest {
 
     @BeforeEach
     void setUp() {
-        productService = new ProductService(productRepository, categoryRepository, subcategoryRepository);
+        productService = new ProductService(productRepository, categoryRepository, subcategoryRepository, aiContentClient, interviewRepository);
     }
 
     @Test

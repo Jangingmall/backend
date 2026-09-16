@@ -1,5 +1,9 @@
 package com.jangingmall.backend.product.application;
 
+import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.AiProductUpdatePayload;
+import com.jangingmall.backend.content.domain.Interview;
+import com.jangingmall.backend.content.domain.InterviewRepository;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.product.domain.Category;
 import com.jangingmall.backend.product.domain.CategoryRepository;
@@ -10,11 +14,16 @@ import com.jangingmall.backend.product.domain.ProductStatus;
 import com.jangingmall.backend.product.domain.Subcategory;
 import com.jangingmall.backend.product.domain.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -22,6 +31,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;
+    private final AiContentClient aiContentClient;
+    private final InterviewRepository interviewRepository;
 
     @Transactional
     public ProductResponse create(ProductCommand.Create command) {
@@ -70,7 +81,9 @@ public class ProductService {
             command.thumbnailUrl(),
             command.requesterId()
         );
-        return ProductResponse.from(product);
+        ProductResponse response = ProductResponse.from(product);
+        notifyAiProductUpdated(command.productId(), product);
+        return response;
     }
 
     @Transactional
@@ -84,7 +97,24 @@ public class ProductService {
     public void delete(Long productId, Long requesterId) {
         Product product = getProduct(productId);
         product.verifyOwner(requesterId);
+        aiContentClient.deleteProduct(productId);
         productRepository.delete(product);
+    }
+
+    private void notifyAiProductUpdated(Long productId, Product product) {
+        try {
+            Optional<Interview> interview = interviewRepository.findByProductId(productId);
+            String makingStory = interview.map(Interview::getProcess).orElse("");
+            String usageCare = interview.map(Interview::getMaterials).orElse("");
+            String categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
+            AiProductUpdatePayload payload = new AiProductUpdatePayload(
+                product.getTitle(), categoryName, product.getMaterial(), product.getPrice(),
+                List.of(), List.of(), makingStory, usageCare, null, List.of()
+            );
+            aiContentClient.updateProduct(productId, payload);
+        } catch (Exception e) {
+            log.error("AI 상품 수정 동기화 실패 productId={} reason={}", productId, e.getMessage());
+        }
     }
 
     private Product getProduct(Long productId) {

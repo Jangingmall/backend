@@ -1,5 +1,6 @@
 package com.jangingmall.backend.content.application;
 
+import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.BlockTag;
 import com.jangingmall.backend.content.domain.Content;
 import com.jangingmall.backend.content.domain.ContentBlock;
@@ -9,9 +10,12 @@ import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
+import com.jangingmall.backend.content.domain.InterviewRepository;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
+import com.jangingmall.backend.member.domain.ArtisanProfile;
+import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +49,12 @@ class ContentServiceTest {
     private ContentEditHistoryRepository historyRepository;
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private AiContentClient aiContentClient;
+    @Mock
+    private ArtisanProfileRepository artisanProfileRepository;
+    @Mock
+    private InterviewRepository interviewRepository;
 
     @Captor
     private ArgumentCaptor<Content> contentCaptor;
@@ -57,7 +67,7 @@ class ContentServiceTest {
 
     @BeforeEach
     void setUp() {
-        contentService = new ContentService(contentRepository, contentBlockRepository, historyRepository, productRepository);
+        contentService = new ContentService(contentRepository, contentBlockRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository, interviewRepository);
         artisanProduct = Product.create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
         ReflectionTestUtils.setField(artisanProduct, "id", 10L);
         sampleContent = Content.create(10L);
@@ -276,18 +286,28 @@ class ContentServiceTest {
     }
 
     @Test
-    @DisplayName("콘텐츠 게시 — APPROVED 콘텐츠를 PUBLISHED로 전이한다")
+    @DisplayName("콘텐츠 게시 — APPROVED 콘텐츠를 PUBLISHED로 전이하고 AI 동기화를 요청한다")
     void publish() {
         sampleContent.submitForReview();
         sampleContent.approve(true, true, true);
+
+        ArtisanProfile artisanProfile = org.mockito.Mockito.mock(ArtisanProfile.class);
+        when(artisanProfile.getId()).thenReturn(1L);
+        when(artisanProfile.getBusinessName()).thenReturn("도공방");
+        when(artisanProfile.getCertificationLevel()).thenReturn("일반");
+        when(artisanProfile.getIntroduction()).thenReturn("소개");
+
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
         when(contentRepository.save(any())).thenReturn(sampleContent);
+        when(artisanProfileRepository.findById(1L)).thenReturn(Optional.of(artisanProfile));
+        when(interviewRepository.findByProductId(10L)).thenReturn(Optional.empty());
 
         ContentCommand.Publish command = new ContentCommand.Publish(10L, 1L);
         ContentResponse.StatusChanged result = contentService.publish(command);
 
         assertThat(result.status()).isEqualTo(ContentStatus.PUBLISHED);
+        verify(aiContentClient).syncProduct(any());
     }
 
     @Test
