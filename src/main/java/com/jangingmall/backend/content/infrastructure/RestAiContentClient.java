@@ -3,8 +3,9 @@ package com.jangingmall.backend.content.infrastructure;
 import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.AiProductUpdatePayload;
+import com.jangingmall.backend.global.config.AiProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -21,17 +22,15 @@ class RestAiContentClient implements AiContentClient {
 
     private final RestClient restClient;
 
-    RestAiContentClient(
-        @Value("${ai.base-url}") String baseUrl,
-        @Value("${ai.timeout-seconds:30}") int timeoutSeconds
-    ) {
-        Duration timeout = Duration.ofSeconds(timeoutSeconds);
+    @Autowired
+    RestAiContentClient(AiProperties aiProperties) {
+        Duration timeout = Duration.ofSeconds(aiProperties.timeoutSeconds());
         JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(
             HttpClient.newBuilder().connectTimeout(timeout).build()
         );
         factory.setReadTimeout(timeout);
         this.restClient = RestClient.builder()
-            .baseUrl(baseUrl)
+            .baseUrl(aiProperties.ollamaUrl())
             .requestFactory(factory)
             .build();
     }

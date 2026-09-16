@@ -32,7 +32,7 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;

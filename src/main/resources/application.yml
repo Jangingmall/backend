@@ -103,7 +103,8 @@ member:
     window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
 
 ai:
-  base-url: http://localhost:8001
+  sglang-url: http://localhost:8001
+  ollama-url: http://localhost:8002
   timeout-seconds: 30
 
 ---
@@ -185,7 +186,8 @@ member:
     window-seconds: 60
 
 ai:
-  base-url: http://localhost:8001
+  sglang-url: http://localhost:8001
+  ollama-url: http://localhost:8002
   timeout-seconds: 30
 
 ---
@@ -266,7 +268,8 @@ member:
     window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
 
 ai:
-  base-url: ${AI_BASE_URL}
+  sglang-url: ${AI_SGLANG_URL}
+  ollama-url: ${AI_OLLAMA_URL}
   timeout-seconds: 30
 
 logging:

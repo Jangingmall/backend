@@ -3,8 +3,8 @@ package com.jangingmall.backend.chatbot.infrastructure;
 import com.jangingmall.backend.chatbot.domain.AiChatClient;
 import com.jangingmall.backend.chatbot.domain.ChatMessage;
 import lombok.extern.slf4j.Slf4j;
+import com.jangingmall.backend.global.config.AiProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -27,17 +27,14 @@ class RestAiChatClient implements AiChatClient {
     private final RestClient restClient;
 
     @Autowired
-    RestAiChatClient(
-        @Value("${ai.base-url}") String baseUrl,
-        @Value("${ai.timeout-seconds:30}") int timeoutSeconds
-    ) {
-        Duration timeout = Duration.ofSeconds(timeoutSeconds);
+    RestAiChatClient(AiProperties aiProperties) {
+        Duration timeout = Duration.ofSeconds(aiProperties.timeoutSeconds());
         JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(
             HttpClient.newBuilder().connectTimeout(timeout).build()
         );
         factory.setReadTimeout(timeout);
         this.restClient = RestClient.builder()
-            .baseUrl(baseUrl)
+            .baseUrl(aiProperties.sglangUrl())
             .requestFactory(factory)
             .build();
     }
