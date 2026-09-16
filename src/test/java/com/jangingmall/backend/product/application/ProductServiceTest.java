@@ -59,7 +59,7 @@ class ProductServiceTest {
     @Test
     @DisplayName("상품 등록 시 DRAFT 상태로 저장된다")
     void createProduct() {
-        ProductCommand.Create command = new ProductCommand.Create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
+        ProductCommand.Create command = new ProductCommand.Create(1L, null, null, "청자 다완", "설명", 85000, 10, null, List.of(), List.of(), null, List.of());
         when(productRepository.save(any(Product.class))).thenAnswer(inv -> {
             Product p = inv.getArgument(0);
             ReflectionTestUtils.setField(p, "id", 1L);

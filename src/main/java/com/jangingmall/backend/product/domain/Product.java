@@ -1,7 +1,9 @@
 package com.jangingmall.backend.product.domain;
 
 import com.jangingmall.backend.global.exception.ForbiddenException;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,6 +21,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -60,6 +64,24 @@ public class Product {
     @Column(name = "thumbnail_url", length = 500)
     private String thumbnailUrl;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_gift_theme", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "gift_theme")
+    private List<String> giftThemes = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_purpose_tag", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "purpose_tag")
+    private List<String> purposeTags = new ArrayList<>();
+
+    @Column(name = "production_period_days")
+    private Integer productionPeriodDays;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_color", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "color")
+    private List<String> colors = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ProductStatus status;
@@ -95,6 +117,28 @@ public class Product {
         return product;
     }
 
+    public static Product create(
+        Long artisanId,
+        Category category,
+        Subcategory subcategory,
+        String title,
+        String description,
+        int price,
+        int stock,
+        String thumbnailUrl,
+        List<String> giftThemes,
+        List<String> purposeTags,
+        Integer productionPeriodDays,
+        List<String> colors
+    ) {
+        Product product = create(artisanId, category, subcategory, title, description, price, stock, thumbnailUrl);
+        product.giftThemes = new ArrayList<>(giftThemes);
+        product.purposeTags = new ArrayList<>(purposeTags);
+        product.productionPeriodDays = productionPeriodDays;
+        product.colors = new ArrayList<>(colors);
+        return product;
+    }
+
     public void update(
         Category category,
         Subcategory subcategory,
@@ -103,6 +147,10 @@ public class Product {
         int price,
         int stock,
         String thumbnailUrl,
+        List<String> giftThemes,
+        List<String> purposeTags,
+        Integer productionPeriodDays,
+        List<String> colors,
         Long requesterId
     ) {
         verifyOwner(requesterId);
@@ -115,6 +163,10 @@ public class Product {
         this.price = price;
         this.stock = stock;
         this.thumbnailUrl = thumbnailUrl;
+        this.giftThemes = new ArrayList<>(giftThemes);
+        this.purposeTags = new ArrayList<>(purposeTags);
+        this.productionPeriodDays = productionPeriodDays;
+        this.colors = new ArrayList<>(colors);
     }
 
     public void changeStatus(ProductStatus next, Long requesterId) {

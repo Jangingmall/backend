@@ -51,6 +51,17 @@ public class GenerationService {
         return GenerationResponse.from(saved);
     }
 
+    @Transactional
+    public GenerationResponse complete(GenerationCommand.Complete command) {
+        ContentGeneration generation = generationRepository.findById(command.generationId())
+            .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
+        generation.complete(command.blocksJson());
+        ContentGeneration saved = generationRepository.save(generation);
+        materializeContent(saved.getProductId(), command.blocksJson(), null);
+        log.info("AI 콜백 완료 generationId={}", command.generationId());
+        return GenerationResponse.from(saved);
+    }
+
     @Transactional(readOnly = true)
     public GenerationResponse poll(Long productId, Long generationId, Long requesterId) {
         Product product = getProduct(productId);

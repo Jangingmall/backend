@@ -20,6 +20,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,7 +91,7 @@ class ProductStatusIntegrationTest {
 
     private Long createProduct() throws Exception {
         HttpResponse<String> res = post("/api/products",
-            new ProductRequest.Create(null, null, "청자 다완", "설명", 85000, 10, null),
+            new ProductRequest.Create(null, null, "청자 다완", "설명", 85000, 10, null, List.of(), List.of(), null, List.of()),
             artisanToken);
         assertThat(res.statusCode()).isEqualTo(201);
         Map<?, ?> data = (Map<?, ?>) objectMapper.readValue(res.body(), Map.class).get("data");

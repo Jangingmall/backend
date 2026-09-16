@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 public sealed interface ProductRequest {
 
     record Create(
@@ -15,7 +17,11 @@ public sealed interface ProductRequest {
         String description,
         @Positive int price,
         @Min(0) int stock,
-        String thumbnailUrl
+        String thumbnailUrl,
+        List<String> giftThemes,
+        List<String> purposeTags,
+        Integer productionPeriodDays,
+        List<String> colors
     ) implements ProductRequest {}
 
     record Update(
@@ -25,7 +31,11 @@ public sealed interface ProductRequest {
         String description,
         @Positive int price,
         @Min(0) int stock,
-        String thumbnailUrl
+        String thumbnailUrl,
+        List<String> giftThemes,
+        List<String> purposeTags,
+        Integer productionPeriodDays,
+        List<String> colors
     ) implements ProductRequest {}
 
     record ChangeStatus(

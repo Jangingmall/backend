@@ -46,7 +46,11 @@ public class ProductService {
             command.description(),
             command.price(),
             command.stock(),
-            command.thumbnailUrl()
+            command.thumbnailUrl(),
+            command.giftThemes(),
+            command.purposeTags(),
+            command.productionPeriodDays(),
+            command.colors()
         );
         return ProductResponse.from(productRepository.save(product));
     }
@@ -79,6 +83,10 @@ public class ProductService {
             command.price(),
             command.stock(),
             command.thumbnailUrl(),
+            command.giftThemes(),
+            command.purposeTags(),
+            command.productionPeriodDays(),
+            command.colors(),
             command.requesterId()
         );
         ProductResponse response = ProductResponse.from(product);
@@ -109,7 +117,8 @@ public class ProductService {
             String categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
             AiProductUpdatePayload payload = new AiProductUpdatePayload(
                 product.getTitle(), categoryName, product.getMaterial(), product.getPrice(),
-                List.of(), List.of(), makingStory, usageCare, null, List.of()
+                product.getGiftThemes(), product.getPurposeTags(),
+                makingStory, usageCare, product.getProductionPeriodDays(), product.getColors()
             );
             aiContentClient.updateProduct(productId, payload);
         } catch (Exception e) {

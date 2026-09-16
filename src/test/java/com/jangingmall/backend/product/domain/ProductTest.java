@@ -5,6 +5,8 @@ import com.jangingmall.backend.global.exception.ForbiddenException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -39,7 +41,7 @@ class ProductTest {
     void updateByNonOwner() {
         Product product = Product.create(1L, null, null, "제목", "설명", 1000, 5, null);
 
-        assertThatThrownBy(() -> product.update(null, null, "수정제목", "수정설명", 2000, 3, null, 999L))
+        assertThatThrownBy(() -> product.update(null, null, "수정제목", "수정설명", 2000, 3, null, List.of(), List.of(), null, List.of(), 999L))
             .isInstanceOf(ForbiddenException.class);
     }
 

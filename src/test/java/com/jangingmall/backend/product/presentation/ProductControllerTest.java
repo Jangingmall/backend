@@ -110,7 +110,7 @@ class ProductControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json(new ProductRequest.Create(1L, 2L, "청자 다완", "고려 청자 다완", 85000, 10, "https://example.com/thumb.jpg"))))
+                .content(json(new ProductRequest.Create(1L, 2L, "청자 다완", "고려 청자 다완", 85000, 10, "https://example.com/thumb.jpg", List.of("BIRTHDAY_60TH"), List.of("다도"), 14, List.of("BLUE")))))
             .andExpect(status().isCreated())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "product-create",
@@ -125,7 +125,11 @@ class ProductControllerTest extends RestDocsControllerTest {
                         fieldWithPath("description").type(JsonFieldType.STRING).optional().description("상품 설명"),
                         fieldWithPath("price").type(JsonFieldType.NUMBER).description("가격 (1 이상)"),
                         fieldWithPath("stock").type(JsonFieldType.NUMBER).description("재고 (0 이상)"),
-                        fieldWithPath("thumbnailUrl").type(JsonFieldType.STRING).optional().description("썸네일 URL")
+                        fieldWithPath("thumbnailUrl").type(JsonFieldType.STRING).optional().description("썸네일 URL"),
+                        fieldWithPath("giftThemes").type(JsonFieldType.ARRAY).optional().description("선물 테마 목록"),
+                        fieldWithPath("purposeTags").type(JsonFieldType.ARRAY).optional().description("용도 태그 목록"),
+                        fieldWithPath("productionPeriodDays").type(JsonFieldType.NUMBER).optional().description("제작 기간(일)"),
+                        fieldWithPath("colors").type(JsonFieldType.ARRAY).optional().description("색상 목록")
                     )
                     .responseFields(successEnvelopeFields(SINGLE_PRODUCT_FIELDS))
                     .build()
@@ -202,7 +206,7 @@ class ProductControllerTest extends RestDocsControllerTest {
 
         mockMvc.perform(patch("/api/products/{productId}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json(new ProductRequest.Update(1L, 2L, "청자 다완 (수정)", "수정된 설명", 90000, 8, "https://example.com/thumb2.jpg"))))
+                .content(json(new ProductRequest.Update(1L, 2L, "청자 다완 (수정)", "수정된 설명", 90000, 8, "https://example.com/thumb2.jpg", List.of(), List.of(), null, List.of()))))
             .andExpect(status().isOk())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "product-update",
@@ -218,7 +222,11 @@ class ProductControllerTest extends RestDocsControllerTest {
                         fieldWithPath("description").type(JsonFieldType.STRING).optional().description("설명"),
                         fieldWithPath("price").type(JsonFieldType.NUMBER).description("가격"),
                         fieldWithPath("stock").type(JsonFieldType.NUMBER).description("재고"),
-                        fieldWithPath("thumbnailUrl").type(JsonFieldType.STRING).optional().description("썸네일 URL")
+                        fieldWithPath("thumbnailUrl").type(JsonFieldType.STRING).optional().description("썸네일 URL"),
+                        fieldWithPath("giftThemes").type(JsonFieldType.ARRAY).optional().description("선물 테마 목록"),
+                        fieldWithPath("purposeTags").type(JsonFieldType.ARRAY).optional().description("용도 태그 목록"),
+                        fieldWithPath("productionPeriodDays").type(JsonFieldType.NUMBER).optional().description("제작 기간(일)"),
+                        fieldWithPath("colors").type(JsonFieldType.ARRAY).optional().description("색상 목록")
                     )
                     .responseFields(successEnvelopeFields(SINGLE_PRODUCT_FIELDS))
                     .build()
@@ -283,7 +291,7 @@ class ProductControllerTest extends RestDocsControllerTest {
     void createProductForbidden() throws Exception {
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json(new ProductRequest.Create(null, null, "청자 다완", null, 85000, 10, null))))
+                .content(json(new ProductRequest.Create(null, null, "청자 다완", null, 85000, 10, null, List.of(), List.of(), null, List.of()))))
             .andExpect(status().isForbidden())
             .andDo(documentError(
                 "product-create-forbidden",
@@ -354,7 +362,7 @@ class ProductControllerTest extends RestDocsControllerTest {
     void createProductUnauthorized() throws Exception {
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json(new ProductRequest.Create(null, null, "청자 다완", null, 85000, 10, null))))
+                .content(json(new ProductRequest.Create(null, null, "청자 다완", null, 85000, 10, null, List.of(), List.of(), null, List.of()))))
             .andExpect(status().isUnauthorized())
             .andDo(documentError("product-create-unauthorized", "상품", "상품 등록 — 인증 없음",
                 "인증 없이 상품을 등록하면 401을 반환합니다."));
