@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -132,7 +132,7 @@ class MemberActivityServiceSubscribeTest {
     @DisplayName("구독 목록 — reads에 페이지 요청을 위임한다")
     void subscriptions() {
         PageRequest page = PageRequest.from(null, 20);
-        CursorPage<Map<String, Object>> expected = mock(CursorPage.class);
+        CursorPage<Map<String, Object>> expected = new CursorPage<>(List.of(), null, false, 0);
         when(reads.subscriptions(1L, page)).thenReturn(expected);
 
         CursorPage<Map<String, Object>> result = service.subscriptions(1L, page);

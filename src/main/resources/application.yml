@@ -102,6 +102,18 @@ member:
     attempts: ${MEMBER_RATE_LIMIT_ATTEMPTS:10}
     window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
 
+image:
+  base-url: ${IMAGE_BASE_URL:}
+  storage:
+    bucket: ${IMAGE_UPLOAD_BUCKET:}
+    return-bucket: ${IMAGE_RETURN_BUCKET:}
+    region: ${AWS_REGION:ap-northeast-2}
+    key-prefix: ${IMAGE_STORAGE_KEY_PREFIX:images}
+    presign-expiry-seconds: ${IMAGE_PRESIGN_EXPIRY_SECONDS:300}
+    unused-retention-seconds: ${IMAGE_UNUSED_RETENTION_SECONDS:86400}
+    max-file-size-bytes: ${IMAGE_MAX_FILE_SIZE_BYTES:10485760}
+    cleanup-scan-millis: ${IMAGE_CLEANUP_SCAN_MILLIS:60000}
+
 ai:
   base-url: http://localhost:8001
   timeout-seconds: 30
@@ -184,6 +196,18 @@ member:
     attempts: 10
     window-seconds: 60
 
+image:
+  base-url: ${IMAGE_BASE_URL:}
+  storage:
+    bucket: ${IMAGE_UPLOAD_BUCKET:}
+    return-bucket: ${IMAGE_RETURN_BUCKET:}
+    region: ${AWS_REGION:ap-northeast-2}
+    key-prefix: ${IMAGE_STORAGE_KEY_PREFIX:images}
+    presign-expiry-seconds: ${IMAGE_PRESIGN_EXPIRY_SECONDS:300}
+    unused-retention-seconds: ${IMAGE_UNUSED_RETENTION_SECONDS:86400}
+    max-file-size-bytes: ${IMAGE_MAX_FILE_SIZE_BYTES:10485760}
+    cleanup-scan-millis: ${IMAGE_CLEANUP_SCAN_MILLIS:60000}
+
 ai:
   base-url: http://localhost:8001
   timeout-seconds: 30
@@ -264,6 +288,18 @@ member:
   rate-limit:
     attempts: ${MEMBER_RATE_LIMIT_ATTEMPTS:10}
     window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
+
+image:
+  base-url: ${IMAGE_BASE_URL}
+  storage:
+    bucket: ${IMAGE_UPLOAD_BUCKET}
+    return-bucket: ${IMAGE_RETURN_BUCKET}
+    region: ${AWS_REGION:ap-northeast-2}
+    key-prefix: ${IMAGE_STORAGE_KEY_PREFIX:images}
+    presign-expiry-seconds: ${IMAGE_PRESIGN_EXPIRY_SECONDS:300}
+    unused-retention-seconds: ${IMAGE_UNUSED_RETENTION_SECONDS:86400}
+    max-file-size-bytes: ${IMAGE_MAX_FILE_SIZE_BYTES:10485760}
+    cleanup-scan-millis: ${IMAGE_CLEANUP_SCAN_MILLIS:60000}
 
 ai:
   base-url: ${AI_BASE_URL}
