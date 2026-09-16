@@ -82,6 +82,18 @@ public class Product {
     @Column(name = "color")
     private List<String> colors = new ArrayList<>();
 
+    @Column(name = "is_limited", nullable = false)
+    private boolean isLimited = false;
+
+    @Column(name = "is_custom_order", nullable = false)
+    private boolean isCustomOrder = false;
+
+    @Column(name = "is_single_item", nullable = false)
+    private boolean isSingleItem = false;
+
+    @Column(name = "has_gift_wrap", nullable = false)
+    private boolean hasGiftWrap = false;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private ProductStatus status;

@@ -12,18 +12,11 @@ public sealed interface ChatResponse {
 
     record SessionView(
         UUID sessionId,
-        Long memberId,
-        LocalDateTime createdAt,
-        LocalDateTime endedAt
+        int expiresInSeconds
     ) implements ChatResponse {
 
         public static SessionView from(ChatSession session) {
-            return new SessionView(
-                session.getSessionId(),
-                session.getMemberId(),
-                session.getCreatedAt(),
-                session.getEndedAt()
-            );
+            return new SessionView(session.getSessionId(), 3600);
         }
     }
 
@@ -46,18 +39,43 @@ public sealed interface ChatResponse {
         }
     }
 
+    record ThumbnailVariant(
+        String url,
+        int width,
+        int height,
+        String format
+    ) {}
+
     record ProductCard(
         Long productId,
-        String productName,
-        String thumbnailUrl,
+        String name,
         int price,
+        List<ThumbnailVariant> thumbnail,
+        String status,
+        String category,
+        String subcategory,
+        String color,
+        String giftTheme,
+        Double rating,
+        boolean isLimited,
+        boolean isCustomOrder,
+        boolean isSingleItem,
+        boolean isNew,
+        boolean hasGiftWrap,
+        boolean hasOptions,
+        List<String> purposeTags,
+        String primaryBadge,
+        Long artisanId,
+        String artisanName,
         String reason
     ) implements ChatResponse {}
 
     record SendResult(
-        MessageView userMessage,
-        MessageView botMessage,
-        List<ProductCard> recommendedProducts,
-        List<String> suggestions
+        UUID sessionId,
+        Long messageId,
+        String reply,
+        String intent,
+        List<String> suggestions,
+        List<ProductCard> products
     ) implements ChatResponse {}
 }

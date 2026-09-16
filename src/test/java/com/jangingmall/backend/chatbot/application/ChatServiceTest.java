@@ -11,9 +11,10 @@ import com.jangingmall.backend.chatbot.domain.ChatSessionRepository;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
-import com.jangingmall.backend.product.domain.Category;
+import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductRepository;
+import com.jangingmall.backend.product.domain.ProductReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,12 +43,17 @@ class ChatServiceTest {
     private AiChatClient aiChatClient;
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private ProductReviewRepository reviewRepository;
+    @Mock
+    private ArtisanProfileRepository artisanProfileRepository;
 
     private ChatService chatService;
 
     @BeforeEach
     void setUp() {
-        chatService = new ChatService(sessionRepository, messageRepository, aiChatClient, productRepository);
+        chatService = new ChatService(sessionRepository, messageRepository, aiChatClient,
+            productRepository, reviewRepository, artisanProfileRepository);
     }
 
     @Test
@@ -59,7 +65,8 @@ class ChatServiceTest {
 
         ChatResponse.SessionView result = chatService.createSession(new ChatCommand.CreateSession(1L));
 
-        assertThat(result.memberId()).isEqualTo(1L);
+        assertThat(result.sessionId()).isNotNull();
+        assertThat(result.expiresInSeconds()).isEqualTo(3600);
     }
 
     @Test
@@ -86,14 +93,16 @@ class ChatServiceTest {
                 List.of("다른 종류로"))
         );
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        when(reviewRepository.findAverageRatingByProductId(1L)).thenReturn(null);
+        when(artisanProfileRepository.findById(1L)).thenReturn(Optional.empty());
 
         ChatResponse.SendResult result = chatService.sendMessage(
             new ChatCommand.SendMessage(sessionId, 1L, "엄마 선물 추천해줘")
         );
 
-        assertThat(result.recommendedProducts()).hasSize(1);
-        assertThat(result.recommendedProducts().get(0).productId()).isEqualTo(1L);
-        assertThat(result.recommendedProducts().get(0).reason()).isEqualTo("경력 60년의 장인이 직접 제작");
+        assertThat(result.products()).hasSize(1);
+        assertThat(result.products().get(0).productId()).isEqualTo(1L);
+        assertThat(result.products().get(0).reason()).isEqualTo("경력 60년의 장인이 직접 제작");
         assertThat(result.suggestions()).containsExactly("다른 종류로");
     }
 
@@ -122,7 +131,7 @@ class ChatServiceTest {
             new ChatCommand.SendMessage(sessionId, 1L, "질문")
         );
 
-        assertThat(result.recommendedProducts()).isEmpty();
+        assertThat(result.products()).isEmpty();
     }
 
     @Test
