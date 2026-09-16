@@ -295,7 +295,7 @@ class ContentServiceTest {
         when(artisanProfile.getId()).thenReturn(1L);
         when(artisanProfile.getBusinessName()).thenReturn("도공방");
         when(artisanProfile.getCertificationLevel()).thenReturn("일반");
-        when(artisanProfile.getIntroduction()).thenReturn("소개");
+        when(artisanProfile.getRegion()).thenReturn("서울");
 
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));

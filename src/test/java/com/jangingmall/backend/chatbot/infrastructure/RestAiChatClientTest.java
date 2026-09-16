@@ -42,7 +42,7 @@ class RestAiChatClientTest {
         String responseBody = OBJECT_MAPPER.writeValueAsString(Map.of(
             "reply", "추천 상품입니다",
             "intent", "gift_recommendation",
-            "products", List.of(Map.of("product_id", 1, "reason", "60년 장인")),
+            "product_ids", List.of(1),
             "suggestions", List.of("다른 추천")
         ));
         mockServer.expect(requestTo("http://ai-server/ai/chat"))
@@ -54,7 +54,6 @@ class RestAiChatClientTest {
         assertThat(result.reply()).isEqualTo("추천 상품입니다");
         assertThat(result.products()).hasSize(1);
         assertThat(result.products().get(0).productId()).isEqualTo(1L);
-        assertThat(result.products().get(0).reason()).isEqualTo("60년 장인");
         assertThat(result.suggestions()).containsExactly("다른 추천");
     }
 
