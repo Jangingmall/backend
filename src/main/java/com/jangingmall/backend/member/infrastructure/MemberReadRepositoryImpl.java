@@ -1,212 +1,505 @@
 package com.jangingmall.backend.member.infrastructure;
 
-import static com.jangingmall.backend.member.infrastructure.MemberReadSql.*;
-
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
-import com.jangingmall.backend.member.application.*;
+import com.jangingmall.backend.member.application.CursorPage;
+import com.jangingmall.backend.member.application.MemberReadRepository;
+import com.jangingmall.backend.member.application.PageRequest;
+import com.jangingmall.backend.member.application.SellerApplicationData;
+import com.jangingmall.backend.member.domain.ArtisanProfile;
+import com.jangingmall.backend.member.domain.ArtisanSubscription;
+import com.jangingmall.backend.member.domain.Member;
+import com.jangingmall.backend.member.domain.MemberRole;
+import com.jangingmall.backend.member.domain.MemberStatus;
+import com.jangingmall.backend.member.domain.RecentView;
 import com.jangingmall.backend.member.domain.SellerApplication;
+import com.jangingmall.backend.member.domain.Wishlist;
+import com.jangingmall.backend.product.domain.Product;
+import com.jangingmall.backend.product.domain.ProductReview;
+import com.jangingmall.backend.product.domain.ProductStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.math.BigDecimal;
-import java.util.*;
-import javax.sql.DataSource;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import tools.jackson.databind.ObjectMapper;
 
+/**
+ * Member read model implemented with JPQL projections.
+ *
+ * <p>Database-specific JSON/native SQL is intentionally avoided. Mapped entities are queried with
+ * JPA and the response projection is assembled in Java, without a second SQL-mapping layer.</p>
+ */
 @Repository
 public class MemberReadRepositoryImpl implements MemberReadRepository {
-    private final NamedParameterJdbcTemplate jdbc;
-    private final ObjectMapper json;
-    private final String cdn;
-    @PersistenceContext private EntityManager entityManager;
+    private static final Set<ProductStatus> VISIBLE_PRODUCTS = Set.of(ProductStatus.ON_SALE, ProductStatus.SOLD_OUT);
+    private static final String APPROVED = "APPROVED";
 
-    public MemberReadRepositoryImpl(DataSource dataSource, ObjectMapper json,
-                                    @Value("${member.image-base-url:http://localhost:8080/media}") String cdn) {
-        jdbc = new NamedParameterJdbcTemplate(dataSource);
-        this.json = json;
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private final String cdn;
+
+    public MemberReadRepositoryImpl(@Value("${member.image-base-url:http://localhost:8080/media}") String cdn) {
         this.cdn = cdn.replaceAll("/+$", "");
     }
 
     @Override
     public CursorPage<SellerApplicationData> applications(PageRequest page, String status) {
-        String filter = applicationStatus(status);
-        var query = entityManager.createQuery("SELECT a FROM SellerApplication a WHERE a.id < :id "
-            + "AND (:status = 'ALL' OR cast(a.status as string) = :status) ORDER BY a.id DESC", SellerApplication.class);
-        var rows = query.setParameter("id", page.beforeId()).setParameter("status", filter).setMaxResults(page.limit()+1).getResultList();
-        long total = entityManager.createQuery("SELECT count(a) FROM SellerApplication a WHERE :status='ALL' OR cast(a.status as string)=:status", Long.class)
-            .setParameter("status", filter).getSingleResult();
-        boolean more = rows.size() > page.limit();
-        var items = rows.stream().limit(page.limit()).map(SellerApplicationData::from).toList();
-        return new CursorPage<>(items, more ? PageRequest.encode(items.getLast().applicationId()) : null, more, total);
+        SellerApplication.Status filter = applicationStatus(status);
+        String condition = filter == null ? "" : " AND a.status=:status";
+        var query = entityManager.createQuery(
+                "SELECT a FROM SellerApplication a WHERE a.id<:id" + condition + " ORDER BY a.id DESC",
+                SellerApplication.class)
+            .setParameter("id", page.beforeId()).setMaxResults(page.limit() + 1);
+        var count = entityManager.createQuery(
+            "SELECT count(a) FROM SellerApplication a WHERE 1=1" + condition, Long.class);
+        if (filter != null) {
+            query.setParameter("status", filter);
+            count.setParameter("status", filter);
+        }
+        return cursorPage(query.getResultList(), page.limit(), SellerApplication::getId,
+            SellerApplicationData::from, count.getSingleResult());
     }
 
     @Override
     public CursorPage<Map<String, Object>> wishes(Long memberId, PageRequest page) {
-        String from = "wishlist w JOIN " + PRODUCT_FROM + " ON p.product_id=w.product_id";
-        // The product join is written explicitly to keep every ON clause attached to its join.
-        from = "wishlist w JOIN product p ON p.product_id=w.product_id JOIN artisan_profile a ON a.artisan_id=p.artisan_id JOIN member m ON m.member_id=a.artisan_id";
-        return page(PRODUCT, from, "w.member_id=:memberId AND " + VISIBLE_PRODUCT, "w.wishlist_id", page, memberParameters(memberId));
+        String joins = " FROM Wishlist w, Product p, ArtisanProfile a, Member m"
+            + " WHERE w.productId=p.id AND p.artisanId=a.id AND m.id=a.id"
+            + " AND w.memberId=:memberId AND w.id<:before"
+            + " AND p.status IN :statuses AND m.status=:active AND a.certificationStatus=:approved";
+        List<Object[]> rows = entityManager.createQuery(
+                "SELECT w,p,a" + joins + " ORDER BY w.id DESC", Object[].class)
+            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
+            .setParameter("statuses", VISIBLE_PRODUCTS).setParameter("active", MemberStatus.ACTIVE)
+            .setParameter("approved", APPROVED).setMaxResults(page.limit() + 1).getResultList();
+        long total = entityManager.createQuery("SELECT count(w)" + joins, Long.class)
+            .setParameter("memberId", memberId).setParameter("before", Long.MAX_VALUE)
+            .setParameter("statuses", VISIBLE_PRODUCTS).setParameter("active", MemberStatus.ACTIVE)
+            .setParameter("approved", APPROVED).getSingleResult();
+        return cursorPage(rows, page.limit(), row -> ((Wishlist) row[0]).getId(),
+            row -> product((Product) row[1], (ArtisanProfile) row[2]), total);
     }
 
     @Override
     public CursorPage<Map<String, Object>> orders(Long memberId, PageRequest page, String status) {
-        var parameters = memberParameters(memberId);
-        parameters.put("status", orderStatus(status));
-        return page(ORDER, "orders o", "o.member_id=:memberId AND (:status='ALL' OR o.status=:status)", "o.order_id", page, parameters);
+        String filter = orderStatus(status);
+        String filtered = "ALL".equals(filter) ? "" : " AND o.status=:status";
+        var query = entityManager.createQuery(
+                "SELECT o FROM MemberOrderView o WHERE o.memberId=:memberId AND o.id<:before"
+                    + filtered + " ORDER BY o.id DESC", MemberOrderView.class)
+            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
+            .setMaxResults(page.limit() + 1);
+        var count = entityManager.createQuery(
+                "SELECT count(o) FROM MemberOrderView o WHERE o.memberId=:memberId" + filtered, Long.class)
+            .setParameter("memberId", memberId);
+        if (!"ALL".equals(filter)) {
+            query.setParameter("status", filter);
+            count.setParameter("status", filter);
+        }
+        return cursorPage(query.getResultList(), page.limit(), MemberOrderView::getId,
+            this::orderSummary, count.getSingleResult());
     }
 
     @Override
     public Optional<Map<String, Object>> order(Long memberId, Long orderId) {
-        return one(ORDER_DETAIL, "orders o", "o.order_id=:id AND o.member_id=:memberId", Map.of("id",orderId, "memberId",memberId));
+        return entityManager.createQuery(
+                "SELECT o FROM MemberOrderView o WHERE o.id=:id AND o.memberId=:memberId", MemberOrderView.class)
+            .setParameter("id", orderId).setParameter("memberId", memberId).getResultStream().findFirst()
+            .map(this::orderDetail);
     }
 
     @Override
     public CursorPage<Map<String, Object>> reviews(Long memberId, PageRequest page, boolean writable) {
-        if (writable) {
-            return writableReviews(memberId, page);
-        }
-        String payload = "jsonb_build_object('reviewId',r.review_id,'productId',r.product_id,'rating',r.rating,'content',r.content,"
-            + "'images',COALESCE(to_jsonb(r.images),'[]'::jsonb),'writerNickname',COALESCE(m.nickname,m.name),'createdAt',r.created_at)";
-        return page(payload,"product_review r JOIN member m ON m.member_id=r.writer_id","r.writer_id=:memberId","r.review_id",page,memberParameters(memberId));
+        return writable ? writableReviews(memberId, page) : writtenReviews(memberId, page);
     }
 
     @Override
     public CursorPage<Map<String, Object>> recentViews(Long memberId, String cursor, int limit) {
-        String from = "recent_view rv JOIN product p ON p.product_id=rv.product_id JOIN artisan_profile a ON a.artisan_id=p.artisan_id JOIN member m ON m.member_id=a.artisan_id";
-        return sortedPage(PRODUCT + " || jsonb_build_object('viewedAt',rv.viewed_at)", from,
-            "rv.member_id=:memberId AND " + VISIBLE_PRODUCT, "rv.recent_view_id", "extract(epoch FROM rv.viewed_at)",
-            cursor, limit, "recent-" + memberId, memberParameters(memberId));
+        String scope = "recent-" + memberId;
+        ProjectionCursor after = ProjectionCursor.parse(cursor, scope, limit);
+        LocalDateTime viewedAt = cursor == null ? LocalDateTime.of(9999, 12, 31, 23, 59, 59)
+            : LocalDateTime.ofEpochSecond(after.value().longValue(), 0, ZoneOffset.UTC);
+        String joins = " FROM RecentView rv, Product p, ArtisanProfile a, Member m"
+            + " WHERE rv.productId=p.id AND p.artisanId=a.id AND m.id=a.id"
+            + " AND rv.memberId=:memberId AND p.status IN :statuses"
+            + " AND m.status=:active AND a.certificationStatus=:approved";
+        List<Object[]> rows = entityManager.createQuery(
+                "SELECT rv,p,a" + joins
+                    + " AND (rv.viewedAt<:viewedAt OR (rv.viewedAt=:viewedAt AND rv.id<:before))"
+                    + " ORDER BY rv.viewedAt DESC,rv.id DESC", Object[].class)
+            .setParameter("memberId", memberId).setParameter("statuses", VISIBLE_PRODUCTS)
+            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", APPROVED)
+            .setParameter("viewedAt", viewedAt).setParameter("before", after.id())
+            .setMaxResults(limit + 1).getResultList();
+        long total = entityManager.createQuery("SELECT count(rv)" + joins, Long.class)
+            .setParameter("memberId", memberId).setParameter("statuses", VISIBLE_PRODUCTS)
+            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", APPROVED)
+            .getSingleResult();
+        boolean more = rows.size() > limit;
+        List<Object[]> kept = rows.stream().limit(limit).toList();
+        List<Map<String, Object>> items = kept.stream().map(row -> {
+            RecentView view = (RecentView) row[0];
+            Map<String, Object> value = product((Product) row[1], (ArtisanProfile) row[2]);
+            value.put("viewedAt", view.getViewedAt());
+            return value;
+        }).toList();
+        String next = null;
+        if (more) {
+            RecentView last = (RecentView) kept.getLast()[0];
+            next = new ProjectionCursor(
+                BigDecimal.valueOf(last.getViewedAt().toEpochSecond(ZoneOffset.UTC)), last.getId()).encode(scope);
+        }
+        return new CursorPage<>(items, next, more, total);
     }
 
     @Override
-    public CursorPage<Map<String, Object>> artisans(String cursor, int limit, String certification, String category, String initial, String sort) {
-        var parameters = new HashMap<String, Object>();
-        parameters.put("certification", Optional.ofNullable(certification).orElse(""));
-        parameters.put("category", Optional.ofNullable(category).orElse(""));
-        parameters.put("initial", initialPattern(initial));
-        String where = VISIBLE_ARTISAN + " AND (:certification='' OR a.certification_level=:certification)"
-            + " AND (:category='' OR a.category_code=:category) AND a.business_name ~ :initial";
+    public CursorPage<Map<String, Object>> artisans(String cursor, int limit, String certification,
+            String category, String initial, String sort) {
+        ProjectionCursor after = ProjectionCursor.parse(cursor, sort, limit);
         String metric = artisanMetric(sort);
-        return sortedPage(ARTISAN, ARTISAN_FROM, where, "a.artisan_id", metric, cursor, limit, sort, parameters);
+        StringBuilder where = new StringBuilder(
+            " FROM ArtisanProfile a, Member m WHERE m.id=a.id AND m.status=:active"
+                + " AND m.role=:artisanRole AND a.certificationStatus=:approved");
+        if (hasText(certification)) where.append(" AND a.certificationLevel=:certification");
+        if (hasText(category)) where.append(" AND a.category=:category");
+        InitialRange range = initialRange(initial);
+        if (range != null) where.append(" AND a.businessName>=:initialStart AND a.businessName<:initialEnd");
+
+        String expression = switch (metric) {
+            case "POPULAR" -> "a.popularityScore";
+            case "MOST_PRODUCTS" -> "(SELECT count(p) FROM Product p WHERE p.artisanId=a.id AND p.status IN :statuses)";
+            case "RECENTLY_JOINED" -> "m.createdAt";
+            default -> throw new DomainException(ErrorCode.INVALID_INPUT);
+        };
+        String cursorCondition;
+        LocalDateTime joinedBefore = null;
+        if ("RECENTLY_JOINED".equals(metric)) {
+            joinedBefore = cursor == null ? LocalDateTime.of(9999, 12, 31, 23, 59, 59)
+                : LocalDateTime.ofEpochSecond(after.value().longValue(), 0, ZoneOffset.UTC);
+            cursorCondition = " AND (m.createdAt<:metricBefore OR (m.createdAt=:metricBefore AND a.id<:before))";
+        } else {
+            cursorCondition = " AND (" + expression + "<:value OR (" + expression + "=:value AND a.id<:before))";
+        }
+        var query = entityManager.createQuery(
+            "SELECT a,m," + expression + where + cursorCondition
+                + " ORDER BY " + expression + " DESC,a.id DESC", Object[].class);
+        setArtisanParameters(query, certification, category, range, "MOST_PRODUCTS".equals(metric));
+        query.setParameter("before", after.id()).setMaxResults(limit + 1);
+        if ("RECENTLY_JOINED".equals(metric)) query.setParameter("metricBefore", joinedBefore);
+        else if ("MOST_PRODUCTS".equals(metric)) query.setParameter("value", after.value().longValue());
+        else query.setParameter("value", after.value());
+        List<Object[]> rows = query.getResultList();
+
+        var count = entityManager.createQuery("SELECT count(a)" + where, Long.class);
+        setArtisanParameters(count, certification, category, range, false);
+        long total = count.getSingleResult();
+        boolean more = rows.size() > limit;
+        List<Object[]> kept = rows.stream().limit(limit).toList();
+        List<Map<String, Object>> items = kept.stream()
+            .map(row -> artisan((ArtisanProfile) row[0], ((Number) row[2]).longValue())).toList();
+        String next = null;
+        if (more) {
+            Object[] last = kept.getLast();
+            BigDecimal value = "RECENTLY_JOINED".equals(metric)
+                ? BigDecimal.valueOf(((Member) last[1]).getCreatedAt().toEpochSecond(ZoneOffset.UTC))
+                : new BigDecimal(last[2].toString());
+            next = new ProjectionCursor(value, ((ArtisanProfile) last[0]).getId()).encode(sort);
+        }
+        return new CursorPage<>(items, next, more, total);
     }
 
     @Override
     public Optional<Map<String, Object>> artisan(Long artisanId) {
-        return one(ARTISAN, ARTISAN_FROM, VISIBLE_ARTISAN + " AND a.artisan_id=:id", Map.of("id",artisanId));
+        return entityManager.createQuery(
+                "SELECT a FROM ArtisanProfile a, Member m WHERE a.id=:id AND m.id=a.id"
+                    + " AND m.status=:active AND m.role=:artisanRole AND a.certificationStatus=:approved",
+                ArtisanProfile.class)
+            .setParameter("id", artisanId).setParameter("active", MemberStatus.ACTIVE)
+            .setParameter("artisanRole", MemberRole.ARTISAN).setParameter("approved", APPROVED)
+            .getResultStream().findFirst().map(a -> artisan(a, visibleProductCount(a.getId())));
     }
 
     @Override
     public CursorPage<Map<String, Object>> subscriptions(Long memberId, PageRequest page) {
-        String payload = ARTISAN + " || jsonb_build_object('notificationsEnabled',s.notifications_enabled,'newProductCount',"
-            + "(SELECT count(*) FROM product p WHERE p.artisan_id=a.artisan_id AND p.status='ON_SALE' "
-            + "AND p.created_at >= GREATEST(s.created_at,CURRENT_TIMESTAMP - INTERVAL '7 days')))";
-        return page(payload, "artisan_subscription s JOIN artisan_profile a ON a.artisan_id=s.artisan_id JOIN member m ON m.member_id=a.artisan_id",
-            "s.member_id=:memberId AND " + VISIBLE_ARTISAN, "s.subscription_id",page,memberParameters(memberId));
+        String joins = " FROM ArtisanSubscription s, ArtisanProfile a, Member m"
+            + " WHERE s.artisanId=a.id AND m.id=a.id AND s.memberId=:memberId AND s.id<:before"
+            + " AND m.status=:active AND m.role=:artisanRole AND a.certificationStatus=:approved";
+        List<Object[]> rows = entityManager.createQuery(
+                "SELECT s,a" + joins + " ORDER BY s.id DESC", Object[].class)
+            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
+            .setParameter("active", MemberStatus.ACTIVE).setParameter("artisanRole", MemberRole.ARTISAN)
+            .setParameter("approved", APPROVED).setMaxResults(page.limit() + 1).getResultList();
+        long total = entityManager.createQuery("SELECT count(s)" + joins, Long.class)
+            .setParameter("memberId", memberId).setParameter("before", Long.MAX_VALUE)
+            .setParameter("active", MemberStatus.ACTIVE).setParameter("artisanRole", MemberRole.ARTISAN)
+            .setParameter("approved", APPROVED).getSingleResult();
+        return cursorPage(rows, page.limit(), row -> ((ArtisanSubscription) row[0]).getId(), row -> {
+            ArtisanSubscription subscription = (ArtisanSubscription) row[0];
+            ArtisanProfile profile = (ArtisanProfile) row[1];
+            Map<String, Object> value = artisan(profile, visibleProductCount(profile.getId()));
+            value.put("notificationsEnabled", subscription.isNotificationsEnabled());
+            value.put("newProductCount", newProductCount(profile.getId(), subscription.getCreatedAt()));
+            return value;
+        }, total);
     }
 
     @Override
     public boolean productVisible(Long productId) {
-        return Boolean.TRUE.equals(jdbc.queryForObject("SELECT EXISTS(SELECT 1 FROM " + PRODUCT_FROM + " WHERE p.product_id=:id AND " + VISIBLE_PRODUCT + ")",Map.of("id",productId),Boolean.class));
+        return entityManager.createQuery(
+                "SELECT count(p) FROM Product p, ArtisanProfile a, Member m"
+                    + " WHERE p.id=:id AND p.artisanId=a.id AND m.id=a.id AND p.status IN :statuses"
+                    + " AND m.status=:active AND a.certificationStatus=:approved", Long.class)
+            .setParameter("id", productId).setParameter("statuses", VISIBLE_PRODUCTS)
+            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", APPROVED)
+            .getSingleResult() > 0;
     }
 
     @Override
     public boolean categoryExists(String category) {
-        return Boolean.TRUE.equals(jdbc.queryForObject("SELECT EXISTS(SELECT 1 FROM category WHERE category_code=:category)",Map.of("category",category),Boolean.class));
+        return entityManager.createQuery("SELECT count(c) FROM Category c WHERE c.name=:category", Long.class)
+            .setParameter("category", category).getSingleResult() > 0;
+    }
+
+    private CursorPage<Map<String, Object>> writtenReviews(Long memberId, PageRequest page) {
+        String from = " FROM ProductReview r, Member m WHERE r.writerId=m.id"
+            + " AND r.writerId=:memberId AND r.id<:before";
+        List<Object[]> rows = entityManager.createQuery(
+                "SELECT r,m" + from + " ORDER BY r.id DESC", Object[].class)
+            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
+            .setMaxResults(page.limit() + 1).getResultList();
+        long total = entityManager.createQuery(
+                "SELECT count(r) FROM ProductReview r WHERE r.writerId=:memberId", Long.class)
+            .setParameter("memberId", memberId).getSingleResult();
+        return cursorPage(rows, page.limit(), row -> ((ProductReview) row[0]).getId(), row -> {
+            ProductReview review = (ProductReview) row[0];
+            Member writer = (Member) row[1];
+            Map<String, Object> value = new LinkedHashMap<>();
+            value.put("reviewId", review.getId());
+            value.put("productId", review.getProductId());
+            value.put("rating", review.getRating());
+            value.put("content", review.getContent());
+            value.put("images", List.of());
+            value.put("writerNickname", Optional.ofNullable(writer.getNickname()).orElse(writer.getName()));
+            value.put("createdAt", review.getCreatedAt());
+            return value;
+        }, total);
     }
 
     private CursorPage<Map<String, Object>> writableReviews(Long memberId, PageRequest page) {
-        String payload = "jsonb_build_object('orderItemId',i.order_item_id,'productId',i.product_id,'productName',i.product_name_snapshot,'thumbnail'," + IMAGE + ")";
-        return page(payload, "order_item i JOIN orders o ON o.order_id=i.order_id JOIN product p ON p.product_id=i.product_id",
-            "o.member_id=:memberId AND o.status='DELIVERED' AND NOT EXISTS(SELECT 1 FROM product_review r WHERE r.order_item_id=i.order_item_id)",
-            "i.order_item_id",page,memberParameters(memberId));
+        String from = " FROM MemberOrderItemView i, MemberOrderView o, Product p"
+            + " WHERE i.orderId=o.id AND i.productId=p.id AND o.memberId=:memberId"
+            + " AND o.status='DELIVERED' AND i.id<:before"
+            + " AND NOT EXISTS (SELECT r.id FROM ProductReview r WHERE r.orderItemId=i.id)";
+        List<Object[]> rows = entityManager.createQuery(
+                "SELECT i,p" + from + " ORDER BY i.id DESC", Object[].class)
+            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
+            .setMaxResults(page.limit() + 1).getResultList();
+        long total = entityManager.createQuery("SELECT count(i)" + from, Long.class)
+            .setParameter("memberId", memberId).setParameter("before", Long.MAX_VALUE).getSingleResult();
+        return cursorPage(rows, page.limit(), row -> ((MemberOrderItemView) row[0]).getId(), row -> {
+            MemberOrderItemView item = (MemberOrderItemView) row[0];
+            Product product = (Product) row[1];
+            Map<String, Object> value = new LinkedHashMap<>();
+            value.put("orderItemId", item.getId());
+            value.put("productId", item.getProductId());
+            value.put("productName", item.getProductName());
+            value.put("thumbnail", thumbnail(product.getThumbnailUrl()));
+            return value;
+        }, total);
     }
 
-    private CursorPage<Map<String, Object>> page(String payload, String from, String where, String key, PageRequest page, Map<String,Object> parameters) {
-        parameters.put("before",page.beforeId());
-        parameters.put("limit",page.limit()+1);
-        parameters.put("cdn",cdn);
-        var rows = jdbc.query("SELECT " + key + " AS row_id, " + payload + " AS payload FROM " + from + " WHERE " + where
-            + " AND " + key + " < :before ORDER BY " + key + " DESC LIMIT :limit",parameters,
-            (result,index) -> new ProjectionRow(result.getLong("row_id"),BigDecimal.ZERO,decode(result.getString("payload"))));
-        boolean more = rows.size()>page.limit();
-        var kept = rows.stream().limit(page.limit()).toList();
-        return new CursorPage<>(kept.stream().map(ProjectionRow::payload).toList(),
-            more ? PageRequest.encode(kept.getLast().id()) : null,more,total(from,where,parameters));
+    private Map<String, Object> product(Product product, ArtisanProfile artisan) {
+        Map<String, Object> value = new LinkedHashMap<>();
+        value.put("productId", product.getId());
+        value.put("name", product.getTitle());
+        value.put("price", product.getPrice());
+        value.put("thumbnail", thumbnail(product.getThumbnailUrl()));
+        value.put("status", product.getStatus().name());
+        value.put("category", product.getCategory() == null ? null : product.getCategory().getName());
+        value.put("subcategory", product.getSubcategory() == null ? null : product.getSubcategory().getName());
+        value.put("material", product.getMaterial());
+        value.put("rating", averageRating(product.getId()));
+        value.put("isLimited", false);
+        value.put("isCustomOrder", false);
+        value.put("isSingleItem", product.getStock() == 1);
+        boolean isNew = product.getCreatedAt().isAfter(LocalDateTime.now().minusDays(7));
+        value.put("isNew", isNew);
+        value.put("hasGiftWrap", false);
+        value.put("hasOptions", false);
+        value.put("purposeTags", List.of());
+        value.put("primaryBadge", isNew ? "NEW" : null);
+        value.put("artisanId", artisan.getId());
+        value.put("artisanName", artisan.getBusinessName());
+        return value;
     }
 
-    private CursorPage<Map<String, Object>> sortedPage(String payload, String from, String where, String key, String metric,
-            String cursor, int limit, String scope, Map<String,Object> parameters) {
-        ProjectionCursor after = ProjectionCursor.parse(cursor,scope,limit);
-        parameters.putAll(Map.of("value",after.value(),"before",after.id(),"limit",limit+1,"cdn",cdn));
-        String sql = "SELECT " + key + " AS row_id," + metric + " AS sort_value," + payload + " AS payload FROM " + from
-            + " WHERE " + where + " AND (" + metric + "," + key + ") < (:value,:before) ORDER BY " + metric + " DESC," + key + " DESC LIMIT :limit";
-        var rows = jdbc.query(sql,parameters,(result,index) -> new ProjectionRow(result.getLong("row_id"),
-            result.getBigDecimal("sort_value"),decode(result.getString("payload"))));
-        boolean more = rows.size()>limit;
-        var kept = rows.stream().limit(limit).toList();
-        return new CursorPage<>(kept.stream().map(ProjectionRow::payload).toList(),more
-            ? new ProjectionCursor(kept.getLast().value(),kept.getLast().id()).encode(scope) : null,more,total(from,where,parameters));
+    private Map<String, Object> artisan(ArtisanProfile profile, long productCount) {
+        Map<String, Object> value = new LinkedHashMap<>();
+        value.put("artisanId", profile.getId());
+        value.put("businessName", profile.getBusinessName());
+        value.put("introduction", profile.getIntroduction());
+        value.put("profileImageUrl", profile.getProfileImageUrl());
+        value.put("certificationLevel", profile.getCertificationLevel());
+        value.put("isOrganization", profile.isOrganization());
+        value.put("certificationStatus", profile.getCertificationStatus());
+        value.put("category", profile.getCategory());
+        value.put("region", profile.getRegion());
+        value.put("careerYears", profile.getCareerYears());
+        value.put("productCount", productCount);
+        value.put("topProducts", topProducts(profile.getId()));
+        value.put("certifiedYear", profile.getCertifiedYear());
+        value.put("lineage", profile.getLineage());
+        value.put("quote", profile.getQuote());
+        value.put("bio", profile.getBio());
+        value.put("videoUrl", profile.getVideoUrl());
+        value.put("careerTimeline", List.of());
+        return value;
     }
 
-    private Optional<Map<String,Object>> one(String payload, String from, String where, Map<String,Object> values) {
-        var parameters = new HashMap<>(values);
-        parameters.put("cdn",cdn);
-        return jdbc.query("SELECT " + payload + " AS payload FROM " + from + " WHERE " + where,parameters,
-            (result,index) -> decode(result.getString("payload"))).stream().findFirst();
+    private Map<String, Object> orderSummary(MemberOrderView order) {
+        Map<String, Object> value = new LinkedHashMap<>();
+        value.put("orderId", order.getId());
+        value.put("orderNumber", order.getOrderNumber());
+        value.put("status", order.getStatus());
+        value.put("totalAmount", order.getTotalAmount());
+        value.put("createdAt", order.getCreatedAt());
+        return value;
     }
 
-    private long total(String from, String where, Map<String,Object> parameters) {
-        return jdbc.queryForObject("SELECT count(*) FROM " + from + " WHERE " + where,parameters,Long.class);
+    private Map<String, Object> orderDetail(MemberOrderView order) {
+        Map<String, Object> value = orderSummary(order);
+        List<Map<String, Object>> items = entityManager.createQuery(
+                "SELECT i FROM MemberOrderItemView i WHERE i.orderId=:orderId ORDER BY i.id", MemberOrderItemView.class)
+            .setParameter("orderId", order.getId()).getResultList().stream().map(item -> {
+                Map<String, Object> line = new LinkedHashMap<>();
+                line.put("orderItemId", item.getId());
+                line.put("productId", item.getProductId());
+                line.put("productName", item.getProductName());
+                line.put("price", item.getPrice());
+                line.put("quantity", item.getQuantity());
+                return line;
+            }).toList();
+        value.put("items", items);
+        Map<String, Object> address = new LinkedHashMap<>();
+        address.put("addressId", order.getAddressId());
+        address.put("recipientName", order.getRecipientName());
+        address.put("phone", order.getRecipientPhone());
+        address.put("zipCode", order.getZipCode());
+        address.put("address1", order.getAddress1());
+        address.put("address2", order.getAddress2());
+        address.put("isDefault", false);
+        value.put("address", address);
+        return value;
     }
 
-    @SuppressWarnings("unchecked")
-    private Map<String,Object> decode(String value) {
-        return json.readValue(value,LinkedHashMap.class);
+    private List<Map<String, Object>> topProducts(Long artisanId) {
+        return entityManager.createQuery(
+                "SELECT p FROM Product p WHERE p.artisanId=:artisanId AND p.status IN :statuses"
+                    + " ORDER BY p.createdAt DESC,p.id DESC", Product.class)
+            .setParameter("artisanId", artisanId).setParameter("statuses", VISIBLE_PRODUCTS)
+            .setMaxResults(3).getResultList().stream().map(product -> {
+                Map<String, Object> item = new LinkedHashMap<>();
+                item.put("productId", product.getId());
+                item.put("thumbnail", thumbnail(product.getThumbnailUrl()));
+                return item;
+            }).toList();
     }
 
-    private Map<String,Object> memberParameters(Long memberId) {
-        return new HashMap<>(Map.of("memberId",memberId));
+    private long visibleProductCount(Long artisanId) {
+        return entityManager.createQuery(
+                "SELECT count(p) FROM Product p WHERE p.artisanId=:artisanId AND p.status IN :statuses", Long.class)
+            .setParameter("artisanId", artisanId).setParameter("statuses", VISIBLE_PRODUCTS).getSingleResult();
+    }
+
+    private long newProductCount(Long artisanId, LocalDateTime subscribedAt) {
+        LocalDateTime weekAgo = LocalDateTime.now().minusDays(7);
+        LocalDateTime since = subscribedAt.isAfter(weekAgo) ? subscribedAt : weekAgo;
+        return entityManager.createQuery(
+                "SELECT count(p) FROM Product p WHERE p.artisanId=:artisanId"
+                    + " AND p.status IN :statuses AND p.createdAt>=:since", Long.class)
+            .setParameter("artisanId", artisanId).setParameter("statuses", VISIBLE_PRODUCTS)
+            .setParameter("since", since).getSingleResult();
+    }
+
+    private Double averageRating(Long productId) {
+        return entityManager.createQuery(
+                "SELECT avg(r.rating) FROM ProductReview r WHERE r.productId=:productId", Double.class)
+            .setParameter("productId", productId).getSingleResult();
+    }
+
+    private List<Map<String, Object>> thumbnail(String url) {
+        if (!hasText(url)) return List.of();
+        String resolved = url.startsWith("http://") || url.startsWith("https://")
+            ? url : cdn + "/" + url.replaceFirst("^/+", "");
+        return List.of(Map.of("url", resolved));
+    }
+
+    private <T, R> CursorPage<R> cursorPage(List<T> rows, int limit, Function<T, Long> id,
+            Function<T, R> mapper, long total) {
+        boolean more = rows.size() > limit;
+        List<T> kept = rows.stream().limit(limit).toList();
+        List<R> items = kept.stream().map(mapper).toList();
+        String next = more ? PageRequest.encode(id.apply(kept.getLast())) : null;
+        return new CursorPage<>(items, next, more, total);
+    }
+
+    private void setArtisanParameters(Query query, String certification, String category,
+            InitialRange range, boolean usesProductMetric) {
+        query.setParameter("active", MemberStatus.ACTIVE)
+            .setParameter("artisanRole", MemberRole.ARTISAN).setParameter("approved", APPROVED);
+        if (usesProductMetric) query.setParameter("statuses", VISIBLE_PRODUCTS);
+        if (hasText(certification)) query.setParameter("certification", certification);
+        if (hasText(category)) query.setParameter("category", category);
+        if (range != null) {
+            query.setParameter("initialStart", range.start());
+            query.setParameter("initialEnd", range.end());
+        }
     }
 
     private String orderStatus(String status) {
         String value = Optional.ofNullable(status).orElse("ALL");
-        if (!Set.of("ALL","CREATED","PAID","PAYMENT_FAILED","CANCELED","DELIVERED","RETURN_REQUESTED").contains(value)) {
-            throw new DomainException(ErrorCode.INVALID_INPUT);
-        }
+        if (!Set.of("ALL", "CREATED", "PAID", "PAYMENT_FAILED", "CANCELED", "DELIVERED", "RETURN_REQUESTED")
+            .contains(value)) throw new DomainException(ErrorCode.INVALID_INPUT);
         return value;
     }
 
-    private String applicationStatus(String status) {
+    private SellerApplication.Status applicationStatus(String status) {
         String value = Optional.ofNullable(status).orElse("ALL");
-        if (!Set.of("ALL","PENDING","APPROVED","REJECTED").contains(value)) {
+        if ("ALL".equals(value)) return null;
+        try {
+            return SellerApplication.Status.valueOf(value);
+        } catch (IllegalArgumentException exception) {
             throw new DomainException(ErrorCode.INVALID_INPUT);
         }
-        return value;
     }
 
     private String artisanMetric(String sort) {
         return switch (sort) {
-            case "POPULAR" -> "a.popularity_score";
-            case "MOST_PRODUCTS" -> PRODUCT_COUNT;
-            case "RECENTLY_JOINED" -> "extract(epoch FROM m.created_at)";
+            case "POPULAR", "MOST_PRODUCTS", "RECENTLY_JOINED" -> sort;
             default -> throw new DomainException(ErrorCode.INVALID_INPUT);
         };
     }
 
-    private String initialPattern(String initial) {
-        if (initial == null || initial.isBlank()) {
-            return "^";
-        }
+    private InitialRange initialRange(String initial) {
+        if (!hasText(initial)) return null;
         String initials = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
-        if (initial.length()!=1 || !initials.contains(initial)) {
-            throw new DomainException(ErrorCode.INVALID_INPUT);
-        }
-        int start = 0xAC00 + initials.indexOf(initial)*588;
-        return "^[" + (char)start + "-" + (char)(start+587) + "]";
+        if (initial.length() != 1 || !initials.contains(initial)) throw new DomainException(ErrorCode.INVALID_INPUT);
+        int start = 0xAC00 + initials.indexOf(initial) * 588;
+        return new InitialRange(String.valueOf((char) start), String.valueOf((char) (start + 588)));
     }
 
-    private record ProjectionRow(long id, BigDecimal value, Map<String,Object> payload) {}
+    private boolean hasText(String value) {
+        return value != null && !value.isBlank();
+    }
+
+    private record InitialRange(String start, String end) {}
 }

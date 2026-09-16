@@ -45,7 +45,7 @@ class OAuthControllerTest {
     @Test
     @DisplayName("최초 소셜 로그인 교환은 임시 가입 토큰을 HttpOnly 쿠키로만 전달한다")
     void exchangesFirstLoginTicket() throws Exception {
-        OAuthIdentity identity = new OAuthIdentity("google", "provider-subject", "social@example.com");
+        OAuthIdentity identity = new OAuthIdentity("naver", "provider-subject", "social@example.com");
         when(oauth.exchange("ticket")).thenReturn(new OAuthMemberService.Grant(null, identity));
         when(oauth.onboarding(identity)).thenReturn("onboarding-token");
 
@@ -61,7 +61,15 @@ class OAuthControllerTest {
     @DisplayName("추가정보 입력은 임시 쿠키를 지우고 Access Token과 Refresh Cookie를 발급한다")
     void completesProfileFromOnboardingCookie() throws Exception {
         when(oauth.complete(eq("onboarding-token"), any())).thenReturn(
-            new MemberSignupResult(7L, "social@example.com", MemberStatus.ACTIVE));
+            new MemberSignupResult(
+                7L,
+                "social@example.com",
+                "김도공",
+                null,
+                MemberRole.USER,
+                null,
+                MemberStatus.ACTIVE
+            ));
         when(authentication.socialSession(7L)).thenReturn(session());
 
         mockMvc.perform(post("/api/member/oauth2/complete-profile")
