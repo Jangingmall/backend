@@ -1104,10 +1104,10 @@
                                             "data": {
                                                 "items": [
                                                     {
-                                                        "artisanId": 10,
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                         "notificationsEnabled": true,
-                                                        "newProductCount": 2
+                                                        "newProductCount": 2,
+                                                        "artisanId": 10,
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                                     }
                                                 ],
                                                 "nextCursor": null,
@@ -1167,12 +1167,12 @@
                                             "data": {
                                                 "items": [
                                                     {
+                                                        "name": "\uccad\uc790 \ub2e4\uc644",
+                                                        "price": 85000,
                                                         "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                         "status": "ON_SALE",
                                                         "productId": 1,
-                                                        "artisanId": 10,
-                                                        "name": "\uccad\uc790 \ub2e4\uc644",
-                                                        "price": 85000
+                                                        "artisanId": 10
                                                     }
                                                 ],
                                                 "nextCursor": null,
@@ -1874,7 +1874,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-messages361796848"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-messages-472528780"
                                 },
                                 "examples": {
                                     "chatbot-message-send": {
@@ -1896,10 +1896,21 @@
                                                     "content": "\uace0\uae09\uc2a4\ub7ec\uc6b4 \ub3c4\uc790\uae30\ub97c \ucd94\ucc9c\ub4dc\ub9bd\ub2c8\ub2e4.",
                                                     "sentAt": "2026-09-03T10:01:00"
                                                 },
-                                                "recommendedProductIds": [
-                                                    1,
-                                                    2,
-                                                    3
+                                                "recommendedProducts": [
+                                                    {
+                                                        "productId": 1,
+                                                        "productName": "\uccad\uc790 \ub2e4\uc644",
+                                                        "thumbnailUrl": "https://example.com/img1.jpg",
+                                                        "price": 85000,
+                                                        "reason": "60\ub144 \uacbd\ub825\uc758 \uc7a5\uc778\uc774 \ube5a\uc740 \uccad\uc790"
+                                                    },
+                                                    {
+                                                        "productId": 2,
+                                                        "productName": "\ubc31\uc790 \ucc3b\uc794",
+                                                        "thumbnailUrl": "https://example.com/img2.jpg",
+                                                        "price": 45000,
+                                                        "reason": "\uc21c\ubc31\uc758 \uc544\ub984\ub2e4\uc6c0"
+                                                    }
                                                 ],
                                                 "suggestions": [
                                                     "3\ub9cc\uc6d0 \uc774\ud558\ub85c",
@@ -4648,7 +4659,47 @@
                     }
                 }
             },
-            "api-chatbot-sessions-sessionId-messages361796848": {
+            "api-content-products-productId-contents-contentId1735256076": {
+                "type": "object",
+                "properties": {
+                    "blocks": {
+                        "type": "array",
+                        "items": {
+                            "required": [
+                                "order",
+                                "tag"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "videoUrl": {
+                                    "type": "string",
+                                    "description": "\uc601\uc0c1 URL (video \ube14\ub85d)",
+                                    "nullable": true
+                                },
+                                "imageUrl": {
+                                    "type": "string",
+                                    "description": "\uc774\ubbf8\uc9c0 URL (img \ube14\ub85d)",
+                                    "nullable": true
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "description": "\ud14d\uc2a4\ud2b8 (h2/p \ube14\ub85d)",
+                                    "nullable": true
+                                },
+                                "tag": {
+                                    "type": "string",
+                                    "description": "\ube14\ub85d \ud0dc\uadf8 (h2 | p | img | video)"
+                                },
+                                "order": {
+                                    "type": "number",
+                                    "description": "\ud45c\uc2dc \uc21c\uc11c"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "api-chatbot-sessions-sessionId-messages-472528780": {
                 "required": [
                     "status",
                     "success"
@@ -4657,7 +4708,7 @@
                 "properties": {
                     "data": {
                         "required": [
-                            "recommendedProductIds",
+                            "recommendedProducts",
                             "suggestions"
                         ],
                         "type": "object",
@@ -4692,26 +4743,6 @@
                                         "type": "string",
                                         "description": "\uba54\uc2dc\uc9c0 \ub0b4\uc6a9"
                                     }
-                                }
-                            },
-                            "recommendedProductIds": {
-                                "type": "array",
-                                "description": "\ucd94\ucc9c \uc0c1\ud488 ID \ubaa9\ub85d (\ucd5c\ub300 3\uac1c)",
-                                "items": {
-                                    "oneOf": [
-                                        {
-                                            "type": "object"
-                                        },
-                                        {
-                                            "type": "boolean"
-                                        },
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "number"
-                                        }
-                                    ]
                                 }
                             },
                             "botMessage": {
@@ -4765,6 +4796,42 @@
                                         }
                                     ]
                                 }
+                            },
+                            "recommendedProducts": {
+                                "type": "array",
+                                "description": "\ucd94\ucc9c \uc0c1\ud488 \uce74\ub4dc \ubaa9\ub85d (\ucd5c\ub300 3\uac1c)",
+                                "items": {
+                                    "required": [
+                                        "price",
+                                        "productId",
+                                        "productName",
+                                        "reason"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "reason": {
+                                            "type": "string",
+                                            "description": "\ucd94\ucc9c \uc774\uc720"
+                                        },
+                                        "productId": {
+                                            "type": "number",
+                                            "description": "\uc0c1\ud488 ID"
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "description": "\uac00\uaca9"
+                                        },
+                                        "productName": {
+                                            "type": "string",
+                                            "description": "\uc0c1\ud488\uba85"
+                                        },
+                                        "thumbnailUrl": {
+                                            "type": "object",
+                                            "description": "\uc378\ub124\uc77c URL",
+                                            "nullable": true
+                                        }
+                                    }
+                                }
                             }
                         }
                     },
@@ -4775,46 +4842,6 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-content-products-productId-contents-contentId1735256076": {
-                "type": "object",
-                "properties": {
-                    "blocks": {
-                        "type": "array",
-                        "items": {
-                            "required": [
-                                "order",
-                                "tag"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "videoUrl": {
-                                    "type": "string",
-                                    "description": "\uc601\uc0c1 URL (video \ube14\ub85d)",
-                                    "nullable": true
-                                },
-                                "imageUrl": {
-                                    "type": "string",
-                                    "description": "\uc774\ubbf8\uc9c0 URL (img \ube14\ub85d)",
-                                    "nullable": true
-                                },
-                                "text": {
-                                    "type": "string",
-                                    "description": "\ud14d\uc2a4\ud2b8 (h2/p \ube14\ub85d)",
-                                    "nullable": true
-                                },
-                                "tag": {
-                                    "type": "string",
-                                    "description": "\ube14\ub85d \ud0dc\uadf8 (h2 | p | img | video)"
-                                },
-                                "order": {
-                                    "type": "number",
-                                    "description": "\ud45c\uc2dc \uc21c\uc11c"
-                                }
-                            }
-                        }
                     }
                 }
             },
