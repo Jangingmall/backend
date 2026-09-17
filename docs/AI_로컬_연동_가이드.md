@@ -479,43 +479,55 @@ Request body 없음. Response: 2xx면 성공
 
 ## 7. 전체 흐름 빠른 검증
 
+AI 서버 없이 백엔드 단독으로 전체 흐름을 검증합니다.
+
+> **전제**: AI 서버가 없으면 Step 3 후 비동기 job 제출이 실패해 status가 `FAILED`가 됩니다.
+> `complete()` 에 상태 가드가 없으므로 이후 콜백(Step 4)을 직접 호출하면 `FAILED → COMPLETED` 전환이 정상 동작합니다.
+
 ```bash
 BACKEND_AUTH_TOKEN="your-shared-secret-here"
+
+# 0. 콜백에서 사용할 더미 이미지 생성 (1×1 흰색 JPEG)
+printf '\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.\' ",#\x1c\x1c(7),01444\x1f'"'"'9=82<.342\x87\xff\xc0\x00\x0b\x08\x00\x01\x00\x01\x01\x01\x11\x00\xff\xc4\x00\x1f\x00\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xda\x00\x08\x01\x01\x00\x00?\x00\xf5\x0f\xff\xd9' > /tmp/test.jpg
 
 # 1. 서버 실행 확인
 curl -s http://localhost:8080/healthz | jq .
 
 # 2. Dev 아티산 + 상품 생성 및 토큰 발급
-curl -s -X POST http://localhost:8080/dev/setup | jq .
-# → artisanId, productId, accessToken 기록
+SETUP=$(curl -s -X POST http://localhost:8080/dev/setup)
+echo $SETUP | jq .
+ARTISAN_TOKEN=$(echo $SETUP | jq -r '.data.accessToken')
+PRODUCT_ID=$(echo $SETUP | jq -r '.data.productId')
 
-# 3. 콘텐츠 생성 요청 (결과에서 ARTISAN_TOKEN, PRODUCT_ID 사용)
-curl -s -X POST "http://localhost:8080/api/content/products/1/generations" \
-  -H "Authorization: Bearer <ARTISAN_TOKEN>" \
+# 3. 콘텐츠 생성 요청 — AI 서버 없으면 비동기 job 제출 실패 후 status=FAILED
+GENERATION=$(curl -s -X POST "http://localhost:8080/api/content/products/${PRODUCT_ID}/generations" \
+  -H "Authorization: Bearer ${ARTISAN_TOKEN}" \
   -H "Content-Type: application/json" \
-  -d '{"images":["https://cdn.example.com/img1.jpg"],"productName":"청자 다완","howMade":"전통 물레 성형","careTips":"손세척"}' | jq .
-# → status: PROCESSING, generationId 기록
+  -d '{"images":["https://cdn.example.com/img1.jpg"],"productName":"청자 다완","howMade":"전통 물레 성형","careTips":"손세척"}')
+echo $GENERATION | jq .
+GENERATION_ID=$(echo $GENERATION | jq -r '.data.generationId')
+# → status: PROCESSING (곧 FAILED로 바뀜, 콜백 검증에는 무관)
 
-# 4. AI 서버 없이 콜백 직접 호출로 흐름 검증
+# 4. 콜백 직접 호출 — FAILED 상태여도 정상 처리됨
 curl -s -X POST "http://localhost:8080/internal/generations/complete/multipart" \
   -H "Authorization: Bearer ${BACKEND_AUTH_TOKEN}" \
-  -H "Idempotency-Key: 1" \
-  -F 'metadata={"generationId":"1","jobId":"job-001","requestId":"req-001","idempotencyKey":"1","productId":"1","detailPage":{"reactDocument":{"schemaVersion":"2.0","canvasWidth":774,"root":[]}}}' \
+  -H "Idempotency-Key: ${GENERATION_ID}" \
+  -F "metadata={\"generationId\":\"${GENERATION_ID}\",\"jobId\":\"job-001\",\"requestId\":\"req-001\",\"idempotencyKey\":\"${GENERATION_ID}\",\"productId\":\"${PRODUCT_ID}\",\"detailPage\":{\"reactDocument\":{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}}}" \
   -F "detail_page_image=@/tmp/test.jpg;type=image/jpeg" \
   | jq .
-# → status: SAVED
+# → data.status: "SAVED"
 
 # 5. generation 상태 확인
-curl -s "http://localhost:8080/api/content/products/1/generations/1" \
-  -H "Authorization: Bearer <ARTISAN_TOKEN>" | jq .data.status
+curl -s "http://localhost:8080/api/content/products/${PRODUCT_ID}/generations/${GENERATION_ID}" \
+  -H "Authorization: Bearer ${ARTISAN_TOKEN}" | jq .data.status
 # → "COMPLETED"
 
 # 6. 저장된 콘텐츠 확인
-curl -s "http://localhost:8080/api/content/products/1/contents" \
-  -H "Authorization: Bearer <ARTISAN_TOKEN>" | jq .
+curl -s "http://localhost:8080/api/content/products/${PRODUCT_ID}/contents" \
+  -H "Authorization: Bearer ${ARTISAN_TOKEN}" | jq .
 ```
 
-> Step 3과 4 사이에 실제 AI 서버가 job을 처리하고 콜백을 보내면, Step 4의 수동 콜백 없이도 자동으로 COMPLETED가 됩니다.
+> 실제 AI 서버가 연동되어 있으면 Step 3 직후 status가 `QUEUED`로 바뀌고, AI 서버가 콜백을 보내면 Step 4 없이도 자동으로 `COMPLETED`가 됩니다.
 
 ---
 
