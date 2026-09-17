@@ -13,32 +13,32 @@ public sealed interface ProductRequest {
     record Create(
         Long categoryId,
         Long subcategoryId,
-        @NotBlank @Size(max = 200) String title,
+        @NotBlank(message = "상품명은 필수입니다") @Size(max = 200, message = "상품명은 200자 이내여야 합니다") String title,
         String description,
-        @Positive int price,
-        @Min(0) int stock,
-        String thumbnailUrl,
-        List<String> giftThemes,
-        List<String> purposeTags,
-        Integer productionPeriodDays,
-        List<String> colors
+        @Positive(message = "가격은 1 이상이어야 합니다") int price,
+        @Min(value = 0, message = "재고는 0 이상이어야 합니다") int stock,
+        @Size(max = 500, message = "썸네일 URL은 500자 이내여야 합니다") String thumbnailUrl,
+        List<@Size(max = 50, message = "선물 테마는 50자 이내여야 합니다") String> giftThemes,
+        List<@Size(max = 100, message = "용도 태그는 100자 이내여야 합니다") String> purposeTags,
+        @Positive(message = "제작 기간은 1일 이상이어야 합니다") Integer productionPeriodDays,
+        List<@Size(max = 20, message = "색상 코드는 20자 이내여야 합니다") String> colors
     ) implements ProductRequest {}
 
     record Update(
         Long categoryId,
         Long subcategoryId,
-        @NotBlank @Size(max = 200) String title,
+        @NotBlank(message = "상품명은 필수입니다") @Size(max = 200, message = "상품명은 200자 이내여야 합니다") String title,
         String description,
-        @Positive int price,
-        @Min(0) int stock,
-        String thumbnailUrl,
-        List<String> giftThemes,
-        List<String> purposeTags,
-        Integer productionPeriodDays,
-        List<String> colors
+        @Positive(message = "가격은 1 이상이어야 합니다") int price,
+        @Min(value = 0, message = "재고는 0 이상이어야 합니다") int stock,
+        @Size(max = 500, message = "썸네일 URL은 500자 이내여야 합니다") String thumbnailUrl,
+        List<@Size(max = 50, message = "선물 테마는 50자 이내여야 합니다") String> giftThemes,
+        List<@Size(max = 100, message = "용도 태그는 100자 이내여야 합니다") String> purposeTags,
+        @Positive(message = "제작 기간은 1일 이상이어야 합니다") Integer productionPeriodDays,
+        List<@Size(max = 20, message = "색상 코드는 20자 이내여야 합니다") String> colors
     ) implements ProductRequest {}
 
     record ChangeStatus(
-        @NotNull String status
+        @NotNull(message = "상태값은 필수입니다") String status
     ) implements ProductRequest {}
 }
