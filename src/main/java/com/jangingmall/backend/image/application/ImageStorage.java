@@ -8,4 +8,6 @@ public interface ImageStorage {
                       Duration validFor);
     boolean isValid(ImagePurpose purpose, String objectKey, String contentType, long maxContentLength);
     void delete(ImagePurpose purpose, String objectKey);
+
+    void put(ImagePurpose purpose, String objectKey, String contentType, byte[] data);
 }
