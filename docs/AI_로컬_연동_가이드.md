@@ -313,16 +313,25 @@ curl -s -X POST http://localhost:8080/dev/setup | jq .
 curl -s -X POST "http://localhost:8080/api/content/products/1/generations" \
   -H "Authorization: Bearer <ARTISAN_TOKEN>" \
   -H "Content-Type: application/json" \
-  -d '{"images":[],"productName":"청자 다완","howMade":"전통 물레 성형","careTips":"손세척"}' | jq .
+  -d '{"images":["https://cdn.example.com/img1.jpg"],"productName":"청자 다완","howMade":"전통 물레 성형","careTips":"손세척"}' | jq .
+
+# → AI 서버 없으면 status: FAILED (정상) / AI 서버 있으면 PROCESSING 유지 후 콜백 대기
 
 # 4. AI 서버 없이 콜백 직접 호출로 흐름 검증 (GENERATION_ID는 위 결과 사용)
 curl -s -X POST "http://localhost:8080/internal/generations/1/complete" \
   -H "Content-Type: application/json" \
-  -d '{"reactDocument":{"schemaVersion":"2.0","canvasWidth":774,"root":[]}}' | jq .
+  -d '{"reactDocument":{"schemaVersion":"2.0","canvasWidth":774,"root":[{"tag":"h2","props":{},"children":[{"tag":"text","props":{"value":"청자 다완의 이야기"},"children":[]}]}]}}' | jq .
 
-# 5. 상태 확인 → COMPLETED여야 정상
+# → status: COMPLETED
+
+# 5. generation 상태 확인 → COMPLETED여야 정상
 curl -s "http://localhost:8080/api/content/products/1/generations/1" \
   -H "Authorization: Bearer <ARTISAN_TOKEN>" | jq .data.status
+
+# 6. 저장된 reactDocument JSON 확인 (AI가 만든 상세페이지 데이터)
+curl -s "http://localhost:8080/api/content/products/1/contents" \
+  -H "Authorization: Bearer <ARTISAN_TOKEN>" | jq .data.reactDocument
+
 ```
 
 > Step 3과 4 사이에 실제 AI 서버가 `/ai/products`를 받아서 콜백을 보내면, Step 4의 수동 콜백 없이도 자동으로 COMPLETED가 됩니다.
