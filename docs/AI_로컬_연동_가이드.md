@@ -487,9 +487,6 @@ AI 서버 없이 백엔드 단독으로 전체 흐름을 검증합니다.
 ```bash
 BACKEND_AUTH_TOKEN="your-shared-secret-here"
 
-# 0. 콜백에서 사용할 더미 이미지 생성 (1×1 흰색 JPEG)
-printf '\xff\xd8\xff\xe0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\xff\xdb\x00C\x00\x08\x06\x06\x07\x06\x05\x08\x07\x07\x07\t\t\x08\n\x0c\x14\r\x0c\x0b\x0b\x0c\x19\x12\x13\x0f\x14\x1d\x1a\x1f\x1e\x1d\x1a\x1c\x1c $.\' ",#\x1c\x1c(7),01444\x1f'"'"'9=82<.342\x87\xff\xc0\x00\x0b\x08\x00\x01\x00\x01\x01\x01\x11\x00\xff\xc4\x00\x1f\x00\x00\x01\x05\x01\x01\x01\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\xff\xda\x00\x08\x01\x01\x00\x00?\x00\xf5\x0f\xff\xd9' > /tmp/test.jpg
-
 # 1. 서버 실행 확인
 curl -s http://localhost:8080/healthz | jq .
 
@@ -513,7 +510,6 @@ curl -s -X POST "http://localhost:8080/internal/generations/complete/multipart" 
   -H "Authorization: Bearer ${BACKEND_AUTH_TOKEN}" \
   -H "Idempotency-Key: ${GENERATION_ID}" \
   -F "metadata={\"generationId\":\"${GENERATION_ID}\",\"jobId\":\"job-001\",\"requestId\":\"req-001\",\"idempotencyKey\":\"${GENERATION_ID}\",\"productId\":\"${PRODUCT_ID}\",\"detailPage\":{\"reactDocument\":{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}}}" \
-  -F "detail_page_image=@/tmp/test.jpg;type=image/jpeg" \
   | jq .
 # → data.status: "SAVED"
 

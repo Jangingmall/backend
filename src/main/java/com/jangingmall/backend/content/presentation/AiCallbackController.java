@@ -35,7 +35,7 @@ public class AiCallbackController {
         @PathVariable Long generationId,
         @RequestHeader("Idempotency-Key") String idempotencyKey,
         @RequestPart("metadata") String metadataJson,
-        @RequestPart("detail_page_image") MultipartFile detailPageImage,
+        @RequestPart(value = "detail_page_image", required = false) MultipartFile detailPageImage,
         HttpServletRequest rawRequest
     ) throws Exception {
         JsonNode metadata = objectMapper.readTree(metadataJson);

@@ -114,6 +114,9 @@ public class GenerationService {
     }
 
     private void uploadDetailPageImage(String generationId, MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return;
+        }
         try {
             String key = "ai-generated/" + generationId + "/detail-page." + extension(file.getContentType());
             imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
