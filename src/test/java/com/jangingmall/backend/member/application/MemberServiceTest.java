@@ -66,6 +66,9 @@ class MemberServiceTest {
         assertThat(savedMember.isMarketingAgreed()).isTrue();
         assertThat(result.memberId()).isEqualTo(1L);
         assertThat(result.email()).isEqualTo(command.email());
+        assertThat(result.name()).isEqualTo(command.name());
+        assertThat(result.role()).isEqualTo(MemberRole.USER);
+        assertThat(result.status().name()).isEqualTo("PENDING_VERIFICATION");
         verify(eventPublisher).publishEvent(any(MemberRegisteredEvent.class));
     }
 

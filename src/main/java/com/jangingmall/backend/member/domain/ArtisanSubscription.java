@@ -9,10 +9,12 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "artisan_subscription", uniqueConstraints = @UniqueConstraint(columnNames = {"member_id", "artisan_id"}))
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArtisanSubscription {
 
@@ -32,4 +34,17 @@ public class ArtisanSubscription {
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
+
+    public static ArtisanSubscription create(Long memberId, Long artisanId) {
+        ArtisanSubscription subscription = new ArtisanSubscription();
+        subscription.memberId = memberId;
+        subscription.artisanId = artisanId;
+        subscription.notificationsEnabled = true;
+        subscription.createdAt = LocalDateTime.now();
+        return subscription;
+    }
+
+    public void changeNotifications(boolean enabled) {
+        notificationsEnabled = enabled;
+    }
 }

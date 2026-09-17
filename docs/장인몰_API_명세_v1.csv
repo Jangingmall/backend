@@ -1,5 +1,5 @@
 ﻿도메인,담당자,메소드,엔드포인트,기능명,설명,인증,상태,우선순위,요청(Request),응답(Response),대표에러(Error)
-회원,유창민,POST,/api/member/signup,이메일 회원가입,"이메일/비밀번호/비밀번호확인/이름/전화번호와 약관 동의(만14세이상·이용약관·개인정보수집 필수, 마케팅수신 선택)를 받아 USER 계정을 생성한다. ARTISAN은 장인 가입 신청 후 ADMIN 승인으로만 전환된다(PHASE2-2 §4-11). 가입 직후 인증 이메일이 자동 발송되며, 인증 전까지는 로그인이 제한된다",Public,예정,P0,"{
+회원,유창민,POST,/api/member/signup,이메일 회원가입,"이메일/비밀번호/비밀번호확인/이름/전화번호와 약관 동의(만14세이상·이용약관·개인정보수집 필수, 마케팅수신 선택)를 받아 USER 계정을 생성한다. ARTISAN은 장인 가입 신청 후 ADMIN 승인으로만 전환된다(PHASE2-2 §4-11). 가입 직후 인증 이메일이 자동 발송되며, 인증 전까지는 로그인이 제한된다. 성공 응답은 로그인과 동일한 accessToken/member 구조를 사용하되 인증 전이므로 accessToken은 null이며 Refresh Token 쿠키를 발급하지 않는다",Public,예정,P0,"{
   ""method"": ""POST"",
   ""url"": ""/api/member/signup"",
   ""headers"": {
@@ -23,9 +23,15 @@
   ""success"": true,
   ""status"": 201,
   ""data"": {
-    ""memberId"": ""number — 회원 고유 ID"",
-    ""email"": ""string — 이메일 주소"",
-    ""status"": ""string (enum: `PENDING_VERIFICATION`(이메일 인증 대기 — 로그인 불가) | `ACTIVE`(활성) | `WITHDRAWN`(탈퇴))""
+    ""accessToken"": null,
+    ""member"": {
+      ""memberId"": ""number — 회원 고유 ID"",
+      ""email"": ""string — 이메일 주소"",
+      ""name"": ""string — 사용자 이름"",
+      ""nickname"": ""string | null — 닉네임"",
+      ""role"": ""string (enum: `USER`)"",
+      ""profileImageUrl"": ""string | null — 프로필 이미지 URL""
+    }
   }
 }","{
   ""success"": false,
