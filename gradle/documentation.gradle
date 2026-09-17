@@ -700,6 +700,52 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
             .sort { it == '인프라' ? 1 : 0 }
             .collect { [name: it] }
 
+        // ── 8. x-tagGroups 자동 추론 ────────────────────────────────────────────
+        // 태그명 키워드 규칙으로 그룹을 추론한다. 별도 설정 파일·어노테이션 없음.
+        // 새 태그 추가 시 키워드 규칙에 자동으로 매핑되며, 규칙에 맞지 않으면 '기타'에 포함된다.
+        def tagGroupRules = [
+            // [order, groupName, matchKeywords(태그에 포함되면 이 그룹으로 분류)]
+            [1,  '회원/장인', ['회원', '장인', '소셜', '판매자', '로그인', '구독']],
+            [2,  '주문/결제', ['결제', '장바구니', '주문', '배송', '반품', '교환', '환불']],
+            [3,  '상품',     ['상품', '카테고리', '문의', '후기', '리뷰', '찜', '재료']],
+            [4,  '콘텐츠',   ['콘텐츠', '생성', '콜백', '인터뷰', '블록']],
+            [5,  '챗봇',     ['챗봇', '채팅']],
+            [6,  '미디어',   ['이미지', '미디어', '파일']],
+            [7,  '알림',     ['알림', '노티']],
+            [8,  '관리자',   ['관리자', 'admin', 'Admin']],
+            [90, 'Dev (로컬 전용)', ['Dev', '로컬']],
+            [99, '인프라',   ['인프라', 'actuator', 'Actuator', 'healthz']]
+        ]
+
+        def resolveGroup = { String tag ->
+            for (rule in tagGroupRules) {
+                def keywords = rule[2] as List
+                if (keywords.any { kw -> tag.contains(kw) }) {
+                    return [order: rule[0] as int, name: rule[1] as String]
+                }
+            }
+            return [order: 89, name: '기타']
+        }
+
+        def tagGroupsMap = [:]  // groupName → [order: int, tags: List]
+        allTags.each { tag ->
+            def resolved = resolveGroup(tag)
+            def groupName = resolved.name
+            if (!tagGroupsMap.containsKey(groupName)) {
+                tagGroupsMap[groupName] = [order: resolved.order, tags: []]
+            }
+            tagGroupsMap[groupName].tags << tag
+        }
+
+        def tagGroupsList = tagGroupsMap
+            .sort { a, b -> a.value.order <=> b.value.order }
+            .collect { groupName, meta ->
+                [name: groupName, tags: meta.tags.sort { a, b -> collator.compare(a, b) }]
+            }
+        if (tagGroupsList) {
+            json['x-tagGroups'] = tagGroupsList
+        }
+
         def outputDir = file('api-spec')
         outputDir.mkdirs()
         outputFile.text = groovy.json.JsonOutput.prettyPrint(
