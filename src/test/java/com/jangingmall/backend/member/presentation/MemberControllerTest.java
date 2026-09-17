@@ -227,7 +227,8 @@ class MemberControllerTest {
     @DisplayName("인증된 사용자는 내 정보를 조회한다")
     void getMe() throws Exception {
         when(memberAuthenticationService.getProfile(1L)).thenReturn(
-            new MemberProfile(1L, "artisan@example.com", "김도공", MemberRole.USER)
+            new MemberProfile(1L, "artisan@example.com", "김도공", MemberRole.USER,
+                null, null, "naver")
         );
         mockMvc.perform(get("/api/member/me")
                 .with(authentication(new UsernamePasswordAuthenticationToken(
@@ -238,7 +239,8 @@ class MemberControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.memberId").value(1))
             .andExpect(jsonPath("$.data.email").value("artisan@example.com"))
-            .andExpect(jsonPath("$.data.role").value("USER"));
+            .andExpect(jsonPath("$.data.role").value("USER"))
+            .andExpect(jsonPath("$.data.provider").value("naver"));
     }
 
     @Test

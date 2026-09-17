@@ -6,6 +6,7 @@ import com.jangingmall.backend.global.security.JwtProperties;
 import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberRepository;
+import com.jangingmall.backend.member.domain.MemberSocialAccountRepository;
 import java.time.Duration;
 import java.util.Locale;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class MemberAuthenticationService {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtProperties jwtProperties;
     private final RefreshTokenStore refreshTokenStore;
+    private final MemberSocialAccountRepository socialAccounts;
 
     @Transactional(readOnly = true)
     public MemberSession login(String email, String password) {
@@ -72,7 +74,7 @@ public class MemberAuthenticationService {
         if (!member.canLogIn()) {
             throw new DomainException(ErrorCode.UNAUTHORIZED);
         }
-        return MemberProfile.from(member);
+        return MemberProfile.from(member, providerOf(member.getId()));
     }
 
     private MemberSession issueSession(Member member) {
@@ -97,8 +99,14 @@ public class MemberAuthenticationService {
             member.getId(),
             member.getEmail(),
             member.getName(),
-            member.getRole(), member.getNickname(), member.getProfileImageUrl()
+            member.getRole(), member.getNickname(), member.getProfileImageUrl(), providerOf(member.getId())
         );
+    }
+
+    private String providerOf(Long memberId) {
+        return socialAccounts.findFirstByMemberIdOrderByIdAsc(memberId)
+            .map(account -> account.getRegistrationId())
+            .orElse(null);
     }
 
     private String normalizeEmail(String email) {

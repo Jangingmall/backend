@@ -11,10 +11,20 @@ public record MemberSignupResult(
     String nickname,
     MemberRole role,
     String profileImageUrl,
-    MemberStatus status
+    MemberStatus status,
+    String provider
 ) {
 
+    public MemberSignupResult(Long memberId, String email, String name, String nickname,
+                              MemberRole role, String profileImageUrl, MemberStatus status) {
+        this(memberId, email, name, nickname, role, profileImageUrl, status, null);
+    }
+
     public static MemberSignupResult from(Member member) {
+        return from(member, null);
+    }
+
+    public static MemberSignupResult from(Member member, String provider) {
         return new MemberSignupResult(
             member.getId(),
             member.getEmail(),
@@ -22,7 +32,8 @@ public record MemberSignupResult(
             member.getNickname(),
             member.getRole(),
             member.getProfileImageUrl(),
-            member.getStatus()
+            member.getStatus(),
+            provider
         );
     }
 }

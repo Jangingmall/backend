@@ -56,6 +56,7 @@ class OAuthMemberServiceTest {
         assertThat(result.memberId()).isEqualTo(7L);
         assertThat(result.email()).isEqualTo("social@example.com");
         assertThat(result.status().name()).isEqualTo("ACTIVE");
+        assertThat(result.provider()).isEqualTo("kakao");
         ArgumentCaptor<MemberSocialAccount> account = ArgumentCaptor.forClass(MemberSocialAccount.class);
         verify(accounts).save(account.capture());
         assertThat(account.getValue().getMemberId()).isEqualTo(7L);

@@ -30,7 +30,8 @@
       ""name"": ""string — 사용자 이름"",
       ""nickname"": ""string | null — 닉네임"",
       ""role"": ""string (enum: `USER`)"",
-      ""profileImageUrl"": ""string | null — 프로필 이미지 URL""
+      ""profileImageUrl"": ""string | null — 프로필 이미지 URL"",
+      ""provider"": ""string | null — 가입 provider (`kakao` | `naver`), 이메일 가입은 null""
     }
   }
 }","{
@@ -123,7 +124,8 @@
       ""name"": ""string — 이름/명칭"",
       ""nickname"": ""string — 닉네임"",
       ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) — 회원 역할"",
-      ""profileImageUrl"": ""string — 프로필 이미지 URL""
+      ""profileImageUrl"": ""string — 프로필 이미지 URL"",
+      ""provider"": ""string | null — 가입 provider (`kakao` | `naver`), 이메일 가입은 null""
     }
   }
 }","{
@@ -177,7 +179,8 @@
     ""name"": ""string — 이름/명칭"",
     ""nickname"": ""string — 닉네임"",
     ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) — 회원 역할"",
-    ""profileImageUrl"": ""string — 프로필 이미지 URL""
+    ""profileImageUrl"": ""string — 프로필 이미지 URL"",
+    ""provider"": ""string | null — 가입 provider (`kakao` | `naver`), 이메일 가입은 null""
   }
 }",
 회원,유창민,PATCH,/api/member/me,내 정보 수정,회원 기본 정보를 수정한다,Authenticated,예정,P1,"{
@@ -201,7 +204,8 @@
     ""name"": ""string — 이름/명칭"",
     ""nickname"": ""string — 닉네임"",
     ""role"": ""string (enum: `USER`(소비자) | `ARTISAN`(장인(판매자)) | `ADMIN`(관리자)) — 회원 역할"",
-    ""profileImageUrl"": ""string — 프로필 이미지 URL""
+    ""profileImageUrl"": ""string — 프로필 이미지 URL"",
+    ""provider"": ""string | null — 가입 provider (`kakao` | `naver`), 이메일 가입은 null""
   }
 }",
 회원,유창민,PATCH,/api/member/me/password,비밀번호 변경,현재 비밀번호를 변경한다,Authenticated,예정,P1,"{

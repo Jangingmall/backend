@@ -2,6 +2,7 @@ package com.jangingmall.backend.member.application;
 
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
+import com.jangingmall.backend.member.domain.MemberSocialAccountRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,12 +15,16 @@ public class MemberAccountService {
     private final MemberAccess access;
     private final PasswordEncoder passwords;
     private final RefreshTokenStore refreshTokens;
+    private final MemberSocialAccountRepository socialAccounts;
 
     @Transactional
     public MemberProfile update(Long memberId, Optional<String> name, Optional<String> nickname, Optional<String> phone) {
         var member = access.lock(memberId);
         member.updateProfile(name, nickname, phone);
-        return MemberProfile.from(member);
+        String provider = socialAccounts.findFirstByMemberIdOrderByIdAsc(member.getId())
+            .map(account -> account.getRegistrationId())
+            .orElse(null);
+        return MemberProfile.from(member, provider);
     }
 
     @Transactional
