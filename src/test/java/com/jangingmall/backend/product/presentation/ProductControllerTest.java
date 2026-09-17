@@ -24,6 +24,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.epages.restdocs.apispec.SimpleType;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -33,7 +36,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
@@ -200,7 +202,7 @@ class ProductControllerTest extends RestDocsControllerTest {
                     .tag("상품")
                     .summary("상품 상세")
                     .description("상품 ID로 단건 조회합니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(SINGLE_PRODUCT_FIELDS))
                     .build()
                 )
@@ -223,7 +225,7 @@ class ProductControllerTest extends RestDocsControllerTest {
                     .tag("상품")
                     .summary("상품 수정")
                     .description("장인이 본인 상품의 정보를 수정합니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("categoryId").type(JsonFieldType.NUMBER).optional().description("카테고리 ID"),
                         fieldWithPath("subcategoryId").type(JsonFieldType.NUMBER).optional().description("서브카테고리 ID"),
@@ -259,7 +261,7 @@ class ProductControllerTest extends RestDocsControllerTest {
                     .tag("상품")
                     .summary("상품 상태 변경")
                     .description("상품 상태를 변경합니다. 허용 전이: DRAFT→ON_SALE|HIDDEN, ON_SALE→SOLD_OUT|HIDDEN, SOLD_OUT→ON_SALE|HIDDEN, HIDDEN→ON_SALE|DRAFT")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("status").type(JsonFieldType.STRING).description("변경할 상태 (ON_SALE/SOLD_OUT/HIDDEN/DRAFT)")
                     )
@@ -285,7 +287,7 @@ class ProductControllerTest extends RestDocsControllerTest {
                     .tag("상품")
                     .summary("상품 삭제")
                     .description("장인이 본인 상품을 삭제합니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
                     ))
@@ -324,7 +326,7 @@ class ProductControllerTest extends RestDocsControllerTest {
                     .tag("찜")
                     .summary("찜 등록")
                     .description("유저가 상품을 찜 목록에 추가합니다. 이미 찜한 상품은 중복 등록되지 않습니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
                     ))
@@ -347,7 +349,7 @@ class ProductControllerTest extends RestDocsControllerTest {
                     .tag("찜")
                     .summary("찜 취소")
                     .description("유저가 상품을 찜 목록에서 제거합니다. 찜하지 않은 상품을 취소해도 에러가 발생하지 않습니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
                     ))

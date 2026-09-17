@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.epages.restdocs.apispec.SimpleType;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -28,7 +31,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ChatController.class)
@@ -113,7 +115,7 @@ class ChatControllerTest extends RestDocsControllerTest {
                     .tag("챗봇")
                     .summary("챗봇 메시지 전송")
                     .description("소비자 메시지를 전송하면 AI가 추천 상품과 답변을 반환합니다.")
-                    .pathParameters(parameterWithName("sessionId").description("세션 ID"))
+                    .pathParameters(parameterWithName("sessionId").description("세션 ID").type(SimpleType.STRING))
                     .requestFields(
                         fieldWithPath("content").type(JsonFieldType.STRING).description("소비자 메시지 (최대 2000자)")
                     )
@@ -169,7 +171,7 @@ class ChatControllerTest extends RestDocsControllerTest {
                     .tag("챗봇")
                     .summary("대화 이력 조회")
                     .description("세션의 전체 메시지 목록을 전송 시간순으로 조회합니다.")
-                    .pathParameters(parameterWithName("sessionId").description("세션 ID"))
+                    .pathParameters(parameterWithName("sessionId").description("세션 ID").type(SimpleType.STRING))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data[].messageId").type(JsonFieldType.NUMBER).description("메시지 ID"),
                         fieldWithPath("data[].sessionId").type(JsonFieldType.STRING).description("세션 ID"),
@@ -196,7 +198,7 @@ class ChatControllerTest extends RestDocsControllerTest {
                     .tag("챗봇")
                     .summary("챗봇 세션 종료")
                     .description("소비자가 대화 세션을 종료합니다. 종료된 세션에는 메시지를 전송할 수 없습니다.")
-                    .pathParameters(parameterWithName("sessionId").description("세션 ID"))
+                    .pathParameters(parameterWithName("sessionId").description("세션 ID").type(SimpleType.STRING))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
                     ))

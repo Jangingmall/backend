@@ -21,6 +21,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.util.List;
 import java.util.Map;
 
+import com.epages.restdocs.apispec.SimpleType;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -62,6 +65,7 @@ class MemberActivityControllerTest extends RestDocsControllerTest {
                     .tag("장인 구독")
                     .summary("장인 구독")
                     .description("장인을 구독합니다. 이미 구독 중이면 무시합니다.")
+                    .pathParameters(parameterWithName("artisanId").description("장인 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("반환값 없음")
                     ))
@@ -109,6 +113,7 @@ class MemberActivityControllerTest extends RestDocsControllerTest {
                     .tag("장인 구독")
                     .summary("장인 구독 취소")
                     .description("장인 구독을 취소합니다. 구독하지 않은 경우에도 200을 반환합니다.")
+                    .pathParameters(parameterWithName("artisanId").description("장인 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("반환값 없음")
                     ))

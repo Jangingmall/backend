@@ -27,6 +27,9 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.epages.restdocs.apispec.SimpleType;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -36,7 +39,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -112,7 +114,7 @@ class NotificationControllerTest extends RestDocsControllerTest {
                     .tag(TAG)
                     .summary("알림 단건 조회")
                     .description("특정 알림의 상세 내용을 조회합니다.")
-                    .pathParameters(parameterWithName("notificationId").description("알림 ID"))
+                    .pathParameters(parameterWithName("notificationId").description("알림 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("알림 ID"),
                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("알림 제목"),
@@ -172,7 +174,7 @@ class NotificationControllerTest extends RestDocsControllerTest {
                     .tag(TAG)
                     .summary("알림 읽음 처리")
                     .description("알림을 읽음 상태로 변경합니다.")
-                    .pathParameters(parameterWithName("notificationId").description("알림 ID"))
+                    .pathParameters(parameterWithName("notificationId").description("알림 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
                     ))
@@ -275,7 +277,7 @@ class NotificationControllerTest extends RestDocsControllerTest {
                     .tag(TAG)
                     .summary("알림 삭제")
                     .description("알림을 삭제 상태로 변경합니다.")
-                    .pathParameters(parameterWithName("notificationId").description("알림 ID"))
+                    .pathParameters(parameterWithName("notificationId").description("알림 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")
                     ))

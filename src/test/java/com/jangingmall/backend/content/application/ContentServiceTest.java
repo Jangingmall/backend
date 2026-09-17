@@ -1,10 +1,7 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
-import com.jangingmall.backend.content.domain.BlockTag;
 import com.jangingmall.backend.content.domain.Content;
-import com.jangingmall.backend.content.domain.ContentBlock;
-import com.jangingmall.backend.content.domain.ContentBlockRepository;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentRepository;
@@ -44,8 +41,6 @@ class ContentServiceTest {
     @Mock
     private ContentRepository contentRepository;
     @Mock
-    private ContentBlockRepository contentBlockRepository;
-    @Mock
     private ContentEditHistoryRepository historyRepository;
     @Mock
     private ProductRepository productRepository;
@@ -65,9 +60,12 @@ class ContentServiceTest {
     private Product artisanProduct;
     private Content sampleContent;
 
+    private static final String REACT_DOCUMENT_JSON =
+        "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}";
+
     @BeforeEach
     void setUp() {
-        contentService = new ContentService(contentRepository, contentBlockRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository, interviewRepository);
+        contentService = new ContentService(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository, interviewRepository);
         artisanProduct = Product.create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
         ReflectionTestUtils.setField(artisanProduct, "id", 10L);
         sampleContent = Content.create(10L);
@@ -110,80 +108,33 @@ class ContentServiceTest {
     }
 
     @Test
-    @DisplayName("문단 일괄 수정 — 블록 목록을 교체하고 ARTISAN 이력을 기록한다")
-    void bulkUpdateBlocks() {
-        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
-        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+    @DisplayName("react_document 저장 — 신규 콘텐츠 생성 후 blob을 저장하고 AI 이력을 기록한다")
+    void storeReactDocumentNew() {
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.empty());
         when(contentRepository.save(any())).thenReturn(sampleContent);
         when(historyRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-        List<ContentCommand.BlockInput> blocks = List.of(
-            new ContentCommand.BlockInput(1, BlockTag.h2, "소제목", null, null),
-            new ContentCommand.BlockInput(2, BlockTag.p, "본문", null, null)
-        );
-        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(10L, 1L, 1L, blocks);
-        ContentResponse.Detail result = contentService.bulkUpdateBlocks(command);
+        ContentCommand.StoreReactDocument command = new ContentCommand.StoreReactDocument(10L, REACT_DOCUMENT_JSON, null);
+        Content result = contentService.storeReactDocument(command);
 
-        assertThat(result.contentId()).isEqualTo(1L);
+        assertThat(result.getProductId()).isEqualTo(10L);
         verify(historyRepository).save(historyCaptor.capture());
-        assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.ARTISAN);
-        assertThat(historyCaptor.getValue().getEditedByMemberId()).isEqualTo(1L);
+        assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.AI);
     }
 
     @Test
-    @DisplayName("문단 일괄 수정 — 소유자가 아니면 ForbiddenException이 발생한다")
-    void bulkUpdateForbidden() {
-        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
-
-        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(10L, 1L, 999L, List.of());
-
-        assertThatThrownBy(() -> contentService.bulkUpdateBlocks(command))
-            .isInstanceOf(ForbiddenException.class);
-    }
-
-    @Test
-    @DisplayName("문단 일괄 수정 — 콘텐츠가 없으면 NotFoundException이 발생한다")
-    void bulkUpdateNotFound() {
-        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
-        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.empty());
-
-        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(10L, 1L, 1L, List.of());
-
-        assertThatThrownBy(() -> contentService.bulkUpdateBlocks(command))
-            .isInstanceOf(NotFoundException.class);
-    }
-
-    @Test
-    @DisplayName("단건 블록 수정 — 블록을 수정하고 version을 증가시키며 이력을 기록한다")
-    void updateBlock() {
-        ContentBlock block = ContentBlock.create(sampleContent, (short) 1, BlockTag.p, null, null, "원래 텍스트");
-        ReflectionTestUtils.setField(block, "id", 100L);
-        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
-        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
-        when(contentBlockRepository.findByContentIdAndDisplayOrder(1L, (short) 1)).thenReturn(Optional.of(block));
+    @DisplayName("react_document 저장 — 기존 콘텐츠가 있으면 덮어쓴다")
+    void storeReactDocumentUpdate() {
+        sampleContent.storeReactDocument("{\"schemaVersion\":\"1.0\"}");
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
         when(contentRepository.save(any())).thenReturn(sampleContent);
         when(historyRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(10L, 1L, 1, 1L, BlockTag.p, "새 텍스트", null);
-        ContentResponse.BlockEdit result = contentService.updateBlock(command);
+        ContentCommand.StoreReactDocument command = new ContentCommand.StoreReactDocument(10L, REACT_DOCUMENT_JSON, null);
+        contentService.storeReactDocument(command);
 
-        assertThat(result.contentId()).isEqualTo(1L);
-        assertThat(result.block().tag()).isEqualTo("p");
-        verify(historyRepository).save(historyCaptor.capture());
-        assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.ARTISAN);
-    }
-
-    @Test
-    @DisplayName("단건 블록 수정 — 블록이 없으면 NotFoundException이 발생한다")
-    void updateBlockNotFound() {
-        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
-        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
-        when(contentBlockRepository.findByContentIdAndDisplayOrder(1L, (short) 1)).thenReturn(Optional.empty());
-
-        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(10L, 1L, 1, 1L, null, "텍스트", null);
-
-        assertThatThrownBy(() -> contentService.updateBlock(command))
-            .isInstanceOf(NotFoundException.class);
+        verify(contentRepository).save(contentCaptor.capture());
+        assertThat(contentCaptor.getValue().getReactDocument()).isEqualTo(REACT_DOCUMENT_JSON);
     }
 
     @Test
@@ -192,31 +143,13 @@ class ContentServiceTest {
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
         ContentEditHistory h1 = ContentEditHistory.record(1L, 1, EditedByType.AI, null);
-        ContentEditHistory h2 = ContentEditHistory.record(1L, 2, EditedByType.ARTISAN, 1L);
+        ContentEditHistory h2 = ContentEditHistory.record(1L, 2, EditedByType.AI, null);
         when(historyRepository.findAllByContentIdOrderByVersionAsc(1L)).thenReturn(List.of(h1, h2));
 
         List<ContentResponse.VersionHistory> history = contentService.getVersionHistory(10L, 1L);
 
         assertThat(history).hasSize(2);
         assertThat(history.get(0).editedBy()).isEqualTo(EditedByType.AI);
-        assertThat(history.get(1).editedBy()).isEqualTo(EditedByType.ARTISAN);
-    }
-
-    @Test
-    @DisplayName("AI 정규화 — 블록 목록으로 Content를 생성하고 AI 이력을 기록한다")
-    void materializeFromBlocks() {
-        when(contentRepository.findByProductId(10L)).thenReturn(Optional.empty());
-        when(contentRepository.save(any())).thenReturn(sampleContent);
-        when(historyRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
-
-        List<ContentCommand.BlockInput> blocks = List.of(
-            new ContentCommand.BlockInput(1, BlockTag.h2, "소제목", null, null)
-        );
-        Content result = contentService.materializeFromBlocks(10L, blocks, 1L);
-
-        assertThat(result.getProductId()).isEqualTo(10L);
-        verify(historyRepository).save(historyCaptor.capture());
-        assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.AI);
     }
 
     @Test
@@ -295,7 +228,7 @@ class ContentServiceTest {
         when(artisanProfile.getId()).thenReturn(1L);
         when(artisanProfile.getBusinessName()).thenReturn("도공방");
         when(artisanProfile.getCertificationLevel()).thenReturn("일반");
-        when(artisanProfile.getRegion()).thenReturn("서울");
+        when(artisanProfile.getIntroduction()).thenReturn("3대째 이천에서 청자를 굽습니다");
 
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));

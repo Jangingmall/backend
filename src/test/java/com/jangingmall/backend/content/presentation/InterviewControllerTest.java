@@ -18,6 +18,9 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import com.epages.restdocs.apispec.SimpleType;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -25,8 +28,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,11 +63,11 @@ class InterviewControllerTest extends RestDocsControllerTest {
             .andExpect(jsonPath("$.data.productId").value(10))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "interview-create",
-                pathParameters(parameterWithName("productId").description("상품 ID")),
                 resource(ResourceSnippetParameters.builder()
                     .tag("콘텐츠")
                     .summary("취재 데이터 등록")
                     .description("AI 상세페이지 생성에 필요한 제작과정·소재·기법·스토리를 등록합니다. 상품당 1건만 허용됩니다.")
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("process").type(JsonFieldType.STRING).description("제작 과정"),
                         fieldWithPath("materials").type(JsonFieldType.STRING).description("소재"),
@@ -116,11 +117,11 @@ class InterviewControllerTest extends RestDocsControllerTest {
             .andExpect(jsonPath("$.data.productId").value(10))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "interview-find",
-                pathParameters(parameterWithName("productId").description("상품 ID")),
                 resource(ResourceSnippetParameters.builder()
                     .tag("콘텐츠")
                     .summary("취재 데이터 조회")
                     .description("등록된 취재 데이터를 조회합니다.")
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(INTERVIEW_FIELDS))
                     .build()
                 )
@@ -152,11 +153,11 @@ class InterviewControllerTest extends RestDocsControllerTest {
             .andExpect(jsonPath("$.data.process").value("새 과정"))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "interview-update",
-                pathParameters(parameterWithName("productId").description("상품 ID")),
                 resource(ResourceSnippetParameters.builder()
                     .tag("콘텐츠")
                     .summary("취재 데이터 수정")
                     .description("취재 데이터를 부분 수정합니다. 전달하지 않은 필드는 기존 값을 유지합니다.")
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("process").type(JsonFieldType.STRING).optional().description("제작 과정 (선택)"),
                         fieldWithPath("materials").type(JsonFieldType.STRING).optional().description("소재 (선택)"),
