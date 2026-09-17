@@ -52,11 +52,11 @@ public class OAuthController {
         var session=authentication.socialSession(result.memberId());
         return ResponseEntity.status(201).header(HttpHeaders.SET_COOKIE,MemberCookies.onboarding("",Duration.ZERO,jwt).toString())
             .header(HttpHeaders.SET_COOKIE,MemberCookies.refresh(session.refreshToken(),jwt).toString())
-            .body(new CompletionResponse(result.memberId(),result.email(),MemberRole.USER,session.accessToken()));
+            .body(new CompletionResponse(result.memberId(),result.email(),MemberRole.USER,session.accessToken(),session.provider()));
     }
 
     public record ExchangeResponse(boolean onboardingRequired,String accessToken) {}
-    public record CompletionResponse(Long memberId,String email,MemberRole role,String accessToken) {}
+    public record CompletionResponse(Long memberId,String email,MemberRole role,String accessToken,String provider) {}
     public record CompleteProfile(@NotBlank @Size(max=50) String name,@NotBlank @Pattern(regexp="\\d{9,20}") String phone,
                                   @NotNull @Valid MemberSignupRequest.Agreements agreements) {
         public OAuthMemberService.Completion toCommand() {
