@@ -13,7 +13,7 @@ public sealed interface GenerationRequest permits GenerationRequest.Create {
         List<@NotBlank String> images,
 
         @NotBlank(message = "상품명은 필수입니다")
-        @Size(max = 255)
+        @Size(max = 255, message = "상품명은 255자 이내여야 합니다")
         String productName,
 
         @NotBlank(message = "제작 과정은 필수입니다")

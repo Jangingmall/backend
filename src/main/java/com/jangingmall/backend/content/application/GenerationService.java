@@ -1,7 +1,6 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
-import com.jangingmall.backend.content.domain.BlockTag;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
@@ -15,11 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -51,6 +46,19 @@ public class GenerationService {
         return GenerationResponse.from(saved);
     }
 
+    @Transactional
+    public GenerationResponse complete(GenerationCommand.Complete command) {
+        ContentGeneration generation = generationRepository.findById(command.generationId())
+            .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
+        generation.complete(command.reactDocumentJson());
+        ContentGeneration saved = generationRepository.save(generation);
+        contentService.storeReactDocument(
+            new ContentCommand.StoreReactDocument(saved.getProductId(), command.reactDocumentJson(), null)
+        );
+        log.info("AI 콜백 완료 generationId={}", command.generationId());
+        return GenerationResponse.from(saved);
+    }
+
     @Transactional(readOnly = true)
     public GenerationResponse poll(Long productId, Long generationId, Long requesterId) {
         Product product = getProduct(productId);
@@ -66,7 +74,7 @@ public class GenerationService {
         ContentGeneration generation = generationRepository.findByIdAndProductId(generationId, command.productId())
             .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
         try {
-            String generatedBlocks = aiContentClient.requestGeneration(
+            String reactDocumentJson = aiContentClient.requestGeneration(
                 generationId,
                 command.productId(),
                 command.images(),
@@ -74,9 +82,11 @@ public class GenerationService {
                 command.howMade(),
                 command.careTips()
             );
-            generation.complete(generatedBlocks);
+            generation.complete(reactDocumentJson);
             generationRepository.save(generation);
-            materializeContent(command.productId(), generatedBlocks, command.requesterId());
+            contentService.storeReactDocument(
+                new ContentCommand.StoreReactDocument(command.productId(), reactDocumentJson, command.requesterId())
+            );
             log.info("AI 콘텐츠 생성 완료 generationId={}", generationId);
         } catch (Exception exception) {
             generation.fail();
@@ -93,26 +103,6 @@ public class GenerationService {
     private void verifyOwner(Product product, Long requesterId) {
         if (!product.getArtisanId().equals(requesterId)) {
             throw new ForbiddenException(GenerationErrorMessage.FORBIDDEN.message());
-        }
-    }
-
-    private void materializeContent(Long productId, String generatedBlocksJson, Long requesterId) {
-        try {
-            JsonNode array = objectMapper.readTree(generatedBlocksJson);
-            List<ContentCommand.BlockInput> blockInputs = new ArrayList<>();
-            for (JsonNode node : array) {
-                BlockTag tag = BlockTag.valueOf(node.path("tag").asText("p"));
-                blockInputs.add(new ContentCommand.BlockInput(
-                    node.path("order").asInt(),
-                    tag,
-                    node.path("text").asText(null),
-                    node.path("imageUrl").asText(null),
-                    node.path("videoUrl").asText(null)
-                ));
-            }
-            contentService.materializeFromBlocks(productId, blockInputs, requesterId);
-        } catch (Exception exception) {
-            log.error("콘텐츠 정규화 실패 productId={} reason={}", productId, exception.getMessage());
         }
     }
 }

@@ -21,6 +21,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.epages.restdocs.apispec.SimpleType;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -28,8 +31,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -72,11 +73,11 @@ class GenerationControllerTest extends RestDocsControllerTest {
             .andExpect(jsonPath("$.data.completedAt").doesNotExist())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "generation-request",
-                pathParameters(parameterWithName("productId").description("상품 ID")),
                 resource(ResourceSnippetParameters.builder()
                     .tag("AI 콘텐츠 생성")
                     .summary("AI 상세페이지 생성 요청")
                     .description("상품 이미지·정보를 AI에 전송하여 상세페이지 콘텐츠 생성을 요청합니다. 즉시 202를 반환하고 생성은 비동기로 처리됩니다.")
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("images").type(JsonFieldType.ARRAY).description("S3 이미지 ID 목록"),
                         fieldWithPath("productName").type(JsonFieldType.STRING).description("상품명"),
@@ -113,14 +114,14 @@ class GenerationControllerTest extends RestDocsControllerTest {
             .andExpect(jsonPath("$.data.status").value("PROCESSING"))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "generation-poll-processing",
-                pathParameters(
-                    parameterWithName("productId").description("상품 ID"),
-                    parameterWithName("generationId").description("생성 요청 ID")
-                ),
                 resource(ResourceSnippetParameters.builder()
                     .tag("AI 콘텐츠 생성")
                     .summary("AI 생성 상태 조회 (PROCESSING)")
                     .description("FE가 폴링으로 생성 진행 상태를 확인합니다. PROCESSING이면 계속 폴링, COMPLETED/FAILED면 종료합니다.")
+                    .pathParameters(
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("generationId").description("생성 요청 ID").type(SimpleType.INTEGER)
+                    )
                     .responseFields(successEnvelopeFields(GENERATION_FIELDS))
                     .build()
                 )
@@ -139,14 +140,14 @@ class GenerationControllerTest extends RestDocsControllerTest {
             .andExpect(jsonPath("$.data.completedAt").exists())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "generation-poll-completed",
-                pathParameters(
-                    parameterWithName("productId").description("상품 ID"),
-                    parameterWithName("generationId").description("생성 요청 ID")
-                ),
                 resource(ResourceSnippetParameters.builder()
                     .tag("AI 콘텐츠 생성")
                     .summary("AI 생성 상태 조회 (COMPLETED)")
                     .description("생성이 완료된 경우 COMPLETED와 completedAt을 반환합니다.")
+                    .pathParameters(
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("generationId").description("생성 요청 ID").type(SimpleType.INTEGER)
+                    )
                     .responseFields(successEnvelopeFields(GENERATION_FIELDS))
                     .build()
                 )

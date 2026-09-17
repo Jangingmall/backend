@@ -31,6 +31,10 @@ public class JwtTokenProvider {
         return createToken(memberId, role, "REFRESH", properties.refreshTokenExpiry());
     }
 
+    public String createAccessToken(Long memberId, MemberRole role, long expiryMillis) {
+        return createToken(memberId, role, "ACCESS", expiryMillis);
+    }
+
     public JwtMemberClaims parseAccessToken(String token) {
         Claims claims = parse(token);
         if (!"ACCESS".equals(claims.get(TOKEN_TYPE_CLAIM, String.class))) {

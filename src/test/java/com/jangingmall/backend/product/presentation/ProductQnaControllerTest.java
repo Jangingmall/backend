@@ -23,6 +23,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.epages.restdocs.apispec.SimpleType;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -30,7 +33,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
@@ -68,7 +70,7 @@ class ProductQnaControllerTest extends RestDocsControllerTest {
                     .tag("상품 문의")
                     .summary("상품 문의 목록")
                     .description("상품의 문의 목록을 페이징으로 조회합니다. 비공개 문의는 마스킹됩니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.content[].questionId").type(JsonFieldType.NUMBER).description("문의 ID"),
                         fieldWithPath("data.content[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
@@ -111,7 +113,7 @@ class ProductQnaControllerTest extends RestDocsControllerTest {
                     .tag("상품 문의")
                     .summary("상품 문의 등록")
                     .description("소비자가 상품에 문의를 등록합니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("content").type(JsonFieldType.STRING).description("문의 내용 (최대 1000자)"),
                         fieldWithPath("secret").type(JsonFieldType.BOOLEAN).description("비공개 여부")
@@ -147,8 +149,8 @@ class ProductQnaControllerTest extends RestDocsControllerTest {
                     .summary("문의 답변 등록")
                     .description("해당 상품의 장인이 문의에 답변을 등록합니다.")
                     .pathParameters(
-                        parameterWithName("productId").description("상품 ID"),
-                        parameterWithName("questionId").description("문의 ID")
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("questionId").description("문의 ID").type(SimpleType.INTEGER)
                     )
                     .requestFields(
                         fieldWithPath("content").type(JsonFieldType.STRING).description("답변 내용 (최대 2000자)")

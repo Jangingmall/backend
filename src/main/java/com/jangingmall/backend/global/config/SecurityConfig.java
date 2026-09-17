@@ -24,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.ObjectProvider;
 import com.jangingmall.backend.member.infrastructure.MemberOAuthSecurity;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 
 import java.io.IOException;
@@ -32,13 +33,15 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
+    private final Environment environment;
 
-    public SecurityConfig(ObjectMapper objectMapper) {
+    public SecurityConfig(ObjectMapper objectMapper, Environment environment) {
         this.objectMapper = objectMapper;
+        this.environment = environment;
     }
 
     @Bean
@@ -53,12 +56,15 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                .dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
-                .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
-                .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll()
-                .anyRequest().authenticated()
-            )
+            .authorizeHttpRequests(auth -> {
+                auth.dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
+                    .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
+                    .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll();
+                if (isLocalProfile()) {
+                    auth.requestMatchers("/dev/**").permitAll();
+                }
+                auth.anyRequest().authenticated();
+            })
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((request, response, authException) ->
                     writeError(response, HttpServletResponse.SC_UNAUTHORIZED, ErrorCode.UNAUTHORIZED)
@@ -84,6 +90,13 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         return new JwtAuthenticationFilter(jwtTokenProvider);
+    }
+
+    private boolean isLocalProfile() {
+        for (String profile : environment.getActiveProfiles()) {
+            if (profile.startsWith("local")) return true;
+        }
+        return false;
     }
 
     private void writeError(HttpServletResponse response, int status, ErrorCode errorCode) throws IOException {

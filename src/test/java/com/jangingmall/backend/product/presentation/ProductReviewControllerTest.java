@@ -23,6 +23,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.epages.restdocs.apispec.SimpleType;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -30,7 +33,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
@@ -64,7 +66,7 @@ class ProductReviewControllerTest extends RestDocsControllerTest {
                     .tag("상품 후기")
                     .summary("상품 후기 목록")
                     .description("상품의 후기 목록을 페이징으로 조회합니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.content[].reviewId").type(JsonFieldType.NUMBER).description("후기 ID"),
                         fieldWithPath("data.content[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
@@ -107,7 +109,7 @@ class ProductReviewControllerTest extends RestDocsControllerTest {
                     .tag("상품 후기")
                     .summary("상품 후기 등록")
                     .description("소비자가 구매한 상품에 후기를 등록합니다. 동일 주문 항목에 중복 등록 불가합니다.")
-                    .pathParameters(parameterWithName("productId").description("상품 ID"))
+                    .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("orderItemId").type(JsonFieldType.NUMBER).description("주문 항목 ID"),
                         fieldWithPath("rating").type(JsonFieldType.NUMBER).description("평점 (1~5)"),

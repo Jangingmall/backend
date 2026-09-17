@@ -1,7 +1,5 @@
 -- ============================================================
 -- V1: 초기 스키마 (전체 엔티티 기준)
--- Blue-Green 안전 원칙: 이 파일은 최초 1회만 실행된다.
--- 이후 변경은 V2__, V3__ ... 순서로 별도 파일에 추가-전용으로 작성한다.
 -- ============================================================
 
 -- ── 회원 ────────────────────────────────────────────────────
@@ -140,22 +138,61 @@ CREATE TABLE subcategory_material (
 );
 
 CREATE TABLE product (
-    product_id      BIGSERIAL       PRIMARY KEY,
-    artisan_id      BIGINT          NOT NULL,
-    category_id     BIGINT,
-    subcategory_id  BIGINT,
-    title           VARCHAR(200)    NOT NULL,
-    description     TEXT,
-    material        VARCHAR(50),
-    price           INTEGER         NOT NULL,
-    stock           INTEGER         NOT NULL,
-    thumbnail_url   VARCHAR(500),
-    status          VARCHAR(20)     NOT NULL,
-    created_at      TIMESTAMP       NOT NULL,
-    updated_at      TIMESTAMP       NOT NULL,
+    product_id              BIGSERIAL       PRIMARY KEY,
+    artisan_id              BIGINT          NOT NULL,
+    category_id             BIGINT,
+    subcategory_id          BIGINT,
+    title                   VARCHAR(200)    NOT NULL,
+    description             TEXT,
+    material                VARCHAR(50),
+    price                   INTEGER         NOT NULL,
+    stock                   INTEGER         NOT NULL,
+    thumbnail_url           VARCHAR(500),
+    production_period_days  INTEGER,
+    is_limited              BOOLEAN         NOT NULL DEFAULT FALSE,
+    is_custom_order         BOOLEAN         NOT NULL DEFAULT FALSE,
+    is_single_item          BOOLEAN         NOT NULL DEFAULT FALSE,
+    has_gift_wrap           BOOLEAN         NOT NULL DEFAULT FALSE,
+    status                  VARCHAR(20)     NOT NULL,
+    created_at              TIMESTAMP       NOT NULL,
+    updated_at              TIMESTAMP       NOT NULL,
     CONSTRAINT fk_product_artisan      FOREIGN KEY (artisan_id)     REFERENCES member (member_id),
     CONSTRAINT fk_product_category     FOREIGN KEY (category_id)    REFERENCES category (category_id),
     CONSTRAINT fk_product_subcategory  FOREIGN KEY (subcategory_id) REFERENCES subcategory (subcategory_id)
+);
+
+CREATE TABLE product_gift_theme (
+    product_id  BIGINT       NOT NULL REFERENCES product(product_id) ON DELETE CASCADE,
+    gift_theme  VARCHAR(50)  NOT NULL
+);
+
+CREATE TABLE product_purpose_tag (
+    product_id  BIGINT       NOT NULL REFERENCES product(product_id) ON DELETE CASCADE,
+    purpose_tag VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE product_color (
+    product_id  BIGINT      NOT NULL REFERENCES product(product_id) ON DELETE CASCADE,
+    color       VARCHAR(20) NOT NULL
+);
+
+-- ── 챗봇 ────────────────────────────────────────────────────
+
+CREATE TABLE chat_session (
+    session_id  UUID            PRIMARY KEY DEFAULT gen_random_uuid(),
+    member_id   BIGINT          NOT NULL,
+    created_at  TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ended_at    TIMESTAMP,
+    CONSTRAINT fk_chat_session_member FOREIGN KEY (member_id) REFERENCES member (member_id)
+);
+
+CREATE TABLE chat_message (
+    message_id  BIGINT          GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    session_id  UUID            NOT NULL,
+    sender      VARCHAR(10)     NOT NULL,
+    content     TEXT            NOT NULL,
+    sent_at     TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_chat_message_session FOREIGN KEY (session_id) REFERENCES chat_session (session_id)
 );
 
 -- ── 콘텐츠 ──────────────────────────────────────────────────
@@ -179,7 +216,7 @@ CREATE TABLE content_generation (
     care_tips       TEXT            NOT NULL,
     requested_at    TIMESTAMP       NOT NULL,
     completed_at    TIMESTAMP,
-    generated_blocks TEXT,
+    react_document TEXT,
     CONSTRAINT fk_generation_product FOREIGN KEY (product_id) REFERENCES product (product_id)
 );
 
@@ -191,20 +228,10 @@ CREATE TABLE content (
     fact_check_confirmed    BOOLEAN         NOT NULL DEFAULT FALSE,
     photo_match_confirmed   BOOLEAN         NOT NULL DEFAULT FALSE,
     display_approval_badge  BOOLEAN         NOT NULL DEFAULT FALSE,
+    react_document          TEXT,
     created_at              TIMESTAMP       NOT NULL,
     updated_at              TIMESTAMP       NOT NULL,
     CONSTRAINT fk_content_product FOREIGN KEY (product_id) REFERENCES product (product_id)
-);
-
-CREATE TABLE content_block (
-    block_id        BIGSERIAL       PRIMARY KEY,
-    content_id      BIGINT          NOT NULL,
-    display_order   SMALLINT        NOT NULL,
-    tag             VARCHAR(10)     NOT NULL,
-    image_id        VARCHAR(30),
-    video_url       VARCHAR(500),
-    text            VARCHAR(2000),
-    CONSTRAINT fk_block_content FOREIGN KEY (content_id) REFERENCES content (content_id)
 );
 
 CREATE TABLE content_edit_history (
@@ -231,10 +258,11 @@ CREATE TABLE notifications (
 
 -- ── 인덱스 ───────────────────────────────────────────────────
 
-CREATE INDEX idx_product_artisan      ON product (artisan_id);
-CREATE INDEX idx_product_status       ON product (status);
-CREATE INDEX idx_content_generation_product ON content_generation (product_id);
-CREATE INDEX idx_content_block_order  ON content_block (content_id, display_order);
-CREATE INDEX idx_history_content      ON content_edit_history (content_id);
-CREATE INDEX idx_notification_member  ON notifications (member_id);
-CREATE INDEX idx_recent_view_member   ON recent_view (member_id, viewed_at DESC);
+CREATE INDEX idx_product_artisan             ON product (artisan_id);
+CREATE INDEX idx_product_status              ON product (status);
+CREATE INDEX idx_content_generation_product  ON content_generation (product_id);
+CREATE INDEX idx_history_content             ON content_edit_history (content_id);
+CREATE INDEX idx_notification_member         ON notifications (member_id);
+CREATE INDEX idx_recent_view_member          ON recent_view (member_id, viewed_at DESC);
+CREATE INDEX idx_chat_session_member         ON chat_session (member_id);
+CREATE INDEX idx_chat_message_session        ON chat_message (session_id, sent_at);

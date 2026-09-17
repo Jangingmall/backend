@@ -10,4 +10,6 @@ public interface ProductReviewRepository {
     boolean existsByOrderItemId(Long orderItemId);
 
     Page<ProductReview> findByProductId(Long productId, Pageable pageable);
+
+    Double findAverageRatingByProductId(Long productId);
 }

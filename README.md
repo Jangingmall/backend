@@ -53,6 +53,38 @@
 
 ---
 
+## 로컬 개발 환경
+
+### 필수 요구사항
+
+| 항목 | 버전 |
+|---|---|
+| Java | 25+ |
+| Gradle | 8.14+ (Wrapper 포함) |
+| Redis | 8+ (Docker로 간단히 실행 가능) |
+
+DB는 `local` 프로파일에서 H2 인메모리로 자동 구성됩니다.
+
+### 빠른 시작
+
+```bash
+# Redis 실행
+docker run -d --name redis -p 6379:6379 redis:8
+
+# 최초 1회 — 테스트 실행 후 openapi.json → redoc.html 생성 및 static 복사
+./gradlew build
+
+# 애플리케이션 실행 (local 프로파일)
+./gradlew bootRun
+```
+
+> `redoc.html`은 빌드 산출물로 `.gitignore` 대상입니다.  
+> `build` 없이 `bootRun`만 하면 `/redoc.html` 404가 발생합니다.
+
+로컬 개발용 JWT 토큰 즉시 발급: `POST /dev/token?role=ARTISAN` (local 프로파일 전용)
+
+---
+
 ## 아키텍처
 
 ### 설계 원칙

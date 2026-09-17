@@ -4,14 +4,14 @@ import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ContentTest {
+
+    private static final String REACT_DOCUMENT_JSON =
+        "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}";
 
     @Test
     @DisplayName("create() — DRAFT 상태, 체크리스트 모두 false로 초기화된다")
@@ -23,6 +23,28 @@ class ContentTest {
         assertThat(content.isFactCheckConfirmed()).isFalse();
         assertThat(content.isPhotoMatchConfirmed()).isFalse();
         assertThat(content.isDisplayApprovalBadge()).isFalse();
+        assertThat(content.getReactDocument()).isNull();
+    }
+
+    @Test
+    @DisplayName("storeReactDocument() — JSON blob이 저장된다")
+    void storeReactDocument() {
+        Content content = Content.create(10L);
+
+        content.storeReactDocument(REACT_DOCUMENT_JSON);
+
+        assertThat(content.getReactDocument()).isEqualTo(REACT_DOCUMENT_JSON);
+    }
+
+    @Test
+    @DisplayName("storeReactDocument() — 기존 blob을 덮어쓴다")
+    void storeReactDocumentOverwrite() {
+        Content content = Content.create(10L);
+        content.storeReactDocument("{\"schemaVersion\":\"1.0\"}");
+
+        content.storeReactDocument(REACT_DOCUMENT_JSON);
+
+        assertThat(content.getReactDocument()).isEqualTo(REACT_DOCUMENT_JSON);
     }
 
     @Test
@@ -39,30 +61,6 @@ class ContentTest {
     void verifyOwnershipSuccess() {
         Content content = Content.create(10L);
         content.verifyOwnership(1L, 1L);
-    }
-
-    @Test
-    @DisplayName("replaceBlocks() — 기존 블록을 새 목록으로 교체한다")
-    void replaceBlocks() {
-        Content content = Content.create(10L);
-        ReflectionTestUtils.setField(content, "id", 1L);
-        ContentBlock block = ContentBlock.create(content, (short) 1, BlockTag.h2, null, null, "소제목");
-
-        content.replaceBlocks(List.of(block));
-
-        assertThat(content.getBlocks()).hasSize(1);
-        assertThat(content.getBlocks().get(0).getTag()).isEqualTo(BlockTag.h2);
-    }
-
-    @Test
-    @DisplayName("touchVersion() — 버전 번호가 1 증가한다")
-    void touchVersion() {
-        Content content = Content.create(10L);
-        ReflectionTestUtils.setField(content, "version", 2);
-
-        content.touchVersion();
-
-        assertThat(content.getVersion()).isEqualTo(3);
     }
 
     @Test
