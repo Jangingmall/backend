@@ -769,7 +769,11 @@ tasks.register('buildRedocly', Exec) {
 
     def templateFile = file('api-spec/redoc-template.hbs')
 
-    commandLine 'npx', '--yes', '@redocly/cli', 'build-docs',
+    // nvm으로 설치된 node는 Gradle 프로세스의 PATH에 없으므로 절대경로로 호출
+    def npxPath = ['bash', '-c', 'which npx'].execute().text.trim()
+    if (!npxPath) npxPath = 'npx'
+
+    commandLine npxPath, '--yes', '@redocly/cli', 'build-docs',
         specFile.absolutePath,
         '--output', outputHtml.absolutePath,
         '--template', templateFile.absolutePath,
