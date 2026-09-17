@@ -1,9 +1,7 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
-import com.jangingmall.backend.content.domain.BlockTag;
 import com.jangingmall.backend.content.domain.Content;
-import com.jangingmall.backend.content.domain.ContentBlock;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentRepository;
@@ -63,12 +61,25 @@ class ContentServiceTest {
     private Product artisanProduct;
     private Content sampleContent;
 
-    private static final String REACT_DOCUMENT_JSON =
+    private static final String EMPTY_DOCUMENT =
         "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}";
+
+    private static final String SAMPLE_DOCUMENT =
+        "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[" +
+        "{\"id\":\"node-001\",\"type\":\"element\",\"tag\":\"h2\"," +
+        "\"props\":{\"style\":{\"color\":\"#333\"}}," +
+        "\"children\":[{\"id\":\"text-001\",\"type\":\"text\",\"value\":\"원본 제목\",\"marks\":[]}]}," +
+        "{\"id\":\"node-002\",\"type\":\"element\",\"tag\":\"img\"," +
+        "\"props\":{\"imageId\":\"original-img-id\"}," +
+        "\"children\":[]}" +
+        "]}";
 
     @BeforeEach
     void setUp() {
-        contentService = new ContentService(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository, interviewRepository, new ObjectMapper());
+        contentService = new ContentService(
+            contentRepository, historyRepository, productRepository, aiContentClient,
+            artisanProfileRepository, interviewRepository, new ObjectMapper()
+        );
         artisanProduct = Product.create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
         ReflectionTestUtils.setField(artisanProduct, "id", 10L);
         sampleContent = Content.create(10L);
@@ -117,7 +128,7 @@ class ContentServiceTest {
         when(contentRepository.save(any())).thenReturn(sampleContent);
         when(historyRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-        ContentCommand.StoreReactDocument command = new ContentCommand.StoreReactDocument(10L, REACT_DOCUMENT_JSON, null);
+        ContentCommand.StoreReactDocument command = new ContentCommand.StoreReactDocument(10L, EMPTY_DOCUMENT, null);
         Content result = contentService.storeReactDocument(command);
 
         assertThat(result.getProductId()).isEqualTo(10L);
@@ -133,11 +144,11 @@ class ContentServiceTest {
         when(contentRepository.save(any())).thenReturn(sampleContent);
         when(historyRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
-        ContentCommand.StoreReactDocument command = new ContentCommand.StoreReactDocument(10L, REACT_DOCUMENT_JSON, null);
+        ContentCommand.StoreReactDocument command = new ContentCommand.StoreReactDocument(10L, EMPTY_DOCUMENT, null);
         contentService.storeReactDocument(command);
 
         verify(contentRepository).save(contentCaptor.capture());
-        assertThat(contentCaptor.getValue().getReactDocument()).isEqualTo(REACT_DOCUMENT_JSON);
+        assertThat(contentCaptor.getValue().getReactDocument()).isEqualTo(EMPTY_DOCUMENT);
     }
 
     @Test
@@ -259,24 +270,28 @@ class ContentServiceTest {
     }
 
     @Test
-    @DisplayName("문단 일괄 수정 — DRAFT 콘텐츠의 블록 전체를 교체하고 이력을 저장한다")
+    @DisplayName("문단 일괄 수정 — AI 생성 스타일을 보존하며 텍스트와 imageId를 교체한다")
     void bulkUpdate() {
-        ReflectionTestUtils.setField(sampleContent, "reactDocument", "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}");
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", SAMPLE_DOCUMENT);
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
         when(contentRepository.save(any(Content.class))).thenReturn(sampleContent);
         when(historyRepository.save(any(ContentEditHistory.class))).thenReturn(null);
 
-        List<ContentBlock> blocks = List.of(
-            new ContentBlock(0, BlockTag.h2, "소제목", null),
-            new ContentBlock(1, BlockTag.p, "본문", null)
+        List<ContentCommand.NodePatch> patches = List.of(
+            new ContentCommand.NodePatch("text-001", "변경된 제목", null),
+            new ContentCommand.NodePatch("node-002", null, "new-img-id")
         );
-        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(10L, 1L, 1L, blocks);
+        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(10L, 1L, 1L, patches);
 
         ContentResponse.BulkUpdated result = contentService.bulkUpdate(command);
 
-        assertThat(result.blocks()).hasSize(2);
-        assertThat(result.blocks().get(0).tag()).isEqualTo(BlockTag.h2);
+        assertThat(result.contentId()).isEqualTo(1L);
+        verify(contentRepository).save(contentCaptor.capture());
+        String savedDoc = contentCaptor.getValue().getReactDocument();
+        assertThat(savedDoc).contains("변경된 제목");
+        assertThat(savedDoc).contains("new-img-id");
+        assertThat(savedDoc).contains("\"color\":\"#333\"");
         verify(historyRepository).save(historyCaptor.capture());
         assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.ARTISAN);
     }
@@ -288,49 +303,43 @@ class ContentServiceTest {
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
 
-        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(10L, 1L, 1L,
-            List.of(new ContentBlock(0, BlockTag.p, "텍스트", null)));
+        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(
+            10L, 1L, 1L,
+            List.of(new ContentCommand.NodePatch("any-id", "text", null))
+        );
 
         assertThatThrownBy(() -> contentService.bulkUpdate(command))
             .isInstanceOf(BusinessRuleViolationException.class);
     }
 
     @Test
-    @DisplayName("단건 블록 수정 — 해당 blockOrder의 블록만 변경하고 이력을 저장한다")
+    @DisplayName("단건 블록 수정 — nodeId로 특정 노드의 텍스트를 교체하고 이력을 저장한다")
     void updateBlock() {
-        String existingDoc = "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[" +
-            "{\"tag\":\"h2\",\"props\":{},\"children\":[{\"tag\":\"text\",\"props\":{\"value\":\"기존 소제목\"},\"children\":[]}]}," +
-            "{\"tag\":\"p\",\"props\":{},\"children\":[{\"tag\":\"text\",\"props\":{\"value\":\"기존 본문\"},\"children\":[]}]}" +
-            "]}";
-        ReflectionTestUtils.setField(sampleContent, "reactDocument", existingDoc);
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", SAMPLE_DOCUMENT);
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
         when(contentRepository.save(any(Content.class))).thenReturn(sampleContent);
         when(historyRepository.save(any(ContentEditHistory.class))).thenReturn(null);
 
-        ContentBlock patch = new ContentBlock(0, BlockTag.h2, "수정된 소제목", null);
-        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(10L, 1L, 0, 1L, patch);
+        ContentCommand.NodePatch patch = new ContentCommand.NodePatch("text-001", "새 제목", null);
+        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(10L, 1L, "text-001", 1L, patch);
 
         ContentResponse.BlockUpdated result = contentService.updateBlock(command);
 
-        assertThat(result.block().text()).isEqualTo("수정된 소제목");
-        assertThat(result.block().tag()).isEqualTo(BlockTag.h2);
+        assertThat(result.nodeId()).isEqualTo("text-001");
         verify(historyRepository).save(historyCaptor.capture());
         assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.ARTISAN);
     }
 
     @Test
-    @DisplayName("단건 블록 수정 — 존재하지 않는 blockOrder면 NotFoundException이 발생한다")
+    @DisplayName("단건 블록 수정 — 존재하지 않는 nodeId면 NotFoundException이 발생한다")
     void updateBlockNotFound() {
-        String existingDoc = "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[" +
-            "{\"tag\":\"p\",\"props\":{},\"children\":[{\"tag\":\"text\",\"props\":{\"value\":\"본문\"},\"children\":[]}]}" +
-            "]}";
-        ReflectionTestUtils.setField(sampleContent, "reactDocument", existingDoc);
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", SAMPLE_DOCUMENT);
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
 
-        ContentBlock patch = new ContentBlock(99, BlockTag.p, "텍스트", null);
-        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(10L, 1L, 99, 1L, patch);
+        ContentCommand.NodePatch patch = new ContentCommand.NodePatch("non-existent-id", "text", null);
+        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(10L, 1L, "non-existent-id", 1L, patch);
 
         assertThatThrownBy(() -> contentService.updateBlock(command))
             .isInstanceOf(NotFoundException.class);
