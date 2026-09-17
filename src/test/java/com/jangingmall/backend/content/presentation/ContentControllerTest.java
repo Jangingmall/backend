@@ -48,7 +48,44 @@ class ContentControllerTest extends RestDocsControllerTest {
     private static final LocalDateTime NOW = LocalDateTime.of(2026, 9, 14, 10, 0, 0);
 
     private static final String SAMPLE_REACT_DOCUMENT =
-        "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}";
+        "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":["
+        + "{\"id\":\"node-001\",\"type\":\"element\",\"tag\":\"h2\","
+        + "\"props\":{\"style\":{\"color\":\"#1a1a1a\",\"fontSize\":\"24px\",\"fontWeight\":\"700\"}},"
+        + "\"children\":[{\"id\":\"text-001\",\"type\":\"text\",\"value\":\"60년 전통 이천 청자 다완\",\"marks\":[]}]},"
+        + "{\"id\":\"node-002\",\"type\":\"element\",\"tag\":\"p\","
+        + "\"props\":{\"style\":{\"color\":\"#444\",\"lineHeight\":\"1.8\"}},"
+        + "\"children\":[{\"id\":\"text-002\",\"type\":\"text\",\"value\":\"3대째 이천에서 청자를 빚어온 장인이 직접 제작한 작품입니다.\",\"marks\":[]}]},"
+        + "{\"id\":\"node-003\",\"type\":\"element\",\"tag\":\"img\","
+        + "\"props\":{\"imageId\":\"img-uuid-abc123\",\"style\":{\"width\":\"100%\",\"borderRadius\":\"8px\"}},"
+        + "\"children\":[]},"
+        + "{\"id\":\"node-004\",\"type\":\"element\",\"tag\":\"p\","
+        + "\"props\":{\"style\":{\"color\":\"#444\",\"lineHeight\":\"1.8\"}},"
+        + "\"children\":["
+        + "{\"id\":\"text-004a\",\"type\":\"text\",\"value\":\"유약은 \",\"marks\":[]},"
+        + "{\"id\":\"text-004b\",\"type\":\"text\",\"value\":\"천연 재료\",\"marks\":[\"bold\"]},"
+        + "{\"id\":\"text-004c\",\"type\":\"text\",\"value\":\"만 사용합니다.\",\"marks\":[]}"
+        + "]},"
+        + "{\"id\":\"node-005\",\"type\":\"element\",\"tag\":\"table\","
+        + "\"props\":{},"
+        + "\"children\":["
+        + "{\"id\":\"node-005-thead\",\"type\":\"element\",\"tag\":\"thead\",\"props\":{},"
+        + "\"children\":[{\"id\":\"node-005-tr0\",\"type\":\"element\",\"tag\":\"tr\",\"props\":{},"
+        + "\"children\":["
+        + "{\"id\":\"node-005-th0\",\"type\":\"element\",\"tag\":\"th\",\"props\":{},"
+        + "\"children\":[{\"id\":\"text-th0\",\"type\":\"text\",\"value\":\"항목\",\"marks\":[]}]},"
+        + "{\"id\":\"node-005-th1\",\"type\":\"element\",\"tag\":\"th\",\"props\":{},"
+        + "\"children\":[{\"id\":\"text-th1\",\"type\":\"text\",\"value\":\"내용\",\"marks\":[]}]}"
+        + "]}]},"
+        + "{\"id\":\"node-005-tbody\",\"type\":\"element\",\"tag\":\"tbody\",\"props\":{},"
+        + "\"children\":[{\"id\":\"node-005-tr1\",\"type\":\"element\",\"tag\":\"tr\",\"props\":{},"
+        + "\"children\":["
+        + "{\"id\":\"node-005-td0\",\"type\":\"element\",\"tag\":\"td\",\"props\":{},"
+        + "\"children\":[{\"id\":\"text-td0\",\"type\":\"text\",\"value\":\"소재\",\"marks\":[]}]},"
+        + "{\"id\":\"node-005-td1\",\"type\":\"element\",\"tag\":\"td\",\"props\":{},"
+        + "\"children\":[{\"id\":\"text-td1\",\"type\":\"text\",\"value\":\"고령토, 천연유약\",\"marks\":[]}]}"
+        + "]}]}"
+        + "]}"
+        + "]}";
 
     private static final ContentResponse.Detail SAMPLE_DETAIL =
         new ContentResponse.Detail(1L, 10L, ContentStatus.DRAFT, 1, SAMPLE_REACT_DOCUMENT);
