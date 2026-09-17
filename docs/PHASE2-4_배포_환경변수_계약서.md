@@ -26,8 +26,11 @@
 | `MAIL_HOST` | `/prod/backend/mail-host` | SMTP 서버 호스트 | `email-smtp.ap-northeast-2.amazonaws.com` |
 | `MAIL_PORT` | `/prod/backend/mail-port` | SMTP 포트 (기본 587) | `587` |
 | `MAIL_USERNAME` | `/prod/backend/mail-username` | SMTP 사용자 | *(SecureString)* |
-| `MAIL_PASSWORD` | `/prod/backend/mail-password` | SMTP 비밀번호 | *(SecureString)* |
+| `MAIL_PASSWORD` | `/prod/backend/mail-password` | Google SMTP 앱 비밀번호 (Google 계정 로그인 비밀번호 아님) | `PENDING_GOOGLE_APP_PASSWORD` *(실제 값은 SecureString)* |
 | `MAIL_FROM` | `/prod/backend/mail-from` | 발신 이메일 주소 | `no-reply@midam.store` |
+| `IMAGE_BASE_URL` | `/prod/backend/image-base-url` | 공개 이미지 기본 URL | `https://<버킷명>.s3.ap-northeast-2.amazonaws.com` |
+| `IMAGE_UPLOAD_BUCKET` | `/prod/backend/image-upload-bucket` | 공개 상품·콘텐츠 이미지 버킷명 | *(SecureString 또는 String)* |
+| `IMAGE_RETURN_BUCKET` | `/prod/backend/image-return-bucket` | 비공개 반품 이미지 버킷명 | *(SecureString 또는 String)* |
 | `KAKAO_CLIENT_ID` | `/prod/backend/kakao-client-id` | 카카오 OAuth2 Client ID | *(SecureString)* |
 | `KAKAO_CLIENT_SECRET` | `/prod/backend/kakao-client-secret` | 카카오 OAuth2 Client Secret | *(SecureString)* |
 | `NAVER_CLIENT_ID` | `/prod/backend/naver-client-id` | 네이버 OAuth2 Client ID | *(SecureString)* |

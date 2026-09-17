@@ -58,6 +58,9 @@ PG(결제), 택배 API는 현재 미구현 — 해당 도메인 개발 시점에
 | SMTP Username       | `spring.mail.username`                                           | `MAIL_USERNAME`                       |
 | SMTP Password       | `spring.mail.password`                                           | `MAIL_PASSWORD`                       |
 | 발신 이메일              | `member.email-verification.from`                                 | `MAIL_FROM`                           |
+| 이미지 기본 URL       | `image.base-url`                                                  | `IMAGE_BASE_URL`                      |
+| 이미지 업로드 버킷    | `image.storage.bucket`                                            | `IMAGE_UPLOAD_BUCKET`                 |
+| 반품 이미지 버킷      | `image.storage.return-bucket`                                    | `IMAGE_RETURN_BUCKET`                 |
 | 이메일 인증 URL          | `member.email-verification.verification-url`                     | `EMAIL_VERIFICATION_URL`              |
 | 이메일 인증 성공 URL       | `member.email-verification.success-redirect-url`                 | `EMAIL_VERIFICATION_SUCCESS_REDIRECT` |
 | 이메일 인증 TTL          | `member.email-verification.token-expiry-seconds`                 | `EMAIL_VERIFICATION_TTL_SECONDS`      |
@@ -67,9 +70,13 @@ PG(결제), 택배 API는 현재 미구현 — 해당 도메인 개발 시점에
 | Rate Limit 횟수       | `member.rate-limit.attempts`                                     | `MEMBER_RATE_LIMIT_ATTEMPTS`          |
 | Rate Limit 윈도우      | `member.rate-limit.window-seconds`                               | `MEMBER_RATE_LIMIT_WINDOW_SECONDS`    |
 
+`MAIL_PASSWORD`는 Google 계정 로그인 비밀번호가 아니라 Gmail/Google SMTP에서 발급한 **앱 비밀번호**를 사용합니다. 인프라 공유용 placeholder는 `MAIL_PASSWORD=PENDING_GOOGLE_APP_PASSWORD`이며, 실제 값은 저장소에 기록하지 않고 SSM SecureString으로 주입합니다.
+
 ---
 
 ## 3. Spring configtree 사용 가능 여부
+
+로컬 S3 인증은 AWS SDK Default Credential Chain을 사용합니다. `aws sso login --profile <프로파일명>`을 실행하면 SSO 토큰을 SDK가 자동으로 사용하므로 `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`을 로컬 `.env`에 넣지 않습니다. 로컬 S3 연동에 필요한 값은 `IMAGE_BASE_URL`, `IMAGE_UPLOAD_BUCKET`, `IMAGE_RETURN_BUCKET`입니다.
 
 **현재 상태: Environment Variable 방식 유지 필요 (수정 불필요)**
 
