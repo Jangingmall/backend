@@ -3,6 +3,7 @@ package com.jangingmall.backend.content.application;
 import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.Content;
+import com.jangingmall.backend.content.domain.ContentBlock;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentErrorMessage;
@@ -10,6 +11,7 @@ import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.EditedByType;
 import com.jangingmall.backend.content.domain.Interview;
 import com.jangingmall.backend.content.domain.InterviewRepository;
+import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.member.domain.ArtisanProfile;
 import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
@@ -21,7 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,12 +37,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ContentService {
 
+    private static final String SCHEMA_VERSION = "2.0";
+    private static final int CANVAS_WIDTH = 774;
+
     private final ContentRepository contentRepository;
     private final ContentEditHistoryRepository historyRepository;
     private final ProductRepository productRepository;
     private final AiContentClient aiContentClient;
     private final ArtisanProfileRepository artisanProfileRepository;
     private final InterviewRepository interviewRepository;
+    private final ObjectMapper objectMapper;
 
     @Transactional(readOnly = true)
     public ContentResponse.Detail getContent(Long productId, Long requesterId) {
@@ -143,6 +154,105 @@ public class ContentService {
             makingStory, usageCare, product.getProductionPeriodDays(), product.getColors()
         );
         return new AiProductSyncPayload(artisanInfo, productInfo);
+    }
+
+    @Transactional
+    public ContentResponse.BulkUpdated bulkUpdate(ContentCommand.BulkUpdate command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
+        content.verifyEditable();
+        String newDocument = buildReactDocument(command.blocks());
+        content.storeReactDocument(newDocument);
+        Content saved = contentRepository.save(content);
+        historyRepository.save(ContentEditHistory.record(saved.getId(), saved.getVersion(), EditedByType.ARTISAN, command.requesterId()));
+        List<ContentResponse.BlockView> blockViews = command.blocks().stream()
+            .map(ContentResponse.BlockView::from)
+            .toList();
+        return new ContentResponse.BulkUpdated(saved.getId(), saved.getProductId(), saved.getStatus(), saved.getVersion(), blockViews);
+    }
+
+    @Transactional
+    public ContentResponse.BlockUpdated updateBlock(ContentCommand.BlockUpdate command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
+        content.verifyEditable();
+        List<ContentBlock> blocks = extractBlocks(content.getReactDocument());
+        ContentBlock target = blocks.stream()
+            .filter(b -> b.order() == command.blockOrder())
+            .findFirst()
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.BLOCK_NOT_FOUND.message()));
+        ContentBlock updated = new ContentBlock(
+            target.order(),
+            command.block().tag() != null ? command.block().tag() : target.tag(),
+            command.block().text() != null ? command.block().text() : target.text(),
+            command.block().imageUrl() != null ? command.block().imageUrl() : target.imageUrl()
+        );
+        List<ContentBlock> updatedBlocks = blocks.stream()
+            .map(b -> b.order() == command.blockOrder() ? updated : b)
+            .toList();
+        content.storeReactDocument(buildReactDocument(updatedBlocks));
+        Content saved = contentRepository.save(content);
+        historyRepository.save(ContentEditHistory.record(saved.getId(), saved.getVersion(), EditedByType.ARTISAN, command.requesterId()));
+        return new ContentResponse.BlockUpdated(saved.getId(), saved.getVersion(), ContentResponse.BlockView.from(updated));
+    }
+
+    private String buildReactDocument(List<ContentBlock> blocks) {
+        ObjectNode root = objectMapper.createObjectNode();
+        root.put("schemaVersion", SCHEMA_VERSION);
+        root.put("canvasWidth", CANVAS_WIDTH);
+        ArrayNode rootArray = root.putArray("root");
+        for (ContentBlock block : blocks) {
+            ObjectNode node = objectMapper.createObjectNode();
+            node.put("tag", block.tag().name());
+            node.putObject("props");
+            ArrayNode children = node.putArray("children");
+            if (block.tag().name().equals("img") || block.tag().name().equals("video")) {
+                ObjectNode child = objectMapper.createObjectNode();
+                child.put("tag", "text");
+                ObjectNode props = child.putObject("props");
+                props.put("value", block.imageUrl() != null ? block.imageUrl() : "");
+                child.putArray("children");
+                children.add(child);
+            } else {
+                ObjectNode child = objectMapper.createObjectNode();
+                child.put("tag", "text");
+                ObjectNode props = child.putObject("props");
+                props.put("value", block.text() != null ? block.text() : "");
+                child.putArray("children");
+                children.add(child);
+            }
+            rootArray.add(node);
+        }
+        return objectMapper.writeValueAsString(root);
+    }
+
+    private List<ContentBlock> extractBlocks(String reactDocumentJson) {
+        if (reactDocumentJson == null || reactDocumentJson.isBlank()) {
+            return new ArrayList<>();
+        }
+        JsonNode document = objectMapper.readTree(reactDocumentJson);
+        JsonNode rootArray = document.path("root");
+        List<ContentBlock> result = new ArrayList<>();
+        int order = 0;
+        for (JsonNode node : rootArray) {
+            String tag = node.path("tag").asText("p");
+            String text = null;
+            String imageUrl = null;
+            JsonNode children = node.path("children");
+            if (!children.isEmpty()) {
+                JsonNode firstChild = children.get(0);
+                String value = firstChild.path("props").path("value").asText(null);
+                if (tag.equals("img") || tag.equals("video")) {
+                    imageUrl = value;
+                } else {
+                    text = value;
+                }
+            }
+            result.add(new ContentBlock(order++, com.jangingmall.backend.content.domain.BlockTag.valueOf(tag), text, imageUrl));
+        }
+        return result;
     }
 
     private void verifyProductOwner(Long productId, Long requesterId) {
