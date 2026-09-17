@@ -164,6 +164,7 @@ class ArtisanControllerTest extends RestDocsControllerTest {
                         fieldWithPath("businessName").type(JsonFieldType.STRING).optional().description("공방명"),
                         fieldWithPath("introduction").type(JsonFieldType.STRING).optional().description("소개"),
                         fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).optional().description("프로필 이미지 URL (https://로 시작)"),
+                        fieldWithPath("profileImageId").type(JsonFieldType.STRING).optional().description("Presigned 업로드로 소비할 프로필 이미지 그룹 ID"),
                         fieldWithPath("category").type(JsonFieldType.STRING).optional().description("카테고리"),
                         fieldWithPath("region").type(JsonFieldType.STRING).optional().description("지역"),
                         fieldWithPath("careerYears").type(JsonFieldType.NUMBER).optional().description("경력 연수 (0~200)"),

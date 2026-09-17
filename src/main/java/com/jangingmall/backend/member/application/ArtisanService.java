@@ -2,17 +2,33 @@ package com.jangingmall.backend.member.application;
 
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
+import com.jangingmall.backend.image.application.ImageService;
+import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.member.domain.*;
 import java.util.*;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service @RequiredArgsConstructor
+@Service
 public class ArtisanService {
     private final MemberAccess access;
     private final ArtisanProfileRepository artisans;
     private final MemberReadRepository reads;
+    private final ImageService images;
+
+    @Autowired
+    public ArtisanService(MemberAccess access, ArtisanProfileRepository artisans, MemberReadRepository reads,
+                          ImageService images) {
+        this.access = access;
+        this.artisans = artisans;
+        this.reads = reads;
+        this.images = images;
+    }
+
+    public ArtisanService(MemberAccess access, ArtisanProfileRepository artisans, MemberReadRepository reads) {
+        this(access, artisans, reads, null);
+    }
 
     @Transactional(readOnly = true)
     public Map<String, Object> detail(Long artisanId) {
@@ -37,6 +53,18 @@ public class ArtisanService {
         changes.category().ifPresent(this::requireCategory);
         artisan.updateBasics(changes.businessName(), changes.introduction(), changes.profileImageUrl(),
             changes.category(), changes.region(), changes.careerYears());
+        changes.profileImageId().ifPresent(imageId -> {
+            if (images == null) {
+                throw new DomainException(ErrorCode.INVALID_INPUT);
+            }
+            images.consumeOwned(memberId, ImagePurpose.ARTISAN, List.of(imageId));
+            String imageUrl = images.publicVariants(imageId).stream()
+                .filter(variant -> variant.width() == 640)
+                .map(ImageService.PublicVariant::url)
+                .findFirst()
+                .orElseThrow(() -> new DomainException(ErrorCode.INVALID_INPUT));
+            artisan.updateProfileImage(imageId, imageUrl);
+        });
         artisan.updateBiography(changes.certifiedYear(), changes.lineage(), changes.quote(), changes.bio(), changes.videoUrl());
         artisans.save(artisan);
         artisans.flush();
@@ -52,5 +80,13 @@ public class ArtisanService {
     public record Changes(Optional<String> businessName, Optional<String> introduction, Optional<String> profileImageUrl,
                           Optional<String> category, Optional<String> region, Optional<Short> careerYears,
                           Optional<Short> certifiedYear, Optional<String> lineage, Optional<String> quote,
-                          Optional<String> bio, Optional<String> videoUrl) {}
+                          Optional<String> bio, Optional<String> videoUrl, Optional<String> profileImageId) {
+        public Changes(Optional<String> businessName, Optional<String> introduction, Optional<String> profileImageUrl,
+                       Optional<String> category, Optional<String> region, Optional<Short> careerYears,
+                       Optional<Short> certifiedYear, Optional<String> lineage, Optional<String> quote,
+                       Optional<String> bio, Optional<String> videoUrl) {
+            this(businessName, introduction, profileImageUrl, category, region, careerYears, certifiedYear,
+                lineage, quote, bio, videoUrl, Optional.empty());
+        }
+    }
 }

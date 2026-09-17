@@ -58,7 +58,8 @@ public class ProductController {
             request.giftThemes() != null ? request.giftThemes() : List.of(),
             request.purposeTags() != null ? request.purposeTags() : List.of(),
             request.productionPeriodDays(),
-            request.colors() != null ? request.colors() : List.of()
+            request.colors() != null ? request.colors() : List.of(),
+            request.images()
         );
         ProductResponse response = productService.create(command);
         return ResponseEntity.status(201).body(ApiResponse.created(response));
@@ -118,7 +119,8 @@ public class ProductController {
             request.giftThemes() != null ? request.giftThemes() : List.of(),
             request.purposeTags() != null ? request.purposeTags() : List.of(),
             request.productionPeriodDays(),
-            request.colors() != null ? request.colors() : List.of()
+            request.colors() != null ? request.colors() : List.of(),
+            request.images()
         );
         return ApiResponse.ok(productService.update(command));
     }
@@ -216,7 +218,8 @@ public class ProductController {
         @Valid @RequestBody ProductReviewRequest.Write request
     ) {
         ProductReviewResponse.ReviewView response = productReviewService.write(
-            new ProductReviewCommand.Write(productId, memberId, request.orderItemId(), request.rating(), request.content())
+            new ProductReviewCommand.Write(productId, memberId, request.orderItemId(), request.rating(), request.content(),
+                request.images())
         );
         return ResponseEntity.status(201).body(ApiResponse.created(response));
     }

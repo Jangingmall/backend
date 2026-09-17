@@ -78,6 +78,30 @@ class ProductControllerTest extends RestDocsControllerTest {
         fieldWithPath("data.content[].purposeTags").type(JsonFieldType.ARRAY).optional().description("용도 태그 목록"),
         fieldWithPath("data.content[].productionPeriodDays").type(JsonFieldType.NUMBER).optional().description("제작 기간(일)"),
         fieldWithPath("data.content[].colors").type(JsonFieldType.ARRAY).optional().description("색상 목록"),
+        fieldWithPath("data.content[].images").type(JsonFieldType.ARRAY).optional().description("상품 이미지 목록"),
+        fieldWithPath("data.content[].images[].imageId").type(JsonFieldType.STRING).optional().description("이미지 그룹 ID"),
+        fieldWithPath("data.content[].images[].alt").type(JsonFieldType.STRING).optional().description("대체 텍스트"),
+        fieldWithPath("data.content[].images[].variants").type(JsonFieldType.ARRAY).optional().description("이미지 variant 목록"),
+        fieldWithPath("data.content[].images[].variants[].url").type(JsonFieldType.STRING).optional().description("이미지 URL"),
+        fieldWithPath("data.content[].images[].variants[].width").type(JsonFieldType.NUMBER).optional().description("variant 너비"),
+        fieldWithPath("data.content[].images[].variants[].height").type(JsonFieldType.NUMBER).optional().description("variant 높이"),
+        fieldWithPath("data.content[].images[].variants[].format").type(JsonFieldType.STRING).optional().description("variant 포맷"),
+        fieldWithPath("data.content[].thumbnail").type(JsonFieldType.ARRAY).optional().description("대표 이미지 variant 목록"),
+        fieldWithPath("data.content[].thumbnail[].url").type(JsonFieldType.STRING).optional().description("대표 variant URL"),
+        fieldWithPath("data.content[].thumbnail[].width").type(JsonFieldType.NUMBER).optional().description("대표 variant 너비"),
+        fieldWithPath("data.content[].thumbnail[].height").type(JsonFieldType.NUMBER).optional().description("대표 variant 높이"),
+        fieldWithPath("data.content[].thumbnail[].format").type(JsonFieldType.STRING).optional().description("대표 variant 포맷"),
+        fieldWithPath("data.content[].detailPageBlocks").type(JsonFieldType.ARRAY).optional().description("콘텐츠 블록 목록"),
+        fieldWithPath("data.content[].detailPageBlocks[].order").type(JsonFieldType.NUMBER).optional().description("블록 순서"),
+        fieldWithPath("data.content[].detailPageBlocks[].tag").type(JsonFieldType.STRING).optional().description("블록 태그"),
+        fieldWithPath("data.content[].detailPageBlocks[].hasImage").type(JsonFieldType.BOOLEAN).optional().description("이미지 포함 여부"),
+        fieldWithPath("data.content[].detailPageBlocks[].imageVariants").type(JsonFieldType.ARRAY).optional().description("블록 이미지 variant"),
+        fieldWithPath("data.content[].detailPageBlocks[].imageVariants[].url").type(JsonFieldType.STRING).optional().description("이미지 URL"),
+        fieldWithPath("data.content[].detailPageBlocks[].imageVariants[].width").type(JsonFieldType.NUMBER).optional().description("variant 너비"),
+        fieldWithPath("data.content[].detailPageBlocks[].imageVariants[].height").type(JsonFieldType.NUMBER).optional().description("variant 높이"),
+        fieldWithPath("data.content[].detailPageBlocks[].imageVariants[].format").type(JsonFieldType.STRING).optional().description("variant 포맷"),
+        fieldWithPath("data.content[].detailPageBlocks[].videoUrl").type(JsonFieldType.STRING).optional().description("영상 URL"),
+        fieldWithPath("data.content[].detailPageBlocks[].text").type(JsonFieldType.STRING).optional().description("블록 텍스트"),
         fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 수"),
         fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
         fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
@@ -111,6 +135,30 @@ class ProductControllerTest extends RestDocsControllerTest {
         fieldWithPath("data.purposeTags").type(JsonFieldType.ARRAY).optional().description("용도 태그 목록"),
         fieldWithPath("data.productionPeriodDays").type(JsonFieldType.NUMBER).optional().description("제작 기간(일)"),
         fieldWithPath("data.colors").type(JsonFieldType.ARRAY).optional().description("색상 목록"),
+        fieldWithPath("data.images").type(JsonFieldType.ARRAY).optional().description("상품 이미지 목록"),
+        fieldWithPath("data.images[].imageId").type(JsonFieldType.STRING).optional().description("이미지 그룹 ID"),
+        fieldWithPath("data.images[].alt").type(JsonFieldType.STRING).optional().description("대체 텍스트"),
+        fieldWithPath("data.images[].variants").type(JsonFieldType.ARRAY).optional().description("이미지 variant 목록"),
+        fieldWithPath("data.images[].variants[].url").type(JsonFieldType.STRING).optional().description("이미지 URL"),
+        fieldWithPath("data.images[].variants[].width").type(JsonFieldType.NUMBER).optional().description("variant 너비"),
+        fieldWithPath("data.images[].variants[].height").type(JsonFieldType.NUMBER).optional().description("variant 높이"),
+        fieldWithPath("data.images[].variants[].format").type(JsonFieldType.STRING).optional().description("variant 포맷"),
+        fieldWithPath("data.thumbnail").type(JsonFieldType.ARRAY).optional().description("대표 이미지 variant 목록"),
+        fieldWithPath("data.thumbnail[].url").type(JsonFieldType.STRING).optional().description("대표 variant URL"),
+        fieldWithPath("data.thumbnail[].width").type(JsonFieldType.NUMBER).optional().description("대표 variant 너비"),
+        fieldWithPath("data.thumbnail[].height").type(JsonFieldType.NUMBER).optional().description("대표 variant 높이"),
+        fieldWithPath("data.thumbnail[].format").type(JsonFieldType.STRING).optional().description("대표 variant 포맷"),
+        fieldWithPath("data.detailPageBlocks").type(JsonFieldType.ARRAY).optional().description("콘텐츠 블록 목록"),
+        fieldWithPath("data.detailPageBlocks[].order").type(JsonFieldType.NUMBER).optional().description("블록 순서"),
+        fieldWithPath("data.detailPageBlocks[].tag").type(JsonFieldType.STRING).optional().description("블록 태그"),
+        fieldWithPath("data.detailPageBlocks[].hasImage").type(JsonFieldType.BOOLEAN).optional().description("이미지 포함 여부"),
+        fieldWithPath("data.detailPageBlocks[].imageVariants").type(JsonFieldType.ARRAY).optional().description("블록 이미지 variant"),
+        fieldWithPath("data.detailPageBlocks[].imageVariants[].url").type(JsonFieldType.STRING).optional().description("이미지 URL"),
+        fieldWithPath("data.detailPageBlocks[].imageVariants[].width").type(JsonFieldType.NUMBER).optional().description("variant 너비"),
+        fieldWithPath("data.detailPageBlocks[].imageVariants[].height").type(JsonFieldType.NUMBER).optional().description("variant 높이"),
+        fieldWithPath("data.detailPageBlocks[].imageVariants[].format").type(JsonFieldType.STRING).optional().description("variant 포맷"),
+        fieldWithPath("data.detailPageBlocks[].videoUrl").type(JsonFieldType.STRING).optional().description("영상 URL"),
+        fieldWithPath("data.detailPageBlocks[].text").type(JsonFieldType.STRING).optional().description("블록 텍스트"),
     };
 
     @Test
@@ -140,7 +188,8 @@ class ProductControllerTest extends RestDocsControllerTest {
                         fieldWithPath("giftThemes").type(JsonFieldType.ARRAY).optional().description("선물 테마 목록"),
                         fieldWithPath("purposeTags").type(JsonFieldType.ARRAY).optional().description("용도 태그 목록"),
                         fieldWithPath("productionPeriodDays").type(JsonFieldType.NUMBER).optional().description("제작 기간(일)"),
-                        fieldWithPath("colors").type(JsonFieldType.ARRAY).optional().description("색상 목록")
+                        fieldWithPath("colors").type(JsonFieldType.ARRAY).optional().description("색상 목록"),
+                        fieldWithPath("images").type(JsonFieldType.ARRAY).optional().description("이미지 그룹 ID 목록")
                     )
                     .responseFields(successEnvelopeFields(SINGLE_PRODUCT_FIELDS))
                     .build()
@@ -257,7 +306,8 @@ class ProductControllerTest extends RestDocsControllerTest {
                         fieldWithPath("giftThemes").type(JsonFieldType.ARRAY).optional().description("선물 테마 목록"),
                         fieldWithPath("purposeTags").type(JsonFieldType.ARRAY).optional().description("용도 태그 목록"),
                         fieldWithPath("productionPeriodDays").type(JsonFieldType.NUMBER).optional().description("제작 기간(일)"),
-                        fieldWithPath("colors").type(JsonFieldType.ARRAY).optional().description("색상 목록")
+                        fieldWithPath("colors").type(JsonFieldType.ARRAY).optional().description("색상 목록"),
+                        fieldWithPath("images").type(JsonFieldType.ARRAY).optional().description("이미지 그룹 ID 목록")
                     )
                     .responseFields(successEnvelopeFields(SINGLE_PRODUCT_FIELDS))
                     .build()

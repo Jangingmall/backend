@@ -68,9 +68,7 @@ class ImageControllerTest extends RestDocsControllerTest {
                         fieldWithPath("purpose").type(JsonFieldType.STRING).description("용도 (PRODUCT, PROFILE 등)"),
                         fieldWithPath("sourceWidth").type(JsonFieldType.NUMBER).description("원본 이미지 너비 (px)"),
                         fieldWithPath("sourceHeight").type(JsonFieldType.NUMBER).description("원본 이미지 높이 (px)"),
-                        fieldWithPath("variants").type(JsonFieldType.ARRAY).description("업로드할 사이즈 변형 목록"),
-                        fieldWithPath("variants[].name").type(JsonFieldType.STRING).description("변형 이름 (예: 320w)"),
-                        fieldWithPath("variants[].sizeBytes").type(JsonFieldType.NUMBER).description("예상 파일 크기 (bytes)")
+                        fieldWithPath("variants").type(JsonFieldType.ARRAY).description("업로드할 사이즈 변형 이름 목록 (예: 320w, 640w, 1280w)")
                     )
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.imageId").type(JsonFieldType.STRING).description("이미지 ID (ULID)"),
@@ -83,6 +81,23 @@ class ImageControllerTest extends RestDocsControllerTest {
                     .build()
                 )
             ));
+    }
+
+    @Test
+    @DisplayName("협업 계약의 문자열 variants 요청도 Presigned URL을 발급한다")
+    void createsPresignedUrlFromContractShape() throws Exception {
+        when(images.createPresignedUpload(eq(1L), any())).thenReturn(new ImageService.PresignedUpload(
+            "01JIMAGE000000000000000000",
+            List.of(new ImageService.VariantUpload("320w", "images/product/1/id/320w.webp", "https://s3.example/320w")),
+            300));
+
+        mockMvc.perform(post("/api/images/presigned-url").with(user())
+                .contentType(APPLICATION_JSON)
+                .content("{\"fileName\":\"photo.jpg\",\"contentType\":\"image/webp\","
+                    + "\"purpose\":\"PRODUCT\",\"sourceWidth\":1200,\"sourceHeight\":800,"
+                    + "\"variants\":[\"320w\",\"640w\",\"1280w\"]}"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.imageId").value("01JIMAGE000000000000000000"));
     }
 
     @Test

@@ -66,7 +66,7 @@ class ImageServiceTest {
         assertThat(result.uploads()).extracting(ImageService.VariantUpload::variant)
             .containsExactly("320w", "640w", "1280w");
         assertThat(result.uploads()).allSatisfy(upload -> {
-            assertThat(upload.objectKey()).matches("images/product/[0-9a-f-]{36}/(320w|640w|1280w)\\.webp");
+            assertThat(upload.objectKey()).matches("images/product/1/[0-9A-Z]{26}/(320w|640w|1280w)\\.webp");
             assertThat(upload.presignedUrl()).contains(upload.objectKey());
         });
         assertThat(result.expiresInSeconds()).isEqualTo(300);
@@ -91,7 +91,7 @@ class ImageServiceTest {
 
         assertThat(result.uploads()).singleElement().satisfies(upload -> {
             assertThat(upload.variant()).isEqualTo("1280w");
-            assertThat(upload.objectKey()).matches("images/return/[0-9a-f-]{36}/1280w\\.webp");
+            assertThat(upload.objectKey()).matches("images/return/1/[0-9A-Z]{26}/1280w\\.webp");
             assertThat(upload.presignedUrl()).startsWith("https://returns.s3.example/");
         });
         verify(storage).presignPut(eq(ImagePurpose.RETURN), any(), eq("image/webp"), eq(4096L),
@@ -111,15 +111,18 @@ class ImageServiceTest {
     }
 
     @Test
-    @DisplayName("IMG-P0-007 WebP MIME이더라도 파일 확장자가 WebP가 아니면 거부한다")
-    void rejectsMismatchedFileExtension() {
-        assertThatThrownBy(() -> service.createPresignedUpload(1L,
-            new ImageService.CreatePresignedUpload("bowl.jpg", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
-                publicVariants())))
-            .isInstanceOfSatisfying(DomainException.class,
-                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_INPUT));
+    @DisplayName("IMG-P0-007 WebP로 변환된 파일은 원본 파일 확장자를 함께 보낼 수 있다")
+    void acceptsOriginalFileExtension() {
+        when(objectMapper.writeValueAsString(any())).thenReturn("{}");
+        when(storage.presignPut(eq(ImagePurpose.PRODUCT), any(), eq("image/webp"), any(Long.class), any(Duration.class)))
+            .thenReturn("https://s3.example/upload");
+        when(uploads.save(any(ImageUpload.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
+        ImageService.PresignedUpload result = service.createPresignedUpload(1L,
+            new ImageService.CreatePresignedUpload("bowl.jpg", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
+                publicVariants()));
+
+        assertThat(result.uploads()).hasSize(3);
     }
 
     @Test

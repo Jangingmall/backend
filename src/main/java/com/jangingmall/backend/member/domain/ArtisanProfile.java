@@ -42,10 +42,19 @@ public class ArtisanProfile {
                              Optional<String> category, Optional<String> region, Optional<Short> careerYears) {
         businessName.ifPresent(value -> this.businessName = value);
         introduction.ifPresent(value -> this.introduction = value);
-        imageUrl.ifPresent(value -> profileImageUrl = value);
+        imageUrl.ifPresent(value -> {
+            profileImageUrl = value;
+            profileImageId = null;
+        });
         category.ifPresent(value -> this.category = value);
         region.ifPresent(value -> this.region = value);
         careerYears.ifPresent(value -> this.careerYears = value);
+        updatedAt = LocalDateTime.now();
+    }
+
+    public void updateProfileImage(String imageId, String imageUrl) {
+        this.profileImageId = imageId;
+        this.profileImageUrl = imageUrl;
         updatedAt = LocalDateTime.now();
     }
 
