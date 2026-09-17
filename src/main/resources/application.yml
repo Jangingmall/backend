@@ -105,7 +105,7 @@ member:
 ai:
   sglang-url: ${AI_SGLANG_URL:http://localhost:8001}
   ollama-url: ${AI_OLLAMA_URL:http://localhost:8002}
-  timeout-seconds: ${AI_TIMEOUT_SECONDS:30}
+  timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
 
 ---
 spring:
@@ -188,7 +188,7 @@ member:
 ai:
   sglang-url: ${AI_SGLANG_URL:http://localhost:8001}
   ollama-url: ${AI_OLLAMA_URL:http://localhost:8002}
-  timeout-seconds: ${AI_TIMEOUT_SECONDS:30}
+  timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
 
 ---
 spring:
@@ -270,7 +270,7 @@ member:
 ai:
   sglang-url: ${AI_SGLANG_URL}
   ollama-url: ${AI_OLLAMA_URL}
-  timeout-seconds: 30
+  timeout-seconds: 300
 
 logging:
   structured:
