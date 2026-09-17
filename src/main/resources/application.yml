@@ -150,6 +150,9 @@ ai:
   content-url: ${AI_CONTENT_URL:http://localhost:8002}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
 
+internal-api:
+  backend-auth-token: ${BACKEND_AUTH_TOKEN:}
+
 ---
 spring:
   config:
@@ -251,6 +254,9 @@ ai:
   content-url: ${AI_CONTENT_URL:http://localhost:8002}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
 
+internal-api:
+  backend-auth-token: ${BACKEND_AUTH_TOKEN:}
+
 ---
 spring:
   config:
@@ -350,6 +356,9 @@ ai:
   chat-bot-url: ${AI_CHAT_BOT_URL}
   content-url: ${AI_CONTENT_URL}
   timeout-seconds: 300
+
+internal-api:
+  backend-auth-token: ${BACKEND_AUTH_TOKEN}
 
 logging:
   structured:
