@@ -231,7 +231,7 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
                 "ai-callback-complete-multipart",
                 resource(ResourceSnippetParameters.builder()
                     .tag("AI 콜백 (내부)")
-                    .summary("AI 생성 완료 콜백 — 멀티파트")
+                    .summary("AI 생성 완료 콜백 멀티파트")
                     .description("AI 서버가 react_document JSON과 이미지 파일을 multipart/form-data로 전송합니다. " +
                         "Idempotency-Key 헤더로 중복 요청을 방지합니다.")
                     .responseFields(successEnvelopeFields(ACK_FIELDS))
@@ -265,7 +265,7 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
                 "ai-callback-complete-multipart-idempotent",
                 resource(ResourceSnippetParameters.builder()
                     .tag("AI 콜백 (내부)")
-                    .summary("AI 생성 완료 콜백 — 멀티파트 중복 요청")
+                    .summary("AI 생성 완료 콜백 멀티파트 중복 요청")
                     .description("이미 처리된 Idempotency-Key로 재요청하면 ALREADY_SAVED를 반환합니다.")
                     .responseFields(successEnvelopeFields(ACK_FIELDS))
                     .build()
