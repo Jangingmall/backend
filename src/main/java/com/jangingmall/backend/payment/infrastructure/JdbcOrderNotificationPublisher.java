@@ -1,7 +1,7 @@
 package com.jangingmall.backend.payment.infrastructure;
 
 import com.jangingmall.backend.notification.domain.Notification;
-import com.jangingmall.backend.notification.infrastructure.NotificationRepository;
+import com.jangingmall.backend.notification.domain.NotificationRepository;
 import com.jangingmall.backend.payment.application.OrderNotificationPublisher;
 import com.jangingmall.backend.payment.domain.OrderReturn;
 import com.jangingmall.backend.payment.domain.PurchaseOrder;
@@ -50,6 +50,6 @@ public class JdbcOrderNotificationPublisher implements OrderNotificationPublishe
                 Long.class
             ));
         }
-        notifications.saveAll(recipients.stream().map(memberId -> Notification.create(memberId, title, content)).toList());
+        recipients.forEach(memberId -> notifications.save(Notification.create(memberId, title, content)));
     }
 }
