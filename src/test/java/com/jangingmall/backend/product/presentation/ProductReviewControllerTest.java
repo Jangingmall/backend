@@ -74,6 +74,7 @@ class ProductReviewControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.content[].orderItemId").type(JsonFieldType.NUMBER).description("주문 항목 ID"),
                         fieldWithPath("data.content[].rating").type(JsonFieldType.NUMBER).description("평점 (1~5)"),
                         fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("후기 내용"),
+                        fieldWithPath("data.content[].images").type(JsonFieldType.ARRAY).optional().description("첨부 이미지 ID 목록"),
                         fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("작성일시"),
                         fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 수"),
                         fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
@@ -113,7 +114,8 @@ class ProductReviewControllerTest extends RestDocsControllerTest {
                     .requestFields(
                         fieldWithPath("orderItemId").type(JsonFieldType.NUMBER).description("주문 항목 ID"),
                         fieldWithPath("rating").type(JsonFieldType.NUMBER).description("평점 (1~5)"),
-                        fieldWithPath("content").type(JsonFieldType.STRING).description("후기 내용 (최대 2000자)")
+                        fieldWithPath("content").type(JsonFieldType.STRING).description("후기 내용 (최대 2000자)"),
+                        fieldWithPath("images").type(JsonFieldType.ARRAY).optional().description("첨부 이미지 ID 목록 (최대 5개)")
                     )
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.reviewId").type(JsonFieldType.NUMBER).description("후기 ID"),
@@ -122,6 +124,7 @@ class ProductReviewControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.orderItemId").type(JsonFieldType.NUMBER).description("주문 항목 ID"),
                         fieldWithPath("data.rating").type(JsonFieldType.NUMBER).description("평점"),
                         fieldWithPath("data.content").type(JsonFieldType.STRING).description("후기 내용"),
+                        fieldWithPath("data.images").type(JsonFieldType.ARRAY).optional().description("첨부 이미지 ID 목록"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("작성일시")
                     ))
                     .build()

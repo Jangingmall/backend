@@ -26,10 +26,14 @@ public class S3ImageStorage implements ImageStorage {
     @Override
     public String presignPut(ImagePurpose purpose, String objectKey, String contentType, long contentLength,
                              Duration validFor) {
+        PutObjectRequest.Builder put = PutObjectRequest.builder().bucket(bucket(purpose)).key(objectKey)
+            .contentType(contentType);
+        if (contentLength > 0) {
+            put.contentLength(contentLength);
+        }
         PresignedPutObjectRequest request = presigner.presignPutObject(PutObjectPresignRequest.builder()
             .signatureDuration(validFor)
-            .putObjectRequest(PutObjectRequest.builder().bucket(bucket(purpose)).key(objectKey)
-                .contentType(contentType).contentLength(contentLength).build())
+            .putObjectRequest(put.build())
             .build());
         return request.url().toString();
     }

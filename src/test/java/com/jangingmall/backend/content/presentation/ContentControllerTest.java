@@ -32,6 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
@@ -52,6 +53,12 @@ class ContentControllerTest extends RestDocsControllerTest {
 
     private static final ContentResponse.Detail SAMPLE_DETAIL =
         new ContentResponse.Detail(1L, 10L, ContentStatus.DRAFT, 1, SAMPLE_REACT_DOCUMENT);
+
+    private static final ContentResponse.BlockChanged SAMPLE_BLOCK_CHANGED =
+        new ContentResponse.BlockChanged(1L, 2,
+            new ContentResponse.Block(1, "img", true,
+                List.of(new ContentResponse.ImageVariant("https://cdn.example/320.webp", 320, 213, "webp")),
+                null, null));
 
     private static final org.springframework.restdocs.payload.FieldDescriptor[] DETAIL_FIELDS = {
         fieldWithPath("data.contentId").type(JsonFieldType.NUMBER).description("콘텐츠 ID"),
@@ -310,5 +317,112 @@ class ContentControllerTest extends RestDocsControllerTest {
         mockMvc.perform(post("/api/content/products/{productId}/publish", 10L))
             .andExpect(status().isUnprocessableEntity())
             .andDo(documentError("content-publish-invalid", "콘텐츠", "게시 — 상태 오류", "APPROVED가 아닌 경우 422를 반환합니다."));
+    }
+
+    @Test
+    @DisplayName("콘텐츠 블록 일괄 수정 — 이미지 블록과 variant 응답을 저장한다")
+    @WithMockUser(roles = "ARTISAN")
+    void replaceBlocks() throws Exception {
+        ContentResponse.Detail edited = new ContentResponse.Detail(
+            1L, 10L, ContentStatus.DRAFT, 2, SAMPLE_REACT_DOCUMENT,
+            List.of(new ContentResponse.Block(1, "img", true,
+                List.of(new ContentResponse.ImageVariant("https://cdn.example/320.webp", 320, 213, "webp")),
+                null, null)));
+        when(contentService.replaceBlocks(any())).thenReturn(edited);
+
+        mockMvc.perform(patch("/api/content/products/{productId}/contents/{contentId}", 10L, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new ContentRequest.ReplaceBlocks(List.of(
+                    new ContentRequest.Block(1, "img", true, "01JIMAGE000000000000000000", null, null))))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.blocks[0].imageVariants[0].width").value(320))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "content-blocks-replace",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("콘텐츠")
+                    .summary("콘텐츠 블록 일괄 수정")
+                    .description("콘텐츠 블록을 순서대로 저장하고 이미지 블록에는 이미지 variant를 반환합니다.")
+                    .pathParameters(
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("contentId").description("콘텐츠 ID").type(SimpleType.INTEGER)
+                    )
+                    .requestFields(
+                        fieldWithPath("blocks").type(JsonFieldType.ARRAY).description("대체할 블록 목록"),
+                        fieldWithPath("blocks[].order").type(JsonFieldType.NUMBER).description("표시 순서"),
+                        fieldWithPath("blocks[].tag").type(JsonFieldType.STRING).description("h2/p/img/video"),
+                        fieldWithPath("blocks[].hasImage").type(JsonFieldType.BOOLEAN).optional().description("이미지 포함 여부"),
+                        fieldWithPath("blocks[].imageUrl").type(JsonFieldType.STRING).optional().description("이미지 ID 또는 URL"),
+                        fieldWithPath("blocks[].videoUrl").type(JsonFieldType.STRING).optional().description("영상 URL"),
+                        fieldWithPath("blocks[].text").type(JsonFieldType.STRING).optional().description("텍스트")
+                    )
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.contentId").type(JsonFieldType.NUMBER).description("콘텐츠 ID"),
+                        fieldWithPath("data.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                        fieldWithPath("data.status").type(JsonFieldType.STRING).description("콘텐츠 상태"),
+                        fieldWithPath("data.version").type(JsonFieldType.NUMBER).description("버전"),
+                        subsectionWithPath("data.reactDocument").type(JsonFieldType.OBJECT).optional().description("원본 React 문서"),
+                        fieldWithPath("data.blocks").type(JsonFieldType.ARRAY).description("저장된 블록"),
+                        fieldWithPath("data.blocks[].order").type(JsonFieldType.NUMBER).description("표시 순서"),
+                        fieldWithPath("data.blocks[].tag").type(JsonFieldType.STRING).description("블록 태그"),
+                        fieldWithPath("data.blocks[].hasImage").type(JsonFieldType.BOOLEAN).description("이미지 포함 여부"),
+                        fieldWithPath("data.blocks[].imageVariants").type(JsonFieldType.ARRAY).description("이미지 variant"),
+                        fieldWithPath("data.blocks[].imageVariants[].url").type(JsonFieldType.STRING).description("이미지 URL"),
+                        fieldWithPath("data.blocks[].imageVariants[].width").type(JsonFieldType.NUMBER).description("너비"),
+                        fieldWithPath("data.blocks[].imageVariants[].height").type(JsonFieldType.NUMBER).description("높이"),
+                        fieldWithPath("data.blocks[].imageVariants[].format").type(JsonFieldType.STRING).description("포맷"),
+                        fieldWithPath("data.blocks[].videoUrl").type(JsonFieldType.STRING).optional().description("영상 URL"),
+                        fieldWithPath("data.blocks[].text").type(JsonFieldType.STRING).optional().description("텍스트")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("콘텐츠 단건 블록 수정 — 이미지 URL을 imageId로 연결한다")
+    @WithMockUser(roles = "ARTISAN")
+    void updateBlock() throws Exception {
+        when(contentService.updateBlock(any())).thenReturn(SAMPLE_BLOCK_CHANGED);
+
+        mockMvc.perform(patch("/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder}", 10L, 1L, 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new ContentRequest.UpdateBlock("img", true, "01JIMAGE000000000000000000", null, null))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.block.imageVariants[0].width").value(320))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "content-block-update",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("콘텐츠")
+                    .summary("콘텐츠 단건 블록 수정")
+                    .description("지정한 순서의 블록 하나를 수정합니다.")
+                    .pathParameters(
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("contentId").description("콘텐츠 ID").type(SimpleType.INTEGER),
+                        parameterWithName("blockOrder").description("블록 순서").type(SimpleType.INTEGER)
+                    )
+                    .requestFields(
+                        fieldWithPath("tag").type(JsonFieldType.STRING).optional().description("블록 태그"),
+                        fieldWithPath("hasImage").type(JsonFieldType.BOOLEAN).optional().description("이미지 포함 여부"),
+                        fieldWithPath("imageUrl").type(JsonFieldType.STRING).optional().description("이미지 ID 또는 URL"),
+                        fieldWithPath("videoUrl").type(JsonFieldType.STRING).optional().description("영상 URL"),
+                        fieldWithPath("text").type(JsonFieldType.STRING).optional().description("텍스트")
+                    )
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.contentId").type(JsonFieldType.NUMBER).description("콘텐츠 ID"),
+                        fieldWithPath("data.version").type(JsonFieldType.NUMBER).description("콘텐츠 버전"),
+                        fieldWithPath("data.block.order").type(JsonFieldType.NUMBER).description("블록 순서"),
+                        fieldWithPath("data.block.tag").type(JsonFieldType.STRING).description("블록 태그"),
+                        fieldWithPath("data.block.hasImage").type(JsonFieldType.BOOLEAN).description("이미지 포함 여부"),
+                        fieldWithPath("data.block.imageVariants").type(JsonFieldType.ARRAY).description("이미지 variant"),
+                        fieldWithPath("data.block.imageVariants[].url").type(JsonFieldType.STRING).description("이미지 URL"),
+                        fieldWithPath("data.block.imageVariants[].width").type(JsonFieldType.NUMBER).description("너비"),
+                        fieldWithPath("data.block.imageVariants[].height").type(JsonFieldType.NUMBER).description("높이"),
+                        fieldWithPath("data.block.imageVariants[].format").type(JsonFieldType.STRING).description("포맷"),
+                        fieldWithPath("data.block.videoUrl").type(JsonFieldType.STRING).optional().description("영상 URL"),
+                        fieldWithPath("data.block.text").type(JsonFieldType.STRING).optional().description("텍스트")
+                    ))
+                    .build()
+                )
+            ));
     }
 }

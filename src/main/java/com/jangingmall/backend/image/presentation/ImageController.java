@@ -3,6 +3,9 @@ package com.jangingmall.backend.image.presentation;
 import com.jangingmall.backend.global.common.response.ApiResponse;
 import com.jangingmall.backend.image.application.ImageService;
 import com.jangingmall.backend.image.domain.ImagePurpose;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -57,9 +60,37 @@ public class ImageController {
         }
     }
 
-    public record VariantRequest(@NotBlank String name, @Positive long sizeBytes) {
+    /**
+     * The collaboration contract sends variant names (for example, "320w").
+     * sizeBytes remains accepted for clients that want Content-Length signing,
+     * but is optional so the contract can be used without leaking transformed
+     * file sizes into the request.
+     */
+    public record VariantRequest(@NotBlank String name, @Positive Long sizeBytes) {
+        public VariantRequest(String name, long sizeBytes) {
+            this(name, Long.valueOf(sizeBytes));
+        }
+
+        @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+        public VariantRequest(String name) {
+            this(name, null);
+        }
+
+        @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+        public VariantRequest(@JsonProperty("name") String name,
+                              @JsonProperty("sizeBytes") Long sizeBytes) {
+            this.name = name;
+            this.sizeBytes = sizeBytes;
+        }
+
+        /** Serialize the canonical collaboration shape: ["320w", "640w", "1280w"]. */
+        @JsonValue
+        public String jsonValue() {
+            return name;
+        }
+
         ImageService.UploadVariant toCommand() {
-            return new ImageService.UploadVariant(name, sizeBytes);
+            return new ImageService.UploadVariant(name, sizeBytes == null ? 0L : sizeBytes);
         }
     }
 

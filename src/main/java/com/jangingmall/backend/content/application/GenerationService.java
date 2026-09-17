@@ -6,10 +6,14 @@ import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
+import com.jangingmall.backend.global.exception.DomainException;
+import com.jangingmall.backend.global.exception.ErrorCode;
+import com.jangingmall.backend.image.application.ImageService;
+import com.jangingmall.backend.image.domain.ImagePurpose;
+import org.springframework.beans.factory.annotation.Autowired;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductErrorMessage;
 import com.jangingmall.backend.product.domain.ProductRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -18,7 +22,6 @@ import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class GenerationService {
 
     private final ContentGenerationRepository generationRepository;
@@ -26,11 +29,37 @@ public class GenerationService {
     private final AiContentClient aiContentClient;
     private final ContentService contentService;
     private final ObjectMapper objectMapper;
+    private final ImageService imageService;
+
+    @Autowired
+    public GenerationService(ContentGenerationRepository generationRepository, ProductRepository productRepository,
+                             AiContentClient aiContentClient, ContentService contentService,
+                             ObjectMapper objectMapper, ImageService imageService) {
+        this.generationRepository = generationRepository;
+        this.productRepository = productRepository;
+        this.aiContentClient = aiContentClient;
+        this.contentService = contentService;
+        this.objectMapper = objectMapper;
+        this.imageService = imageService;
+    }
+
+    public GenerationService(ContentGenerationRepository generationRepository, ProductRepository productRepository,
+                             AiContentClient aiContentClient, ContentService contentService,
+                             ObjectMapper objectMapper) {
+        this(generationRepository, productRepository, aiContentClient, contentService, objectMapper, null);
+    }
 
     @Transactional
     public GenerationResponse request(GenerationCommand.Request command) {
         Product product = getProduct(command.productId());
         verifyOwner(product, command.requesterId());
+
+        if (imageService != null) {
+            if (command.images() == null || command.images().size() < 3 || command.images().size() > 12) {
+                throw new DomainException(ErrorCode.INVALID_INPUT);
+            }
+            imageService.consumeOwned(command.requesterId(), ImagePurpose.CONTENT, command.images());
+        }
 
         String imagesJson = String.join(",", command.images());
         ContentGeneration generation = ContentGeneration.create(
@@ -77,7 +106,7 @@ public class GenerationService {
             String reactDocumentJson = aiContentClient.requestGeneration(
                 generationId,
                 command.productId(),
-                command.images(),
+                aiImageReferences(command.images()),
                 command.productName(),
                 command.howMade(),
                 command.careTips()
@@ -104,5 +133,18 @@ public class GenerationService {
         if (!product.getArtisanId().equals(requesterId)) {
             throw new ForbiddenException(GenerationErrorMessage.FORBIDDEN.message());
         }
+    }
+
+    private java.util.List<String> aiImageReferences(java.util.List<String> imageIds) {
+        if (imageService == null) {
+            return imageIds;
+        }
+        return imageIds.stream()
+            .map(id -> imageService.publicVariants(id).stream()
+                .filter(variant -> variant.width() == 1280)
+                .map(ImageService.PublicVariant::url)
+                .findFirst()
+                .orElse(id))
+            .toList();
     }
 }

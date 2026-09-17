@@ -37,15 +37,24 @@ public class ArtisanController {
 
     public record Profile(@Size(min = 1, max = 100) @Pattern(regexp = ".*\\S.*") String businessName,
             @Size(max = 255) String introduction, @Size(max = 500) @Pattern(regexp = "https://[^\\s]+") String profileImageUrl,
+            @Size(max = 30) String profileImageId,
             @Size(min = 1, max = 50) String category, @Size(max = 100) String region,
             @Min(0) @Max(200) Short careerYears, @Min(1900) @Max(2200) Short certifiedYear,
             @Size(max = 255) String lineage, @Size(max = 500) String quote, @Size(max = 65535) String bio,
             @Size(max = 500) @Pattern(regexp = "https://[^\\s]+") String videoUrl) {
+        public Profile(String businessName, String introduction, String profileImageUrl, String category,
+                       String region, Short careerYears, Short certifiedYear, String lineage, String quote,
+                       String bio, String videoUrl) {
+            this(businessName, introduction, profileImageUrl, null, category, region, careerYears, certifiedYear,
+                lineage, quote, bio, videoUrl);
+        }
+
         public ArtisanService.Changes toChanges() {
             return new ArtisanService.Changes(Optional.ofNullable(businessName), Optional.ofNullable(introduction),
                 Optional.ofNullable(profileImageUrl), Optional.ofNullable(category), Optional.ofNullable(region),
                 Optional.ofNullable(careerYears), Optional.ofNullable(certifiedYear), Optional.ofNullable(lineage),
-                Optional.ofNullable(quote), Optional.ofNullable(bio), Optional.ofNullable(videoUrl));
+                Optional.ofNullable(quote), Optional.ofNullable(bio), Optional.ofNullable(videoUrl),
+                Optional.ofNullable(profileImageId));
         }
     }
 }

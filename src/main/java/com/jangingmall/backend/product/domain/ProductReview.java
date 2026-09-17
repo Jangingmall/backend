@@ -12,6 +12,8 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -41,10 +43,20 @@ public class ProductReview {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    /** Consumed public image group IDs, serialized as a JSON array. */
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(nullable = false, columnDefinition = "jsonb")
+    private String images = "[]";
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     public static ProductReview write(Long productId, Long writerId, Long orderItemId, short rating, String content) {
+        return write(productId, writerId, orderItemId, rating, content, "[]");
+    }
+
+    public static ProductReview write(Long productId, Long writerId, Long orderItemId, short rating, String content,
+                                      String images) {
         if (rating < 1 || rating > 5) {
             throw new BusinessRuleViolationException(ProductReviewErrorMessage.INVALID_RATING.message());
         }
@@ -54,6 +66,7 @@ public class ProductReview {
         r.orderItemId = orderItemId;
         r.rating = rating;
         r.content = content;
+        r.images = images == null ? "[]" : images;
         return r;
     }
 

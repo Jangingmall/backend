@@ -11,10 +11,11 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
@@ -37,16 +38,18 @@ public class ImageService {
     private final UuidGenerator uuids;
     private final ObjectMapper objectMapper;
 
+    @Value("${image.base-url:}")
+    private String imageBaseUrl;
+
     @Transactional
     public PresignedUpload createPresignedUpload(Long memberId, CreatePresignedUpload command) {
         memberAccess.active(memberId);
         validate(command);
         String imageId = ulids.next();
-        String objectKeyId = uuids.next();
         Duration validFor = Duration.ofSeconds(properties.getPresignExpirySeconds());
         Map<String, Map<String, Object>> metadata = new LinkedHashMap<>();
         List<VariantUpload> uploadUrls = command.variants().stream().map(variant -> {
-            String objectKey = objectKey(command.purpose(), objectKeyId, variant.name());
+            String objectKey = objectKey(memberId, imageId, command.purpose(), variant.name());
             metadata.put(variant.name(), Map.of(
                 "objectKey", objectKey,
                 "contentType", WEBP,
@@ -91,13 +94,17 @@ public class ImageService {
         if (imageIds == null || imageIds.isEmpty()) {
             return List.of();
         }
-        if (imageIds.stream().anyMatch(id -> id == null || id.isBlank())
-            || imageIds.stream().distinct().count() != imageIds.size()) {
+        if (imageIds.stream().anyMatch(id -> id == null || id.isBlank())) {
+            throw new DomainException(ErrorCode.INVALID_INPUT);
+        }
+        List<String> normalizedIds = imageIds.stream().map(String::trim)
+            .map(this::resolveImageReference).toList();
+        if (normalizedIds.stream().distinct().count() != normalizedIds.size()) {
             throw new DomainException(ErrorCode.INVALID_INPUT);
         }
 
         Instant now = Instant.now();
-        List<ImageUpload> selected = imageIds.stream().map(String::trim).map(imageId -> {
+        List<ImageUpload> selected = normalizedIds.stream().map(imageId -> {
             ImageUpload upload = uploads.findById(imageId)
                 .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
             if (!upload.getMemberId().equals(requesterId) || upload.getPurpose() != purpose) {
@@ -124,6 +131,77 @@ public class ImageService {
             }
         }
         return selected.stream().map(ImageUpload::getId).toList();
+    }
+
+    /**
+     * The return API historically called this value {@code returnPhotoKeys} and
+     * sent an S3 object key. Resolve that legacy reference to the image group
+     * before applying the same ownership and consumption checks as imageId.
+     */
+    private String resolveImageReference(String reference) {
+        if (uploads.findById(reference).isPresent()) {
+            return reference;
+        }
+        return findImageIdByReference(reference).orElse(reference);
+    }
+
+    /**
+     * Converts a consumed image aggregate into the public contract's three
+     * size-specific WebP variants.
+     */
+    public List<PublicVariant> publicVariants(String imageId) {
+        ImageUpload upload = uploads.findById(imageId)
+            .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
+        if (!upload.isConsumed()) {
+            throw new DomainException(ErrorCode.CONFLICT);
+        }
+        Map<String, Object> stored = variants(upload);
+        String base = imageBaseUrl == null ? "" : imageBaseUrl.replaceAll("/+$", "");
+        List<PublicVariant> result = PUBLIC_VARIANTS.stream().map(name -> {
+            Object metadata = stored.get(name);
+            if (metadata == null) {
+                throw new DomainException(ErrorCode.INVALID_INPUT);
+            }
+            String key = objectKey(metadata);
+            int width = Integer.parseInt(name.substring(0, name.length() - 1));
+            int height = (int) Math.round((double) width / upload.getSourceWidth() * upload.getSourceHeight());
+            String url = publicUrl(key, base, upload.getPurpose());
+            return new PublicVariant(url, width, height, "webp");
+        }).toList();
+        return List.copyOf(result);
+    }
+
+    /** Resolves an AI/editor imageUrl back to the owning imageId. */
+    public Optional<String> findImageIdByReference(String reference) {
+        if (reference == null || reference.isBlank()) {
+            return Optional.empty();
+        }
+        List<ImageUpload> all = uploads.findAll();
+        if (all == null) {
+            return Optional.empty();
+        }
+        for (ImageUpload upload : all) {
+            Map<String, Object> stored = variants(upload);
+            for (Object metadata : stored.values()) {
+                String key = objectKey(metadata);
+                String url = publicUrl(key, imageBaseUrl == null ? "" : imageBaseUrl.replaceAll("/+$", ""), upload.getPurpose());
+                if (reference.equals(key) || reference.equals(url) || reference.endsWith("/" + key)) {
+                    return Optional.of(upload.getId());
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    private String publicUrl(String key, String base, ImagePurpose purpose) {
+        if (!base.isBlank()) {
+            return base + "/" + key.replaceAll("^/+", "");
+        }
+        String bucket = purpose == ImagePurpose.RETURN ? properties.getReturnBucket() : properties.getBucket();
+        if (bucket != null && !bucket.isBlank()) {
+            return "https://" + bucket + ".s3." + properties.getRegion() + ".amazonaws.com/" + key;
+        }
+        return key;
     }
 
     @Transactional
@@ -160,9 +238,7 @@ public class ImageService {
             || command.sourceWidth() <= 0 || command.sourceHeight() <= 0) {
             throw new DomainException(ErrorCode.INVALID_INPUT);
         }
-        if (command.fileName() == null
-            || !command.fileName().trim().toLowerCase(Locale.ROOT).endsWith(".webp")
-            || !WEBP.equalsIgnoreCase(command.contentType())) {
+        if (command.fileName() == null || !WEBP.equalsIgnoreCase(command.contentType())) {
             throw new DomainException(ErrorCode.INVALID_INPUT);
         }
         if (command.sourceWidth() > MAX_DIMENSION || command.sourceHeight() > MAX_DIMENSION) {
@@ -178,15 +254,15 @@ public class ImageService {
             || !Set.copyOf(variantNames).equals(requiredVariants)) {
             throw new DomainException(ErrorCode.INVALID_INPUT);
         }
-        if (command.variants().stream().anyMatch(variant -> variant.sizeBytes() <= 0
+        if (command.variants().stream().anyMatch(variant -> variant.sizeBytes() < 0
             || variant.sizeBytes() > properties.getMaxFileSizeBytes())) {
             throw new DomainException(ErrorCode.INVALID_INPUT);
         }
     }
 
-    private String objectKey(ImagePurpose purpose, String objectKeyId, String variant) {
+    private String objectKey(Long memberId, String imageId, ImagePurpose purpose, String variant) {
         String prefix = properties.getKeyPrefix().replaceAll("^/+|/+$", "");
-        return prefix + "/" + purpose.name().toLowerCase() + "/" + objectKeyId + "/" + variant + ".webp";
+        return prefix + "/" + purpose.name().toLowerCase() + "/" + memberId + "/" + imageId + "/" + variant + ".webp";
     }
 
     private boolean isValidUpload(ImagePurpose purpose, String objectKey) {
@@ -247,4 +323,6 @@ public class ImageService {
     public record PresignedUpload(String imageId, List<VariantUpload> uploads, int expiresInSeconds) {}
 
     public record Verification(boolean exists, boolean ownerMatched, List<String> variants) {}
+
+    public record PublicVariant(String url, int width, int height, String format) {}
 }

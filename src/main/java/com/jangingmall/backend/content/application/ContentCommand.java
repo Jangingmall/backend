@@ -5,7 +5,9 @@ public sealed interface ContentCommand permits
     ContentCommand.SubmitForReview,
     ContentCommand.Approve,
     ContentCommand.Reject,
-    ContentCommand.Publish {
+    ContentCommand.Publish,
+    ContentCommand.ReplaceBlocks,
+    ContentCommand.UpdateBlock {
 
     record StoreReactDocument(
         Long productId,
@@ -38,4 +40,28 @@ public sealed interface ContentCommand permits
         Long productId,
         Long requesterId
     ) implements ContentCommand {}
+
+    record ReplaceBlocks(
+        Long productId,
+        Long contentId,
+        Long requesterId,
+        java.util.List<ContentBlockInput> blocks
+    ) implements ContentCommand {}
+
+    record UpdateBlock(
+        Long productId,
+        Long contentId,
+        int order,
+        Long requesterId,
+        ContentBlockInput block
+    ) implements ContentCommand {}
+
+    record ContentBlockInput(
+        Integer order,
+        String tag,
+        Boolean hasImage,
+        String imageUrl,
+        String videoUrl,
+        String text
+    ) {}
 }
