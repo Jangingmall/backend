@@ -2,8 +2,10 @@ package com.jangingmall.backend.content.presentation;
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.epages.restdocs.apispec.SimpleType;
 import com.jangingmall.backend.content.application.ContentResponse;
 import com.jangingmall.backend.content.application.ContentService;
+import com.jangingmall.backend.content.domain.BlockTag;
 import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
 import com.jangingmall.backend.global.config.SecurityConfig;
@@ -24,14 +26,13 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.epages.restdocs.apispec.SimpleType;
-
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
@@ -310,5 +311,150 @@ class ContentControllerTest extends RestDocsControllerTest {
         mockMvc.perform(post("/api/content/products/{productId}/publish", 10L))
             .andExpect(status().isUnprocessableEntity())
             .andDo(documentError("content-publish-invalid", "콘텐츠", "게시 — 상태 오류", "APPROVED가 아닌 경우 422를 반환합니다."));
+    }
+
+    private static final List<ContentResponse.BlockView> SAMPLE_BLOCKS = List.of(
+        new ContentResponse.BlockView(0, BlockTag.h2, false, null, "청자 다완의 이야기"),
+        new ContentResponse.BlockView(1, BlockTag.p, false, null, "60년 경력 도예 장인이 빚은 작품입니다.")
+    );
+
+    private static final ContentResponse.BulkUpdated BULK_UPDATED =
+        new ContentResponse.BulkUpdated(1L, 10L, ContentStatus.DRAFT, 2, SAMPLE_BLOCKS);
+
+    private static final org.springframework.restdocs.payload.FieldDescriptor[] BULK_UPDATED_FIELDS = {
+        fieldWithPath("data.contentId").type(JsonFieldType.NUMBER).description("콘텐츠 ID"),
+        fieldWithPath("data.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+        fieldWithPath("data.status").type(JsonFieldType.STRING).description("콘텐츠 상태"),
+        fieldWithPath("data.version").type(JsonFieldType.NUMBER).description("버전 번호"),
+        fieldWithPath("data.blocks[].order").type(JsonFieldType.NUMBER).description("블록 순서"),
+        fieldWithPath("data.blocks[].tag").type(JsonFieldType.STRING).description("블록 태그 (h2 | p | img | video)"),
+        fieldWithPath("data.blocks[].hasImage").type(JsonFieldType.BOOLEAN).description("이미지 포함 여부"),
+        fieldWithPath("data.blocks[].imageUrl").type(JsonFieldType.STRING).optional().description("이미지 URL (tag=img일 때)"),
+        fieldWithPath("data.blocks[].text").type(JsonFieldType.STRING).optional().description("텍스트 내용"),
+    };
+
+    @Test
+    @DisplayName("문단 일괄 수정 — DRAFT 콘텐츠의 블록 전체를 교체한다")
+    @WithMockUser(roles = "ARTISAN")
+    void bulkUpdate() throws Exception {
+        when(contentService.bulkUpdate(any())).thenReturn(BULK_UPDATED);
+
+        ContentRequest.BulkUpdate request = new ContentRequest.BulkUpdate(List.of(
+            new ContentRequest.BulkUpdate.BlockItem(0, BlockTag.h2, false, null, "청자 다완의 이야기"),
+            new ContentRequest.BulkUpdate.BlockItem(1, BlockTag.p, false, null, "60년 경력 도예 장인이 빚은 작품입니다.")
+        ));
+
+        mockMvc.perform(patch("/api/content/products/{productId}/contents/{contentId}", 10L, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(request)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.contentId").value(1))
+            .andExpect(jsonPath("$.data.blocks").isArray())
+            .andExpect(jsonPath("$.data.blocks[0].tag").value("h2"))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "content-bulk-update",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("콘텐츠")
+                    .summary("문단 일괄 수정")
+                    .description("여러 문단을 한 번에 대체합니다. 기존 blocks 전체가 교체되며 DRAFT/REJECTED 상태에서만 허용됩니다.")
+                    .pathParameters(
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("contentId").description("콘텐츠 ID").type(SimpleType.INTEGER)
+                    )
+                    .requestFields(
+                        fieldWithPath("blocks[].order").type(JsonFieldType.NUMBER).optional().description("블록 순서"),
+                        fieldWithPath("blocks[].tag").type(JsonFieldType.STRING).optional().description("블록 태그 (h2 | p | img | video)"),
+                        fieldWithPath("blocks[].hasImage").type(JsonFieldType.BOOLEAN).optional().description("이미지 포함 여부"),
+                        fieldWithPath("blocks[].imageUrl").type(JsonFieldType.STRING).optional().description("이미지 URL"),
+                        fieldWithPath("blocks[].text").type(JsonFieldType.STRING).optional().description("텍스트 내용")
+                    )
+                    .responseFields(successEnvelopeFields(BULK_UPDATED_FIELDS))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("문단 일괄 수정 — DRAFT/REJECTED가 아니면 422를 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void bulkUpdateInvalidStatus() throws Exception {
+        when(contentService.bulkUpdate(any())).thenThrow(new BusinessRuleViolationException("DRAFT 또는 REJECTED 상태에서만 편집할 수 있습니다"));
+
+        ContentRequest.BulkUpdate request = new ContentRequest.BulkUpdate(List.of(
+            new ContentRequest.BulkUpdate.BlockItem(0, BlockTag.p, false, null, "텍스트")
+        ));
+
+        mockMvc.perform(patch("/api/content/products/{productId}/contents/{contentId}", 10L, 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(request)))
+            .andExpect(status().isUnprocessableEntity())
+            .andDo(documentError("content-bulk-update-invalid-status", "콘텐츠", "문단 일괄 수정 — 상태 오류", "DRAFT 또는 REJECTED가 아닌 경우 422를 반환합니다."));
+    }
+
+    private static final ContentResponse.BlockView SINGLE_BLOCK =
+        new ContentResponse.BlockView(0, BlockTag.h2, false, null, "수정된 소제목");
+
+    private static final ContentResponse.BlockUpdated BLOCK_UPDATED =
+        new ContentResponse.BlockUpdated(1L, 3, SINGLE_BLOCK);
+
+    private static final org.springframework.restdocs.payload.FieldDescriptor[] BLOCK_UPDATED_FIELDS = {
+        fieldWithPath("data.contentId").type(JsonFieldType.NUMBER).description("콘텐츠 ID"),
+        fieldWithPath("data.version").type(JsonFieldType.NUMBER).description("버전 번호"),
+        fieldWithPath("data.block.order").type(JsonFieldType.NUMBER).description("블록 순서"),
+        fieldWithPath("data.block.tag").type(JsonFieldType.STRING).description("블록 태그 (h2 | p | img | video)"),
+        fieldWithPath("data.block.hasImage").type(JsonFieldType.BOOLEAN).description("이미지 포함 여부"),
+        fieldWithPath("data.block.imageUrl").type(JsonFieldType.STRING).optional().description("이미지 URL (tag=img일 때)"),
+        fieldWithPath("data.block.text").type(JsonFieldType.STRING).optional().description("텍스트 내용"),
+    };
+
+    @Test
+    @DisplayName("단건 블록 수정 — 특정 blockOrder의 블록 하나를 수정한다")
+    @WithMockUser(roles = "ARTISAN")
+    void updateBlock() throws Exception {
+        when(contentService.updateBlock(any())).thenReturn(BLOCK_UPDATED);
+
+        ContentRequest.BlockUpdate request = new ContentRequest.BlockUpdate(BlockTag.h2, "수정된 소제목", null);
+
+        mockMvc.perform(patch("/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder}", 10L, 1L, 0)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(request)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.contentId").value(1))
+            .andExpect(jsonPath("$.data.block.tag").value("h2"))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "content-block-update",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("콘텐츠")
+                    .summary("단건 블록 수정")
+                    .description("특정 순서(blockOrder)의 블록 하나만 수정합니다. 텍스트 블록은 text만, 이미지 블록은 imageUrl만 전달합니다.")
+                    .pathParameters(
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("contentId").description("콘텐츠 ID").type(SimpleType.INTEGER),
+                        parameterWithName("blockOrder").description("블록 순서 (0부터 시작)").type(SimpleType.INTEGER)
+                    )
+                    .requestFields(
+                        fieldWithPath("tag").type(JsonFieldType.STRING).optional().description("블록 태그 (h2 | p | img | video)"),
+                        fieldWithPath("text").type(JsonFieldType.STRING).optional().description("텍스트 내용 (텍스트 블록만)"),
+                        fieldWithPath("imageUrl").type(JsonFieldType.STRING).optional().description("이미지 URL (img 블록만)")
+                    )
+                    .responseFields(successEnvelopeFields(BLOCK_UPDATED_FIELDS))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("단건 블록 수정 — 존재하지 않는 blockOrder면 404를 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void updateBlockNotFound() throws Exception {
+        when(contentService.updateBlock(any())).thenThrow(new NotFoundException("해당 순서의 블록을 찾을 수 없습니다"));
+
+        ContentRequest.BlockUpdate request = new ContentRequest.BlockUpdate(BlockTag.p, "텍스트", null);
+
+        mockMvc.perform(patch("/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder}", 10L, 1L, 99)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(request)))
+            .andExpect(status().isNotFound())
+            .andDo(documentError("content-block-update-not-found", "콘텐츠", "단건 블록 수정 — 블록 없음", "존재하지 않는 blockOrder인 경우 404를 반환합니다."));
     }
 }

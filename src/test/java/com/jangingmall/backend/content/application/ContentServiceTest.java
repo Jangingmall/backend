@@ -1,7 +1,9 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.BlockTag;
 import com.jangingmall.backend.content.domain.Content;
+import com.jangingmall.backend.content.domain.ContentBlock;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentRepository;
@@ -24,6 +26,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -65,7 +68,7 @@ class ContentServiceTest {
 
     @BeforeEach
     void setUp() {
-        contentService = new ContentService(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository, interviewRepository);
+        contentService = new ContentService(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository, interviewRepository, new ObjectMapper());
         artisanProduct = Product.create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
         ReflectionTestUtils.setField(artisanProduct, "id", 10L);
         sampleContent = Content.create(10L);
@@ -253,5 +256,83 @@ class ContentServiceTest {
 
         assertThatThrownBy(() -> contentService.publish(command))
             .isInstanceOf(BusinessRuleViolationException.class);
+    }
+
+    @Test
+    @DisplayName("문단 일괄 수정 — DRAFT 콘텐츠의 블록 전체를 교체하고 이력을 저장한다")
+    void bulkUpdate() {
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}");
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any(Content.class))).thenReturn(sampleContent);
+        when(historyRepository.save(any(ContentEditHistory.class))).thenReturn(null);
+
+        List<ContentBlock> blocks = List.of(
+            new ContentBlock(0, BlockTag.h2, "소제목", null),
+            new ContentBlock(1, BlockTag.p, "본문", null)
+        );
+        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(10L, 1L, 1L, blocks);
+
+        ContentResponse.BulkUpdated result = contentService.bulkUpdate(command);
+
+        assertThat(result.blocks()).hasSize(2);
+        assertThat(result.blocks().get(0).tag()).isEqualTo(BlockTag.h2);
+        verify(historyRepository).save(historyCaptor.capture());
+        assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.ARTISAN);
+    }
+
+    @Test
+    @DisplayName("문단 일괄 수정 — DRAFT/REJECTED가 아니면 BusinessRuleViolationException이 발생한다")
+    void bulkUpdateInvalidStatus() {
+        ReflectionTestUtils.setField(sampleContent, "status", ContentStatus.PENDING_REVIEW);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+
+        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(10L, 1L, 1L,
+            List.of(new ContentBlock(0, BlockTag.p, "텍스트", null)));
+
+        assertThatThrownBy(() -> contentService.bulkUpdate(command))
+            .isInstanceOf(BusinessRuleViolationException.class);
+    }
+
+    @Test
+    @DisplayName("단건 블록 수정 — 해당 blockOrder의 블록만 변경하고 이력을 저장한다")
+    void updateBlock() {
+        String existingDoc = "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[" +
+            "{\"tag\":\"h2\",\"props\":{},\"children\":[{\"tag\":\"text\",\"props\":{\"value\":\"기존 소제목\"},\"children\":[]}]}," +
+            "{\"tag\":\"p\",\"props\":{},\"children\":[{\"tag\":\"text\",\"props\":{\"value\":\"기존 본문\"},\"children\":[]}]}" +
+            "]}";
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", existingDoc);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any(Content.class))).thenReturn(sampleContent);
+        when(historyRepository.save(any(ContentEditHistory.class))).thenReturn(null);
+
+        ContentBlock patch = new ContentBlock(0, BlockTag.h2, "수정된 소제목", null);
+        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(10L, 1L, 0, 1L, patch);
+
+        ContentResponse.BlockUpdated result = contentService.updateBlock(command);
+
+        assertThat(result.block().text()).isEqualTo("수정된 소제목");
+        assertThat(result.block().tag()).isEqualTo(BlockTag.h2);
+        verify(historyRepository).save(historyCaptor.capture());
+        assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.ARTISAN);
+    }
+
+    @Test
+    @DisplayName("단건 블록 수정 — 존재하지 않는 blockOrder면 NotFoundException이 발생한다")
+    void updateBlockNotFound() {
+        String existingDoc = "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[" +
+            "{\"tag\":\"p\",\"props\":{},\"children\":[{\"tag\":\"text\",\"props\":{\"value\":\"본문\"},\"children\":[]}]}" +
+            "]}";
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", existingDoc);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+
+        ContentBlock patch = new ContentBlock(99, BlockTag.p, "텍스트", null);
+        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(10L, 1L, 99, 1L, patch);
+
+        assertThatThrownBy(() -> contentService.updateBlock(command))
+            .isInstanceOf(NotFoundException.class);
     }
 }
