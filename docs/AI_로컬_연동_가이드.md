@@ -120,7 +120,7 @@ curl -s -X POST "http://localhost:8080/dev/token?role=USER&memberId=1" | jq .
                 multipart: metadata JSON + product_image                    │
         백엔드: markQueued(jobId) → status=QUEUED                          │ 생성 완료 후
                                                                              ▼
-        백엔드: POST /internal/generations/{generationId}/completion ◄────── AI 서버
+        백엔드: POST /internal/generations/complete/multipart ◄──────────── AI 서버
               Authorization: Bearer {BACKEND_AUTH_TOKEN}
               Idempotency-Key 헤더 필수
               multipart: metadata JSON + 이미지 바이너리
@@ -210,9 +210,14 @@ curl -s -X POST "http://localhost:8080/api/content/products/${PRODUCT_ID}/genera
 
 백엔드는 이 응답에서 `job_id`, `request_id`, `status_url`을 추출해 `markQueued()`로 저장합니다.
 
-### 3-3. Step 3 — AI 서버가 결과를 콜백 (`POST /internal/generations/{generationId}/completion`)
+### 3-3. Step 3 — AI 서버가 결과를 콜백
 
-생성 완료 후 AI 서버 → 백엔드로 호출합니다. `{generationId}`는 path variable입니다.
+생성 완료 후 AI 서버 → 백엔드로 호출합니다. 콘텐츠 타입에 따라 두 엔드포인트 중 하나를 사용합니다.
+
+| 콜백 종류 | 엔드포인트 | 설명 |
+|-----------|-----------|------|
+| multipart | `POST /internal/generations/complete/multipart` | react_document JSON + 이미지 파일 동시 전송 |
+| JSON only | `POST /internal/generations/complete/json` | react_document JSON만 전송 (이미지 없음) |
 
 **인증**: `Authorization: Bearer {BACKEND_AUTH_TOKEN}` 헤더 필수  
 **멱등성**: `Idempotency-Key` 헤더 필수 (job 제출 시 사용한 `generationId` 값)  
@@ -262,7 +267,7 @@ curl -s -X POST "http://localhost:8080/api/content/products/${PRODUCT_ID}/genera
 BACKEND_AUTH_TOKEN="your-shared-secret-here"
 GENERATION_ID=1
 
-curl -s -X POST "http://localhost:8080/internal/generations/${GENERATION_ID}/completion" \
+curl -s -X POST "http://localhost:8080/internal/generations/complete/multipart" \
   -H "Authorization: Bearer ${BACKEND_AUTH_TOKEN}" \
   -H "Idempotency-Key: ${GENERATION_ID}" \
   -F 'metadata={"generationId":"1","jobId":"job-001","requestId":"req-001","idempotencyKey":"1","productId":"1","detailPage":{"reactDocument":{"schemaVersion":"2.0","canvasWidth":774,"root":[{"tag":"h2","props":{},"children":[{"tag":"text","props":{"value":"청자 다완의 이야기"},"children":[]}]}]}}}' \
@@ -466,7 +471,8 @@ Request body 없음. Response: 2xx면 성공
 
 | 경로 | 조건 |
 |------|------|
-| `POST /internal/generations/{generationId}/completion` | `BACKEND_AUTH_TOKEN` 일치 |
+| `POST /internal/generations/complete/multipart` | `BACKEND_AUTH_TOKEN` 일치 |
+| `POST /internal/generations/complete/json` | `BACKEND_AUTH_TOKEN` 일치 |
 | `POST /api/images/presigned-url` | `BACKEND_AUTH_TOKEN` 일치 + body `memberId` 필수 |
 
 ---
@@ -491,7 +497,7 @@ curl -s -X POST "http://localhost:8080/api/content/products/1/generations" \
 # → status: PROCESSING, generationId 기록
 
 # 4. AI 서버 없이 콜백 직접 호출로 흐름 검증
-curl -s -X POST "http://localhost:8080/internal/generations/1/completion" \
+curl -s -X POST "http://localhost:8080/internal/generations/complete/multipart" \
   -H "Authorization: Bearer ${BACKEND_AUTH_TOKEN}" \
   -H "Idempotency-Key: 1" \
   -F 'metadata={"generationId":"1","jobId":"job-001","requestId":"req-001","idempotencyKey":"1","productId":"1","detailPage":{"reactDocument":{"schemaVersion":"2.0","canvasWidth":774,"root":[]}}}' \
