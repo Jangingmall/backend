@@ -48,7 +48,7 @@ public class OAuthMemberService {
         member.activate();
         member=members.save(member);
         accounts.save(new MemberSocialAccount(member.getId(),identity.provider(),identity.subject(),identity.email()));
-        return MemberSignupResult.from(member);
+        return MemberSignupResult.from(member, identity.provider());
     }
 
     private void requireNewEmail(String email) {

@@ -14,6 +14,8 @@ import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberRepository;
 import com.jangingmall.backend.member.domain.MemberRole;
+import com.jangingmall.backend.member.domain.MemberSocialAccount;
+import com.jangingmall.backend.member.domain.MemberSocialAccountRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +41,9 @@ class MemberAuthenticationServiceTest {
     @Mock
     private RefreshTokenStore refreshTokenStore;
 
+    @Mock
+    private MemberSocialAccountRepository socialAccounts;
+
     private MemberAuthenticationService memberAuthenticationService;
 
     @BeforeEach
@@ -53,7 +58,8 @@ class MemberAuthenticationServiceTest {
                 604_800_000,
                 false
             ),
-            refreshTokenStore
+            refreshTokenStore,
+            socialAccounts
         );
     }
 
@@ -70,7 +76,23 @@ class MemberAuthenticationServiceTest {
 
         assertThat(session.accessToken()).isEqualTo("access-token");
         assertThat(session.refreshToken()).isEqualTo("refresh-token");
+        assertThat(session.provider()).isNull();
         verify(refreshTokenStore).save(1L, "refresh-token", java.time.Duration.ofDays(7));
+    }
+
+    @Test
+    @DisplayName("소셜 회원 세션에는 가입한 provider를 포함한다")
+    void socialSessionIncludesProvider() {
+        Member member = activeMember();
+        when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
+        when(socialAccounts.findFirstByMemberIdOrderByIdAsc(1L))
+            .thenReturn(Optional.of(new MemberSocialAccount(1L, "kakao", "provider-id", "artisan@example.com")));
+        when(jwtTokenProvider.createAccessToken(1L, MemberRole.USER)).thenReturn("access-token");
+        when(jwtTokenProvider.createRefreshToken(1L, MemberRole.USER)).thenReturn("refresh-token");
+
+        MemberSession session = memberAuthenticationService.socialSession(1L);
+
+        assertThat(session.provider()).isEqualTo("kakao");
     }
 
     @Test

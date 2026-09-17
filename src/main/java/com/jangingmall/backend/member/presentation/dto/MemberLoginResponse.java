@@ -16,7 +16,8 @@ public record MemberLoginResponse(
                 session.name(),
                 session.nickname(),
                 session.role(),
-                session.profileImageUrl()
+                session.profileImageUrl(),
+                session.provider()
             )
         );
     }

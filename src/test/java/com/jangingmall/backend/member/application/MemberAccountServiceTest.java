@@ -9,6 +9,8 @@ import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberRole;
+import com.jangingmall.backend.member.domain.MemberSocialAccount;
+import com.jangingmall.backend.member.domain.MemberSocialAccountRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,11 +27,12 @@ class MemberAccountServiceTest {
     @Mock private MemberAccess access;
     @Mock private PasswordEncoder passwords;
     @Mock private RefreshTokenStore refreshTokens;
+    @Mock private MemberSocialAccountRepository socialAccounts;
     private MemberAccountService accounts;
 
     @BeforeEach
     void setUp() {
-        accounts = new MemberAccountService(access, passwords, refreshTokens);
+        accounts = new MemberAccountService(access, passwords, refreshTokens, socialAccounts);
     }
 
     @Test
@@ -37,12 +40,15 @@ class MemberAccountServiceTest {
     void updateProfile() {
         Member member = activeMember();
         when(access.lock(1L)).thenReturn(member);
+        when(socialAccounts.findFirstByMemberIdOrderByIdAsc(1L))
+            .thenReturn(Optional.of(new MemberSocialAccount(1L, "naver", "provider-id", "artisan@example.com")));
 
         MemberProfile profile = accounts.update(1L, Optional.empty(), Optional.of("도공이"), Optional.of("01099998888"));
 
         assertThat(profile.name()).isEqualTo("김도공");
         assertThat(profile.nickname()).isEqualTo("도공이");
         assertThat(profile.profileImageUrl()).isNull();
+        assertThat(profile.provider()).isEqualTo("naver");
         assertThat(member.getPhone()).isEqualTo("01099998888");
     }
 
