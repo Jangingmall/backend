@@ -11,12 +11,10 @@
 | 항목 | 버전 |
 |------|------|
 | Java | 25 |
-| PostgreSQL | 18+ (Docker로 간단히 실행 가능) |
 | Redis | 8+ (Docker로 간단히 실행 가능) |
 
 ```bash
-# PostgreSQL + Redis Docker 실행
-docker run -d -p 5432:5432 -e POSTGRES_DB=jangingmall -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=dev postgres:18
+# Redis Docker 실행
 docker run -d -p 6379:6379 redis:8
 ```
 
@@ -29,12 +27,8 @@ docker run -d -p 6379:6379 redis:8
 AI_SGLANG_URL=http://localhost:8001
 AI_OLLAMA_URL=http://localhost:8002
 
-# DB
-DB_URL=jdbc:postgresql://localhost:5432/jangingmall
-DB_USERNAME=dev
-DB_PASSWORD=dev
-
 # 기타 (local 프로파일 기본값이 있어 생략 가능)
+
 ```
 
 - `AI_SGLANG_URL`: 챗봇 추천 서버 (`POST /ai/chat`)
@@ -42,22 +36,16 @@ DB_PASSWORD=dev
 
 ### 실행
 
-```bash
-./gradlew bootRun --args='--spring.profiles.active=local'
-```
-
-포트: `8080`. H2 인메모리 환경을 원하면 `local` 프로파일(H2)로 실행하면 `.env` 없이도 됩니다.
 
 ```bash
-./gradlew bootRun --args='--spring.profiles.active=local'
+./gradlew bootRun 
 ```
-
 ---
 
 ## 2. Dev 토큰 발급 (로컬 전용)
 
 AI 팀은 회원가입·아티산 승인 플로우 없이 ARTISAN 토큰을 발급받을 수 있습니다.
-이 엔드포인트는 **`local` / `local-postgresql` 프로파일에서만 활성화**됩니다.
+이 엔드포인트는 **`local` 프로파일에서만 활성화**됩니다.
 
 ### 2-1. `POST /dev/setup` — 테스트 아티산 + 상품 자동 생성
 
@@ -67,24 +55,7 @@ AI 팀은 회원가입·아티산 승인 플로우 없이 ARTISAN 토큰을 발�
 ```bash
 curl -s -X POST http://localhost:8080/dev/setup | jq .
 ```
-
-**Response 예시**
-
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": {
-    "artisanId": 1,
-    "productId": 1,
-    "accessToken": "eyJhbGci..."
-  }
-}
-```
-
-- `artisanId`: 이 값이 이후 generation 요청의 소유권 기준이 됩니다.
-- `productId`: `POST /api/content/products/{productId}/generations` 에서 사용합니다.
-- `accessToken`: 7일 유효. `Authorization: Bearer <token>` 헤더에 사용합니다.
+| jq 없으면 설치: brew install jq
 
 ### 2-2. `POST /dev/token` — 역할별 토큰 발급 (memberId 지정)
 
@@ -363,4 +334,4 @@ curl -s "http://localhost:8080/api/content/products/1/generations/1" \
 | AI `/ai/products` 실패/타임아웃 | generation status → `FAILED`, 오류 로그 기록 |
 | AI `/ai/products/sync` 실패 | 오류 로그 기록 후 무시 (상품 게시 자체는 성공) |
 | 콜백 `/internal/...` 없이 AI 무응답 | `FAILED` — 백엔드가 다시 시도하지 않음. AI 서버가 콜백을 보내야 함 |
-| 타임아웃 | 기본 30초 (`ai.timeout-seconds` 설정) |
+| 타임아웃 | 기본 300초 (`ai.timeout-seconds` 설정, 환경변수 `AI_TIMEOUT_SECONDS`로 조정 가능) |
