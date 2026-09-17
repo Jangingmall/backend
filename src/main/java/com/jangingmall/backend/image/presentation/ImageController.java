@@ -1,6 +1,8 @@
 package com.jangingmall.backend.image.presentation;
 
 import com.jangingmall.backend.global.common.response.ApiResponse;
+import com.jangingmall.backend.global.exception.DomainException;
+import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.image.application.ImageService;
 import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -14,14 +16,13 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,9 +32,17 @@ public class ImageController {
     private final ImageService images;
 
     @PostMapping("/api/images/presigned-url")
-    public ApiResponse<ImageService.PresignedUpload> createPresignedUrl(@AuthenticationPrincipal Long memberId,
-                                                                         @Valid @RequestBody PresignedUrlRequest request) {
-        return ApiResponse.ok(images.createPresignedUpload(memberId, request.toCommand()));
+    public ApiResponse<ImageService.PresignedUpload> createPresignedUrl(
+        @AuthenticationPrincipal Long memberId,
+        Authentication authentication,
+        @Valid @RequestBody PresignedUrlRequest request) {
+        Long resolvedMemberId = isAgent(authentication) ? request.resolveAgentMemberId() : memberId;
+        return ApiResponse.ok(images.createPresignedUpload(resolvedMemberId, request.toCommand()));
+    }
+
+    private boolean isAgent(Authentication authentication) {
+        return authentication != null && authentication.getAuthorities().stream()
+            .anyMatch(a -> "ROLE_AGENT".equals(a.getAuthority()));
     }
 
     @DeleteMapping("/api/images/{imageId}")
@@ -53,7 +62,15 @@ public class ImageController {
                                       @NotNull ImagePurpose purpose,
                                       @Positive int sourceWidth,
                                       @Positive int sourceHeight,
-                                      @NotEmpty @Size(max = 3) List<@Valid @NotNull VariantRequest> variants) {
+                                      @NotEmpty @Size(max = 3) List<@Valid @NotNull VariantRequest> variants,
+                                      Long memberId) {
+        Long resolveAgentMemberId() {
+            if (memberId == null) {
+                throw new DomainException(ErrorCode.INVALID_INPUT);
+            }
+            return memberId;
+        }
+
         ImageService.CreatePresignedUpload toCommand() {
             return new ImageService.CreatePresignedUpload(fileName, contentType, purpose, sourceWidth, sourceHeight,
                 variants.stream().map(VariantRequest::toCommand).toList());

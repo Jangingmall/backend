@@ -66,6 +66,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> {
                 auth.dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
                     .requestMatchers("/internal/**").hasRole("AGENT")
+                    .requestMatchers(HttpMethod.POST, "/api/images/presigned-url").hasAnyRole("USER", "ARTISAN", "AGENT")
                     .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
                     .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/payments/webhooks/toss").permitAll()
