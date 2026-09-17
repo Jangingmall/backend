@@ -1,6 +1,10 @@
 spring:
   profiles:
     active: local
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 50MB
 
 server:
   shutdown: graceful
@@ -146,6 +150,9 @@ ai:
   content-url: ${AI_CONTENT_URL:http://localhost:8002}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
 
+internal-api:
+  backend-auth-token: ${BACKEND_AUTH_TOKEN:}
+
 ---
 spring:
   config:
@@ -247,6 +254,9 @@ ai:
   content-url: ${AI_CONTENT_URL:http://localhost:8002}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
 
+internal-api:
+  backend-auth-token: ${BACKEND_AUTH_TOKEN:}
+
 ---
 spring:
   config:
@@ -346,6 +356,9 @@ ai:
   chat-bot-url: ${AI_CHAT_BOT_URL}
   content-url: ${AI_CONTENT_URL}
   timeout-seconds: 300
+
+internal-api:
+  backend-auth-token: ${BACKEND_AUTH_TOKEN}
 
 logging:
   structured:

@@ -86,7 +86,8 @@ public class GenerationService {
             .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
 
         uploadDetailPageImage(command.generationId().toString(), detailPageImage);
-        uploadPhotoFiles(command.generationId().toString(), photoFiles);
+        uploadPrefixedFiles(command.generationId().toString(), "section-", sectionFiles);
+        uploadPrefixedFiles(command.generationId().toString(), "photo-", photoFiles);
 
         generation.complete(command.reactDocumentJson(), command.idempotencyKey());
         ContentGeneration saved = generationRepository.save(generation);
@@ -121,15 +122,15 @@ public class GenerationService {
         }
     }
 
-    private void uploadPhotoFiles(String generationId, Map<String, MultipartFile> photoFiles) {
-        for (Map.Entry<String, MultipartFile> entry : photoFiles.entrySet()) {
+    private void uploadPrefixedFiles(String generationId, String keyPrefix, Map<String, MultipartFile> files) {
+        for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
             MultipartFile file = entry.getValue();
             try {
-                String photoId = extractPhotoId(file.getOriginalFilename());
-                String key = "ai-generated/" + generationId + "/photo-" + photoId + "." + extension(file.getContentType());
+                String fileId = extractPhotoId(file.getOriginalFilename());
+                String key = "ai-generated/" + generationId + "/" + keyPrefix + fileId + "." + extension(file.getContentType());
                 imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
             } catch (IOException exception) {
-                log.error("상품 사진 업로드 실패 generationId={} filename={}", generationId, file.getOriginalFilename(), exception);
+                log.error("파일 업로드 실패 generationId={} prefix={} filename={}", generationId, keyPrefix, file.getOriginalFilename(), exception);
             }
         }
     }

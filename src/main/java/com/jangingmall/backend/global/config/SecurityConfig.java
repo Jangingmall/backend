@@ -6,6 +6,7 @@ import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.global.security.JwtAuthenticationFilter;
 import com.jangingmall.backend.global.security.JwtProperties;
 import com.jangingmall.backend.global.security.JwtTokenProvider;
+import com.jangingmall.backend.global.security.AiCallbackFilter;
 import com.jangingmall.backend.member.application.EmailVerificationProperties;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,7 +34,7 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class, InternalApiProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
@@ -45,9 +46,15 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AiCallbackFilter aiCallbackFilter(InternalApiProperties internalApiProperties) {
+        return new AiCallbackFilter(internalApiProperties);
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(
         HttpSecurity http,
         JwtAuthenticationFilter jwtAuthenticationFilter,
+        AiCallbackFilter aiCallbackFilter,
         ObjectProvider<MemberOAuthSecurity> memberOAuthSecurity
     ) throws Exception {
         if (memberOAuthSecurity.getIfAvailable() != null) {
@@ -58,6 +65,7 @@ public class SecurityConfig {
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> {
                 auth.dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
+                    .requestMatchers("/internal/**").hasRole("AGENT")
                     .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
                     .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/payments/webhooks/toss").permitAll()
@@ -77,7 +85,8 @@ public class SecurityConfig {
                     writeError(response, HttpServletResponse.SC_FORBIDDEN, ErrorCode.FORBIDDEN)
                 )
             )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(aiCallbackFilter, JwtAuthenticationFilter.class);
         return http.build();
     }
 

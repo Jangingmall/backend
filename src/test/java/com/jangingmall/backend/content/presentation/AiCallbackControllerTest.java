@@ -14,17 +14,20 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
-
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,7 +40,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AiCallbackController.class)
 @Import(SecurityConfig.class)
+@TestPropertySource(properties = "internal-api.backend-auth-token=test-agent-token")
 class AiCallbackControllerTest extends RestDocsControllerTest {
+
+    private static final String AGENT_TOKEN = "test-agent-token";
+    private static final String BEARER_AGENT = "Bearer " + AGENT_TOKEN;
 
     @MockitoBean
     private GenerationService generationService;
@@ -56,10 +63,11 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
         fieldWithPath("data.completedAt").type(JsonFieldType.STRING).optional().description("완료 시각"),
     };
 
+    // ── JSON 콜백 — 성공 경로 ────────────────────────────────────────────────
+
     @Test
-    @DisplayName("AI 콜백 완료 — react_document와 함께 콜백하면 200과 COMPLETED 상태를 반환한다")
+    @DisplayName("AI 콜백 완료 — 유효한 AGENT 토큰과 react_document로 콜백하면 200과 COMPLETED를 반환한다")
     void complete() throws Exception {
-        // GIVEN
         when(generationService.complete(any())).thenReturn(COMPLETED_RESPONSE);
 
         Map<String, Object> reactDocument = Map.of(
@@ -68,10 +76,10 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
             "root", List.of()
         );
 
-        // WHEN & THEN
         mockMvc.perform(post("/internal/generations/{generationId}/complete", 1L)
+                .header(HttpHeaders.AUTHORIZATION, BEARER_AGENT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Map.of("reactDocument", reactDocument))))
+                .content(json(Map.of("reactDocument", reactDocument))))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.status").value("COMPLETED"))
             .andExpect(jsonPath("$.data.completedAt").exists())
@@ -92,11 +100,74 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
             ));
     }
 
+    // ── JSON 콜백 — 인증 실패 경우의 수 ─────────────────────────────────────
+
+    @Test
+    @DisplayName("AI 콜백 완료 인증 — Authorization 헤더가 없으면 401을 반환한다")
+    void completeRejectsWithNoAuthHeader() throws Exception {
+        mockMvc.perform(post("/internal/generations/{generationId}/complete", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(Map.of("reactDocument", Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of())))))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("AI 콜백 완료 인증 — Bearer 접두사 없는 토큰은 401을 반환한다")
+    void completeRejectsWithNoBearerPrefix() throws Exception {
+        mockMvc.perform(post("/internal/generations/{generationId}/complete", 1L)
+                .header(HttpHeaders.AUTHORIZATION, AGENT_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(Map.of("reactDocument", Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of())))))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("AI 콜백 완료 인증 — 잘못된 토큰 값은 401을 반환한다")
+    void completeRejectsWithWrongToken() throws Exception {
+        mockMvc.perform(post("/internal/generations/{generationId}/complete", 1L)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer wrong-token")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(Map.of("reactDocument", Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of())))))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("AI 콜백 완료 인증 — ROLE_USER JWT 세션이 있어도 AGENT Bearer 헤더가 없으면 401을 반환한다")
+    @WithMockUser(roles = "USER")
+    void completeRejectsJwtUser() throws Exception {
+        mockMvc.perform(post("/internal/generations/{generationId}/complete", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(Map.of("reactDocument", Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of())))))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("AI 콜백 완료 인증 — ROLE_ARTISAN JWT 세션이 있어도 AGENT Bearer 헤더가 없으면 401을 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void completeRejectsJwtArtisan() throws Exception {
+        mockMvc.perform(post("/internal/generations/{generationId}/complete", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(Map.of("reactDocument", Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of())))))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("AI 콜백 완료 인증 — ROLE_ADMIN JWT 세션이 있어도 AGENT Bearer 헤더가 없으면 401을 반환한다")
+    @WithMockUser(roles = "ADMIN")
+    void completeRejectsJwtAdmin() throws Exception {
+        mockMvc.perform(post("/internal/generations/{generationId}/complete", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(Map.of("reactDocument", Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of())))))
+            .andExpect(status().isUnauthorized());
+    }
+
+    // ── JSON 콜백 — 비즈니스 에러 ────────────────────────────────────────────
+
     @Test
     @DisplayName("AI 콜백 완료 — react_document가 없으면 400 Bad Request를 반환한다")
     void completeMissingReactDocument() throws Exception {
-        // GIVEN & WHEN & THEN
         mockMvc.perform(post("/internal/generations/{generationId}/complete", 1L)
+                .header(HttpHeaders.AUTHORIZATION, BEARER_AGENT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
             .andExpect(status().isBadRequest())
@@ -106,15 +177,12 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
     @Test
     @DisplayName("AI 콜백 완료 — 존재하지 않는 generationId로 콜백하면 404를 반환한다")
     void completeNotFound() throws Exception {
-        // GIVEN
         when(generationService.complete(any())).thenThrow(new NotFoundException("콘텐츠 생성 요청을 찾을 수 없습니다"));
 
-        Map<String, Object> reactDocument = Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of());
-
-        // WHEN & THEN
         mockMvc.perform(post("/internal/generations/{generationId}/complete", 999L)
+                .header(HttpHeaders.AUTHORIZATION, BEARER_AGENT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Map.of("reactDocument", reactDocument))))
+                .content(json(Map.of("reactDocument", Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of())))))
             .andExpect(status().isNotFound())
             .andDo(documentError("ai-callback-complete-not-found", "AI 콜백 (내부)", "AI 생성 완료 콜백 — 없음", "존재하지 않는 generationId입니다."));
     }
@@ -137,12 +205,11 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
     };
 
     @Test
-    @DisplayName("멀티파트 콜백 — metadata와 이미지 파일을 함께 전송하면 200과 SAVED를 반환한다")
+    @DisplayName("멀티파트 콜백 — 유효한 AGENT 토큰으로 metadata와 이미지 파일을 전송하면 200과 SAVED를 반환한다")
     void completeMultipart() throws Exception {
-        // GIVEN
         when(generationService.completeWithImages(any(), any(), any(), any(), any())).thenReturn(ACK_SAVED);
 
-        String metadataJson = objectMapper.writeValueAsString(Map.of(
+        String metadataJson = json(Map.of(
             "generationId", "1",
             "productId", "10",
             "detailPage", Map.of(
@@ -153,10 +220,10 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
         MockMultipartFile metadata = new MockMultipartFile("metadata", "", MediaType.APPLICATION_JSON_VALUE, metadataJson.getBytes());
         MockMultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[]{1, 2, 3});
 
-        // WHEN & THEN
         mockMvc.perform(multipart("/internal/generations/complete/multipart")
                 .file(metadata)
                 .file(detailImage)
+                .header(HttpHeaders.AUTHORIZATION, BEARER_AGENT)
                 .header("Idempotency-Key", "unique-key-001"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.status").value("SAVED"))
@@ -176,10 +243,9 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
     @Test
     @DisplayName("멀티파트 콜백 — 동일한 Idempotency-Key로 재요청하면 200과 ALREADY_SAVED를 반환한다")
     void completeMultipartIdempotent() throws Exception {
-        // GIVEN
         when(generationService.completeWithImages(any(), any(), any(), any(), any())).thenReturn(ACK_ALREADY_SAVED);
 
-        String metadataJson = objectMapper.writeValueAsString(Map.of(
+        String metadataJson = json(Map.of(
             "generationId", "1",
             "productId", "10",
             "detailPage", Map.of("reactDocument", Map.of("schemaVersion", "2.0", "canvasWidth", 774, "root", List.of()))
@@ -188,10 +254,10 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
         MockMultipartFile metadata = new MockMultipartFile("metadata", "", MediaType.APPLICATION_JSON_VALUE, metadataJson.getBytes());
         MockMultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[]{1});
 
-        // WHEN & THEN
         mockMvc.perform(multipart("/internal/generations/complete/multipart")
                 .file(metadata)
                 .file(detailImage)
+                .header(HttpHeaders.AUTHORIZATION, BEARER_AGENT)
                 .header("Idempotency-Key", "unique-key-001"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.status").value("ALREADY_SAVED"))
@@ -205,5 +271,46 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
                     .build()
                 )
             ));
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 인증 — Authorization 헤더 없으면 401을 반환한다")
+    void completeMultipartRejectsWithNoAuthHeader() throws Exception {
+        MockMultipartFile metadata = new MockMultipartFile("metadata", "", MediaType.APPLICATION_JSON_VALUE, "{}".getBytes());
+        MockMultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[]{1});
+
+        mockMvc.perform(multipart("/internal/generations/complete/multipart")
+                .file(metadata)
+                .file(detailImage)
+                .header("Idempotency-Key", "unique-key-001"))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 인증 — 잘못된 AGENT 토큰은 401을 반환한다")
+    void completeMultipartRejectsWithWrongToken() throws Exception {
+        MockMultipartFile metadata = new MockMultipartFile("metadata", "", MediaType.APPLICATION_JSON_VALUE, "{}".getBytes());
+        MockMultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[]{1});
+
+        mockMvc.perform(multipart("/internal/generations/complete/multipart")
+                .file(metadata)
+                .file(detailImage)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer wrong-token")
+                .header("Idempotency-Key", "unique-key-001"))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 인증 — ROLE_USER JWT 세션이 있어도 AGENT Bearer 헤더가 없으면 401을 반환한다")
+    @WithMockUser(roles = "USER")
+    void completeMultipartRejectsJwtUser() throws Exception {
+        MockMultipartFile metadata = new MockMultipartFile("metadata", "", MediaType.APPLICATION_JSON_VALUE, "{}".getBytes());
+        MockMultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", MediaType.IMAGE_JPEG_VALUE, new byte[]{1});
+
+        mockMvc.perform(multipart("/internal/generations/complete/multipart")
+                .file(metadata)
+                .file(detailImage)
+                .header("Idempotency-Key", "unique-key-001"))
+            .andExpect(status().isUnauthorized());
     }
 }
