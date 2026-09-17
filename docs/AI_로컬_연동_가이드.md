@@ -36,10 +36,13 @@ AI_OLLAMA_URL=http://localhost:8002
 
 ### 실행
 
-
-```bash
+```
+./gradlew build 
 ./gradlew bootRun 
 ```
+build : 테스트 및 문서 최신화  <br>
+bootRun : 서버 실행
+
 ---
 
 ## 2. Dev 토큰 발급 (로컬 전용)
