@@ -12,6 +12,7 @@ import com.jangingmall.backend.product.application.ProductReviewResponse;
 import com.jangingmall.backend.product.application.ProductReviewService;
 import com.jangingmall.backend.product.application.ProductService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,11 @@ public class ProductController {
             request.description(),
             request.price(),
             request.stock(),
-            request.thumbnailUrl()
+            request.thumbnailUrl(),
+            request.giftThemes() != null ? request.giftThemes() : List.of(),
+            request.purposeTags() != null ? request.purposeTags() : List.of(),
+            request.productionPeriodDays(),
+            request.colors() != null ? request.colors() : List.of()
         );
         ProductResponse response = productService.create(command);
         return ResponseEntity.status(201).body(ApiResponse.created(response));
@@ -95,7 +100,11 @@ public class ProductController {
             request.description(),
             request.price(),
             request.stock(),
-            request.thumbnailUrl()
+            request.thumbnailUrl(),
+            request.giftThemes() != null ? request.giftThemes() : List.of(),
+            request.purposeTags() != null ? request.purposeTags() : List.of(),
+            request.productionPeriodDays(),
+            request.colors() != null ? request.colors() : List.of()
         );
         return ApiResponse.ok(productService.update(command));
     }

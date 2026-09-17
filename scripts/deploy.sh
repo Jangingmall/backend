@@ -183,6 +183,7 @@ docker rm   backend 2>/dev/null || true
 docker run -d \
     --name backend \
     --restart unless-stopped \
+    --memory 1536m \
     -p 8080:8080 \
     -p 9090:9090 \
     --env-file /etc/backend/.env \

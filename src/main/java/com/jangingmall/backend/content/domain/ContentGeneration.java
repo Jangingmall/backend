@@ -49,8 +49,8 @@ public class ContentGeneration {
     @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
-    @Column(name = "generated_blocks", columnDefinition = "TEXT")
-    private String generatedBlocks;
+    @Column(name = "react_document", columnDefinition = "TEXT")
+    private String reactDocument;
 
     public static ContentGeneration create(Long productId, String images, String productName, String howMade, String careTips) {
         ContentGeneration generation = new ContentGeneration();
@@ -64,9 +64,9 @@ public class ContentGeneration {
         return generation;
     }
 
-    public void complete(String generatedBlocks) {
+    public void complete(String reactDocumentJson) {
         this.status = GenerationStatus.COMPLETED;
-        this.generatedBlocks = generatedBlocks;
+        this.reactDocument = reactDocumentJson;
         this.completedAt = LocalDateTime.now();
     }
 

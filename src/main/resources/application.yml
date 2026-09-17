@@ -32,7 +32,7 @@ management:
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: local-postgresql
   datasource:
     url: jdbc:postgresql://localhost:5432/jangingmall
     username: jangingmall
@@ -103,14 +103,15 @@ member:
     window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
 
 ai:
-  base-url: http://localhost:8001
-  timeout-seconds: 30
+  sglang-url: ${AI_SGLANG_URL:http://localhost:8001}
+  ollama-url: ${AI_OLLAMA_URL:http://localhost:8002}
+  timeout-seconds: ${AI_TIMEOUT_SECONDS:30}
 
 ---
 spring:
   config:
     activate:
-      on-profile: local-h2
+      on-profile: local
   datasource:
     url: jdbc:h2:mem:jangingmall;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -185,8 +186,9 @@ member:
     window-seconds: 60
 
 ai:
-  base-url: http://localhost:8001
-  timeout-seconds: 30
+  sglang-url: ${AI_SGLANG_URL:http://localhost:8001}
+  ollama-url: ${AI_OLLAMA_URL:http://localhost:8002}
+  timeout-seconds: ${AI_TIMEOUT_SECONDS:30}
 
 ---
 spring:
@@ -266,7 +268,8 @@ member:
     window-seconds: ${MEMBER_RATE_LIMIT_WINDOW_SECONDS:60}
 
 ai:
-  base-url: ${AI_BASE_URL}
+  sglang-url: ${AI_SGLANG_URL}
+  ollama-url: ${AI_OLLAMA_URL}
   timeout-seconds: 30
 
 logging:

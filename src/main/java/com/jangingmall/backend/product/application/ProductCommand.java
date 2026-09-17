@@ -1,5 +1,7 @@
 package com.jangingmall.backend.product.application;
 
+import java.util.List;
+
 public sealed interface ProductCommand {
 
     record Create(
@@ -10,7 +12,11 @@ public sealed interface ProductCommand {
         String description,
         int price,
         int stock,
-        String thumbnailUrl
+        String thumbnailUrl,
+        List<String> giftThemes,
+        List<String> purposeTags,
+        Integer productionPeriodDays,
+        List<String> colors
     ) implements ProductCommand {}
 
     record Update(
@@ -22,7 +28,11 @@ public sealed interface ProductCommand {
         String description,
         int price,
         int stock,
-        String thumbnailUrl
+        String thumbnailUrl,
+        List<String> giftThemes,
+        List<String> purposeTags,
+        Integer productionPeriodDays,
+        List<String> colors
     ) implements ProductCommand {}
 
     record ChangeStatus(

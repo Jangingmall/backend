@@ -105,8 +105,6 @@ public abstract class RestDocsControllerTest {
             identifier,
             resource(ResourceSnippetParameters.builder()
                 .tag(tag)
-                .summary(summary)
-                .description(description)
                 .responseFields(ERROR_RESPONSE_FIELDS)
                 .build()
             )

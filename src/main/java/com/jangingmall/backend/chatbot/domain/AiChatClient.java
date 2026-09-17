@@ -7,10 +7,12 @@ public interface AiChatClient {
 
     AiChatResult chat(UUID sessionId, String message, List<ChatMessage> history);
 
+    record ProductCard(Long productId, String reason) {}
+
     record AiChatResult(
         String reply,
         String intent,
-        List<Long> productIds,
+        List<ProductCard> products,
         List<String> suggestions
     ) {}
 }

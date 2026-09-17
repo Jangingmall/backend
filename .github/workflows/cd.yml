@@ -23,6 +23,7 @@ jobs:
     outputs:
       image-uri: ${{ steps.meta.outputs.image-uri }}
       ecr-registry: ${{ steps.meta.outputs.ecr-registry }}
+      has-instance: ${{ steps.check.outputs.has-instance }}
 
     steps:
       - uses: actions/checkout@v4
@@ -84,11 +85,21 @@ jobs:
           aws s3 sync scripts/    s3://${S3_BUCKET}/deploy/scripts/    --delete
           aws s3 sync monitoring/ s3://${S3_BUCKET}/deploy/monitoring/  --delete
 
+      - name: Check EC2 instance availability
+        id: check
+        env:
+          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
+        run: |
+          if [[ -n "${EC2_INSTANCE_ID}" ]]; then
+            echo "has-instance=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-instance=false" >> $GITHUB_OUTPUT
+          fi
+
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    # EC2 Instance ID 확보 후 활성화 (인프라팀 프로비저닝 완료 대기)
-    if: ${{ secrets.EC2_INSTANCE_ID != '' }}
+    if: ${{ needs.build-and-push.outputs.has-instance == 'true' }}
 
     steps:
       - name: Configure AWS credentials

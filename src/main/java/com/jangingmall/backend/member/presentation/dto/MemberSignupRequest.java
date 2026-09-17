@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
 
 public record MemberSignupRequest(
     @NotBlank @Email @Size(max = 255) String email,
-    @NotBlank String password,
+    @NotBlank @Size(min = 8, max = 72, message = "비밀번호는 8자 이상 72자 이하여야 합니다") String password,
     @NotBlank String passwordConfirm,
     @NotBlank @Size(max = 50) String name,
     @NotBlank @Pattern(regexp = "\\d{9,20}") String phone,

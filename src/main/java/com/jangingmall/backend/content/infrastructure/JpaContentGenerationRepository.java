@@ -27,6 +27,11 @@ class JpaContentGenerationRepository implements ContentGenerationRepository {
     }
 
     @Override
+    public Optional<ContentGeneration> findById(Long id) {
+        return jpa.findById(id);
+    }
+
+    @Override
     public Optional<ContentGeneration> findByIdAndProductId(Long id, Long productId) {
         return jpa.findByIdAndProductId(id, productId);
     }

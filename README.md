@@ -53,6 +53,32 @@
 
 ---
 
+## 로컬 개발 환경
+
+### 필수 요구사항
+
+| 항목 | 버전 |
+|---|---|
+| Java | 25+ |
+| Gradle | 8.14+ (Wrapper 포함) |
+| PostgreSQL | 18+ (Docker로 간단히 실행 가능) |
+| Redis | 8+ (Docker로 간단히 실행 가능) |
+
+### 빠른 시작 (Docker)
+
+```bash
+# PostgreSQL + Redis 실행
+docker run -d --name postgres -e POSTGRES_DB=jangingmall -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=dev -p 5432:5432 postgres:18
+docker run -d --name redis -p 6379:6379 redis:8
+
+# 애플리케이션 실행 (local 프로파일)
+./gradlew bootRun --args='--spring.profiles.active=local'
+```
+
+로컬 개발용 JWT 토큰 즉시 발급: `GET /dev/token?role=ARTISAN` (local 프로파일 전용)
+
+---
+
 ## 아키텍처
 
 ### 설계 원칙
