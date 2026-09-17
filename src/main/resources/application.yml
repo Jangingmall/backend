@@ -142,8 +142,8 @@ image:
     cleanup-scan-millis: ${IMAGE_CLEANUP_SCAN_MILLIS:60000}
 
 ai:
-  sglang-url: ${AI_SGLANG_URL:http://localhost:8001}
-  ollama-url: ${AI_OLLAMA_URL:http://localhost:8002}
+  chat-bot-url: ${AI_CHAT_BOT_URL:http://localhost:8001}
+  content-url: ${AI_CONTENT_URL:http://localhost:8002}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
 
 ---
@@ -243,8 +243,8 @@ image:
     cleanup-scan-millis: ${IMAGE_CLEANUP_SCAN_MILLIS:60000}
 
 ai:
-  sglang-url: ${AI_SGLANG_URL:http://localhost:8001}
-  ollama-url: ${AI_OLLAMA_URL:http://localhost:8002}
+  chat-bot-url: ${AI_CHAT_BOT_URL:http://localhost:8001}
+  content-url: ${AI_CONTENT_URL:http://localhost:8002}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
 
 ---
@@ -343,8 +343,8 @@ image:
     cleanup-scan-millis: ${IMAGE_CLEANUP_SCAN_MILLIS:60000}
 
 ai:
-  sglang-url: ${AI_SGLANG_URL}
-  ollama-url: ${AI_OLLAMA_URL}
+  chat-bot-url: ${AI_CHAT_BOT_URL}
+  content-url: ${AI_CONTENT_URL}
   timeout-seconds: 300
 
 logging:

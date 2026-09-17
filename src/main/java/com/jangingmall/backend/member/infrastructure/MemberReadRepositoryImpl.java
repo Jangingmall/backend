@@ -6,6 +6,9 @@ import com.jangingmall.backend.member.application.CursorPage;
 import com.jangingmall.backend.member.application.MemberReadRepository;
 import com.jangingmall.backend.member.application.PageRequest;
 import com.jangingmall.backend.member.application.SellerApplicationData;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import com.jangingmall.backend.member.domain.ArtisanProfile;
 import com.jangingmall.backend.member.domain.ArtisanSubscription;
 import com.jangingmall.backend.member.domain.Member;
@@ -71,33 +74,36 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
     }
 
     @Override
-    public CursorPage<Map<String, Object>> wishes(Long memberId, PageRequest page) {
+    public Page<Map<String, Object>> wishes(Long memberId, Pageable pageable) {
         String joins = " FROM Wishlist w, Product p, ArtisanProfile a, Member m"
             + " WHERE w.productId=p.id AND p.artisanId=a.id AND m.id=a.id"
-            + " AND w.memberId=:memberId AND w.id<:before"
+            + " AND w.memberId=:memberId"
             + " AND p.status IN :statuses AND m.status=:active AND a.certificationStatus=:approved";
         List<Object[]> rows = entityManager.createQuery(
                 "SELECT w,p,a" + joins + " ORDER BY w.id DESC", Object[].class)
-            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
+            .setParameter("memberId", memberId)
             .setParameter("statuses", VISIBLE_PRODUCTS).setParameter("active", MemberStatus.ACTIVE)
-            .setParameter("approved", APPROVED).setMaxResults(page.limit() + 1).getResultList();
+            .setParameter("approved", APPROVED)
+            .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
+            .getResultList();
         long total = entityManager.createQuery("SELECT count(w)" + joins, Long.class)
-            .setParameter("memberId", memberId).setParameter("before", Long.MAX_VALUE)
+            .setParameter("memberId", memberId)
             .setParameter("statuses", VISIBLE_PRODUCTS).setParameter("active", MemberStatus.ACTIVE)
             .setParameter("approved", APPROVED).getSingleResult();
-        return cursorPage(rows, page.limit(), row -> ((Wishlist) row[0]).getId(),
-            row -> product((Product) row[1], (ArtisanProfile) row[2]), total);
+        List<Map<String, Object>> items = rows.stream()
+            .map(row -> product((Product) row[1], (ArtisanProfile) row[2])).toList();
+        return new PageImpl<>(items, pageable, total);
     }
 
     @Override
-    public CursorPage<Map<String, Object>> orders(Long memberId, PageRequest page, String status) {
+    public Page<Map<String, Object>> orders(Long memberId, Pageable pageable, String status) {
         String filter = orderStatus(status);
         String filtered = "ALL".equals(filter) ? "" : " AND o.status=:status";
         var query = entityManager.createQuery(
-                "SELECT o FROM MemberOrderView o WHERE o.memberId=:memberId AND o.id<:before"
+                "SELECT o FROM MemberOrderView o WHERE o.memberId=:memberId"
                     + filtered + " ORDER BY o.id DESC", MemberOrderView.class)
-            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
-            .setMaxResults(page.limit() + 1);
+            .setParameter("memberId", memberId)
+            .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize());
         var count = entityManager.createQuery(
                 "SELECT count(o) FROM MemberOrderView o WHERE o.memberId=:memberId" + filtered, Long.class)
             .setParameter("memberId", memberId);
@@ -105,8 +111,8 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
             query.setParameter("status", filter);
             count.setParameter("status", filter);
         }
-        return cursorPage(query.getResultList(), page.limit(), MemberOrderView::getId,
-            this::orderSummary, count.getSingleResult());
+        List<Map<String, Object>> items = query.getResultList().stream().map(this::orderSummary).toList();
+        return new PageImpl<>(items, pageable, count.getSingleResult());
     }
 
     @Override
@@ -118,8 +124,8 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
     }
 
     @Override
-    public CursorPage<Map<String, Object>> reviews(Long memberId, PageRequest page, boolean writable) {
-        return writable ? writableReviews(memberId, page) : writtenReviews(memberId, page);
+    public Page<Map<String, Object>> reviews(Long memberId, Pageable pageable, boolean writable) {
+        return writable ? writableReviews(memberId, pageable) : writtenReviews(memberId, pageable);
     }
 
     @Override
@@ -269,17 +275,17 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
             .setParameter("category", category).getSingleResult() > 0;
     }
 
-    private CursorPage<Map<String, Object>> writtenReviews(Long memberId, PageRequest page) {
-        String from = " FROM ProductReview r, Member m WHERE r.writerId=m.id"
-            + " AND r.writerId=:memberId AND r.id<:before";
+    private Page<Map<String, Object>> writtenReviews(Long memberId, Pageable pageable) {
+        String from = " FROM ProductReview r, Member m WHERE r.writerId=m.id AND r.writerId=:memberId";
         List<Object[]> rows = entityManager.createQuery(
                 "SELECT r,m" + from + " ORDER BY r.id DESC", Object[].class)
-            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
-            .setMaxResults(page.limit() + 1).getResultList();
+            .setParameter("memberId", memberId)
+            .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
+            .getResultList();
         long total = entityManager.createQuery(
                 "SELECT count(r) FROM ProductReview r WHERE r.writerId=:memberId", Long.class)
             .setParameter("memberId", memberId).getSingleResult();
-        return cursorPage(rows, page.limit(), row -> ((ProductReview) row[0]).getId(), row -> {
+        List<Map<String, Object>> items = rows.stream().map(row -> {
             ProductReview review = (ProductReview) row[0];
             Member writer = (Member) row[1];
             Map<String, Object> value = new LinkedHashMap<>();
@@ -291,21 +297,23 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
             value.put("writerNickname", Optional.ofNullable(writer.getNickname()).orElse(writer.getName()));
             value.put("createdAt", review.getCreatedAt());
             return value;
-        }, total);
+        }).toList();
+        return new PageImpl<>(items, pageable, total);
     }
 
-    private CursorPage<Map<String, Object>> writableReviews(Long memberId, PageRequest page) {
+    private Page<Map<String, Object>> writableReviews(Long memberId, Pageable pageable) {
         String from = " FROM MemberOrderItemView i, MemberOrderView o, Product p"
             + " WHERE i.orderId=o.id AND i.productId=p.id AND o.memberId=:memberId"
-            + " AND o.status='DELIVERED' AND i.id<:before"
+            + " AND o.status='DELIVERED'"
             + " AND NOT EXISTS (SELECT r.id FROM ProductReview r WHERE r.orderItemId=i.id)";
         List<Object[]> rows = entityManager.createQuery(
                 "SELECT i,p" + from + " ORDER BY i.id DESC", Object[].class)
-            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
-            .setMaxResults(page.limit() + 1).getResultList();
+            .setParameter("memberId", memberId)
+            .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
+            .getResultList();
         long total = entityManager.createQuery("SELECT count(i)" + from, Long.class)
-            .setParameter("memberId", memberId).setParameter("before", Long.MAX_VALUE).getSingleResult();
-        return cursorPage(rows, page.limit(), row -> ((MemberOrderItemView) row[0]).getId(), row -> {
+            .setParameter("memberId", memberId).getSingleResult();
+        List<Map<String, Object>> items = rows.stream().map(row -> {
             MemberOrderItemView item = (MemberOrderItemView) row[0];
             Product product = (Product) row[1];
             Map<String, Object> value = new LinkedHashMap<>();
@@ -314,7 +322,8 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
             value.put("productName", item.getProductName());
             value.put("thumbnail", thumbnail(product.getThumbnailUrl()));
             return value;
-        }, total);
+        }).toList();
+        return new PageImpl<>(items, pageable, total);
     }
 
     private Map<String, Object> product(Product product, ArtisanProfile artisan) {

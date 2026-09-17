@@ -108,9 +108,9 @@ class OAuthControllerTest extends RestDocsControllerTest {
     @DisplayName("추가정보 입력은 온보딩 쿠키를 지우고 Access Token과 Refresh Cookie를 발급한다")
     void completesProfileFromOnboardingCookie() throws Exception {
         when(oauth.complete(eq("onboarding-token"), any())).thenReturn(
-            new MemberSignupResult(7L, "social@example.com", "김도공", null, MemberRole.USER, null, MemberStatus.ACTIVE));
+            new MemberSignupResult(7L, "social@example.com", "김도공", null, MemberRole.USER, null, MemberStatus.ACTIVE, "naver"));
         when(authentication.socialSession(7L)).thenReturn(
-            new MemberSession("access-token", "refresh-token", 7L, "social@example.com", "김도공", MemberRole.USER));
+            new MemberSession("access-token", "refresh-token", 7L, "social@example.com", "김도공", MemberRole.USER, null, null, "naver"));
 
         mockMvc.perform(post("/api/member/oauth2/complete-profile")
                 .cookie(new Cookie("oauthOnboarding", "onboarding-token"))
@@ -144,7 +144,8 @@ class OAuthControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 ID"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.role").type(JsonFieldType.STRING).description("역할"),
-                        fieldWithPath("data.accessToken").type(JsonFieldType.STRING).description("액세스 토큰")
+                        fieldWithPath("data.accessToken").type(JsonFieldType.STRING).description("액세스 토큰"),
+                        fieldWithPath("data.provider").type(JsonFieldType.STRING).optional().description("소셜 로그인 제공자 (kakao | naver)")
                     ))
                     .build()
                 )

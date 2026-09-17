@@ -77,6 +77,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // dotenv — 루트 .env 파일을 Spring 환경변수로 로드 (로컬 개발용)
+    implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

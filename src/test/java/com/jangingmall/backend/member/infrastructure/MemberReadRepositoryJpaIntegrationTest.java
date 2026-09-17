@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jangingmall.backend.member.application.MemberReadRepository;
 import com.jangingmall.backend.member.application.PageRequest;
+import org.springframework.data.domain.Pageable;
 import com.jangingmall.backend.member.domain.ArtisanProfile;
 import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberActivityRepository;
@@ -36,20 +37,21 @@ class MemberReadRepositoryJpaIntegrationTest {
 
     @Test
     void jpqlReadProjectionsExecuteWithoutNativeSql() {
-        PageRequest page = PageRequest.from(null, 20);
+        PageRequest cursorPage = PageRequest.from(null, 20);
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(0, 20);
 
-        assertThat(reads.applications(page, "ALL").items()).isEmpty();
-        assertThat(reads.wishes(999L, page).items()).isEmpty();
-        assertThat(reads.orders(999L, page, "ALL").items()).isEmpty();
+        assertThat(reads.applications(cursorPage, "ALL").items()).isEmpty();
+        assertThat(reads.wishes(999L, pageable).getContent()).isEmpty();
+        assertThat(reads.orders(999L, pageable, "ALL").getContent()).isEmpty();
         assertThat(reads.order(999L, 999L)).isEmpty();
-        assertThat(reads.reviews(999L, page, false).items()).isEmpty();
-        assertThat(reads.reviews(999L, page, true).items()).isEmpty();
+        assertThat(reads.reviews(999L, pageable, false).getContent()).isEmpty();
+        assertThat(reads.reviews(999L, pageable, true).getContent()).isEmpty();
         assertThat(reads.recentViews(999L, null, 20).items()).isEmpty();
         assertThat(reads.artisans(null, 20, null, null, null, "POPULAR").items()).isEmpty();
         assertThat(reads.artisans(null, 20, null, null, null, "MOST_PRODUCTS").items()).isEmpty();
         assertThat(reads.artisans(null, 20, null, null, null, "RECENTLY_JOINED").items()).isEmpty();
         assertThat(reads.artisan(999L)).isEmpty();
-        assertThat(reads.subscriptions(999L, page).items()).isEmpty();
+        assertThat(reads.subscriptions(999L, cursorPage).items()).isEmpty();
         assertThat(reads.productVisible(999L)).isFalse();
         reads.categoryExists("없는 카테고리");
     }
@@ -100,10 +102,11 @@ class MemberReadRepositoryJpaIntegrationTest {
         entityManager.flush();
         entityManager.clear();
 
-        PageRequest page = PageRequest.from(null, 20);
-        assertThat(reads.wishes(customer.getId(), page).items()).hasSize(1);
+        Pageable wishPage = org.springframework.data.domain.PageRequest.of(0, 20);
+        PageRequest subscriptionPage = PageRequest.from(null, 20);
+        assertThat(reads.wishes(customer.getId(), wishPage).getContent()).hasSize(1);
         assertThat(reads.recentViews(customer.getId(), null, 20).items()).hasSize(1);
-        assertThat(reads.subscriptions(customer.getId(), page).items()).hasSize(1);
+        assertThat(reads.subscriptions(customer.getId(), subscriptionPage).items()).hasSize(1);
         assertThat(reads.artisans(null, 20, null, null, null, "POPULAR").items()).hasSize(1);
         assertThat(reads.artisan(artisan.getId())).isPresent();
         assertThat(reads.productVisible(product.getId())).isTrue();

@@ -100,7 +100,13 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Page<ProductResponse> findOnSale(Pageable pageable) {
-        return productRepository.findByStatus(ProductStatus.ON_SALE, pageable).map(this::response);
+        return productRepository.findOnSale(new ProductCommand.Search(null, null, null, null, null,
+            null, null, false, null), pageable).map(this::response);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductResponse> findOnSale(ProductCommand.Search search, Pageable pageable) {
+        return productRepository.findOnSale(search, pageable).map(this::response);
     }
 
     @Transactional(readOnly = true)

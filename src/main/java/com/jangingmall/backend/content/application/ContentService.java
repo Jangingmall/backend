@@ -28,7 +28,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -76,6 +78,15 @@ public class ContentService {
                           ArtisanProfileRepository artisanProfileRepository, InterviewRepository interviewRepository) {
         this(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository,
             interviewRepository, null, null, null, null);
+    }
+
+    /** Compatibility constructor used by the JSON editor tests and legacy callers. */
+    public ContentService(ContentRepository contentRepository, ContentEditHistoryRepository historyRepository,
+                          ProductRepository productRepository, AiContentClient aiContentClient,
+                          ArtisanProfileRepository artisanProfileRepository, InterviewRepository interviewRepository,
+                          ObjectMapper objectMapper) {
+        this(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository,
+            interviewRepository, null, null, null, objectMapper);
     }
 
     @Transactional(readOnly = true)
@@ -126,34 +137,90 @@ public class ContentService {
         return ContentResponse.Detail.from(saved, readBlocks(saved));
     }
 
+    /** Applies the AI editor's node-id based patch contract to the stored JSON document. */
     @Transactional
-    public ContentResponse.BlockChanged updateBlock(ContentCommand.UpdateBlock command) {
+    public ContentResponse.BulkUpdated bulkUpdate(ContentCommand.BulkUpdate command) {
         verifyProductOwner(command.productId(), command.requesterId());
         Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
-        if (contentBlockRepository == null) {
-            throw new NotFoundException(ContentErrorMessage.NOT_FOUND.message());
+        content.verifyEditable();
+        try {
+            JsonNode document = objectMapper.readTree(content.getReactDocument());
+            JsonNode root = document.path("root");
+            for (ContentCommand.NodePatch patch : command.patches()) {
+                if (!patchNodeInTree(root, patch)) {
+                    throw new NotFoundException(ContentErrorMessage.BLOCK_NOT_FOUND.message());
+                }
+            }
+            content.storeReactDocument(objectMapper.writeValueAsString(document));
+        } catch (NotFoundException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new IllegalArgumentException("콘텐츠 블록을 수정할 수 없습니다.", exception);
         }
-        ContentBlock block = contentBlockRepository
-            .findByContentIdAndDisplayOrder(content.getId(), command.order())
-            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
-        ContentCommand.ContentBlockInput input = command.block();
-        String tag = input.tag() == null ? block.getTag() : input.tag();
-        validateTag(tag);
-        String imageId = "img".equals(tag)
-            ? (input.imageUrl() == null ? block.getImageId() : resolveAndConsumeImage(input.imageUrl(), command.requesterId()))
-            : null;
-        block.update(tag, imageId, "video".equals(tag) ? input.videoUrl() : null,
-            Set.of("h2", "p").contains(tag) ? input.text() : null);
-        content.storeReactDocument(serializeBlocks(contentBlockRepository.findByContentIdOrderByDisplayOrderAsc(content.getId())));
         Content saved = contentRepository.save(content);
         historyRepository.save(ContentEditHistory.record(saved.getId(), saved.getVersion(), EditedByType.ARTISAN,
             command.requesterId()));
-        ContentResponse.Block updated = readBlocks(saved).stream()
-            .filter(candidate -> candidate.order() == command.order())
-            .findFirst()
+        return new ContentResponse.BulkUpdated(saved.getId(), saved.getProductId(), saved.getStatus(), saved.getVersion());
+    }
+
+    /** Applies one node-id based patch. Image references are validated by the editor contract's caller. */
+    @Transactional
+    public ContentResponse.BlockUpdated updateBlock(ContentCommand.BlockUpdate command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
-        return new ContentResponse.BlockChanged(saved.getId(), saved.getVersion(), updated);
+        content.verifyEditable();
+        try {
+            JsonNode document = objectMapper.readTree(content.getReactDocument());
+            if (!patchNodeInTree(document.path("root"), command.patch())) {
+                throw new NotFoundException(ContentErrorMessage.BLOCK_NOT_FOUND.message());
+            }
+            content.storeReactDocument(objectMapper.writeValueAsString(document));
+        } catch (NotFoundException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            throw new IllegalArgumentException("콘텐츠 블록을 수정할 수 없습니다.", exception);
+        }
+        Content saved = contentRepository.save(content);
+        historyRepository.save(ContentEditHistory.record(saved.getId(), saved.getVersion(), EditedByType.ARTISAN,
+            command.requesterId()));
+        return new ContentResponse.BlockUpdated(saved.getId(), saved.getVersion(), command.patch().nodeId());
+    }
+
+    private boolean patchNodeInTree(JsonNode tree, ContentCommand.NodePatch patch) {
+        if (tree.isArray()) {
+            for (JsonNode child : tree) {
+                if (patchNodeInTree(child, patch)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (!tree.isObject()) {
+            return false;
+        }
+        if (patch.nodeId().equals(tree.path("id").asText(null))) {
+            ObjectNode node = (ObjectNode) tree;
+            if (patch.text() != null) {
+                if ("text".equals(tree.path("type").asText("element"))) {
+                    node.put("value", patch.text());
+                } else if (tree.path("children").isArray()) {
+                    for (JsonNode child : tree.path("children")) {
+                        if ("text".equals(child.path("type").asText(null)) && child instanceof ObjectNode text) {
+                            text.put("value", patch.text());
+                            break;
+                        }
+                    }
+                }
+            }
+            if (patch.imageId() != null && node.path("props") instanceof ObjectNode props) {
+                props.put("imageId", patch.imageId());
+            }
+            return true;
+        }
+        JsonNode children = tree.path("children");
+        return !children.isMissingNode() && patchNodeInTree(children, patch);
     }
 
     private List<ContentResponse.Block> readBlocks(Content content) {

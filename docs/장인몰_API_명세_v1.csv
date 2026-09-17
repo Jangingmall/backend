@@ -2195,7 +2195,7 @@
   ""status"": 400,
   ""errorCode"": ""INVALID_INPUT""
 }"
-컨텐츠,강정훈,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder},단건 블록 수정,특정 순서(blockOrder)의 블록 하나만 수정한다. 텍스트 블록은 text만, 이미지 블록은 imageUrl만 전달한다,ARTISAN,예정,P0,"{
+컨텐츠,강정훈,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder},단건 블록 수정,"특정 순서(blockOrder)의 블록 하나만 수정한다. 텍스트 블록은 text만, 이미지 블록은 imageUrl만 전달한다",ARTISAN,예정,P0,"{
   ""method"": ""PATCH"",
   ""url"": ""/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder}"",
   ""headers"": {

@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 interface JpaContentGenerationRepositoryJpa extends JpaRepository<ContentGeneration, Long> {
     Optional<ContentGeneration> findByIdAndProductId(Long id, Long productId);
+    Optional<ContentGeneration> findByIdempotencyKey(String idempotencyKey);
 }
 
 @Repository
@@ -34,5 +35,10 @@ class JpaContentGenerationRepository implements ContentGenerationRepository {
     @Override
     public Optional<ContentGeneration> findByIdAndProductId(Long id, Long productId) {
         return jpa.findByIdAndProductId(id, productId);
+    }
+
+    @Override
+    public Optional<ContentGeneration> findByIdempotencyKey(String idempotencyKey) {
+        return jpa.findByIdempotencyKey(idempotencyKey);
     }
 }

@@ -4,6 +4,18 @@ import java.util.List;
 
 public sealed interface ProductCommand {
 
+    record Search(
+        String keyword,
+        Long categoryId,
+        Long subcategoryId,
+        String giftTheme,
+        String sort,
+        Integer minPrice,
+        Integer maxPrice,
+        Boolean excludeSoldOut,
+        Long artisanId
+    ) implements ProductCommand {}
+
     record Create(
         Long artisanId,
         Long categoryId,

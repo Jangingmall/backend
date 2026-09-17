@@ -43,6 +43,18 @@ public class ContentGeneration {
     @Column(name = "care_tips", columnDefinition = "TEXT", nullable = false)
     private String careTips;
 
+    @Column(name = "job_id", length = 200)
+    private String jobId;
+
+    @Column(name = "request_id", length = 200)
+    private String requestId;
+
+    @Column(name = "idempotency_key", length = 200)
+    private String idempotencyKey;
+
+    @Column(name = "status_url", length = 500)
+    private String statusUrl;
+
     @Column(name = "requested_at", nullable = false)
     private LocalDateTime requestedAt;
 
@@ -64,9 +76,18 @@ public class ContentGeneration {
         return generation;
     }
 
-    public void complete(String reactDocumentJson) {
+    public void markQueued(String jobId, String requestId, String idempotencyKey, String statusUrl) {
+        this.jobId = jobId;
+        this.requestId = requestId;
+        this.idempotencyKey = idempotencyKey;
+        this.statusUrl = statusUrl;
+        this.status = GenerationStatus.QUEUED;
+    }
+
+    public void complete(String reactDocumentJson, String idempotencyKey) {
         this.status = GenerationStatus.COMPLETED;
         this.reactDocument = reactDocumentJson;
+        this.idempotencyKey = idempotencyKey;
         this.completedAt = LocalDateTime.now();
     }
 

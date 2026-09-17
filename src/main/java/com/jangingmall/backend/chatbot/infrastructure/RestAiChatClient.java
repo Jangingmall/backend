@@ -30,11 +30,11 @@ class RestAiChatClient implements AiChatClient {
     RestAiChatClient(AiProperties aiProperties) {
         Duration timeout = Duration.ofSeconds(aiProperties.timeoutSeconds());
         JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(
-            HttpClient.newBuilder().connectTimeout(timeout).build()
+            HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).connectTimeout(timeout).build()
         );
         factory.setReadTimeout(timeout);
         this.restClient = RestClient.builder()
-            .baseUrl(aiProperties.sglangUrl())
+            .baseUrl(aiProperties.chatBotUrl())
             .requestFactory(factory)
             .build();
     }
