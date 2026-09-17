@@ -7,6 +7,7 @@ import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
+import com.jangingmall.backend.image.application.ImageStorage;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,6 +48,8 @@ class GenerationServiceTest {
     private AiContentClient aiContentClient;
     @Mock
     private ContentService contentService;
+    @Mock
+    private ImageStorage imageStorage;
 
     @Captor
     private ArgumentCaptor<ContentGeneration> generationCaptor;
@@ -57,7 +64,7 @@ class GenerationServiceTest {
 
     @BeforeEach
     void setUp() {
-        generationService = spy(new GenerationService(generationRepository, productRepository, aiContentClient, contentService, objectMapper));
+        generationService = spy(new GenerationService(generationRepository, productRepository, aiContentClient, contentService, imageStorage, objectMapper));
         artisanProduct = Product.create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
         ReflectionTestUtils.setField(artisanProduct, "id", 10L);
     }
@@ -181,7 +188,7 @@ class GenerationServiceTest {
         when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
         when(generationRepository.save(any())).thenReturn(generation);
 
-        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, REACT_DOCUMENT_JSON);
+        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
         GenerationResponse response = generationService.complete(command);
 
         assertThat(response.status()).isEqualTo(GenerationStatus.COMPLETED);
@@ -193,9 +200,46 @@ class GenerationServiceTest {
     void completeNotFound() {
         when(generationRepository.findById(999L)).thenReturn(Optional.empty());
 
-        GenerationCommand.Complete command = new GenerationCommand.Complete(999L, REACT_DOCUMENT_JSON);
+        GenerationCommand.Complete command = new GenerationCommand.Complete(999L, "idem-key", REACT_DOCUMENT_JSON);
 
         assertThatThrownBy(() -> generationService.complete(command))
             .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — completeWithImages() 호출 시 이미지 업로드 후 COMPLETED로 전환한다")
+    void completeWithImages() {
+        ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
+        when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
+        when(generationRepository.save(any())).thenReturn(generation);
+
+        MultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", "image/jpeg", new byte[]{1, 2, 3});
+        Map<String, MultipartFile> photoFiles = Map.of(
+            "product_photo_hero", new MockMultipartFile("product_photo_hero", "hero.jpg", "image/jpeg", new byte[]{4, 5, 6})
+        );
+
+        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
+        BeToAiPersistAckResponse ack = generationService.completeWithImages(command, detailImage, Map.of(), photoFiles, "10");
+
+        assertThat(ack.status()).isEqualTo("SAVED");
+        assertThat(ack.generationId()).isEqualTo("1");
+        verify(contentService).storeReactDocument(any());
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — 이미 완료된 idempotencyKey면 ALREADY_SAVED를 반환한다")
+    void completeWithImagesIdempotent() {
+        ContentGeneration existing = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(existing, "id", 1L);
+        existing.complete(REACT_DOCUMENT_JSON, "idem-key");
+        when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.of(existing));
+
+        MultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", "image/jpeg", new byte[]{1});
+        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
+        BeToAiPersistAckResponse ack = generationService.completeWithImages(command, detailImage, Map.of(), Map.of(), "10");
+
+        assertThat(ack.status()).isEqualTo("ALREADY_SAVED");
     }
 }
