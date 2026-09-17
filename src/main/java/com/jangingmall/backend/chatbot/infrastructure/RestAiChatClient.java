@@ -34,7 +34,7 @@ class RestAiChatClient implements AiChatClient {
         );
         factory.setReadTimeout(timeout);
         this.restClient = RestClient.builder()
-            .baseUrl(aiProperties.sglangUrl())
+            .baseUrl(aiProperties.chatBotUrl())
             .requestFactory(factory)
             .build();
     }

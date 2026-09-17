@@ -34,7 +34,7 @@ class RestAiContentClient implements AiContentClient {
         );
         factory.setReadTimeout(timeout);
         this.restClient = RestClient.builder()
-            .baseUrl(aiProperties.ollamaUrl())
+            .baseUrl(aiProperties.contentUrl())
             .requestFactory(factory)
             .build();
     }
