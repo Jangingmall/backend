@@ -16,6 +16,7 @@ import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.image.application.ImageService;
+import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.image.domain.ImageUploadRepository;
 import com.jangingmall.backend.member.domain.ArtisanProfile;
 import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
@@ -319,12 +320,14 @@ public class ContentService {
         if (!upload.getMemberId().equals(requesterId)) {
             throw new DomainException(ErrorCode.FORBIDDEN);
         }
+        if (upload.getPurpose() != ImagePurpose.CONTENT) {
+            throw new DomainException(ErrorCode.FORBIDDEN);
+        }
         if (!upload.isConsumed()) {
             if (imageService == null) {
                 throw new DomainException(ErrorCode.INVALID_INPUT);
             }
-            imageService.consumeOwned(requesterId, com.jangingmall.backend.image.domain.ImagePurpose.CONTENT,
-                List.of(imageId));
+            imageService.consumeOwned(requesterId, ImagePurpose.CONTENT, List.of(imageId));
         }
         return upload.getId();
     }
