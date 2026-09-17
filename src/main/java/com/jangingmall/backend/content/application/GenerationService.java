@@ -1,6 +1,5 @@
 package com.jangingmall.backend.content.application;
 
-import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
@@ -14,7 +13,7 @@ import com.jangingmall.backend.product.domain.ProductErrorMessage;
 import com.jangingmall.backend.product.domain.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,10 +30,10 @@ public class GenerationService {
 
     private final ContentGenerationRepository generationRepository;
     private final ProductRepository productRepository;
-    private final AiContentClient aiContentClient;
     private final ContentService contentService;
     private final ImageStorage imageStorage;
     private final ObjectMapper objectMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public GenerationResponse request(GenerationCommand.Request command) {
@@ -51,7 +50,8 @@ public class GenerationService {
         );
         ContentGeneration saved = generationRepository.save(generation);
 
-        executeAsync(saved.getId(), command);
+        // 트랜잭션 커밋 후 @TransactionalEventListener(AFTER_COMMIT)으로 비동기 실행
+        eventPublisher.publishEvent(new GenerationRequestedEvent(saved.getId(), command));
         return GenerationResponse.from(saved);
     }
 
@@ -105,32 +105,6 @@ public class GenerationService {
         ContentGeneration generation = generationRepository.findByIdAndProductId(generationId, productId)
             .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
         return GenerationResponse.from(generation);
-    }
-
-    @Async
-    public void executeAsync(Long generationId, GenerationCommand.Request command) {
-        ContentGeneration generation = generationRepository.findByIdAndProductId(generationId, command.productId())
-            .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
-        try {
-            String reactDocumentJson = aiContentClient.requestGeneration(
-                generationId,
-                command.productId(),
-                command.images(),
-                command.productName(),
-                command.howMade(),
-                command.careTips()
-            );
-            generation.complete(reactDocumentJson, generationId.toString());
-            generationRepository.save(generation);
-            contentService.storeReactDocument(
-                new ContentCommand.StoreReactDocument(command.productId(), reactDocumentJson, command.requesterId())
-            );
-            log.info("AI 콘텐츠 생성 완료 generationId={}", generationId);
-        } catch (Exception exception) {
-            generation.fail();
-            generationRepository.save(generation);
-            log.error("AI 콘텐츠 생성 실패 generationId={} reason={}", generationId, exception.getMessage());
-        }
     }
 
     private Product getProduct(Long productId) {
