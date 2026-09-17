@@ -79,6 +79,12 @@ public class Content {
         this.reactDocument = reactDocumentJson;
     }
 
+    public void verifyEditable() {
+        if (status != ContentStatus.DRAFT && status != ContentStatus.REJECTED) {
+            throw new BusinessRuleViolationException(ContentErrorMessage.EDIT_NOT_ALLOWED.message());
+        }
+    }
+
     public void submitForReview() {
         if (status != ContentStatus.DRAFT && status != ContentStatus.REJECTED) {
             throw new BusinessRuleViolationException(ContentErrorMessage.INVALID_STATUS_TRANSITION.message());

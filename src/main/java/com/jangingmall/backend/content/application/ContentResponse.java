@@ -1,17 +1,19 @@
 package com.jangingmall.backend.content.application;
 
-import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.jangingmall.backend.content.domain.Content;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
+import com.fasterxml.jackson.annotation.JsonRawValue;
 
 import java.time.LocalDateTime;
 
 public sealed interface ContentResponse permits
     ContentResponse.Detail,
     ContentResponse.VersionHistory,
-    ContentResponse.StatusChanged {
+    ContentResponse.StatusChanged,
+    ContentResponse.BulkUpdated,
+    ContentResponse.BlockUpdated {
 
     record Detail(
         Long contentId,
@@ -52,4 +54,17 @@ public sealed interface ContentResponse permits
             return new StatusChanged(content.getId(), content.getStatus());
         }
     }
+
+    record BulkUpdated(
+        Long contentId,
+        Long productId,
+        ContentStatus status,
+        int version
+    ) implements ContentResponse {}
+
+    record BlockUpdated(
+        Long contentId,
+        int version,
+        String nodeId
+    ) implements ContentResponse {}
 }

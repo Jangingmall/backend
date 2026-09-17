@@ -10,6 +10,7 @@ import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.EditedByType;
 import com.jangingmall.backend.content.domain.Interview;
 import com.jangingmall.backend.content.domain.InterviewRepository;
+import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.member.domain.ArtisanProfile;
 import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
@@ -21,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +40,7 @@ public class ContentService {
     private final AiContentClient aiContentClient;
     private final ArtisanProfileRepository artisanProfileRepository;
     private final InterviewRepository interviewRepository;
+    private final ObjectMapper objectMapper;
 
     @Transactional(readOnly = true)
     public ContentResponse.Detail getContent(Long productId, Long requesterId) {
@@ -126,6 +131,90 @@ public class ContentService {
         } catch (Exception e) {
             log.error("AI 상품 동기화 트리거 실패 productId={} reason={}", productId, e.getMessage());
         }
+    }
+
+    @Transactional
+    public ContentResponse.BulkUpdated bulkUpdate(ContentCommand.BulkUpdate command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
+        content.verifyEditable();
+
+        JsonNode document = objectMapper.readTree(content.getReactDocument());
+        JsonNode rootArray = document.path("root");
+        for (ContentCommand.NodePatch patch : command.patches()) {
+            patchNodeInTree(rootArray, patch);
+        }
+
+        content.storeReactDocument(objectMapper.writeValueAsString(document));
+        Content saved = contentRepository.save(content);
+        historyRepository.save(ContentEditHistory.record(
+            saved.getId(), saved.getVersion(), EditedByType.ARTISAN, command.requesterId()
+        ));
+        return new ContentResponse.BulkUpdated(saved.getId(), saved.getProductId(), saved.getStatus(), saved.getVersion());
+    }
+
+    @Transactional
+    public ContentResponse.BlockUpdated updateBlock(ContentCommand.BlockUpdate command) {
+        verifyProductOwner(command.productId(), command.requesterId());
+        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
+            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
+        content.verifyEditable();
+
+        JsonNode document = objectMapper.readTree(content.getReactDocument());
+        boolean patched = patchNodeInTree(document.path("root"), command.patch());
+        if (!patched) {
+            throw new NotFoundException(ContentErrorMessage.BLOCK_NOT_FOUND.message());
+        }
+
+        content.storeReactDocument(objectMapper.writeValueAsString(document));
+        Content saved = contentRepository.save(content);
+        historyRepository.save(ContentEditHistory.record(
+            saved.getId(), saved.getVersion(), EditedByType.ARTISAN, command.requesterId()
+        ));
+        return new ContentResponse.BlockUpdated(saved.getId(), saved.getVersion(), command.patch().nodeId());
+    }
+
+    private boolean patchNodeInTree(JsonNode tree, ContentCommand.NodePatch patch) {
+        if (tree.isArray()) {
+            for (JsonNode child : tree) {
+                if (patchNodeInTree(child, patch)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (!tree.isObject()) {
+            return false;
+        }
+        String nodeId = tree.path("id").asText(null);
+        if (patch.nodeId().equals(nodeId)) {
+            String type = tree.path("type").asText("element");
+            if ("text".equals(type)) {
+                if (patch.text() != null) {
+                    ((ObjectNode) tree).put("value", patch.text());
+                }
+            } else {
+                if (patch.imageId() != null) {
+                    ((ObjectNode) tree.path("props")).put("imageId", patch.imageId());
+                }
+                if (patch.text() != null) {
+                    JsonNode children = tree.path("children");
+                    for (JsonNode child : children) {
+                        if ("text".equals(child.path("type").asText(null))) {
+                            ((ObjectNode) child).put("value", patch.text());
+                            break;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        JsonNode children = tree.path("children");
+        if (!children.isMissingNode()) {
+            return patchNodeInTree(children, patch);
+        }
+        return false;
     }
 
     private AiProductSyncPayload buildSyncPayload(Product product, ArtisanProfile artisan, Optional<Interview> interview) {

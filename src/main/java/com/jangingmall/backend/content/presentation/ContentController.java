@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,6 +78,35 @@ public class ContentController {
     ) {
         ContentCommand.Reject command = new ContentCommand.Reject(productId, contentId, memberId);
         return ApiResponse.ok(contentService.reject(command));
+    }
+
+    @PatchMapping("/contents/{contentId}")
+    @PreAuthorize("hasRole('ARTISAN')")
+    public ApiResponse<ContentResponse.BulkUpdated> bulkUpdate(
+        @PathVariable Long productId,
+        @PathVariable Long contentId,
+        @AuthenticationPrincipal Long memberId,
+        @Valid @RequestBody ContentRequest.BulkUpdate request
+    ) {
+        List<ContentCommand.NodePatch> patches = request.patches().stream()
+            .map(p -> new ContentCommand.NodePatch(p.nodeId(), p.text(), p.imageId()))
+            .toList();
+        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(productId, contentId, memberId, patches);
+        return ApiResponse.ok(contentService.bulkUpdate(command));
+    }
+
+    @PatchMapping("/contents/{contentId}/blocks/{nodeId}")
+    @PreAuthorize("hasRole('ARTISAN')")
+    public ApiResponse<ContentResponse.BlockUpdated> updateBlock(
+        @PathVariable Long productId,
+        @PathVariable Long contentId,
+        @PathVariable String nodeId,
+        @AuthenticationPrincipal Long memberId,
+        @Valid @RequestBody ContentRequest.BlockUpdate request
+    ) {
+        ContentCommand.NodePatch patch = new ContentCommand.NodePatch(nodeId, request.text(), request.imageId());
+        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(productId, contentId, nodeId, memberId, patch);
+        return ApiResponse.ok(contentService.updateBlock(command));
     }
 
     @PostMapping("/publish")
