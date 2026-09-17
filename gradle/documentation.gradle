@@ -767,9 +767,12 @@ tasks.register('buildRedocly', Exec) {
     inputs.file(specFile)
     outputs.file(outputHtml)
 
+    def templateFile = file('api-spec/redoc-template.hbs')
+
     commandLine 'npx', '--yes', '@redocly/cli', 'build-docs',
         specFile.absolutePath,
         '--output', outputHtml.absolutePath,
+        '--template', templateFile.absolutePath,
         '--theme.openapi.colors.primary.main=#3D6CD4',
         '--theme.openapi.sidebar.activeTextColor=#3D6CD4',
         '--theme.openapi.sidebar.activeBgColor=#EEF2FD',
