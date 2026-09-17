@@ -114,13 +114,12 @@ public class ProductService {
             Optional<Interview> interview = interviewRepository.findByProductId(productId);
             String makingStory = interview.map(Interview::getProcess).orElse("");
             String usageCare = interview.map(Interview::getMaterials).orElse("");
-            String categoryCode = product.getCategory() != null ? product.getCategory().getName() : null;
-            String color = product.getColors().isEmpty() ? null : product.getColors().get(0);
+            String categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
             AiProductUpdatePayload payload = new AiProductUpdatePayload(
                 new AiProductUpdatePayload.ProductPatch(
-                    product.getTitle(), categoryCode, product.getMaterial(), product.getPrice(),
-                    color, product.getGiftThemes(), product.getPurposeTags(),
-                    makingStory, usageCare, product.getProductionPeriodDays()
+                    product.getTitle(), categoryName, product.getMaterial(), product.getPrice(),
+                    product.getGiftThemes(), product.getPurposeTags(),
+                    makingStory, usageCare, product.getProductionPeriodDays(), product.getColors()
                 )
             );
             aiContentClient.updateProduct(productId, payload);

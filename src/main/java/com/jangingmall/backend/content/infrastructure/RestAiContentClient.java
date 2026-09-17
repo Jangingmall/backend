@@ -22,6 +22,10 @@ class RestAiContentClient implements AiContentClient {
 
     private final RestClient restClient;
 
+    RestAiContentClient(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
     @Autowired
     RestAiContentClient(AiProperties aiProperties) {
         Duration timeout = Duration.ofSeconds(aiProperties.timeoutSeconds());

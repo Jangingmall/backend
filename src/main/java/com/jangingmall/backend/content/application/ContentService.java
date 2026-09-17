@@ -2,10 +2,7 @@ package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
-import com.jangingmall.backend.content.domain.BlockTag;
 import com.jangingmall.backend.content.domain.Content;
-import com.jangingmall.backend.content.domain.ContentBlock;
-import com.jangingmall.backend.content.domain.ContentBlockRepository;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentErrorMessage;
@@ -17,8 +14,8 @@ import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.member.domain.ArtisanProfile;
 import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
 import com.jangingmall.backend.product.domain.Product;
-import com.jangingmall.backend.product.domain.ProductRepository;
 import com.jangingmall.backend.product.domain.ProductErrorMessage;
+import com.jangingmall.backend.product.domain.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -34,7 +31,6 @@ import java.util.Optional;
 public class ContentService {
 
     private final ContentRepository contentRepository;
-    private final ContentBlockRepository contentBlockRepository;
     private final ContentEditHistoryRepository historyRepository;
     private final ProductRepository productRepository;
     private final AiContentClient aiContentClient;
@@ -49,55 +45,6 @@ public class ContentService {
         return ContentResponse.Detail.from(content);
     }
 
-    @Transactional
-    public ContentResponse.Detail bulkUpdateBlocks(ContentCommand.BulkUpdate command) {
-        verifyProductOwner(command.productId(), command.requesterId());
-        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
-            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
-
-        List<ContentBlock> newBlocks = command.blocks().stream()
-            .map(input -> ContentBlock.create(
-                content,
-                (short) input.order(),
-                input.tag(),
-                input.imageUrl(),
-                input.videoUrl(),
-                input.text()
-            ))
-            .toList();
-
-        content.replaceBlocks(newBlocks);
-        Content saved = contentRepository.save(content);
-
-        historyRepository.save(ContentEditHistory.record(
-            saved.getId(), saved.getVersion(), EditedByType.ARTISAN, command.requesterId()
-        ));
-
-        return ContentResponse.Detail.from(saved);
-    }
-
-    @Transactional
-    public ContentResponse.BlockEdit updateBlock(ContentCommand.BlockUpdate command) {
-        verifyProductOwner(command.productId(), command.requesterId());
-        Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
-            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
-
-        ContentBlock block = contentBlockRepository.findByContentIdAndDisplayOrder(
-                content.getId(), (short) command.blockOrder()
-            )
-            .orElseThrow(() -> new NotFoundException(ContentErrorMessage.BLOCK_NOT_FOUND.message()));
-
-        applyBlockUpdate(block, command);
-        content.touchVersion();
-        Content saved = contentRepository.save(content);
-
-        historyRepository.save(ContentEditHistory.record(
-            saved.getId(), saved.getVersion(), EditedByType.ARTISAN, command.requesterId()
-        ));
-
-        return new ContentResponse.BlockEdit(saved.getId(), saved.getVersion(), ContentResponse.BlockView.from(block));
-    }
-
     @Transactional(readOnly = true)
     public List<ContentResponse.VersionHistory> getVersionHistory(Long productId, Long requesterId) {
         verifyProductOwner(productId, requesterId);
@@ -110,29 +57,18 @@ public class ContentService {
     }
 
     @Transactional
-    public Content materializeFromBlocks(Long productId, List<ContentCommand.BlockInput> blockInputs, Long memberId) {
-        Content content = contentRepository.findByProductId(productId)
+    public Content storeReactDocument(ContentCommand.StoreReactDocument command) {
+        Content content = contentRepository.findByProductId(command.productId())
             .orElseGet(() -> {
-                Content created = Content.create(productId);
+                Content created = Content.create(command.productId());
                 return contentRepository.save(created);
             });
 
-        List<ContentBlock> blocks = blockInputs.stream()
-            .map(input -> ContentBlock.create(
-                content,
-                (short) input.order(),
-                input.tag(),
-                input.imageUrl(),
-                input.videoUrl(),
-                input.text()
-            ))
-            .toList();
-
-        content.replaceBlocks(blocks);
+        content.storeReactDocument(command.reactDocumentJson());
         Content saved = contentRepository.save(content);
 
         historyRepository.save(ContentEditHistory.record(
-            saved.getId(), saved.getVersion(), EditedByType.AI, memberId
+            saved.getId(), saved.getVersion(), EditedByType.AI, command.requesterId()
         ));
 
         return saved;
@@ -192,28 +128,19 @@ public class ContentService {
         }
     }
 
-    private void applyBlockUpdate(ContentBlock block, ContentCommand.BlockUpdate command) {
-        BlockTag tag = command.tag() != null ? command.tag() : block.getTag();
-        block.replaceWith(tag, command.text(), command.imageUrl(), null);
-    }
-
     private AiProductSyncPayload buildSyncPayload(Product product, ArtisanProfile artisan, Optional<Interview> interview) {
         String makingStory = interview.map(Interview::getProcess).orElse("");
         String usageCare = interview.map(Interview::getMaterials).orElse("");
         String categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
 
-        String subcategoryCode = product.getSubcategory() != null ? product.getSubcategory().getName() : null;
-        String color = product.getColors().isEmpty() ? null : product.getColors().get(0);
-        String statusCode = product.getStatus() != null ? product.getStatus().name() : null;
-
         AiProductSyncPayload.ArtisanInfo artisanInfo = new AiProductSyncPayload.ArtisanInfo(
-            artisan.getId(), artisan.getBusinessName(), artisan.getCertificationLevel(), artisan.getRegion()
+            artisan.getId(), artisan.getBusinessName(), artisan.getCertificationLevel(), artisan.getIntroduction()
         );
         AiProductSyncPayload.ProductInfo productInfo = new AiProductSyncPayload.ProductInfo(
-            product.getId(), product.getTitle(), categoryName, subcategoryCode,
-            product.getMaterial(), product.getPrice(), color,
+            product.getId(), product.getTitle(), categoryName,
+            product.getMaterial(), product.getPrice(),
             product.getGiftThemes(), product.getPurposeTags(),
-            makingStory, usageCare, product.getProductionPeriodDays(), statusCode
+            makingStory, usageCare, product.getProductionPeriodDays(), product.getColors()
         );
         return new AiProductSyncPayload(artisanInfo, productInfo);
     }

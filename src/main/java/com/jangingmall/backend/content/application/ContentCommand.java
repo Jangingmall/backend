@@ -1,41 +1,17 @@
 package com.jangingmall.backend.content.application;
 
-import com.jangingmall.backend.content.domain.BlockTag;
-
-import java.util.List;
-
 public sealed interface ContentCommand permits
-    ContentCommand.BulkUpdate,
-    ContentCommand.BlockUpdate,
+    ContentCommand.StoreReactDocument,
     ContentCommand.SubmitForReview,
     ContentCommand.Approve,
     ContentCommand.Reject,
     ContentCommand.Publish {
 
-    record BulkUpdate(
+    record StoreReactDocument(
         Long productId,
-        Long contentId,
-        Long requesterId,
-        List<BlockInput> blocks
+        String reactDocumentJson,
+        Long requesterId
     ) implements ContentCommand {}
-
-    record BlockUpdate(
-        Long productId,
-        Long contentId,
-        int blockOrder,
-        Long requesterId,
-        BlockTag tag,
-        String text,
-        String imageUrl
-    ) implements ContentCommand {}
-
-    record BlockInput(
-        int order,
-        BlockTag tag,
-        String text,
-        String imageUrl,
-        String videoUrl
-    ) {}
 
     record SubmitForReview(
         Long productId,

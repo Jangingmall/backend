@@ -1,17 +1,15 @@
 package com.jangingmall.backend.content.application;
 
+import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.jangingmall.backend.content.domain.Content;
-import com.jangingmall.backend.content.domain.ContentBlock;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public sealed interface ContentResponse permits
     ContentResponse.Detail,
-    ContentResponse.BlockEdit,
     ContentResponse.VersionHistory,
     ContentResponse.StatusChanged {
 
@@ -20,22 +18,19 @@ public sealed interface ContentResponse permits
         Long productId,
         ContentStatus status,
         int version,
-        List<BlockView> blocks
+        @JsonRawValue String reactDocument
     ) implements ContentResponse {
 
         public static Detail from(Content content) {
-            List<BlockView> blockViews = content.getBlocks().stream()
-                .map(BlockView::from)
-                .toList();
-            return new Detail(content.getId(), content.getProductId(), content.getStatus(), content.getVersion(), blockViews);
+            return new Detail(
+                content.getId(),
+                content.getProductId(),
+                content.getStatus(),
+                content.getVersion(),
+                content.getReactDocument()
+            );
         }
     }
-
-    record BlockEdit(
-        Long contentId,
-        int version,
-        BlockView block
-    ) implements ContentResponse {}
 
     record VersionHistory(
         int version,
@@ -55,26 +50,6 @@ public sealed interface ContentResponse permits
 
         public static StatusChanged from(Content content) {
             return new StatusChanged(content.getId(), content.getStatus());
-        }
-    }
-
-    record BlockView(
-        int order,
-        String tag,
-        boolean hasImage,
-        String imageId,
-        String videoUrl,
-        String text
-    ) {
-        public static BlockView from(ContentBlock block) {
-            return new BlockView(
-                block.getDisplayOrder(),
-                block.getTag().name(),
-                block.getImageId() != null,
-                block.getImageId(),
-                block.getVideoUrl(),
-                block.getText()
-            );
         }
     }
 }

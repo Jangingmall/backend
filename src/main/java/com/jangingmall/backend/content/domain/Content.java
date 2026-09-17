@@ -2,7 +2,6 @@ package com.jangingmall.backend.content.domain;
 
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,8 +9,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -21,8 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "content")
@@ -55,15 +50,14 @@ public class Content {
     @Column(name = "display_approval_badge", nullable = false)
     private boolean displayApprovalBadge;
 
+    @Column(name = "react_document", columnDefinition = "TEXT")
+    private String reactDocument;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
-
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("displayOrder ASC")
-    private List<ContentBlock> blocks = new ArrayList<>();
 
     public static Content create(Long productId) {
         Content content = new Content();
@@ -81,9 +75,8 @@ public class Content {
         }
     }
 
-    public void replaceBlocks(List<ContentBlock> newBlocks) {
-        this.blocks.clear();
-        this.blocks.addAll(newBlocks);
+    public void storeReactDocument(String reactDocumentJson) {
+        this.reactDocument = reactDocumentJson;
     }
 
     public void submitForReview() {
@@ -115,12 +108,6 @@ public class Content {
             throw new BusinessRuleViolationException(ContentErrorMessage.CONTENT_NOT_APPROVED.message());
         }
         status = ContentStatus.PUBLISHED;
-    }
-
-    public void touchVersion() {
-        // @Version 필드만으로는 자식 엔티티 변경 시 부모 버전이 증가하지 않으므로
-        // 블록 단건 수정 시 명시적으로 호출해 version을 강제 증가시킨다
-        this.version++;
     }
 
     @PrePersist

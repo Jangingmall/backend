@@ -6,15 +6,15 @@ public record AiProductUpdatePayload(
     ProductPatch product
 ) {
     public record ProductPatch(
-        String name,
-        String category_code,
+        String title,
+        String category,
         String material,
         int price,
-        String color,
         List<String> gift_theme,
         List<String> purpose_tags,
         String making_story,
         String usage_care,
-        Integer production_period_days
+        Integer production_period_days,
+        List<String> color
     ) {}
 }
