@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf8" />
+  <title>{{title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  {{{redocHead}}}
+  {{#unless disableGoogleFont}}<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">{{/unless}}
+  <style>
+    /* 도메인 그룹 헤더: 구분선 + 텍스트 크기 +6px */
+    li[data-item-id^="group/"] {
+      margin-top: 6px;
+      border-top: 1px solid rgba(61, 108, 212, 0.2);
+    }
+    li[data-item-id^="group/"]:first-of-type {
+      border-top: none;
+      margin-top: 0;
+    }
+    li[data-item-id^="group/"] > label > span {
+      font-size: 1.36em !important; /* 0.929em 기준 +6px (~19px) */
+      font-weight: 700 !important;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+
+<body>
+  {{{redocHTML}}}
+</body>
+
+</html>
