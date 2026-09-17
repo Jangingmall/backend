@@ -1,7 +1,7 @@
 package com.jangingmall.backend.content.presentation;
 
-import com.jangingmall.backend.content.domain.BlockTag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,21 +16,18 @@ public sealed interface ContentRequest permits ContentRequest.Approve, ContentRe
     ) implements ContentRequest {}
 
     record BulkUpdate(
-        @NotEmpty @Valid List<BlockItem> blocks
+        @NotEmpty @Valid List<NodePatchItem> patches
     ) implements ContentRequest {
 
-        record BlockItem(
-            Integer order,
-            BlockTag tag,
-            Boolean hasImage,
-            String imageUrl,
-            String text
+        record NodePatchItem(
+            @NotBlank String nodeId,
+            String text,
+            String imageId
         ) {}
     }
 
     record BlockUpdate(
-        BlockTag tag,
         String text,
-        String imageUrl
+        String imageId
     ) implements ContentRequest {}
 }

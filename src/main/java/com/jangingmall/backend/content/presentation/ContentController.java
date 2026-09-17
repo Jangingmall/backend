@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jangingmall.backend.content.domain.ContentBlock;
-
 import java.util.List;
 
 @RestController
@@ -90,29 +88,24 @@ public class ContentController {
         @AuthenticationPrincipal Long memberId,
         @Valid @RequestBody ContentRequest.BulkUpdate request
     ) {
-        List<ContentBlock> blocks = request.blocks().stream()
-            .map(b -> new ContentBlock(
-                b.order() != null ? b.order() : 0,
-                b.tag(),
-                b.text(),
-                b.imageUrl()
-            ))
+        List<ContentCommand.NodePatch> patches = request.patches().stream()
+            .map(p -> new ContentCommand.NodePatch(p.nodeId(), p.text(), p.imageId()))
             .toList();
-        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(productId, contentId, memberId, blocks);
+        ContentCommand.BulkUpdate command = new ContentCommand.BulkUpdate(productId, contentId, memberId, patches);
         return ApiResponse.ok(contentService.bulkUpdate(command));
     }
 
-    @PatchMapping("/contents/{contentId}/blocks/{blockOrder}")
+    @PatchMapping("/contents/{contentId}/blocks/{nodeId}")
     @PreAuthorize("hasRole('ARTISAN')")
     public ApiResponse<ContentResponse.BlockUpdated> updateBlock(
         @PathVariable Long productId,
         @PathVariable Long contentId,
-        @PathVariable int blockOrder,
+        @PathVariable String nodeId,
         @AuthenticationPrincipal Long memberId,
         @Valid @RequestBody ContentRequest.BlockUpdate request
     ) {
-        ContentBlock blockPatch = new ContentBlock(blockOrder, request.tag(), request.text(), request.imageUrl());
-        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(productId, contentId, blockOrder, memberId, blockPatch);
+        ContentCommand.NodePatch patch = new ContentCommand.NodePatch(nodeId, request.text(), request.imageId());
+        ContentCommand.BlockUpdate command = new ContentCommand.BlockUpdate(productId, contentId, nodeId, memberId, patch);
         return ApiResponse.ok(contentService.updateBlock(command));
     }
 

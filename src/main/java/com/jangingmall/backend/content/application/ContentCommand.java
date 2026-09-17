@@ -1,7 +1,5 @@
 package com.jangingmall.backend.content.application;
 
-import com.jangingmall.backend.content.domain.ContentBlock;
-
 import java.util.List;
 
 public sealed interface ContentCommand permits
@@ -12,6 +10,8 @@ public sealed interface ContentCommand permits
     ContentCommand.Publish,
     ContentCommand.BulkUpdate,
     ContentCommand.BlockUpdate {
+
+    record NodePatch(String nodeId, String text, String imageId) {}
 
     record StoreReactDocument(
         Long productId,
@@ -49,14 +49,14 @@ public sealed interface ContentCommand permits
         Long productId,
         Long contentId,
         Long requesterId,
-        List<ContentBlock> blocks
+        List<NodePatch> patches
     ) implements ContentCommand {}
 
     record BlockUpdate(
         Long productId,
         Long contentId,
-        int blockOrder,
+        String nodeId,
         Long requesterId,
-        ContentBlock block
+        NodePatch patch
     ) implements ContentCommand {}
 }
