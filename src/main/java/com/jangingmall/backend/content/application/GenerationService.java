@@ -50,7 +50,7 @@ public class GenerationService {
     public GenerationResponse complete(GenerationCommand.Complete command) {
         ContentGeneration generation = generationRepository.findById(command.generationId())
             .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
-        generation.complete(command.reactDocumentJson());
+        generation.complete(command.reactDocumentJson(), command.idempotencyKey());
         ContentGeneration saved = generationRepository.save(generation);
         contentService.storeReactDocument(
             new ContentCommand.StoreReactDocument(saved.getProductId(), command.reactDocumentJson(), null)
@@ -82,7 +82,7 @@ public class GenerationService {
                 command.howMade(),
                 command.careTips()
             );
-            generation.complete(reactDocumentJson);
+            generation.complete(reactDocumentJson, generationId.toString());
             generationRepository.save(generation);
             contentService.storeReactDocument(
                 new ContentCommand.StoreReactDocument(command.productId(), reactDocumentJson, command.requesterId())

@@ -15,6 +15,7 @@ public sealed interface GenerationCommand permits GenerationCommand.Request, Gen
 
     record Complete(
         Long generationId,
+        String idempotencyKey,
         String reactDocumentJson
     ) implements GenerationCommand {}
 }

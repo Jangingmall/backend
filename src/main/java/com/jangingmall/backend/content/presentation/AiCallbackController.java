@@ -24,7 +24,7 @@ public class AiCallbackController {
         @PathVariable Long generationId,
         @Valid @RequestBody AiCallbackRequest.Complete request
     ) {
-        GenerationCommand.Complete command = new GenerationCommand.Complete(generationId, request.reactDocument().toString());
+        GenerationCommand.Complete command = new GenerationCommand.Complete(generationId, generationId.toString(), request.reactDocument().toString());
         return ApiResponse.ok(generationService.complete(command));
     }
 }
