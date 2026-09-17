@@ -20,21 +20,27 @@ import java.util.Map;
 @Component
 class RestAiContentClient implements AiContentClient {
 
-    private final RestClient restClient;
+    private final RestClient generationClient;
+    private final RestClient syncClient;
 
-    RestAiContentClient(RestClient restClient) {
-        this.restClient = restClient;
+    RestAiContentClient(RestClient generationClient, RestClient syncClient) {
+        this.generationClient = generationClient;
+        this.syncClient = syncClient;
     }
 
     @Autowired
     RestAiContentClient(AiProperties aiProperties) {
         Duration timeout = Duration.ofSeconds(aiProperties.timeoutSeconds());
         JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(
-            HttpClient.newBuilder().connectTimeout(timeout).build()
+            HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).connectTimeout(timeout).build()
         );
         factory.setReadTimeout(timeout);
-        this.restClient = RestClient.builder()
+        this.generationClient = RestClient.builder()
             .baseUrl(aiProperties.contentUrl())
+            .requestFactory(factory)
+            .build();
+        this.syncClient = RestClient.builder()
+            .baseUrl(aiProperties.chatBotUrl())
             .requestFactory(factory)
             .build();
     }
@@ -50,7 +56,7 @@ class RestAiContentClient implements AiContentClient {
             "careTips", careTips
         );
         log.info("AI 콘텐츠 생성 요청 전송 generationId={} productId={}", generationId, productId);
-        return restClient.post()
+        return generationClient.post()
             .uri("/ai/products")
             .body(body)
             .retrieve()
@@ -60,7 +66,7 @@ class RestAiContentClient implements AiContentClient {
     @Override
     public void syncProduct(AiProductSyncPayload payload) {
         try {
-            restClient.post()
+            syncClient.post()
                 .uri("/ai/products/sync")
                 .body(payload)
                 .retrieve()
@@ -74,7 +80,7 @@ class RestAiContentClient implements AiContentClient {
     @Override
     public void updateProduct(Long productId, AiProductUpdatePayload payload) {
         try {
-            restClient.put()
+            syncClient.put()
                 .uri("/ai/products/{id}", productId)
                 .body(payload)
                 .retrieve()
@@ -88,7 +94,7 @@ class RestAiContentClient implements AiContentClient {
     @Override
     public void deleteProduct(Long productId) {
         try {
-            restClient.delete()
+            syncClient.delete()
                 .uri("/ai/products/{id}", productId)
                 .retrieve()
                 .toBodilessEntity();
