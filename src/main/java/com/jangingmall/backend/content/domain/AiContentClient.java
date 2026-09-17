@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface AiContentClient {
 
-    String requestGeneration(Long generationId, Long productId, List<String> images, String productName, String howMade, String careTips);
+    AiJobAccepted submitJob(Long generationId, Long productId, List<String> images, String productName, String howMade, String careTips);
 
     void syncProduct(AiProductSyncPayload payload);
 
