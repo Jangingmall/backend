@@ -297,9 +297,57 @@ class ImageControllerTest extends RestDocsControllerTest {
             .andDo(documentError("image-internal-verify-not-found", "이미지", "이미지 검증 — 미존재", "이미지가 없으면 404를 반환합니다."));
     }
 
+    @Test
+    @DisplayName("ARTISAN 역할도 Presigned URL을 발급할 수 있다")
+    void artisanCreatesPresignedUrl() throws Exception {
+        when(images.createPresignedUpload(eq(2L), any())).thenReturn(new ImageService.PresignedUpload(
+            "01JIMAGE000000000000000000",
+            List.of(new ImageService.VariantUpload("320w", "images/product/2/id/320w.webp", "https://s3.example/320w")),
+            300));
+
+        mockMvc.perform(post("/api/images/presigned-url").with(artisan())
+                .contentType(APPLICATION_JSON)
+                .content(json(new ImageController.PresignedUrlRequest(
+                    "bowl.webp", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
+                    List.of(new ImageController.VariantRequest("320w", 1024)), null))))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("ADMIN 역할은 Presigned URL 발급이 불가능하다")
+    void adminCannotCreatePresignedUrl() throws Exception {
+        mockMvc.perform(post("/api/images/presigned-url").with(admin())
+                .contentType(APPLICATION_JSON)
+                .content(json(new ImageController.PresignedUrlRequest(
+                    "bowl.webp", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
+                    List.of(new ImageController.VariantRequest("320w", 1024)), null))))
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("USER가 body에 memberId를 전달해도 본인 principal로 업로드된다")
+    void userBodyMemberIdIsIgnored() throws Exception {
+        when(images.createPresignedUpload(eq(1L), any())).thenReturn(new ImageService.PresignedUpload(
+            "01JIMAGE000000000000000000",
+            List.of(new ImageService.VariantUpload("320w", "images/product/1/id/320w.webp", "https://s3.example/320w")),
+            300));
+
+        mockMvc.perform(post("/api/images/presigned-url").with(user())
+                .contentType(APPLICATION_JSON)
+                .content(json(new ImageController.PresignedUrlRequest(
+                    "bowl.webp", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
+                    List.of(new ImageController.VariantRequest("320w", 1024)), 999L))))
+            .andExpect(status().isOk());
+    }
+
     private RequestPostProcessor user() {
         return authentication(new UsernamePasswordAuthenticationToken(
             1L, null, List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+    }
+
+    private RequestPostProcessor artisan() {
+        return authentication(new UsernamePasswordAuthenticationToken(
+            2L, null, List.of(new SimpleGrantedAuthority("ROLE_ARTISAN"))));
     }
 
     private RequestPostProcessor admin() {
