@@ -20,6 +20,12 @@
             "name": "AI \ucf58\ud150\uce20 \uc0dd\uc131"
         },
         {
+            "name": "AI \ucf5c\ubc31 (\ub0b4\ubd80)"
+        },
+        {
+            "name": "Dev (\ub85c\uceec \uc804\uc6a9)"
+        },
+        {
             "name": "\uc0c1\ud488"
         },
         {
@@ -57,7 +63,7 @@
                     "\uc54c\ub9bc"
                 ],
                 "summary": "\uc54c\ub9bc \ubaa9\ub85d \uc870\ud68c",
-                "description": "\ub85c\uadf8\uc778\ud55c \ud68c\uc6d0\uc758 \uc54c\ub9bc \ubaa9\ub85d\uc744 \ucd5c\uc2e0\uc21c\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\ub85c\uadf8\uc778\ud55c \ud68c\uc6d0\uc758 \uc54c\ub9bc \ubaa9\ub85d\uc744 \ucd5c\uc2e0\uc21c\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "notification-list-200",
                 "responses": {
                     "200": {
@@ -87,14 +93,15 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             },
             "post": {
                 "tags": [
                     "\uc54c\ub9bc"
                 ],
                 "summary": "\uc54c\ub9bc \uc0dd\uc131",
-                "description": "\uc54c\ub9bc\uc744 \uc0dd\uc131\ud558\uace0 SSE \uad6c\ub3c5\uc790\uc5d0\uac8c \uc2e4\uc2dc\uac04\uc73c\ub85c \uc804\uc1a1\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc54c\ub9bc\uc744 \uc0dd\uc131\ud558\uace0 SSE \uad6c\ub3c5\uc790\uc5d0\uac8c \uc2e4\uc2dc\uac04\uc73c\ub85c \uc804\uc1a1\ud569\ub2c8\ub2e4.",
                 "operationId": "notification-create-200",
                 "requestBody": {
                     "content": {
@@ -139,7 +146,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/products": {
@@ -148,7 +156,7 @@
                     "\uc0c1\ud488"
                 ],
                 "summary": "\uc0c1\ud488 \ubaa9\ub85d",
-                "description": "\ud310\ub9e4 \uc911(ON_SALE)\uc778 \uc0c1\ud488 \ubaa9\ub85d\uc744 \ud398\uc774\uc9d5\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\ud310\ub9e4 \uc911(ON_SALE)\uc778 \uc0c1\ud488 \ubaa9\ub85d\uc744 \ud398\uc774\uc9d5\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "product-list",
                 "responses": {
                     "200": {
@@ -213,14 +221,18 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             },
             "post": {
                 "tags": [
                     "\uc0c1\ud488"
                 ],
                 "summary": "\uc0c1\ud488 \ub4f1\ub85d",
-                "description": "\uc7a5\uc778\uc774 \uc2e0\uaddc \uc0c1\ud488\uc744 DRAFT \uc0c1\ud0dc\ub85c \ub4f1\ub85d\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\uc7a5\uc778\uc774 \uc2e0\uaddc \uc0c1\ud488\uc744 DRAFT \uc0c1\ud0dc\ub85c \ub4f1\ub85d\ud569\ub2c8\ub2e4.",
                 "operationId": "product-create",
                 "requestBody": {
                     "content": {
@@ -302,7 +314,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products1950243800"
+                                    "$ref": "#/components/schemas/api-products-productId1950243800"
                                 },
                                 "examples": {
                                     "product-create": {
@@ -346,7 +358,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "product-create-unauthorized": {
@@ -366,7 +378,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "product-create-forbidden": {
@@ -381,7 +393,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/chatbot/sessions": {
@@ -390,7 +403,7 @@
                     "\ucc57\ubd07"
                 ],
                 "summary": "\ucc57\ubd07 \uc138\uc158 \uc0dd\uc131",
-                "description": "\uc18c\ube44\uc790\uac00 \uc0c8 \ucc57\ubd07 \ub300\ud654 \uc138\uc158\uc744 \uc0dd\uc131\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc18c\ube44\uc790\uac00 \uc0c8 \ucc57\ubd07 \ub300\ud654 \uc138\uc158\uc744 \uc0dd\uc131\ud569\ub2c8\ub2e4.",
                 "operationId": "chatbot-session-create",
                 "responses": {
                     "201": {
@@ -415,7 +428,11 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/api/notifications/read-all": {
@@ -424,7 +441,7 @@
                     "\uc54c\ub9bc"
                 ],
                 "summary": "\uc804\uccb4 \uc77d\uc74c \ucc98\ub9ac",
-                "description": "\ub85c\uadf8\uc778\ud55c \ud68c\uc6d0\uc758 \uc77d\uc9c0 \uc54a\uc740 \uc54c\ub9bc\uc744 \ubaa8\ub450 \uc77d\uc74c \ucc98\ub9ac\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\ub85c\uadf8\uc778\ud55c \ud68c\uc6d0\uc758 \uc77d\uc9c0 \uc54a\uc740 \uc54c\ub9bc\uc744 \ubaa8\ub450 \uc77d\uc74c \ucc98\ub9ac\ud569\ub2c8\ub2e4.",
                 "operationId": "notification-read-all-200",
                 "responses": {
                     "200": {
@@ -432,7 +449,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "notification-read-all-200": {
@@ -446,7 +463,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/notifications/stream": {
@@ -455,7 +473,7 @@
                     "\uc54c\ub9bc"
                 ],
                 "summary": "SSE \uc2e4\uc2dc\uac04 \uc54c\ub9bc \uad6c\ub3c5",
-                "description": "SSE(Server-Sent Events)\ub85c \uc2e4\uc2dc\uac04 \uc54c\ub9bc\uc744 \uc218\uc2e0\ud569\ub2c8\ub2e4.\n\nBrowser EventSource\ub294 Authorization \ud5e4\ub354\ub97c \uc124\uc815\ud560 \uc218 \uc5c6\uc73c\ubbc0\ub85c JWT\ub97c \ucffc\ub9ac \ud30c\ub77c\ubbf8\ud130\ub85c \uc804\ub2ec\ud569\ub2c8\ub2e4.\n\n\uc5f0\uacb0 \uc9c1\ud6c4 `connect` \uc774\ubca4\ud2b8\uac00 \uc804\uc1a1\ub418\uace0, \uc774\ud6c4 \uc54c\ub9bc \ubc1c\uc0dd \uc2dc `notification` \uc774\ubca4\ud2b8\uac00 \uc804\uc1a1\ub429\ub2c8\ub2e4.\n",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\nSSE(Server-Sent Events)\ub85c \uc2e4\uc2dc\uac04 \uc54c\ub9bc\uc744 \uc218\uc2e0\ud569\ub2c8\ub2e4.\n\nBrowser EventSource\ub294 Authorization \ud5e4\ub354\ub97c \uc124\uc815\ud560 \uc218 \uc5c6\uc73c\ubbc0\ub85c JWT\ub97c \ucffc\ub9ac \ud30c\ub77c\ubbf8\ud130\ub85c \uc804\ub2ec\ud569\ub2c8\ub2e4.\n\n\uc5f0\uacb0 \uc9c1\ud6c4 `connect` \uc774\ubca4\ud2b8\uac00 \uc804\uc1a1\ub418\uace0, \uc774\ud6c4 \uc54c\ub9bc \ubc1c\uc0dd \uc2dc `notification` \uc774\ubca4\ud2b8\uac00 \uc804\uc1a1\ub429\ub2c8\ub2e4.",
                 "operationId": "notification-stream-200",
                 "parameters": [
                     {
@@ -472,7 +490,8 @@
                     "200": {
                         "description": "200"
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/notifications/unread-count": {
@@ -481,7 +500,7 @@
                     "\uc54c\ub9bc"
                 ],
                 "summary": "\uc77d\uc9c0 \uc54a\uc740 \uc54c\ub9bc \uc218 \uc870\ud68c",
-                "description": "\ub85c\uadf8\uc778\ud55c \ud68c\uc6d0\uc758 \uc77d\uc9c0 \uc54a\uc740 \uc54c\ub9bc \uc218\ub97c \ubc18\ud658\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\ub85c\uadf8\uc778\ud55c \ud68c\uc6d0\uc758 \uc77d\uc9c0 \uc54a\uc740 \uc54c\ub9bc \uc218\ub97c \ubc18\ud658\ud569\ub2c8\ub2e4.",
                 "operationId": "notification-unread-count-200",
                 "responses": {
                     "200": {
@@ -505,7 +524,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/notifications/{notificationId}": {
@@ -514,16 +534,17 @@
                     "\uc54c\ub9bc"
                 ],
                 "summary": "\uc54c\ub9bc \ub2e8\uac74 \uc870\ud68c",
-                "description": "\ud2b9\uc815 \uc54c\ub9bc\uc758 \uc0c1\uc138 \ub0b4\uc6a9\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\ud2b9\uc815 \uc54c\ub9bc\uc758 \uc0c1\uc138 \ub0b4\uc6a9\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "notification-get-one-",
                 "parameters": [
                     {
                         "name": "notificationId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc54c\ub9bc ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -533,7 +554,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "notification-get-one-403": {
@@ -553,7 +574,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "notification-get-one-404": {
@@ -593,23 +614,25 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             },
             "delete": {
                 "tags": [
                     "\uc54c\ub9bc"
                 ],
                 "summary": "\uc54c\ub9bc \uc0ad\uc81c",
-                "description": "\uc54c\ub9bc\uc744 \uc0ad\uc81c \uc0c1\ud0dc\ub85c \ubcc0\uacbd\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc54c\ub9bc\uc744 \uc0ad\uc81c \uc0c1\ud0dc\ub85c \ubcc0\uacbd\ud569\ub2c8\ub2e4.",
                 "operationId": "notification-delete-",
                 "parameters": [
                     {
                         "name": "notificationId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc54c\ub9bc ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -619,7 +642,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "notification-delete-422": {
@@ -639,7 +662,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "notification-delete-200": {
@@ -653,7 +676,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/products/categories": {
@@ -662,7 +686,7 @@
                     "\uce74\ud14c\uace0\ub9ac"
                 ],
                 "summary": "\uce74\ud14c\uace0\ub9ac \ubaa9\ub85d",
-                "description": "\uc804\uccb4 \uce74\ud14c\uace0\ub9ac \ubaa9\ub85d\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc804\uccb4 \uce74\ud14c\uace0\ub9ac \ubaa9\ub85d\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "category-list",
                 "responses": {
                     "200": {
@@ -670,7 +694,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-categories1684097948"
+                                    "$ref": "#/components/schemas/api-products-categories-main1684097948"
                                 },
                                 "examples": {
                                     "category-list": {
@@ -693,7 +717,11 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/api/products/materials": {
@@ -702,7 +730,7 @@
                     "\uce74\ud14c\uace0\ub9ac"
                 ],
                 "summary": "\uc18c\uc7ac \ubaa9\ub85d",
-                "description": "subcategoryId\ub85c \ud544\ud130\ub9c1\ub41c \uc2e4\uc81c \uc0ac\uc6a9 \uc911\uc778 \uc18c\uc7ac \ubaa9\ub85d\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4. subcategoryId \ubbf8\uc804\ub2ec \uc2dc \ube48 \ubc30\uc5f4 \ubc18\ud658.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\nsubcategoryId\ub85c \ud544\ud130\ub9c1\ub41c \uc2e4\uc81c \uc0ac\uc6a9 \uc911\uc778 \uc18c\uc7ac \ubaa9\ub85d\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4. subcategoryId \ubbf8\uc804\ub2ec \uc2dc \ube48 \ubc30\uc5f4 \ubc18\ud658.",
                 "operationId": "material-list",
                 "parameters": [
                     {
@@ -740,7 +768,11 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/api/products/me": {
@@ -749,7 +781,7 @@
                     "\uc0c1\ud488"
                 ],
                 "summary": "\ub0b4 \uc0c1\ud488 \ubaa9\ub85d (\uc7a5\uc778)",
-                "description": "\ub85c\uadf8\uc778\ud55c \uc7a5\uc778 \ubcf8\uc778\uc758 \uc0c1\ud488 \ubaa9\ub85d\uc744 \ud398\uc774\uc9d5\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\ub85c\uadf8\uc778\ud55c \uc7a5\uc778 \ubcf8\uc778\uc758 \uc0c1\ud488 \ubaa9\ub85d\uc744 \ud398\uc774\uc9d5\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "product-my-list",
                 "responses": {
                     "200": {
@@ -814,7 +846,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/products/subcategories": {
@@ -823,7 +856,7 @@
                     "\uce74\ud14c\uace0\ub9ac"
                 ],
                 "summary": "\uc11c\ube0c\uce74\ud14c\uace0\ub9ac \ubaa9\ub85d",
-                "description": "\uc804\uccb4 \uc11c\ube0c\uce74\ud14c\uace0\ub9ac \ubaa9\ub85d\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc804\uccb4 \uc11c\ube0c\uce74\ud14c\uace0\ub9ac \ubaa9\ub85d\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "subcategory-list",
                 "responses": {
                     "200": {
@@ -856,7 +889,11 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/api/products/{productId}": {
@@ -865,7 +902,7 @@
                     "\uc0c1\ud488"
                 ],
                 "summary": "\uc0c1\ud488 \uc0c1\uc138",
-                "description": "\uc0c1\ud488 ID\ub85c \ub2e8\uac74 \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc0c1\ud488 ID\ub85c \ub2e8\uac74 \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "product-detail",
                 "parameters": [
                     {
@@ -874,7 +911,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -884,7 +922,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products1950243800"
+                                    "$ref": "#/components/schemas/api-products-productId1950243800"
                                 },
                                 "examples": {
                                     "product-detail": {
@@ -923,14 +961,18 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             },
             "delete": {
                 "tags": [
                     "\uc0c1\ud488"
                 ],
                 "summary": "\uc0c1\ud488 \uc0ad\uc81c",
-                "description": "\uc7a5\uc778\uc774 \ubcf8\uc778 \uc0c1\ud488\uc744 \uc0ad\uc81c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\uc7a5\uc778\uc774 \ubcf8\uc778 \uc0c1\ud488\uc744 \uc0ad\uc81c\ud569\ub2c8\ub2e4.",
                 "operationId": "product-delete",
                 "parameters": [
                     {
@@ -939,7 +981,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -949,7 +992,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "product-delete": {
@@ -963,14 +1006,15 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             },
             "patch": {
                 "tags": [
                     "\uc0c1\ud488"
                 ],
                 "summary": "\uc0c1\ud488 \uc218\uc815",
-                "description": "\uc7a5\uc778\uc774 \ubcf8\uc778 \uc0c1\ud488\uc758 \uc815\ubcf4\ub97c \uc218\uc815\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\uc7a5\uc778\uc774 \ubcf8\uc778 \uc0c1\ud488\uc758 \uc815\ubcf4\ub97c \uc218\uc815\ud569\ub2c8\ub2e4.",
                 "operationId": "product-update",
                 "parameters": [
                     {
@@ -979,7 +1023,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1021,7 +1066,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products1950243800"
+                                    "$ref": "#/components/schemas/api-products-productId1950243800"
                                 },
                                 "examples": {
                                     "product-update": {
@@ -1060,7 +1105,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/chatbot/sessions/{sessionId}": {
@@ -1069,7 +1115,7 @@
                     "\ucc57\ubd07"
                 ],
                 "summary": "\ucc57\ubd07 \uc138\uc158 \uc885\ub8cc",
-                "description": "\uc18c\ube44\uc790\uac00 \ub300\ud654 \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4. \uc885\ub8cc\ub41c \uc138\uc158\uc5d0\ub294 \uba54\uc2dc\uc9c0\ub97c \uc804\uc1a1\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc18c\ube44\uc790\uac00 \ub300\ud654 \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4. \uc885\ub8cc\ub41c \uc138\uc158\uc5d0\ub294 \uba54\uc2dc\uc9c0\ub97c \uc804\uc1a1\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.",
                 "operationId": "chatbot-session-end",
                 "parameters": [
                     {
@@ -1088,7 +1134,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "chatbot-session-end": {
@@ -1102,48 +1148,11 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "/api/content/products/{productId}": {
-            "get": {
-                "tags": [
-                    "\ucf58\ud150\uce20"
-                ],
-                "operationId": "content-get-unauthorized",
-                "parameters": [
-                    {
-                        "name": "productId",
-                        "in": "path",
-                        "description": "",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "401": {
-                        "description": "401",
-                        "content": {
-                            "application/json;charset=UTF-8": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
-                                },
-                                "examples": {
-                                    "content-get-unauthorized": {
-                                        "value": {
-                                            "success": false,
-                                            "status": 401,
-                                            "errorCode": "UNAUTHORIZED",
-                                            "message": "\uc778\uc99d\uc774 \ud544\uc694\ud569\ub2c8\ub2e4"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/api/member/artisans/subscriptions": {
@@ -1152,7 +1161,7 @@
                     "\uc7a5\uc778 \uad6c\ub3c5"
                 ],
                 "summary": "\uad6c\ub3c5 \uc7a5\uc778 \ubaa9\ub85d",
-                "description": "\ub0b4\uac00 \uad6c\ub3c5\ud55c \uc7a5\uc778 \ubaa9\ub85d\uc744 \ucee4\uc11c \ud398\uc774\uc9c0\ub124\uc774\uc158\uc73c\ub85c \ubc18\ud658\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\ub0b4\uac00 \uad6c\ub3c5\ud55c \uc7a5\uc778 \ubaa9\ub85d\uc744 \ucee4\uc11c \ud398\uc774\uc9c0\ub124\uc774\uc158\uc73c\ub85c \ubc18\ud658\ud569\ub2c8\ub2e4.",
                 "operationId": "member-subscriptions",
                 "responses": {
                     "401": {
@@ -1160,7 +1169,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "member-subscriptions-unauthorized": {
@@ -1190,10 +1199,10 @@
                                             "data": {
                                                 "items": [
                                                     {
-                                                        "newProductCount": 2,
-                                                        "notificationsEnabled": true,
+                                                        "artisanId": 10,
                                                         "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "artisanId": 10
+                                                        "notificationsEnabled": true,
+                                                        "newProductCount": 2
                                                     }
                                                 ],
                                                 "nextCursor": null,
@@ -1206,7 +1215,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/member/me/wishes": {
@@ -1215,7 +1225,7 @@
                     "\ucc1c"
                 ],
                 "summary": "\ucc1c \ubaa9\ub85d \uc870\ud68c",
-                "description": "\uc720\uc800\uac00 \ucc1c\ud55c \uc0c1\ud488 \ubaa9\ub85d\uc744 \ucee4\uc11c \ud398\uc774\uc9c0\ub124\uc774\uc158\uc73c\ub85c \ubc18\ud658\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc720\uc800\uac00 \ucc1c\ud55c \uc0c1\ud488 \ubaa9\ub85d\uc744 \ucee4\uc11c \ud398\uc774\uc9c0\ub124\uc774\uc158\uc73c\ub85c \ubc18\ud658\ud569\ub2c8\ub2e4.",
                 "operationId": "member-wish-list",
                 "responses": {
                     "403": {
@@ -1223,7 +1233,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "member-wish-list-forbidden": {
@@ -1254,11 +1264,11 @@
                                                 "items": [
                                                     {
                                                         "price": 85000,
-                                                        "name": "\uccad\uc790 \ub2e4\uc644",
-                                                        "artisanId": 10,
-                                                        "productId": 1,
+                                                        "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                         "status": "ON_SALE",
-                                                        "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
+                                                        "productId": 1,
+                                                        "artisanId": 10,
+                                                        "name": "\uccad\uc790 \ub2e4\uc644"
                                                     }
                                                 ],
                                                 "nextCursor": null,
@@ -1271,7 +1281,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/notifications/{notificationId}/read": {
@@ -1280,16 +1291,17 @@
                     "\uc54c\ub9bc"
                 ],
                 "summary": "\uc54c\ub9bc \uc77d\uc74c \ucc98\ub9ac",
-                "description": "\uc54c\ub9bc\uc744 \uc77d\uc74c \uc0c1\ud0dc\ub85c \ubcc0\uacbd\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc54c\ub9bc\uc744 \uc77d\uc74c \uc0c1\ud0dc\ub85c \ubcc0\uacbd\ud569\ub2c8\ub2e4.",
                 "operationId": "notification-read-",
                 "parameters": [
                     {
                         "name": "notificationId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc54c\ub9bc ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1299,7 +1311,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "notification-read-422": {
@@ -1319,7 +1331,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "notification-read-404": {
@@ -1339,7 +1351,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "notification-read-200": {
@@ -1353,7 +1365,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/products/categories/main": {
@@ -1362,7 +1375,7 @@
                     "\uce74\ud14c\uace0\ub9ac"
                 ],
                 "summary": "\uba54\uc778 \uce74\ud14c\uace0\ub9ac \ubaa9\ub85d",
-                "description": "\uba54\uc778 \ud654\uba74\uc6a9 \uce74\ud14c\uace0\ub9ac \ubaa9\ub85d\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uba54\uc778 \ud654\uba74\uc6a9 \uce74\ud14c\uace0\ub9ac \ubaa9\ub85d\uc744 \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "category-main-list",
                 "responses": {
                     "200": {
@@ -1370,7 +1383,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-categories1684097948"
+                                    "$ref": "#/components/schemas/api-products-categories-main1684097948"
                                 },
                                 "examples": {
                                     "category-main-list": {
@@ -1389,7 +1402,11 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/api/products/{productId}/questions": {
@@ -1398,7 +1415,7 @@
                     "\uc0c1\ud488 \ubb38\uc758"
                 ],
                 "summary": "\uc0c1\ud488 \ubb38\uc758 \ubaa9\ub85d",
-                "description": "\uc0c1\ud488\uc758 \ubb38\uc758 \ubaa9\ub85d\uc744 \ud398\uc774\uc9d5\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4. \ube44\uacf5\uac1c \ubb38\uc758\ub294 \ub9c8\uc2a4\ud0b9\ub429\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc0c1\ud488\uc758 \ubb38\uc758 \ubaa9\ub85d\uc744 \ud398\uc774\uc9d5\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4. \ube44\uacf5\uac1c \ubb38\uc758\ub294 \ub9c8\uc2a4\ud0b9\ub429\ub2c8\ub2e4.",
                 "operationId": "product-qna-list",
                 "parameters": [
                     {
@@ -1407,7 +1424,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1457,14 +1475,18 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             },
             "post": {
                 "tags": [
                     "\uc0c1\ud488 \ubb38\uc758"
                 ],
                 "summary": "\uc0c1\ud488 \ubb38\uc758 \ub4f1\ub85d",
-                "description": "\uc18c\ube44\uc790\uac00 \uc0c1\ud488\uc5d0 \ubb38\uc758\ub97c \ub4f1\ub85d\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc18c\ube44\uc790\uac00 \uc0c1\ud488\uc5d0 \ubb38\uc758\ub97c \ub4f1\ub85d\ud569\ub2c8\ub2e4.",
                 "operationId": "product-qna-ask",
                 "parameters": [
                     {
@@ -1473,7 +1495,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1522,7 +1545,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/products/{productId}/reviews": {
@@ -1531,7 +1555,7 @@
                     "\uc0c1\ud488 \ud6c4\uae30"
                 ],
                 "summary": "\uc0c1\ud488 \ud6c4\uae30 \ubaa9\ub85d",
-                "description": "\uc0c1\ud488\uc758 \ud6c4\uae30 \ubaa9\ub85d\uc744 \ud398\uc774\uc9d5\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc0c1\ud488\uc758 \ud6c4\uae30 \ubaa9\ub85d\uc744 \ud398\uc774\uc9d5\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "product-review-list",
                 "parameters": [
                     {
@@ -1540,7 +1564,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1590,14 +1615,18 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             },
             "post": {
                 "tags": [
                     "\uc0c1\ud488 \ud6c4\uae30"
                 ],
                 "summary": "\uc0c1\ud488 \ud6c4\uae30 \ub4f1\ub85d",
-                "description": "\uc18c\ube44\uc790\uac00 \uad6c\ub9e4\ud55c \uc0c1\ud488\uc5d0 \ud6c4\uae30\ub97c \ub4f1\ub85d\ud569\ub2c8\ub2e4. \ub3d9\uc77c \uc8fc\ubb38 \ud56d\ubaa9\uc5d0 \uc911\ubcf5 \ub4f1\ub85d \ubd88\uac00\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc18c\ube44\uc790\uac00 \uad6c\ub9e4\ud55c \uc0c1\ud488\uc5d0 \ud6c4\uae30\ub97c \ub4f1\ub85d\ud569\ub2c8\ub2e4. \ub3d9\uc77c \uc8fc\ubb38 \ud56d\ubaa9\uc5d0 \uc911\ubcf5 \ub4f1\ub85d \ubd88\uac00\ud569\ub2c8\ub2e4.",
                 "operationId": "product-review-write",
                 "parameters": [
                     {
@@ -1606,7 +1635,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1656,7 +1686,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/products/{productId}/status": {
@@ -1665,7 +1696,7 @@
                     "\uc0c1\ud488"
                 ],
                 "summary": "\uc0c1\ud488 \uc0c1\ud0dc \ubcc0\uacbd",
-                "description": "\uc0c1\ud488 \uc0c1\ud0dc\ub97c \ubcc0\uacbd\ud569\ub2c8\ub2e4. \ud5c8\uc6a9 \uc804\uc774: DRAFT\u2192ON_SALE|HIDDEN, ON_SALE\u2192SOLD_OUT|HIDDEN, SOLD_OUT\u2192ON_SALE|HIDDEN, HIDDEN\u2192ON_SALE|DRAFT",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\uc0c1\ud488 \uc0c1\ud0dc\ub97c \ubcc0\uacbd\ud569\ub2c8\ub2e4. \ud5c8\uc6a9 \uc804\uc774: DRAFT\u2192ON_SALE|HIDDEN, ON_SALE\u2192SOLD_OUT|HIDDEN, SOLD_OUT\u2192ON_SALE|HIDDEN, HIDDEN\u2192ON_SALE|DRAFT",
                 "operationId": "product-change-status",
                 "parameters": [
                     {
@@ -1674,7 +1705,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1705,7 +1737,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "product-change-status": {
@@ -1724,7 +1756,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "product-change-status-unauthorized": {
@@ -1739,7 +1771,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/products/{productId}/wish": {
@@ -1748,7 +1781,7 @@
                     "\ucc1c"
                 ],
                 "summary": "\ucc1c \ub4f1\ub85d",
-                "description": "\uc720\uc800\uac00 \uc0c1\ud488\uc744 \ucc1c \ubaa9\ub85d\uc5d0 \ucd94\uac00\ud569\ub2c8\ub2e4. \uc774\ubbf8 \ucc1c\ud55c \uc0c1\ud488\uc740 \uc911\ubcf5 \ub4f1\ub85d\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc720\uc800\uac00 \uc0c1\ud488\uc744 \ucc1c \ubaa9\ub85d\uc5d0 \ucd94\uac00\ud569\ub2c8\ub2e4. \uc774\ubbf8 \ucc1c\ud55c \uc0c1\ud488\uc740 \uc911\ubcf5 \ub4f1\ub85d\ub418\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
                 "operationId": "product-wish",
                 "parameters": [
                     {
@@ -1757,7 +1790,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1767,7 +1801,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "product-wish": {
@@ -1786,7 +1820,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "product-wish-unauthorized": {
@@ -1806,7 +1840,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "product-wish-forbidden": {
@@ -1821,14 +1855,15 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             },
             "delete": {
                 "tags": [
                     "\ucc1c"
                 ],
                 "summary": "\ucc1c \ucde8\uc18c",
-                "description": "\uc720\uc800\uac00 \uc0c1\ud488\uc744 \ucc1c \ubaa9\ub85d\uc5d0\uc11c \uc81c\uac70\ud569\ub2c8\ub2e4. \ucc1c\ud558\uc9c0 \uc54a\uc740 \uc0c1\ud488\uc744 \ucde8\uc18c\ud574\ub3c4 \uc5d0\ub7ec\uac00 \ubc1c\uc0dd\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc720\uc800\uac00 \uc0c1\ud488\uc744 \ucc1c \ubaa9\ub85d\uc5d0\uc11c \uc81c\uac70\ud569\ub2c8\ub2e4. \ucc1c\ud558\uc9c0 \uc54a\uc740 \uc0c1\ud488\uc744 \ucde8\uc18c\ud574\ub3c4 \uc5d0\ub7ec\uac00 \ubc1c\uc0dd\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
                 "operationId": "product-unwish",
                 "parameters": [
                     {
@@ -1837,7 +1872,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -1847,7 +1883,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "product-unwish": {
@@ -1861,7 +1897,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/chatbot/sessions/{sessionId}/messages": {
@@ -1870,7 +1907,7 @@
                     "\ucc57\ubd07"
                 ],
                 "summary": "\ub300\ud654 \uc774\ub825 \uc870\ud68c",
-                "description": "\uc138\uc158\uc758 \uc804\uccb4 \uba54\uc2dc\uc9c0 \ubaa9\ub85d\uc744 \uc804\uc1a1 \uc2dc\uac04\uc21c\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc138\uc158\uc758 \uc804\uccb4 \uba54\uc2dc\uc9c0 \ubaa9\ub85d\uc744 \uc804\uc1a1 \uc2dc\uac04\uc21c\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "chatbot-message-list",
                 "parameters": [
                     {
@@ -1918,14 +1955,18 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             },
             "post": {
                 "tags": [
                     "\ucc57\ubd07"
                 ],
                 "summary": "\ucc57\ubd07 \uba54\uc2dc\uc9c0 \uc804\uc1a1",
-                "description": "\uc18c\ube44\uc790 \uba54\uc2dc\uc9c0\ub97c \uc804\uc1a1\ud558\uba74 AI\uac00 \ucd94\ucc9c \uc0c1\ud488\uacfc \ub2f5\ubcc0\uc744 \ubc18\ud658\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\uc18c\ube44\uc790 \uba54\uc2dc\uc9c0\ub97c \uc804\uc1a1\ud558\uba74 AI\uac00 \ucd94\ucc9c \uc0c1\ud488\uacfc \ub2f5\ubcc0\uc744 \ubc18\ud658\ud569\ub2c8\ub2e4.",
                 "operationId": "chatbot-message-send",
                 "parameters": [
                     {
@@ -2030,7 +2071,11 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/api/content/products/{productId}/contents": {
@@ -2039,16 +2084,17 @@
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\ucf58\ud150\uce20 \uc870\ud68c",
-                "description": "AI\uac00 \uc0dd\uc131\ud55c \ucd08\uc548\uc744 \ube14\ub85d \ub9ac\uc2a4\ud2b8\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\nAI\uac00 \uc0dd\uc131\ud55c react_document\ub97c \uc870\ud68c\ud569\ub2c8\ub2e4. reactDocument \ud544\ub4dc\ub294 AI \uc644\ub8cc \uc804\uae4c\uc9c0 null\uc785\ub2c8\ub2e4.",
                 "operationId": "content-get",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2058,7 +2104,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "content-get-not-found": {
@@ -2073,12 +2119,32 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "401",
+                        "content": {
+                            "application/json;charset=UTF-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
+                                },
+                                "examples": {
+                                    "content-get-unauthorized": {
+                                        "value": {
+                                            "success": false,
+                                            "status": 401,
+                                            "errorCode": "UNAUTHORIZED",
+                                            "message": "\uc778\uc99d\uc774 \ud544\uc694\ud569\ub2c8\ub2e4"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "200",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents54224182"
+                                    "$ref": "#/components/schemas/api-content-products-productId-contents643100649"
                                 },
                                 "examples": {
                                     "content-get": {
@@ -2090,24 +2156,13 @@
                                                 "productId": 10,
                                                 "status": "DRAFT",
                                                 "version": 1,
-                                                "blocks": [
-                                                    {
-                                                        "order": 1,
-                                                        "tag": "h2",
-                                                        "hasImage": false,
-                                                        "imageId": null,
-                                                        "videoUrl": null,
-                                                        "text": "\uccad\uc790 \ub2e4\uc644"
-                                                    },
-                                                    {
-                                                        "order": 2,
-                                                        "tag": "p",
-                                                        "hasImage": false,
-                                                        "imageId": null,
-                                                        "videoUrl": null,
-                                                        "text": "\uace0\ub824 \uc2dc\ub300 \ucd5c\uace0\uc758 \uccad\uc790"
-                                                    }
-                                                ]
+                                                "reactDocument": {
+                                                    "schemaVersion": "2.0",
+                                                    "canvasWidth": 774,
+                                                    "root": [
+                                                        
+                                                    ]
+                                                }
                                             }
                                         }
                                     }
@@ -2120,7 +2175,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "content-get-forbidden": {
@@ -2135,7 +2190,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/content/products/{productId}/generations": {
@@ -2144,16 +2200,17 @@
                     "AI \ucf58\ud150\uce20 \uc0dd\uc131"
                 ],
                 "summary": "AI \uc0c1\uc138\ud398\uc774\uc9c0 \uc0dd\uc131 \uc694\uccad",
-                "description": "\uc0c1\ud488 \uc774\ubbf8\uc9c0\u00b7\uc815\ubcf4\ub97c AI\uc5d0 \uc804\uc1a1\ud558\uc5ec \uc0c1\uc138\ud398\uc774\uc9c0 \ucf58\ud150\uce20 \uc0dd\uc131\uc744 \uc694\uccad\ud569\ub2c8\ub2e4. \uc989\uc2dc 202\ub97c \ubc18\ud658\ud558\uace0 \uc0dd\uc131\uc740 \ube44\ub3d9\uae30\ub85c \ucc98\ub9ac\ub429\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\uc0c1\ud488 \uc774\ubbf8\uc9c0\u00b7\uc815\ubcf4\ub97c AI\uc5d0 \uc804\uc1a1\ud558\uc5ec \uc0c1\uc138\ud398\uc774\uc9c0 \ucf58\ud150\uce20 \uc0dd\uc131\uc744 \uc694\uccad\ud569\ub2c8\ub2e4. \uc989\uc2dc 202\ub97c \ubc18\ud658\ud558\uace0 \uc0dd\uc131\uc740 \ube44\ub3d9\uae30\ub85c \ucc98\ub9ac\ub429\ub2c8\ub2e4.",
                 "operationId": "generation-request",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2195,7 +2252,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "generation-request-forbidden": {
@@ -2215,7 +2272,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-generations-generationId-86050053"
+                                    "$ref": "#/components/schemas/api-content-products-productId-generations-86050053"
                                 },
                                 "examples": {
                                     "generation-request": {
@@ -2235,7 +2292,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/content/products/{productId}/interview": {
@@ -2244,16 +2302,17 @@
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\ucde8\uc7ac \ub370\uc774\ud130 \uc870\ud68c",
-                "description": "\ub4f1\ub85d\ub41c \ucde8\uc7ac \ub370\uc774\ud130\ub97c \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\ub4f1\ub85d\ub41c \ucde8\uc7ac \ub370\uc774\ud130\ub97c \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "interview-find",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2288,7 +2347,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "interview-find-not-found": {
@@ -2303,23 +2362,25 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             },
             "post": {
                 "tags": [
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\ucde8\uc7ac \ub370\uc774\ud130 \ub4f1\ub85d",
-                "description": "AI \uc0c1\uc138\ud398\uc774\uc9c0 \uc0dd\uc131\uc5d0 \ud544\uc694\ud55c \uc81c\uc791\uacfc\uc815\u00b7\uc18c\uc7ac\u00b7\uae30\ubc95\u00b7\uc2a4\ud1a0\ub9ac\ub97c \ub4f1\ub85d\ud569\ub2c8\ub2e4. \uc0c1\ud488\ub2f9 1\uac74\ub9cc \ud5c8\uc6a9\ub429\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\nAI \uc0c1\uc138\ud398\uc774\uc9c0 \uc0dd\uc131\uc5d0 \ud544\uc694\ud55c \uc81c\uc791\uacfc\uc815\u00b7\uc18c\uc7ac\u00b7\uae30\ubc95\u00b7\uc2a4\ud1a0\ub9ac\ub97c \ub4f1\ub85d\ud569\ub2c8\ub2e4. \uc0c1\ud488\ub2f9 1\uac74\ub9cc \ud5c8\uc6a9\ub429\ub2c8\ub2e4.",
                 "operationId": "interview-create",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2364,7 +2425,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "interview-create-forbidden": {
@@ -2384,7 +2445,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "interview-create-conflict": {
@@ -2424,23 +2485,25 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             },
             "patch": {
                 "tags": [
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\ucde8\uc7ac \ub370\uc774\ud130 \uc218\uc815",
-                "description": "\ucde8\uc7ac \ub370\uc774\ud130\ub97c \ubd80\ubd84 \uc218\uc815\ud569\ub2c8\ub2e4. \uc804\ub2ec\ud558\uc9c0 \uc54a\uc740 \ud544\ub4dc\ub294 \uae30\uc874 \uac12\uc744 \uc720\uc9c0\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\ucde8\uc7ac \ub370\uc774\ud130\ub97c \ubd80\ubd84 \uc218\uc815\ud569\ub2c8\ub2e4. \uc804\ub2ec\ud558\uc9c0 \uc54a\uc740 \ud544\ub4dc\ub294 \uae30\uc874 \uac12\uc744 \uc720\uc9c0\ud569\ub2c8\ub2e4.",
                 "operationId": "interview-update",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2510,7 +2573,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "interview-update-forbidden": {
@@ -2530,7 +2593,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "interview-update-not-found": {
@@ -2545,7 +2608,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/content/products/{productId}/publish": {
@@ -2554,16 +2618,17 @@
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\uc0c1\ud488 \uac8c\uc2dc",
-                "description": "APPROVED \ucf58\ud150\uce20\ub97c PUBLISHED \uc0c1\ud0dc\ub85c \uc804\uc774\ud569\ub2c8\ub2e4. \uc774\ud6c4 \uc0c1\ud488\uc774 \uace0\uac1d\uc5d0\uac8c \ub178\ucd9c\ub429\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\nAPPROVED \ucf58\ud150\uce20\ub97c PUBLISHED \uc0c1\ud0dc\ub85c \uc804\uc774\ud569\ub2c8\ub2e4. \uc774\ud6c4 \uc0c1\ud488\uc774 \uace0\uac1d\uc5d0\uac8c \ub178\ucd9c\ub429\ub2c8\ub2e4.",
                 "operationId": "content-publish",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2573,7 +2638,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "content-publish-invalid": {
@@ -2593,7 +2658,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-reject-1788085782"
+                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-submit-1788085782"
                                 },
                                 "examples": {
                                     "content-publish": {
@@ -2610,7 +2675,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/member/artisans/subscriptions/notifications": {
@@ -2619,7 +2685,7 @@
                     "\uc7a5\uc778 \uad6c\ub3c5"
                 ],
                 "summary": "\uad6c\ub3c5 \uc54c\ub9bc \uc124\uc815",
-                "description": "\uad6c\ub3c5\ud55c \ubaa8\ub4e0 \uc7a5\uc778\uc5d0 \ub300\ud55c \uc54c\ub9bc \uc218\uc2e0 \uc5ec\ubd80\ub97c \uc77c\uad04 \uc124\uc815\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uad6c\ub3c5\ud55c \ubaa8\ub4e0 \uc7a5\uc778\uc5d0 \ub300\ud55c \uc54c\ub9bc \uc218\uc2e0 \uc5ec\ubd80\ub97c \uc77c\uad04 \uc124\uc815\ud569\ub2c8\ub2e4.",
                 "operationId": "member-notifications",
                 "requestBody": {
                     "content": {
@@ -2653,7 +2719,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "member-notifications-unauthorized": {
@@ -2673,7 +2739,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "member-notifications-invalid": {
@@ -2693,7 +2759,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "member-notifications": {
@@ -2707,7 +2773,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/member/artisans/{artisanId}/subscribe": {
@@ -2716,16 +2783,17 @@
                     "\uc7a5\uc778 \uad6c\ub3c5"
                 ],
                 "summary": "\uc7a5\uc778 \uad6c\ub3c5",
-                "description": "\uc7a5\uc778\uc744 \uad6c\ub3c5\ud569\ub2c8\ub2e4. \uc774\ubbf8 \uad6c\ub3c5 \uc911\uc774\uba74 \ubb34\uc2dc\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc7a5\uc778\uc744 \uad6c\ub3c5\ud569\ub2c8\ub2e4. \uc774\ubbf8 \uad6c\ub3c5 \uc911\uc774\uba74 \ubb34\uc2dc\ud569\ub2c8\ub2e4.",
                 "operationId": "member-subscribe",
                 "parameters": [
                     {
                         "name": "artisanId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc7a5\uc778 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2735,7 +2803,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "member-subscribe-not-found": {
@@ -2755,7 +2823,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "member-subscribe-unauthorized": {
@@ -2775,7 +2843,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "member-subscribe": {
@@ -2789,23 +2857,25 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             },
             "delete": {
                 "tags": [
                     "\uc7a5\uc778 \uad6c\ub3c5"
                 ],
                 "summary": "\uc7a5\uc778 \uad6c\ub3c5 \ucde8\uc18c",
-                "description": "\uc7a5\uc778 \uad6c\ub3c5\uc744 \ucde8\uc18c\ud569\ub2c8\ub2e4. \uad6c\ub3c5\ud558\uc9c0 \uc54a\uc740 \uacbd\uc6b0\uc5d0\ub3c4 200\uc744 \ubc18\ud658\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\n\uc7a5\uc778 \uad6c\ub3c5\uc744 \ucde8\uc18c\ud569\ub2c8\ub2e4. \uad6c\ub3c5\ud558\uc9c0 \uc54a\uc740 \uacbd\uc6b0\uc5d0\ub3c4 200\uc744 \ubc18\ud658\ud569\ub2c8\ub2e4.",
                 "operationId": "member-unsubscribe",
                 "parameters": [
                     {
                         "name": "artisanId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc7a5\uc778 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2815,7 +2885,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-products-productId-status-1487972696"
+                                    "$ref": "#/components/schemas/api-chatbot-sessions-sessionId-1487972696"
                                 },
                                 "examples": {
                                     "member-unsubscribe": {
@@ -2834,7 +2904,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "member-unsubscribe-unauthorized": {
@@ -2849,7 +2919,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
             }
         },
         "/api/content/products/{productId}/contents/versions": {
@@ -2858,16 +2929,17 @@
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\ubc84\uc804 \uc774\ub825 \uc870\ud68c",
-                "description": "\ucf58\ud150\uce20 \ud3b8\uc9d1 \uc774\ub825\uc744 \ubc84\uc804 \uc624\ub984\ucc28\uc21c\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\ucf58\ud150\uce20 \ud3b8\uc9d1 \uc774\ub825\uc744 \ubc84\uc804 \uc624\ub984\ucc28\uc21c\uc73c\ub85c \uc870\ud68c\ud569\ub2c8\ub2e4.",
                 "operationId": "content-version-history",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -2877,7 +2949,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "content-version-history-forbidden": {
@@ -2913,7 +2985,7 @@
                                                 {
                                                     "version": 2,
                                                     "editedAt": "2026-09-14T10:05:00",
-                                                    "editedBy": "ARTISAN"
+                                                    "editedBy": "AI"
                                                 }
                                             ]
                                         }
@@ -2922,166 +2994,8 @@
                             }
                         }
                     }
-                }
-            }
-        },
-        "/api/content/products/{productId}/contents/{contentId}": {
-            "patch": {
-                "tags": [
-                    "\ucf58\ud150\uce20"
-                ],
-                "summary": "\ubb38\ub2e8 \uc77c\uad04 \uc218\uc815",
-                "description": "\uc5ec\ub7ec \ube14\ub85d\uc744 \ud55c \ubc88\uc5d0 \uad50\uccb4\ud569\ub2c8\ub2e4. \uc21c\uc11c \ubcc0\uacbd\u00b7\uc804\uccb4 \uc7ac\uc791\uc131\uc5d0 \uc0ac\uc6a9\ud569\ub2c8\ub2e4.",
-                "operationId": "content-bulk-update",
-                "parameters": [
-                    {
-                        "name": "productId",
-                        "in": "path",
-                        "description": "",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "contentId",
-                        "in": "path",
-                        "description": "",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/api-content-products-productId-contents-contentId1735256076"
-                            },
-                            "examples": {
-                                "content-bulk-update-invalid": {
-                                    "value": {
-                                        "blocks": [
-                                            
-                                        ]
-                                    }
-                                },
-                                "content-bulk-update": {
-                                    "value": {
-                                        "blocks": [
-                                            {
-                                                "order": 1,
-                                                "tag": "h2",
-                                                "text": "\uc18c\uc81c\ubaa9",
-                                                "imageUrl": null,
-                                                "videoUrl": null
-                                            },
-                                            {
-                                                "order": 2,
-                                                "tag": "p",
-                                                "text": "\ubcf8\ubb38",
-                                                "imageUrl": null,
-                                                "videoUrl": null
-                                            }
-                                        ]
-                                    }
-                                },
-                                "content-bulk-update-unauthorized": {
-                                    "value": {
-                                        "blocks": [
-                                            
-                                        ]
-                                    }
-                                }
-                            }
-                        }
-                    }
                 },
-                "responses": {
-                    "400": {
-                        "description": "400",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
-                                },
-                                "examples": {
-                                    "content-bulk-update-invalid": {
-                                        "value": {
-                                            "success": false,
-                                            "status": 400,
-                                            "errorCode": "INVALID_INPUT",
-                                            "message": "blocks: must not be empty"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "200": {
-                        "description": "200",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents54224182"
-                                },
-                                "examples": {
-                                    "content-bulk-update": {
-                                        "value": {
-                                            "success": true,
-                                            "status": 200,
-                                            "data": {
-                                                "contentId": 1,
-                                                "productId": 10,
-                                                "status": "DRAFT",
-                                                "version": 1,
-                                                "blocks": [
-                                                    {
-                                                        "order": 1,
-                                                        "tag": "h2",
-                                                        "hasImage": false,
-                                                        "imageId": null,
-                                                        "videoUrl": null,
-                                                        "text": "\uccad\uc790 \ub2e4\uc644"
-                                                    },
-                                                    {
-                                                        "order": 2,
-                                                        "tag": "p",
-                                                        "hasImage": false,
-                                                        "imageId": null,
-                                                        "videoUrl": null,
-                                                        "text": "\uace0\ub824 \uc2dc\ub300 \ucd5c\uace0\uc758 \uccad\uc790"
-                                                    }
-                                                ]
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "401",
-                        "content": {
-                            "application/json;charset=UTF-8": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
-                                },
-                                "examples": {
-                                    "content-bulk-update-unauthorized": {
-                                        "value": {
-                                            "success": false,
-                                            "status": 401,
-                                            "errorCode": "UNAUTHORIZED",
-                                            "message": "\uc778\uc99d\uc774 \ud544\uc694\ud569\ub2c8\ub2e4"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/content/products/{productId}/generations/{generationId}": {
@@ -3090,25 +3004,27 @@
                     "AI \ucf58\ud150\uce20 \uc0dd\uc131"
                 ],
                 "summary": "AI \uc0dd\uc131 \uc0c1\ud0dc \uc870\ud68c (COMPLETED)",
-                "description": "\uc0dd\uc131\uc774 \uc644\ub8cc\ub41c \uacbd\uc6b0 COMPLETED\uc640 completedAt\uc744 \ubc18\ud658\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\uc0dd\uc131\uc774 \uc644\ub8cc\ub41c \uacbd\uc6b0 COMPLETED\uc640 completedAt\uc744 \ubc18\ud658\ud569\ub2c8\ub2e4.",
                 "operationId": "generation-poll-",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     },
                     {
                         "name": "generationId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0dd\uc131 \uc694\uccad ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -3118,7 +3034,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-generations-generationId-86050053"
+                                    "$ref": "#/components/schemas/api-content-products-productId-generations-86050053"
                                 },
                                 "examples": {
                                     "generation-poll-completed": {
@@ -3156,7 +3072,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "generation-poll-not-found": {
@@ -3171,7 +3087,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/products/{productId}/questions/{questionId}/answer": {
@@ -3180,7 +3097,7 @@
                     "\uc0c1\ud488 \ubb38\uc758"
                 ],
                 "summary": "\ubb38\uc758 \ub2f5\ubcc0 \ub4f1\ub85d",
-                "description": "\ud574\ub2f9 \uc0c1\ud488\uc758 \uc7a5\uc778\uc774 \ubb38\uc758\uc5d0 \ub2f5\ubcc0\uc744 \ub4f1\ub85d\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\n\ud574\ub2f9 \uc0c1\ud488\uc758 \uc7a5\uc778\uc774 \ubb38\uc758\uc5d0 \ub2f5\ubcc0\uc744 \ub4f1\ub85d\ud569\ub2c8\ub2e4.",
                 "operationId": "product-qna-answer",
                 "parameters": [
                     {
@@ -3189,7 +3106,8 @@
                         "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     },
                     {
@@ -3198,7 +3116,8 @@
                         "description": "\ubb38\uc758 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -3243,7 +3162,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/content/products/{productId}/contents/{contentId}/approve": {
@@ -3252,25 +3172,27 @@
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\ucf58\ud150\uce20 \uc2b9\uc778",
-                "description": "PENDING_REVIEW \ucf58\ud150\uce20\ub97c APPROVED\ub85c \uc804\uc774\ud558\uace0 \uc0ac\uc2e4 \ud655\uc778\u00b7\uc0ac\uc9c4 \uc77c\uce58 \uccb4\ud06c\ub9ac\uc2a4\ud2b8\ub97c \ubc18\uc601\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\nPENDING_REVIEW \ucf58\ud150\uce20\ub97c APPROVED\ub85c \uc804\uc774\ud558\uace0 \uc0ac\uc2e4 \ud655\uc778\u00b7\uc0ac\uc9c4 \uc77c\uce58 \uccb4\ud06c\ub9ac\uc2a4\ud2b8\ub97c \ubc18\uc601\ud569\ub2c8\ub2e4.",
                 "operationId": "content-approve",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     },
                     {
                         "name": "contentId",
                         "in": "path",
-                        "description": "",
+                        "description": "\ucf58\ud150\uce20 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -3305,7 +3227,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-reject-1788085782"
+                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-submit-1788085782"
                                 },
                                 "examples": {
                                     "content-approve": {
@@ -3327,7 +3249,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "content-approve-invalid": {
@@ -3342,7 +3264,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/content/products/{productId}/contents/{contentId}/reject": {
@@ -3351,25 +3274,27 @@
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\ucf58\ud150\uce20 \ubc18\ub824",
-                "description": "PENDING_REVIEW \ucf58\ud150\uce20\ub97c REJECTED\ub85c \uc804\uc774\ud569\ub2c8\ub2e4. \uc7a5\uc778\uc740 \uc218\uc815 \ud6c4 \uc7ac\uc694\uccad\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\nPENDING_REVIEW \ucf58\ud150\uce20\ub97c REJECTED\ub85c \uc804\uc774\ud569\ub2c8\ub2e4. \uc7a5\uc778\uc740 \uc218\uc815 \ud6c4 \uc7ac\uc694\uccad\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
                 "operationId": "content-reject",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     },
                     {
                         "name": "contentId",
                         "in": "path",
-                        "description": "",
+                        "description": "\ucf58\ud150\uce20 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -3379,7 +3304,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-reject-1788085782"
+                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-submit-1788085782"
                                 },
                                 "examples": {
                                     "content-reject": {
@@ -3401,7 +3326,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
                                     "content-reject-invalid": {
@@ -3416,7 +3341,8 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
         "/api/content/products/{productId}/contents/{contentId}/submit": {
@@ -3425,25 +3351,27 @@
                     "\ucf58\ud150\uce20"
                 ],
                 "summary": "\uac80\ud1a0 \uc694\uccad",
-                "description": "DRAFT \ub610\ub294 REJECTED \uc0c1\ud0dc\uc758 \ucf58\ud150\uce20\ub97c \uac80\ud1a0 \uc694\uccad(PENDING_REVIEW)\uc73c\ub85c \uc804\uc774\ud569\ub2c8\ub2e4.",
+                "description": "\ud83d\udee0 **ARTISAN** (\ud310\ub9e4\uc790)\n\nDRAFT \ub610\ub294 REJECTED \uc0c1\ud0dc\uc758 \ucf58\ud150\uce20\ub97c \uac80\ud1a0 \uc694\uccad(PENDING_REVIEW)\uc73c\ub85c \uc804\uc774\ud569\ub2c8\ub2e4.",
                 "operationId": "content-submit",
                 "parameters": [
                     {
                         "name": "productId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0c1\ud488 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     },
                     {
                         "name": "contentId",
                         "in": "path",
-                        "description": "",
+                        "description": "\ucf58\ud150\uce20 ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -3453,7 +3381,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-reject-1788085782"
+                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-submit-1788085782"
                                 },
                                 "examples": {
                                     "content-submit": {
@@ -3470,43 +3398,27 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "ARTISAN"
             }
         },
-        "/api/content/products/{productId}/contents/{contentId}/blocks/{blockOrder}": {
-            "patch": {
+        "/internal/generations/{generationId}/complete": {
+            "post": {
                 "tags": [
-                    "\ucf58\ud150\uce20"
+                    "AI \ucf5c\ubc31 (\ub0b4\ubd80)"
                 ],
-                "summary": "\ub2e8\uac74 \ube14\ub85d \uc218\uc815",
-                "description": "\ud2b9\uc815 \uc21c\uc11c\uc758 \ube14\ub85d \ud558\ub098\ub9cc \uc218\uc815\ud569\ub2c8\ub2e4. \ud14d\uc2a4\ud2b8 \ube14\ub85d\uc740 text\ub9cc, \uc774\ubbf8\uc9c0 \ube14\ub85d\uc740 imageUrl\ub9cc \uc804\ub2ec\ud569\ub2c8\ub2e4.",
-                "operationId": "content-block-update",
+                "summary": "AI \uc0dd\uc131 \uc644\ub8cc \ucf5c\ubc31",
+                "description": "\ud83d\udd11 **USER** \uc774\uc0c1\n\nAI \uc11c\ubc84\uac00 \ucf58\ud150\uce20 \uc0dd\uc131\uc744 \uc644\ub8cc\ud55c \ub4a4 react_document AST\ub97c \uc804\uc1a1\ud569\ub2c8\ub2e4. \uc778\uc99d \ubd88\ud544\uc694 \u2014 /internal/** \uacbd\ub85c\ub294 \ud5c8\uc6a9\ub429\ub2c8\ub2e4.",
+                "operationId": "ai-callback-complete",
                 "parameters": [
                     {
-                        "name": "productId",
+                        "name": "generationId",
                         "in": "path",
-                        "description": "",
+                        "description": "\uc0dd\uc131 \uc694\uccad ID",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "contentId",
-                        "in": "path",
-                        "description": "",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "blockOrder",
-                        "in": "path",
-                        "description": "",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     }
                 ],
@@ -3514,21 +3426,34 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-blocks-blockOrder-723983469"
+                                "$ref": "#/components/schemas/internal-generations-generationId-complete1602951334"
                             },
                             "examples": {
-                                "content-block-update": {
+                                "ai-callback-complete-invalid": {
                                     "value": {
-                                        "tag": "p",
-                                        "text": "\uc218\uc815\ub41c \ud14d\uc2a4\ud2b8",
-                                        "imageUrl": null
+                                        
                                     }
                                 },
-                                "content-block-update-not-found": {
+                                "ai-callback-complete": {
                                     "value": {
-                                        "tag": null,
-                                        "text": "\ud14d\uc2a4\ud2b8",
-                                        "imageUrl": null
+                                        "reactDocument": {
+                                            "root": [
+                                                
+                                            ],
+                                            "schemaVersion": "2.0",
+                                            "canvasWidth": 774
+                                        }
+                                    }
+                                },
+                                "ai-callback-complete-not-found": {
+                                    "value": {
+                                        "reactDocument": {
+                                            "root": [
+                                                
+                                            ],
+                                            "schemaVersion": "2.0",
+                                            "canvasWidth": 774
+                                        }
                                     }
                                 }
                             }
@@ -3536,29 +3461,44 @@
                     }
                 },
                 "responses": {
+                    "400": {
+                        "description": "400",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
+                                },
+                                "examples": {
+                                    "ai-callback-complete-invalid": {
+                                        "value": {
+                                            "success": false,
+                                            "status": 400,
+                                            "errorCode": "INVALID_INPUT",
+                                            "message": "reactDocument: react_document\ub294 \ud544\uc218\uc785\ub2c8\ub2e4"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "200": {
                         "description": "200",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-contentId-blocks-blockOrder1000639414"
+                                    "$ref": "#/components/schemas/internal-generations-generationId-complete-335542771"
                                 },
                                 "examples": {
-                                    "content-block-update": {
+                                    "ai-callback-complete": {
                                         "value": {
                                             "success": true,
                                             "status": 200,
                                             "data": {
-                                                "contentId": 1,
-                                                "version": 2,
-                                                "block": {
-                                                    "order": 1,
-                                                    "tag": "p",
-                                                    "hasImage": false,
-                                                    "imageId": null,
-                                                    "videoUrl": null,
-                                                    "text": "\uc218\uc815\ub41c \ud14d\uc2a4\ud2b8"
-                                                }
+                                                "generationId": 1,
+                                                "productId": 10,
+                                                "status": "COMPLETED",
+                                                "requestedAt": "2026-09-14T10:00:00",
+                                                "completedAt": "2026-09-14T10:01:00"
                                             }
                                         }
                                     }
@@ -3571,22 +3511,126 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-content-products-productId-contents-versions16218693"
+                                    "$ref": "#/components/schemas/api-content-products-productId-interview16218693"
                                 },
                                 "examples": {
-                                    "content-block-update-not-found": {
+                                    "ai-callback-complete-not-found": {
                                         "value": {
                                             "success": false,
                                             "status": 404,
                                             "errorCode": "NOT_FOUND",
-                                            "message": "\ube14\ub85d\uc744 \ucc3e\uc744 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4"
+                                            "message": "\ucf58\ud150\uce20 \uc0dd\uc131 \uc694\uccad\uc744 \ucc3e\uc744 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4"
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "USER"
+            }
+        },
+        "/dev/token": {
+            "post": {
+                "tags": [
+                    "Dev (\ub85c\uceec \uc804\uc6a9)"
+                ],
+                "summary": "\uac1c\ubc1c\uc6a9 \ud1a0\ud070 \uc989\uc2dc \ubc1c\uae09",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\n\ud83d\udea7 **local / local-postgresql \ud504\ub85c\ud30c\uc77c\uc5d0\uc11c\ub9cc \ub3d9\uc791\ud569\ub2c8\ub2e4.**\n\n\ud68c\uc6d0\uac00\uc785\u00b7\uc2b9\uc778 \uc5c6\uc774 role\uc744 \uc9c0\uc815\ud574 JWT\ub97c \uc989\uc2dc \ubc1c\uae09\ud569\ub2c8\ub2e4. AI\ud300 \ub85c\uceec \uc5f0\ub3d9 \ud14c\uc2a4\ud2b8\uc6a9.\n\n> **\ub9cc\ub8cc \uc2dc\uac04: 7\uc77c** \u2014 \uc77c\ubc18 accessToken(30\ubd84)\uacfc \ub2ec\ub9ac \uc7a5\uae30 \ud1a0\ud070\uc744 \ubc1c\uae09\ud569\ub2c8\ub2e4. \uc7ac\ubc1c\uae09 \uc5c6\uc774 \uc77c\uc8fc\uc77c\uac04 \uc0ac\uc6a9 \uac00\ub2a5\ud569\ub2c8\ub2e4.\n\n\ubc1c\uae09\ud55c \ud1a0\ud070\uc744 Authorization \ud5e4\ub354\uc5d0 \ub2f4\uc544 \uc0ac\uc6a9\ud569\ub2c8\ub2e4.\n```http\nAuthorization: Bearer {accessToken}\n```\n\n| role | memberId | \uc6a9\ub3c4 |\n|------|----------|------|\n| `ARTISAN` | -1 | \ucf58\ud150\uce20 \uc0dd\uc131, \uc0c1\ud488 \ub4f1\ub85d/\uc218\uc815/\uc0ad\uc81c |\n| `USER` | -3 | \ucc57\ubd07, \ucc1c, \uc54c\ub9bc, \ubb38\uc758 |\n| `ADMIN` | -2 | \uad00\ub9ac\uc790 \uae30\ub2a5 |\n\n> memberId\uac00 \uc74c\uc218\uc774\ubbc0\ub85c \uc2e4\uc81c DB \ud68c\uc6d0 \uc870\ud68c\uac00 \ud544\uc694\ud55c \uc5d4\ub4dc\ud3ec\uc778\ud2b8\ub294 404\uac00 \ubc1c\uc0dd\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.",
+                "operationId": "dev-token",
+                "security": [
+                    
+                ],
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ARTISAN",
+                                "USER",
+                                "ADMIN"
+                            ],
+                            "default": "ARTISAN"
+                        },
+                        "description": "\ubc1c\uae09\ud560 \ud1a0\ud070\uc758 \uad8c\ud55c"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "\ud1a0\ud070 \ubc1c\uae09 \uc131\uacf5",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "accessToken": {
+                                                    "type": "string",
+                                                    "description": "Authorization: Bearer <token> \ud5e4\ub354\uc5d0 \uc0ac\uc6a9",
+                                                    "example": "eyJhbGciOiJIUzI1NiJ9..."
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "USER",
+                                                        "ARTISAN",
+                                                        "ADMIN"
+                                                    ],
+                                                    "example": "ARTISAN"
+                                                },
+                                                "memberId": {
+                                                    "type": "integer",
+                                                    "description": "\uc74c\uc218 ID \u2014 \uc2e4\uc81c DB \ud68c\uc6d0 \uc5c6\uc74c",
+                                                    "example": -1
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "ARTISAN": {
+                                        "summary": "ARTISAN \ud1a0\ud070",
+                                        "value": {
+                                            "success": true,
+                                            "status": 200,
+                                            "data": {
+                                                "accessToken": "eyJhbGciOiJIUzI1NiJ9...",
+                                                "role": "ARTISAN",
+                                                "memberId": -1
+                                            }
+                                        }
+                                    },
+                                    "USER": {
+                                        "summary": "USER \ud1a0\ud070",
+                                        "value": {
+                                            "success": true,
+                                            "status": 200,
+                                            "data": {
+                                                "accessToken": "eyJhbGciOiJIUzI1NiJ9...",
+                                                "role": "USER",
+                                                "memberId": -3
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "x-required-role": "PUBLIC"
             }
         },
         "/healthz": {
@@ -3595,7 +3639,7 @@
                     "\uc778\ud504\ub77c"
                 ],
                 "summary": "ALB \ud5ec\uc2a4\uccb4\ud06c",
-                "description": "Application Load Balancer\uac00 \ud638\ucd9c\ud558\ub294 ping \ud5ec\uc2a4\uccb4\ud06c \uc5d4\ub4dc\ud3ec\uc778\ud2b8. \ud3ec\ud2b8 8080. \uc778\uc99d \ubd88\ud544\uc694.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\nApplication Load Balancer\uac00 \ud638\ucd9c\ud558\ub294 ping \ud5ec\uc2a4\uccb4\ud06c \uc5d4\ub4dc\ud3ec\uc778\ud2b8. \ud3ec\ud2b8 8080. \uc778\uc99d \ubd88\ud544\uc694.",
                 "operationId": "healthz-ping",
                 "responses": {
                     "200": {
@@ -3621,7 +3665,11 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/actuator/health/liveness": {
@@ -3630,7 +3678,7 @@
                     "\uc778\ud504\ub77c"
                 ],
                 "summary": "K8s Liveness Probe",
-                "description": "Kubernetes liveness probe. \ud3ec\ud2b8 9090. \uc2e4\ud328 \uc2dc \ucee8\ud14c\uc774\ub108 \uc7ac\uc2dc\uc791.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\nKubernetes liveness probe. \ud3ec\ud2b8 9090. \uc2e4\ud328 \uc2dc \ucee8\ud14c\uc774\ub108 \uc7ac\uc2dc\uc791.",
                 "operationId": "actuator-health-liveness",
                 "responses": {
                     "200": {
@@ -3653,7 +3701,11 @@
                     "503": {
                         "description": "Not alive"
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/actuator/health/readiness": {
@@ -3662,7 +3714,7 @@
                     "\uc778\ud504\ub77c"
                 ],
                 "summary": "K8s Readiness Probe",
-                "description": "Kubernetes readiness probe. \ud3ec\ud2b8 9090. \uc2e4\ud328 \uc2dc \ud2b8\ub798\ud53d \ucc28\ub2e8.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\nKubernetes readiness probe. \ud3ec\ud2b8 9090. \uc2e4\ud328 \uc2dc \ud2b8\ub798\ud53d \ucc28\ub2e8.",
                 "operationId": "actuator-health-readiness",
                 "responses": {
                     "200": {
@@ -3693,7 +3745,11 @@
                     "503": {
                         "description": "Not ready"
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         },
         "/actuator/prometheus": {
@@ -3702,7 +3758,7 @@
                     "\uc778\ud504\ub77c"
                 ],
                 "summary": "Prometheus \uba54\ud2b8\ub9ad",
-                "description": "Prometheus \uc2a4\ud06c\ub808\uc774\ud551\uc6a9 \uba54\ud2b8\ub9ad \uc5d4\ub4dc\ud3ec\uc778\ud2b8. \ud3ec\ud2b8 9090. \ub0b4\ubd80 \ub124\ud2b8\uc6cc\ud06c \uc804\uc6a9.",
+                "description": "\ud83d\udd13 **\uc778\uc99d \ubd88\ud544\uc694**\n\nPrometheus \uc2a4\ud06c\ub808\uc774\ud551\uc6a9 \uba54\ud2b8\ub9ad \uc5d4\ub4dc\ud3ec\uc778\ud2b8. \ud3ec\ud2b8 9090. \ub0b4\ubd80 \ub124\ud2b8\uc6cc\ud06c \uc804\uc6a9.",
                 "operationId": "actuator-prometheus",
                 "responses": {
                     "200": {
@@ -3715,7 +3771,11 @@
                             }
                         }
                     }
-                }
+                },
+                "x-required-role": "PUBLIC",
+                "security": [
+                    
+                ]
             }
         }
     },
@@ -3733,7 +3793,7 @@
                     }
                 }
             },
-            "api-content-products-productId-contents-contentId-reject-1788085782": {
+            "api-content-products-productId-contents-contentId-submit-1788085782": {
                 "required": [
                     "status",
                     "success"
@@ -3780,7 +3840,8 @@
                     },
                     "content": {
                         "type": "string",
-                        "description": "\ubb38\uc758 \ub0b4\uc6a9 (\ucd5c\ub300 1000\uc790)"
+                        "description": "\ubb38\uc758 \ub0b4\uc6a9 (\ucd5c\ub300 1000\uc790)",
+                        "maxLength": 1000
                     }
                 }
             },
@@ -3793,11 +3854,13 @@
                 "properties": {
                     "title": {
                         "type": "string",
-                        "description": "\uc54c\ub9bc \uc81c\ubaa9"
+                        "description": "\uc54c\ub9bc \uc81c\ubaa9 (\ucd5c\ub300 255\uc790)",
+                        "maxLength": 255
                     },
                     "content": {
                         "type": "string",
-                        "description": "\uc54c\ub9bc \ub0b4\uc6a9"
+                        "description": "\uc54c\ub9bc \ub0b4\uc6a9 (\ucd5c\ub300 255\uc790)",
+                        "maxLength": 255
                     }
                 }
             },
@@ -3858,11 +3921,13 @@
                     },
                     "materials": {
                         "type": "string",
-                        "description": "\uc18c\uc7ac"
+                        "description": "\uc18c\uc7ac (\ucd5c\ub300 255\uc790)",
+                        "maxLength": 255
                     },
                     "technique": {
                         "type": "string",
-                        "description": "\uae30\ubc95"
+                        "description": "\uae30\ubc95 (\ucd5c\ub300 100\uc790)",
+                        "maxLength": 100
                     },
                     "story": {
                         "type": "string",
@@ -4083,54 +4148,32 @@
                 "properties": {
                     "giftThemes": {
                         "type": "array",
-                        "description": "\uc120\ubb3c \ud14c\ub9c8 \ubaa9\ub85d",
+                        "description": "\uc120\ubb3c \ud14c\ub9c8 \ubaa9\ub85d (\ud56d\ubaa9 \ucd5c\ub300 50\uc790)",
                         "nullable": true,
                         "items": {
-                            "oneOf": [
-                                {
-                                    "type": "object"
-                                },
-                                {
-                                    "type": "boolean"
-                                },
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "number"
-                                }
-                            ]
+                            "type": "string",
+                            "maxLength": 50
                         }
                     },
                     "purposeTags": {
                         "type": "array",
-                        "description": "\uc6a9\ub3c4 \ud0dc\uadf8 \ubaa9\ub85d",
+                        "description": "\uc6a9\ub3c4 \ud0dc\uadf8 \ubaa9\ub85d (\ud56d\ubaa9 \ucd5c\ub300 100\uc790)",
                         "nullable": true,
                         "items": {
-                            "oneOf": [
-                                {
-                                    "type": "object"
-                                },
-                                {
-                                    "type": "boolean"
-                                },
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "number"
-                                }
-                            ]
+                            "type": "string",
+                            "maxLength": 100
                         }
                     },
                     "price": {
                         "type": "number",
-                        "description": "\uac00\uaca9"
+                        "description": "\uac00\uaca9 (1 \uc774\uc0c1)",
+                        "minimum": 1
                     },
                     "productionPeriodDays": {
                         "type": "number",
-                        "description": "\uc81c\uc791 \uae30\uac04(\uc77c)",
-                        "nullable": true
+                        "description": "\uc81c\uc791 \uae30\uac04(\uc77c) (1 \uc774\uc0c1)",
+                        "nullable": true,
+                        "minimum": 1
                     },
                     "description": {
                         "type": "string",
@@ -4144,31 +4187,21 @@
                     },
                     "stock": {
                         "type": "number",
-                        "description": "\uc7ac\uace0"
+                        "description": "\uc7ac\uace0 (0 \uc774\uc0c1)",
+                        "minimum": 0
                     },
                     "title": {
                         "type": "string",
-                        "description": "\uc0c1\ud488\uba85"
+                        "description": "\uc0c1\ud488\uba85 (\ucd5c\ub300 200\uc790)",
+                        "maxLength": 200
                     },
                     "colors": {
                         "type": "array",
-                        "description": "\uc0c9\uc0c1 \ubaa9\ub85d",
+                        "description": "\uc0c9\uc0c1 \ubaa9\ub85d (\ud56d\ubaa9 \ucd5c\ub300 20\uc790)",
                         "nullable": true,
                         "items": {
-                            "oneOf": [
-                                {
-                                    "type": "object"
-                                },
-                                {
-                                    "type": "boolean"
-                                },
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "number"
-                                }
-                            ]
+                            "type": "string",
+                            "maxLength": 20
                         }
                     },
                     "categoryId": {
@@ -4178,32 +4211,13 @@
                     },
                     "thumbnailUrl": {
                         "type": "string",
-                        "description": "\uc378\ub124\uc77c URL",
-                        "nullable": true
+                        "description": "\uc378\ub124\uc77c URL (\ucd5c\ub300 500\uc790)",
+                        "nullable": true,
+                        "maxLength": 500
                     }
                 }
             },
-            "api-content-products-productId-contents-contentId-blocks-blockOrder-723983469": {
-                "type": "object",
-                "properties": {
-                    "imageUrl": {
-                        "type": "string",
-                        "description": "\uc774\ubbf8\uc9c0 URL (img \ube14\ub85d)",
-                        "nullable": true
-                    },
-                    "text": {
-                        "type": "string",
-                        "description": "\ud14d\uc2a4\ud2b8 \ub0b4\uc6a9 (h2/p \ube14\ub85d)",
-                        "nullable": true
-                    },
-                    "tag": {
-                        "type": "string",
-                        "description": "\ube14\ub85d \ud0dc\uadf8 (h2 | p | img | video)",
-                        "nullable": true
-                    }
-                }
-            },
-            "api-content-products-productId-contents54224182": {
+            "internal-generations-generationId-complete-335542771": {
                 "required": [
                     "status",
                     "success"
@@ -4212,68 +4226,33 @@
                 "properties": {
                     "data": {
                         "required": [
-                            "contentId",
+                            "generationId",
                             "productId",
-                            "status",
-                            "version"
+                            "requestedAt",
+                            "status"
                         ],
                         "type": "object",
                         "properties": {
+                            "generationId": {
+                                "type": "number",
+                                "description": "\uc0dd\uc131 \uc694\uccad ID"
+                            },
+                            "completedAt": {
+                                "type": "string",
+                                "description": "\uc644\ub8cc \uc2dc\uac01",
+                                "nullable": true
+                            },
                             "productId": {
                                 "type": "number",
                                 "description": "\uc0c1\ud488 ID"
                             },
-                            "blocks": {
-                                "type": "array",
-                                "items": {
-                                    "required": [
-                                        "hasImage",
-                                        "order",
-                                        "tag"
-                                    ],
-                                    "type": "object",
-                                    "properties": {
-                                        "imageId": {
-                                            "type": "string",
-                                            "description": "\uc774\ubbf8\uc9c0 ID (tag=img\uc77c \ub54c\ub9cc)",
-                                            "nullable": true
-                                        },
-                                        "videoUrl": {
-                                            "type": "string",
-                                            "description": "\uc601\uc0c1 URL (tag=video\uc77c \ub54c\ub9cc)",
-                                            "nullable": true
-                                        },
-                                        "hasImage": {
-                                            "type": "boolean",
-                                            "description": "\uc774\ubbf8\uc9c0 \ud3ec\ud568 \uc5ec\ubd80"
-                                        },
-                                        "text": {
-                                            "type": "string",
-                                            "description": "\ud14d\uc2a4\ud2b8 \ub0b4\uc6a9 (h2/p\uc77c \ub54c\ub9cc)",
-                                            "nullable": true
-                                        },
-                                        "tag": {
-                                            "type": "string",
-                                            "description": "\ube14\ub85d \ud0dc\uadf8 (h2 | p | img | video)"
-                                        },
-                                        "order": {
-                                            "type": "number",
-                                            "description": "\ud45c\uc2dc \uc21c\uc11c"
-                                        }
-                                    }
-                                }
-                            },
-                            "contentId": {
-                                "type": "number",
-                                "description": "\ucf58\ud150\uce20 ID"
-                            },
-                            "version": {
-                                "type": "number",
-                                "description": "\ubc84\uc804 \ubc88\ud638"
+                            "requestedAt": {
+                                "type": "string",
+                                "description": "\uc694\uccad \uc2dc\uac01"
                             },
                             "status": {
                                 "type": "string",
-                                "description": "\ucf58\ud150\uce20 \uc0c1\ud0dc (DRAFT | PENDING_REVIEW | APPROVED | REJECTED | PUBLISHED)"
+                                "description": "\uc0dd\uc131 \uc0c1\ud0dc (COMPLETED | FAILED)"
                             }
                         }
                     },
@@ -4387,77 +4366,6 @@
                                     "type": "number",
                                     "description": "\ubc84\uc804 \ubc88\ud638"
                                 }
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-content-products-productId-contents-contentId-blocks-blockOrder1000639414": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "contentId",
-                            "version"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "contentId": {
-                                "type": "number",
-                                "description": "\ucf58\ud150\uce20 ID"
-                            },
-                            "block": {
-                                "required": [
-                                    "hasImage",
-                                    "order",
-                                    "tag"
-                                ],
-                                "type": "object",
-                                "properties": {
-                                    "imageId": {
-                                        "type": "string",
-                                        "description": "\uc774\ubbf8\uc9c0 ID",
-                                        "nullable": true
-                                    },
-                                    "videoUrl": {
-                                        "type": "string",
-                                        "description": "\uc601\uc0c1 URL",
-                                        "nullable": true
-                                    },
-                                    "hasImage": {
-                                        "type": "boolean",
-                                        "description": "\uc774\ubbf8\uc9c0 \ud3ec\ud568 \uc5ec\ubd80"
-                                    },
-                                    "text": {
-                                        "type": "string",
-                                        "description": "\ud14d\uc2a4\ud2b8 \ub0b4\uc6a9",
-                                        "nullable": true
-                                    },
-                                    "tag": {
-                                        "type": "string",
-                                        "description": "\ube14\ub85d \ud0dc\uadf8"
-                                    },
-                                    "order": {
-                                        "type": "number",
-                                        "description": "\ud45c\uc2dc \uc21c\uc11c"
-                                    }
-                                }
-                            },
-                            "version": {
-                                "type": "number",
-                                "description": "\uc218\uc815 \ud6c4 \ubc84\uc804 \ubc88\ud638"
                             }
                         }
                     },
@@ -4772,54 +4680,32 @@
                 "properties": {
                     "giftThemes": {
                         "type": "array",
-                        "description": "\uc120\ubb3c \ud14c\ub9c8 \ubaa9\ub85d",
+                        "description": "\uc120\ubb3c \ud14c\ub9c8 \ubaa9\ub85d (\ud56d\ubaa9 \ucd5c\ub300 50\uc790)",
                         "nullable": true,
                         "items": {
-                            "oneOf": [
-                                {
-                                    "type": "object"
-                                },
-                                {
-                                    "type": "boolean"
-                                },
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "number"
-                                }
-                            ]
+                            "type": "string",
+                            "maxLength": 50
                         }
                     },
                     "purposeTags": {
                         "type": "array",
-                        "description": "\uc6a9\ub3c4 \ud0dc\uadf8 \ubaa9\ub85d",
+                        "description": "\uc6a9\ub3c4 \ud0dc\uadf8 \ubaa9\ub85d (\ud56d\ubaa9 \ucd5c\ub300 100\uc790)",
                         "nullable": true,
                         "items": {
-                            "oneOf": [
-                                {
-                                    "type": "object"
-                                },
-                                {
-                                    "type": "boolean"
-                                },
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "number"
-                                }
-                            ]
+                            "type": "string",
+                            "maxLength": 100
                         }
                     },
                     "price": {
                         "type": "number",
-                        "description": "\uac00\uaca9 (1 \uc774\uc0c1)"
+                        "description": "\uac00\uaca9 (1 \uc774\uc0c1)",
+                        "minimum": 1
                     },
                     "productionPeriodDays": {
                         "type": "number",
-                        "description": "\uc81c\uc791 \uae30\uac04(\uc77c)",
-                        "nullable": true
+                        "description": "\uc81c\uc791 \uae30\uac04(\uc77c) (1 \uc774\uc0c1)",
+                        "nullable": true,
+                        "minimum": 1
                     },
                     "description": {
                         "type": "string",
@@ -4833,31 +4719,21 @@
                     },
                     "stock": {
                         "type": "number",
-                        "description": "\uc7ac\uace0 (0 \uc774\uc0c1)"
+                        "description": "\uc7ac\uace0 (0 \uc774\uc0c1)",
+                        "minimum": 0
                     },
                     "title": {
                         "type": "string",
-                        "description": "\uc0c1\ud488\uba85 (\ucd5c\ub300 200\uc790)"
+                        "description": "\uc0c1\ud488\uba85 (\ucd5c\ub300 200\uc790)",
+                        "maxLength": 200
                     },
                     "colors": {
                         "type": "array",
-                        "description": "\uc0c9\uc0c1 \ubaa9\ub85d",
+                        "description": "\uc0c9\uc0c1 \ubaa9\ub85d (\ud56d\ubaa9 \ucd5c\ub300 20\uc790)",
                         "nullable": true,
                         "items": {
-                            "oneOf": [
-                                {
-                                    "type": "object"
-                                },
-                                {
-                                    "type": "boolean"
-                                },
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "number"
-                                }
-                            ]
+                            "type": "string",
+                            "maxLength": 20
                         }
                     },
                     "categoryId": {
@@ -4867,8 +4743,9 @@
                     },
                     "thumbnailUrl": {
                         "type": "string",
-                        "description": "\uc378\ub124\uc77c URL",
-                        "nullable": true
+                        "description": "\uc378\ub124\uc77c URL (\ucd5c\ub300 500\uc790)",
+                        "nullable": true,
+                        "maxLength": 500
                     }
                 }
             },
@@ -5097,65 +4974,6 @@
                     }
                 }
             },
-            "api-products-productId-questions-148092557": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "content",
-                            "createdAt",
-                            "productId",
-                            "questionId",
-                            "secret",
-                            "writerId"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "createdAt": {
-                                "type": "string",
-                                "description": "\uc791\uc131\uc77c\uc2dc"
-                            },
-                            "questionId": {
-                                "type": "number",
-                                "description": "\ubb38\uc758 ID"
-                            },
-                            "answer": {
-                                "type": "object",
-                                "description": "\ub2f5\ubcc0",
-                                "nullable": true
-                            },
-                            "productId": {
-                                "type": "number",
-                                "description": "\uc0c1\ud488 ID"
-                            },
-                            "secret": {
-                                "type": "boolean",
-                                "description": "\ube44\uacf5\uac1c \uc5ec\ubd80"
-                            },
-                            "content": {
-                                "type": "string",
-                                "description": "\ubb38\uc758 \ub0b4\uc6a9"
-                            },
-                            "writerId": {
-                                "type": "number",
-                                "description": "\uc791\uc131\uc790 ID"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
             "api-member-me-wishes-1004578112": {
                 "required": [
                     "status",
@@ -5237,43 +5055,62 @@
                     }
                 }
             },
-            "api-content-products-productId-contents-contentId1735256076": {
+            "api-products-productId-questions-148092557": {
+                "required": [
+                    "status",
+                    "success"
+                ],
                 "type": "object",
                 "properties": {
-                    "blocks": {
-                        "type": "array",
-                        "items": {
-                            "required": [
-                                "order",
-                                "tag"
-                            ],
-                            "type": "object",
-                            "properties": {
-                                "videoUrl": {
-                                    "type": "string",
-                                    "description": "\uc601\uc0c1 URL (video \ube14\ub85d)",
-                                    "nullable": true
-                                },
-                                "imageUrl": {
-                                    "type": "string",
-                                    "description": "\uc774\ubbf8\uc9c0 URL (img \ube14\ub85d)",
-                                    "nullable": true
-                                },
-                                "text": {
-                                    "type": "string",
-                                    "description": "\ud14d\uc2a4\ud2b8 (h2/p \ube14\ub85d)",
-                                    "nullable": true
-                                },
-                                "tag": {
-                                    "type": "string",
-                                    "description": "\ube14\ub85d \ud0dc\uadf8 (h2 | p | img | video)"
-                                },
-                                "order": {
-                                    "type": "number",
-                                    "description": "\ud45c\uc2dc \uc21c\uc11c"
-                                }
+                    "data": {
+                        "required": [
+                            "content",
+                            "createdAt",
+                            "productId",
+                            "questionId",
+                            "secret",
+                            "writerId"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "createdAt": {
+                                "type": "string",
+                                "description": "\uc791\uc131\uc77c\uc2dc"
+                            },
+                            "questionId": {
+                                "type": "number",
+                                "description": "\ubb38\uc758 ID"
+                            },
+                            "answer": {
+                                "type": "object",
+                                "description": "\ub2f5\ubcc0",
+                                "nullable": true
+                            },
+                            "productId": {
+                                "type": "number",
+                                "description": "\uc0c1\ud488 ID"
+                            },
+                            "secret": {
+                                "type": "boolean",
+                                "description": "\ube44\uacf5\uac1c \uc5ec\ubd80"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "\ubb38\uc758 \ub0b4\uc6a9"
+                            },
+                            "writerId": {
+                                "type": "number",
+                                "description": "\uc791\uc131\uc790 ID"
                             }
                         }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
                     }
                 }
             },
@@ -5308,18 +5145,6 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-chatbot-sessions-sessionId-messages187223498": {
-                "required": [
-                    "content"
-                ],
-                "type": "object",
-                "properties": {
-                    "content": {
-                        "type": "string",
-                        "description": "\uc18c\ube44\uc790 \uba54\uc2dc\uc9c0 (\ucd5c\ub300 2000\uc790)"
                     }
                 }
             },
@@ -5372,7 +5197,20 @@
                     }
                 }
             },
-            "api-content-products-productId-generations-generationId-86050053": {
+            "api-chatbot-sessions-sessionId-messages187223498": {
+                "required": [
+                    "content"
+                ],
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "\uc18c\ube44\uc790 \uba54\uc2dc\uc9c0 (\ucd5c\ub300 2000\uc790)",
+                        "maxLength": 2000
+                    }
+                }
+            },
+            "api-content-products-productId-generations-86050053": {
                 "required": [
                     "status",
                     "success"
@@ -5421,7 +5259,7 @@
                     }
                 }
             },
-            "api-products1950243800": {
+            "api-products-productId1950243800": {
                 "required": [
                     "status",
                     "success"
@@ -5583,7 +5421,7 @@
                     }
                 }
             },
-            "api-products-productId-status-1487972696": {
+            "api-chatbot-sessions-sessionId-1487972696": {
                 "required": [
                     "data",
                     "status",
@@ -5598,18 +5436,6 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-products-productId-questions-questionId-answer1678412256": {
-                "required": [
-                    "content"
-                ],
-                "type": "object",
-                "properties": {
-                    "content": {
-                        "type": "string",
-                        "description": "\ub2f5\ubcc0 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)"
                     }
                 }
             },
@@ -5662,6 +5488,31 @@
                     }
                 }
             },
+            "api-products-productId-questions-questionId-answer1678412256": {
+                "required": [
+                    "content"
+                ],
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "description": "\ub2f5\ubcc0 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)",
+                        "maxLength": 2000
+                    }
+                }
+            },
+            "internal-generations-generationId-complete1602951334": {
+                "required": [
+                    "reactDocument"
+                ],
+                "type": "object",
+                "properties": {
+                    "reactDocument": {
+                        "type": "object",
+                        "description": "AI\uac00 \uc0dd\uc131\ud55c react_document AST (schemaVersion, canvasWidth, root[] \uad6c\uc870)"
+                    }
+                }
+            },
             "api-products-productId-status895114410": {
                 "required": [
                     "status"
@@ -5674,7 +5525,7 @@
                     }
                 }
             },
-            "api-content-products-productId-contents-versions16218693": {
+            "api-content-products-productId-interview16218693": {
                 "required": [
                     "errorCode",
                     "message",
@@ -5694,50 +5545,6 @@
                     "message": {
                         "type": "string",
                         "description": "\uc5d0\ub7ec \uba54\uc2dc\uc9c0"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-products-productId-questions-questionId-answer-1567978184": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "answerId",
-                            "answeredAt",
-                            "artisanId",
-                            "content"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "answerId": {
-                                "type": "number",
-                                "description": "\ub2f5\ubcc0 ID"
-                            },
-                            "artisanId": {
-                                "type": "number",
-                                "description": "\uc7a5\uc778 ID"
-                            },
-                            "answeredAt": {
-                                "type": "string",
-                                "description": "\ub2f5\ubcc0\uc77c\uc2dc"
-                            },
-                            "content": {
-                                "type": "string",
-                                "description": "\ub2f5\ubcc0 \ub0b4\uc6a9"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
                     },
                     "status": {
                         "type": "number",
@@ -5791,6 +5598,50 @@
                             "writerId": {
                                 "type": "number",
                                 "description": "\uc791\uc131\uc790 ID"
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
+            "api-products-productId-questions-questionId-answer-1567978184": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "answerId",
+                            "answeredAt",
+                            "artisanId",
+                            "content"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "answerId": {
+                                "type": "number",
+                                "description": "\ub2f5\ubcc0 ID"
+                            },
+                            "artisanId": {
+                                "type": "number",
+                                "description": "\uc7a5\uc778 ID"
+                            },
+                            "answeredAt": {
+                                "type": "string",
+                                "description": "\ub2f5\ubcc0\uc77c\uc2dc"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "\ub2f5\ubcc0 \ub0b4\uc6a9"
                             }
                         }
                     },
@@ -6080,11 +5931,12 @@
                     },
                     "productName": {
                         "type": "string",
-                        "description": "\uc0c1\ud488\uba85"
+                        "description": "\uc0c1\ud488\uba85 (\ucd5c\ub300 255\uc790)",
+                        "maxLength": 255
                     }
                 }
             },
-            "api-products-categories1684097948": {
+            "api-products-categories-main1684097948": {
                 "required": [
                     "status",
                     "success"
@@ -6143,6 +5995,55 @@
                     }
                 }
             },
+            "api-content-products-productId-contents643100649": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "contentId",
+                            "productId",
+                            "status",
+                            "version"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "productId": {
+                                "type": "number",
+                                "description": "\uc0c1\ud488 ID"
+                            },
+                            "contentId": {
+                                "type": "number",
+                                "description": "\ucf58\ud150\uce20 ID"
+                            },
+                            "reactDocument": {
+                                "type": "object",
+                                "description": "AI\uac00 \uc0dd\uc131\ud55c react_document AST. schemaVersion, canvasWidth, root[] \uad6c\uc870",
+                                "nullable": true
+                            },
+                            "version": {
+                                "type": "number",
+                                "description": "\ubc84\uc804 \ubc88\ud638"
+                            },
+                            "status": {
+                                "type": "string",
+                                "description": "\ucf58\ud150\uce20 \uc0c1\ud0dc (DRAFT | PENDING_REVIEW | APPROVED | REJECTED | PUBLISHED)"
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
             "api-products-productId-reviews-68642346": {
                 "required": [
                     "content",
@@ -6157,11 +6058,14 @@
                     },
                     "rating": {
                         "type": "number",
-                        "description": "\ud3c9\uc810 (1~5)"
+                        "description": "\ud3c9\uc810 (1~5)",
+                        "minimum": 1,
+                        "maximum": 5
                     },
                     "content": {
                         "type": "string",
-                        "description": "\ud6c4\uae30 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)"
+                        "description": "\ud6c4\uae30 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)",
+                        "maxLength": 2000
                     }
                 }
             },
@@ -6175,13 +6079,15 @@
                     },
                     "materials": {
                         "type": "string",
-                        "description": "\uc18c\uc7ac (\uc120\ud0dd)",
-                        "nullable": true
+                        "description": "\uc18c\uc7ac (\uc120\ud0dd) (\ucd5c\ub300 255\uc790)",
+                        "nullable": true,
+                        "maxLength": 255
                     },
                     "technique": {
                         "type": "string",
-                        "description": "\uae30\ubc95 (\uc120\ud0dd)",
-                        "nullable": true
+                        "description": "\uae30\ubc95 (\uc120\ud0dd) (\ucd5c\ub300 100\uc790)",
+                        "nullable": true,
+                        "maxLength": 100
                     },
                     "story": {
                         "type": "string",
@@ -6218,8 +6124,23 @@
                     "message": "\uc785\ub825\uac12\uc774 \uc62c\ubc14\ub974\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4"
                 }
             }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "POST /api/member/login \uc751\ub2f5\uc758 accessToken\uc744 \uc785\ub825\ud558\uc138\uc694."
+            }
         }
     },
+    "security": [
+        {
+            "bearerAuth": [
+                
+            ]
+        }
+    ],
     "x-sample-data": {
         "member": {
             "email": "artisan@example.com",

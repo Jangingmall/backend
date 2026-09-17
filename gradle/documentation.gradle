@@ -1,0 +1,735 @@
+// ── OpenAPI 3.0 JSON 생성 (restdocs-api-spec) ────────────────────────────────
+openapi3 {
+    server = 'https://midam.store'
+    title = '장인몰 (미담) API'
+    description = '국가무형유산 장인 B2C 마켓플레이스 REST API'
+    version = project.version
+    format = 'json'
+    outputDirectory = 'build/api-spec'
+    outputFileNamePrefix = 'openapi'
+}
+
+// ── 후처리: example 정규화 + Actuator 경로 추가 + 문서 보강 ──────────────────
+tasks.register('processOpenapi') {
+    dependsOn 'openapi3'
+    description = 'Post-process openapi.json: parse example values, add Actuator paths, enrich description'
+
+    def inputFile  = file('build/api-spec/openapi.json')
+    def outputFile = file('api-spec/openapi.json')
+
+    inputs.file(inputFile)
+    outputs.file(outputFile)
+
+    doLast {
+        def slurper = new groovy.json.JsonSlurper()
+        def json = slurper.parse(inputFile)
+
+        // ── 1. info.description 작성 (문의는 description 맨 아래 고정, contact 미사용) ──
+        json.info.remove('contact')
+        json.info.description = '''\
+장인몰(미담)은 국가무형유산 장인의 작품을 직접 구매할 수 있는 B2C 마켓플레이스입니다.
+본 문서는 장인몰 REST API의 공식 레퍼런스입니다.
+
+## Quick Start
+
+API 연동은 3단계로 시작합니다.
+
+**1단계 — 회원가입 / 로그인**
+
+```http
+POST /api/member/signup
+Content-Type: application/json
+
+{
+  "email": "buyer@example.com",
+  "password": "P@ssw0rd!",
+  "name": "홍길동"
+}
+```
+
+**2단계 — Access Token 발급**
+
+```http
+POST /api/member/login
+Content-Type: application/json
+
+{
+  "email": "buyer@example.com",
+  "password": "P@ssw0rd!"
+}
+```
+
+응답의 `accessToken`을 저장합니다. Refresh Token은 `Set-Cookie: refreshToken=...` 으로 전달됩니다.
+
+**3단계 — 인증이 필요한 API 호출**
+
+```http
+GET /api/member/me
+Authorization: Bearer {accessToken}
+```
+
+---
+
+## 서버 환경 (Base URL)
+
+| 환경 | Base URL |
+|------|----------|
+| Production | `https://midam.store` |
+| Local | `http://localhost:8080` |
+
+---
+
+## 인증 (Authentication)
+
+장인몰 API는 **JWT Bearer Token** 방식을 사용합니다.
+
+- `POST /api/member/login` 또는 OAuth2 로그인 성공 시 `accessToken` 발급
+- 모든 인증 필요 API에 `Authorization: Bearer {accessToken}` 헤더 포함
+- Access Token 만료(`401 UNAUTHORIZED`) 시 `POST /api/member/token/refresh` 호출
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**OAuth2 소셜 로그인** (카카오 / 네이버)
+
+1. `GET /api/member/oauth2/{provider}` → 소셜 로그인 페이지 리다이렉트
+2. 인증 완료 후 프론트엔드 콜백 URL로 `code` 파라미터 전달
+3. `POST /api/member/oauth2/exchange` → `accessToken` 교환
+
+---
+
+## 공통 요청 형식
+
+```http
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {accessToken}   # 인증 필요 API
+```
+
+날짜/시간은 모두 **ISO 8601** 형식(`2025-01-15T09:30:00Z`)으로 주고받습니다.
+
+---
+
+## 공통 응답 형식
+
+**성공**
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": { ... }
+}
+```
+
+**실패**
+
+```json
+{
+  "success": false,
+  "status": 400,
+  "errorCode": "INVALID_INPUT",
+  "message": "입력값이 올바르지 않습니다"
+}
+```
+
+---
+
+## 공통 에러 코드
+
+아래 에러 코드는 명시 여부와 무관하게 **모든 엔드포인트에 공통 적용**됩니다.
+각 엔드포인트 응답 목록에는 해당 비즈니스 로직에 특화된 에러만 추가로 표시됩니다.
+
+| HTTP | errorCode | 발생 조건 |
+|------|-----------|-----------|
+| 400 | INVALID_INPUT | `@Valid` 필드 검증 실패 |
+| 400 | REQUEST_INVALID | Content-Type 불일치, 타입 변환 실패 |
+| 400 | REQUEST_BODY_MALFORMED | 파싱 불가한 요청 바디 |
+| 401 | UNAUTHORIZED | 인증 토큰 없음 또는 만료 |
+| 403 | FORBIDDEN | 권한 없음 (타 사용자 리소스 접근 등) |
+| 404 | NOT_FOUND | 리소스를 찾을 수 없음 |
+| 409 | CONFLICT | 중복 리소스 (이메일, 찜 등) |
+| 422 | BUSINESS_RULE_VIOLATION | 비즈니스 규칙 위반 (상태 전이 불가 등) |
+| 429 | TOO_MANY_REQUESTS | 요청 횟수 초과 |
+| 500 | INTERNAL_ERROR | 서버 내부 오류 |
+
+---
+
+## 페이지네이션
+
+### 오프셋 페이지네이션
+
+`page`(0-based), `size`(기본 20) 쿼리 파라미터로 전달합니다.
+
+```
+GET /api/products?page=0&size=20
+```
+
+```json
+{
+  "content": [...],
+  "totalElements": 100,
+  "totalPages": 5,
+  "number": 0,
+  "size": 20,
+  "first": true,
+  "last": false
+}
+```
+
+### 커서 페이지네이션
+
+`cursor`(첫 요청 시 생략), `size`(기본 20) 쿼리 파라미터로 전달합니다.
+
+```
+GET /api/artisans/subscriptions?size=20
+GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
+```
+
+```json
+{
+  "items": [...],
+  "nextCursor": "eyJpZCI6MX0=",
+  "hasNext": true,
+  "totalCount": 100
+}
+```
+
+`hasNext`가 `false`이면 마지막 페이지입니다. `nextCursor`는 불투명 Base64 토큰으로 파싱하지 말고 그대로 전달하세요.
+
+---
+
+## 헬스체크 / 인프라
+
+| 경로 | 포트 | 용도 |
+|------|------|------|
+| `/healthz` | 8080 | ALB 헬스체크 (ping, 인증 불필요) |
+| `/actuator/health/liveness` | 9090 | Liveness probe |
+| `/actuator/health/readiness` | 9090 | Readiness probe |
+| `/actuator/prometheus` | 9090 | Prometheus 메트릭 스크레이핑 |
+
+---
+
+## 문의
+
+기술 문의: dev@midam.store
+'''
+
+        // ── 2. servers 보장 (restdocs-api-spec이 단일 url만 넣는 경우 대비) ──────
+        json.servers = [
+            [url: 'https://midam.store',   description: 'Production'],
+            [url: 'http://localhost:8080', description: 'Local']
+        ]
+
+        // ── 2-1. request body required + constraints 주입 ───────────────────────
+        // epages restdocs-api-spec은 @Valid 어노테이션을 OpenAPI 스키마 제약으로 변환하지 않는다.
+        // (1) required: 스니펫 requestFields.optional=false → requestBody.schema.required[]
+        // (2) constraints: Request 클래스 어노테이션 기반 테이블 → 각 property 스키마 속성 주입
+        //
+        // 제약 테이블 형식: operationId → { fieldPath → { maxLength, minLength, minimum, maximum, pattern, minItems } }
+        // 동일 제약이 create/update 양쪽에 있을 경우 공통 맵을 재사용한다.
+        def productFieldConstraints = [
+            title              : [maxLength: 200],
+            price              : [minimum: 1],
+            stock              : [minimum: 0],
+            thumbnailUrl       : [maxLength: 500],
+            giftThemes         : [items: [maxLength: 50]],
+            purposeTags        : [items: [maxLength: 100]],
+            productionPeriodDays: [minimum: 1],
+            colors             : [items: [maxLength: 20]]
+        ]
+        def constraintTable = [
+            'product-create'      : productFieldConstraints,
+            'product-update'      : productFieldConstraints,
+            'notification-create-200': [
+                title  : [maxLength: 255],
+                content: [maxLength: 255]
+            ],
+            'product-review-write': [
+                rating : [minimum: 1, maximum: 5],
+                content: [maxLength: 2000]
+            ],
+            'product-qna-ask': [
+                content: [maxLength: 1000]
+            ],
+            'product-qna-answer': [
+                content: [maxLength: 2000]
+            ],
+            'chatbot-message-send': [
+                content: [maxLength: 2000]
+            ],
+            'interview-create': [
+                materials : [maxLength: 255],
+                technique : [maxLength: 100]
+            ],
+            'interview-update': [
+                materials : [maxLength: 255],
+                technique : [maxLength: 100]
+            ],
+            'generation-request': [
+                productName: [maxLength: 255]
+            ],
+            'signup': [
+                email   : [maxLength: 255],
+                password: [minLength: 8, maxLength: 72],
+                name    : [maxLength: 50],
+                phone   : [pattern: '\\\\d{9,20}']
+            ]
+        ]
+
+        // constraint 주입: operationId 기준으로 requestBody 스키마 properties에 제약 추가
+        // epages는 $ref를 사용하므로 components/schemas의 실제 스키마 properties를 수정한다.
+        // (required는 epages가 이미 컴포넌트 스키마에 포함시킴)
+        //
+        // constraint → 한글 description 접미사 변환 규칙
+        def constraintToKorean = { Map fieldConstraints ->
+            def parts = []
+            if (fieldConstraints.minimum != null && fieldConstraints.maximum != null) {
+                parts << "${fieldConstraints.minimum} 이상 ${fieldConstraints.maximum} 이하"
+            } else if (fieldConstraints.minimum != null) {
+                parts << "${fieldConstraints.minimum} 이상"
+            } else if (fieldConstraints.maximum != null) {
+                parts << "${fieldConstraints.maximum} 이하"
+            }
+            if (fieldConstraints.minLength != null && fieldConstraints.maxLength != null) {
+                parts << "${fieldConstraints.minLength}자 이상 ${fieldConstraints.maxLength}자 이하"
+            } else if (fieldConstraints.minLength != null) {
+                parts << "${fieldConstraints.minLength}자 이상"
+            } else if (fieldConstraints.maxLength != null) {
+                parts << "최대 ${fieldConstraints.maxLength}자"
+            }
+            if (fieldConstraints.pattern) parts << "형식: ${fieldConstraints.pattern}"
+            if (fieldConstraints.items?.maxLength) parts << "항목 최대 ${fieldConstraints.items.maxLength}자"
+            parts.join(', ')
+        }
+
+        json.paths?.each { String path, pathItem ->
+            ['post','put','patch'].each { method ->
+                def op = pathItem[method]
+                if (!op) return
+                def oid = op.operationId ?: ''
+                def constraints = constraintTable[oid]
+                if (!constraints) return
+
+                op.requestBody?.content?.each { contentType, mediaType ->
+                    def topSchema = mediaType?.schema
+                    if (!topSchema) return
+                    // $ref가 있으면 컴포넌트 스키마를 직접 수정
+                    def refPath = topSchema['\$ref']
+                    def targetSchema = refPath
+                        ? json.components?.schemas?.get(refPath.tokenize('/').last())
+                        : topSchema
+                    if (!targetSchema?.properties) return
+                    constraints.each { String fieldName, Map fieldConstraints ->
+                        def prop = targetSchema.properties[fieldName]
+                        if (!prop) return
+
+                        // 한글 description 접미사 주입
+                        // 스니펫에 이미 제약 설명이 있으면(숫자 포함) 중복 추가 방지
+                        def koreanSuffix = constraintToKorean(fieldConstraints)
+                        if (koreanSuffix) {
+                            def existing = prop.description ?: ''
+                            def alreadyHasConstraint = existing =~ /\d+\s*(자|이상|이하|~)/
+                            if (!alreadyHasConstraint && !existing.contains(koreanSuffix)) {
+                                prop.description = existing ? "${existing} (${koreanSuffix})" : "(${koreanSuffix})"
+                            }
+                        }
+
+                        fieldConstraints.each { String k, v ->
+                            if (k == 'items') {
+                                // 배열 아이템 제약 (e.g. List<@Size(max=50) String>)
+                                if (!prop.items) {
+                                    prop.items = [type: 'string']
+                                    v.each { ik, iv -> prop.items[ik] = iv }
+                                } else if (prop.items instanceof Map && prop.items.oneOf instanceof List) {
+                                    // oneOf 구조: string 타입 항목을 찾아 교체 (다른 타입 제거, string만 남김)
+                                    def strItem = prop.items.oneOf.find { it instanceof Map && it.type == 'string' }
+                                    if (strItem) {
+                                        v.each { ik, iv -> strItem[ik] = iv }
+                                        prop.items = strItem
+                                    }
+                                } else {
+                                    v.each { ik, iv -> prop.items[ik] = iv }
+                                }
+                            } else {
+                                prop[k] = v
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // ── 2-2. path parameter 타입·설명 교정 ──────────────────────────────────
+        // 에러 케이스 스니펫(documentError)이 pathParameters=[]로 성공 케이스의
+        // 타입·설명을 덮어쓰는 문제를 교정한다.
+        // 정보는 build/generated-snippets/*/resource.json의 성공 케이스에서 파생하며
+        // 파라미터 이름을 직접 관리하지 않는다.
+        def pathParamMeta = [:]  // name → [type, description]
+        def snippetsDir = file('build/generated-snippets')
+        if (snippetsDir.exists()) {
+            snippetsDir.eachDir { dir ->
+                def resourceFile = new File(dir, 'resource.json')
+                if (!resourceFile.exists()) return
+                def snippet = slurper.parse(resourceFile)
+                snippet?.request?.pathParameters?.each { p ->
+                    if (p.name && p.type && !pathParamMeta.containsKey(p.name)) {
+                        def schemaType = p.type.toString().toLowerCase() == 'integer' ? 'integer'
+                            : p.type.toString().toLowerCase() == 'number'  ? 'number'
+                            : 'string'
+                        def schemaFormat = schemaType == 'integer' ? 'int64' : null
+                        pathParamMeta[p.name] = [
+                            type       : schemaType,
+                            format     : schemaFormat,
+                            description: p.description ?: ''
+                        ]
+                    }
+                }
+            }
+        }
+        json.paths?.each { String path, pathItem ->
+            ['get','post','put','patch','delete','head','options'].each { method ->
+                def op = pathItem[method]
+                if (!op) return
+                op.parameters?.each { param ->
+                    if (param.in == 'path') {
+                        def meta = pathParamMeta[param.name]
+                        if (meta) {
+                            param.schema = param.schema ?: [:]
+                            param.schema.type = meta.type
+                            if (meta.format) param.schema.format = meta.format
+                            else param.schema.remove('format')
+                            if (!param.description) param.description = meta.description
+                        }
+                    }
+                }
+            }
+        }
+
+        // ── 3. example value 문자열 → JSON 객체 파싱 ───────────────────────────
+        def parseExampleValue = { Map example ->
+            def val = example['value']
+            if (val instanceof String) {
+                try {
+                    example['value'] = slurper.parseText(val)
+                } catch (ignored) {
+                    // intentionally invalid JSON (REQUEST_BODY_MALFORMED 케이스) — leave as-is
+                }
+            }
+        }
+
+        def walkExamples = { Map operation ->
+            operation?.requestBody?.content?.each { contentType, mediaType ->
+                mediaType?.examples?.each { name, example -> parseExampleValue(example) }
+            }
+            operation?.responses?.each { status, response ->
+                response?.content?.each { contentType, mediaType ->
+                    mediaType?.examples?.each { name, example -> parseExampleValue(example) }
+                }
+            }
+        }
+
+        json.paths?.each { path, pathItem ->
+            ['get','post','put','patch','delete','head','options'].each { method ->
+                if (pathItem[method]) walkExamples(pathItem[method])
+            }
+        }
+
+        // ── 4. securitySchemes + 전역 security 주입 ─────────────────────────────
+        if (!json.components) json.components = [:]
+        json.components.securitySchemes = [
+            bearerAuth: [
+                type        : 'http',
+                scheme      : 'bearer',
+                bearerFormat: 'JWT',
+                description : 'POST /api/member/login 응답의 accessToken을 입력하세요.'
+            ]
+        ]
+        // 전역 기본값: 모든 operation이 JWT 필요로 시작 (PUBLIC은 아래에서 security: [] 오버라이드)
+        json.security = [[bearerAuth: []]]
+
+        // ── 4-1. ApiErrorResponse 컴포넌트 스키마 (공통 에러 형식 참조용) ────────
+        if (!json.components.schemas) json.components.schemas = [:]
+        json.components.schemas['ApiErrorResponse'] = [
+            type      : 'object',
+            description: '모든 에러 응답의 공통 형식. 에러 코드 목록은 상단 Overview를 참조하세요.',
+            properties: [
+                success  : [type: 'boolean', example: false],
+                status   : [type: 'integer', example: 400],
+                errorCode: [type: 'string',  example: 'INVALID_INPUT'],
+                message  : [type: 'string',  example: '입력값이 올바르지 않습니다']
+            ],
+            example: [
+                success  : false,
+                status   : 400,
+                errorCode: 'INVALID_INPUT',
+                message  : '입력값이 올바르지 않습니다'
+            ]
+        ]
+
+        // ── 5. 로컬 전용 Dev 경로 추가 ──────────────────────────────────────────
+        json.paths['/dev/token'] = [
+            post: [
+                tags       : ['Dev (로컬 전용)'],
+                summary    : '개발용 토큰 즉시 발급',
+                description: '🚧 **local / local-postgresql 프로파일에서만 동작합니다.**\n\n회원가입·승인 없이 role을 지정해 JWT를 즉시 발급합니다. AI팀 로컬 연동 테스트용.\n\n> **만료 시간: 7일** — 일반 accessToken(30분)과 달리 장기 토큰을 발급합니다. 재발급 없이 일주일간 사용 가능합니다.\n\n발급한 토큰을 Authorization 헤더에 담아 사용합니다.\n```http\nAuthorization: Bearer {accessToken}\n```\n\n| role | memberId | 용도 |\n|------|----------|------|\n| `ARTISAN` | -1 | 콘텐츠 생성, 상품 등록/수정/삭제 |\n| `USER` | -3 | 챗봇, 찜, 알림, 문의 |\n| `ADMIN` | -2 | 관리자 기능 |\n\n> memberId가 음수이므로 실제 DB 회원 조회가 필요한 엔드포인트는 404가 발생할 수 있습니다.',
+                operationId: 'dev-token',
+                security   : [],
+                parameters : [
+                    [
+                        name    : 'role',
+                        in      : 'query',
+                        required: false,
+                        schema  : [type: 'string', enum: ['ARTISAN', 'USER', 'ADMIN'], default: 'ARTISAN'],
+                        description: '발급할 토큰의 권한'
+                    ]
+                ],
+                responses  : [
+                    '200': [
+                        description: '토큰 발급 성공',
+                        content    : [
+                            'application/json': [
+                                schema  : [
+                                    type      : 'object',
+                                    properties: [
+                                        success: [type: 'boolean', example: true],
+                                        status : [type: 'integer', example: 200],
+                                        data   : [
+                                            type      : 'object',
+                                            properties: [
+                                                accessToken: [type: 'string', description: 'Authorization: Bearer <token> 헤더에 사용', example: 'eyJhbGciOiJIUzI1NiJ9...'],
+                                                role       : [type: 'string', enum: ['USER', 'ARTISAN', 'ADMIN'], example: 'ARTISAN'],
+                                                memberId   : [type: 'integer', description: '음수 ID — 실제 DB 회원 없음', example: -1]
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                examples: [
+                                    ARTISAN: [
+                                        summary: 'ARTISAN 토큰',
+                                        value  : [success: true, status: 200, data: [accessToken: 'eyJhbGciOiJIUzI1NiJ9...', role: 'ARTISAN', memberId: -1]]
+                                    ],
+                                    USER: [
+                                        summary: 'USER 토큰',
+                                        value  : [success: true, status: 200, data: [accessToken: 'eyJhbGciOiJIUzI1NiJ9...', role: 'USER', memberId: -3]]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+        // ── 5-1. Actuator / 인프라 헬스 경로 추가 ───────────────────────────────
+        if (!json.paths) json.paths = [:]
+
+        json.paths['/healthz'] = [
+            get: [
+                tags       : ['인프라'],
+                summary    : 'ALB 헬스체크',
+                description: 'Application Load Balancer가 호출하는 ping 헬스체크 엔드포인트. 포트 8080. 인증 불필요.',
+                operationId: 'healthz-ping',
+                responses  : [
+                    '200': [
+                        description: 'OK',
+                        content    : [
+                            'application/json': [
+                                schema  : [type: 'object', properties: [status: [type: 'string', example: 'UP']]],
+                                examples: [UP: [value: [status: 'UP']]]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+
+        json.paths['/actuator/health/liveness'] = [
+            get: [
+                tags       : ['인프라'],
+                summary    : 'K8s Liveness Probe',
+                description: 'Kubernetes liveness probe. 포트 9090. 실패 시 컨테이너 재시작.',
+                operationId: 'actuator-health-liveness',
+                responses  : [
+                    '200': [description: 'Alive', content: ['application/json': [schema: [type: 'object'], examples: [UP: [value: [status: 'UP']]]]]],
+                    '503': [description: 'Not alive']
+                ]
+            ]
+        ]
+
+        json.paths['/actuator/health/readiness'] = [
+            get: [
+                tags       : ['인프라'],
+                summary    : 'K8s Readiness Probe',
+                description: 'Kubernetes readiness probe. 포트 9090. 실패 시 트래픽 차단.',
+                operationId: 'actuator-health-readiness',
+                responses  : [
+                    '200': [description: 'Ready',    content: ['application/json': [schema: [type: 'object'], examples: [UP: [value: [status: 'UP', components: [db: [status: 'UP'], redis: [status: 'UP']]]]]]]],
+                    '503': [description: 'Not ready']
+                ]
+            ]
+        ]
+
+        json.paths['/actuator/prometheus'] = [
+            get: [
+                tags       : ['인프라'],
+                summary    : 'Prometheus 메트릭',
+                description: 'Prometheus 스크레이핑용 메트릭 엔드포인트. 포트 9090. 내부 네트워크 전용.',
+                operationId: 'actuator-prometheus',
+                responses  : [
+                    '200': [description: 'Prometheus text format', content: ['text/plain': [schema: [type: 'string']]]]
+                ]
+            ]
+        ]
+
+        // ── 6. x-sample-data 주입 ──────────────────────────────────────────────
+        json['x-sample-data'] = [
+            member : [email: 'artisan@example.com', name: '김도공'],
+            product: [title: '청자 상감 다완', price: 85000, category: 'POTTERY'],
+            chatbot: [message: '어머니 생신 선물 추천해줘', sessionKey: 'sess-abc123']
+        ]
+
+        // ── 6-1. 엔드포인트별 필요 권한 description 배지 주입 ─────────────────
+        // MemberRole: USER < ARTISAN(USER+ARTISAN) < ADMIN(USER+ADMIN)
+        // PUBLIC: 인증 불필요 (PermitAllPaths 또는 SecurityConfig permitAll)
+        def roleLabels = [
+            PUBLIC : '🔓 **인증 불필요**',
+            USER   : '🔑 **USER** 이상',
+            ARTISAN: '🛠 **ARTISAN** (판매자)',
+            ADMIN  : '🔐 **ADMIN** (관리자)',
+        ]
+        // operationId prefix/exact → role
+        def roleByOperationId = [
+            // 로컬 전용
+            'dev-token'                 : 'PUBLIC',
+            // 공개 (인증 불필요)
+            'healthz-ping'              : 'PUBLIC',
+            'actuator-health-liveness'  : 'PUBLIC',
+            'actuator-health-readiness' : 'PUBLIC',
+            'actuator-prometheus'       : 'PUBLIC',
+            'product-list'              : 'PUBLIC',
+            'product-detail'            : 'PUBLIC',
+            'category-list'             : 'PUBLIC',
+            'category-main-list'        : 'PUBLIC',
+            'subcategory-list'          : 'PUBLIC',
+            'material-list'             : 'PUBLIC',
+            'product-qna-list'          : 'PUBLIC',
+            'product-review-list'       : 'PUBLIC',
+            // chatbot — PermitAllPaths: /api/chatbot/**
+            'chatbot-session-create'    : 'PUBLIC',
+            'chatbot-session-end'       : 'PUBLIC',
+            'chatbot-message-send'      : 'PUBLIC',
+            'chatbot-message-list'      : 'PUBLIC',
+            // USER 권한
+            'member-wish-list'          : 'USER',
+            'member-subscribe'          : 'USER',
+            'member-unsubscribe'        : 'USER',
+            'member-subscriptions'      : 'USER',
+            'member-notifications'      : 'USER',
+            'product-wish'              : 'USER',
+            'product-unwish'            : 'USER',
+            'product-qna-ask'           : 'USER',
+            'product-review-write'      : 'USER',
+            // 알림 — USER
+            'notification-stream-200'      : 'USER',
+            'notification-create-200'      : 'USER',
+            'notification-list-200'        : 'USER',
+            'notification-unread-count-200': 'USER',
+            'notification-read-all-200'    : 'USER',
+            'notification-get-one-'        : 'USER',
+            'notification-read-'           : 'USER',
+            'notification-delete-'         : 'USER',
+            // ARTISAN 권한
+            'product-create'            : 'ARTISAN',
+            'product-my-list'           : 'ARTISAN',
+            'product-update'            : 'ARTISAN',
+            'product-change-status'     : 'ARTISAN',
+            'product-delete'            : 'ARTISAN',
+            'product-qna-answer'        : 'ARTISAN',
+            'content-get'               : 'ARTISAN',
+            'content-version-history'   : 'ARTISAN',
+            'content-bulk-update'       : 'ARTISAN',
+            'content-block-update'      : 'ARTISAN',
+            'content-approve'           : 'ARTISAN',
+            'content-reject'            : 'ARTISAN',
+            'content-submit'            : 'ARTISAN',
+            'content-publish'           : 'ARTISAN',
+            'generation-request'        : 'ARTISAN',
+            'generation-poll-'          : 'ARTISAN',
+            'interview-find'            : 'ARTISAN',
+            'interview-create'          : 'ARTISAN',
+            'interview-update'          : 'ARTISAN',
+        ]
+
+        def resolveRole = { String oid ->
+            // exact match first, then prefix match
+            def role = roleByOperationId[oid]
+            if (!role) {
+                role = roleByOperationId.find { k, v -> oid.startsWith(k) }?.value
+            }
+            role ?: 'USER' // authenticated() fallback
+        }
+
+        json.paths?.each { path, pathItem ->
+            ['get','post','put','patch','delete','head','options'].each { method ->
+                def op = pathItem[method]
+                if (!op) return
+                def oid = op.operationId ?: ''
+                def role = resolveRole(oid)
+                def badge = roleLabels[role] ?: roleLabels['USER']
+                def existing = op.description ?: ''
+                op.description = "${badge}\n\n${existing}".trim()
+                op['x-required-role'] = role
+                // PUBLIC: security 빈 배열로 오버라이드 → Redocly "No auth required" 표시
+                if (role == 'PUBLIC') op.security = []
+            }
+        }
+
+        // ── 7. 태그 정렬 (aA-zZ, ㄱ-ㅎ 가나다순) ──────────────────────────────
+        def allTags = [] as Set
+        json.paths?.each { path, pathItem ->
+            ['get','post','put','patch','delete','head','options'].each { method ->
+                pathItem[method]?.tags?.each { allTags << it }
+            }
+        }
+        def collator = java.text.Collator.getInstance(java.util.Locale.KOREAN)
+        collator.strength = java.text.Collator.PRIMARY
+        json.tags = allTags
+            .sort { a, b -> collator.compare(a, b) }
+            .sort { it == '인프라' ? 1 : 0 }
+            .collect { [name: it] }
+
+        def outputDir = file('api-spec')
+        outputDir.mkdirs()
+        outputFile.text = groovy.json.JsonOutput.prettyPrint(
+            groovy.json.JsonOutput.toJson(json)
+        )
+
+        println "[processOpenapi] 생성 완료: ${outputFile.absolutePath}"
+    }
+}
+
+// ── Redocly HTML 생성 ────────────────────────────────────────────────────────
+tasks.register('buildRedocly', Exec) {
+    dependsOn 'processOpenapi'
+    description = 'Generate Redocly static HTML from api-spec/openapi.json'
+
+    def specFile   = file('api-spec/openapi.json')
+    def outputHtml = file('api-spec/redoc.html')
+
+    inputs.file(specFile)
+    outputs.file(outputHtml)
+
+    commandLine 'npx', '--yes', '@redocly/cli', 'build-docs',
+        specFile.absolutePath,
+        '--output', outputHtml.absolutePath
+
+    doLast {
+        println "[buildRedocly] HTML 생성 완료: ${outputHtml.absolutePath}"
+        def staticDir = file('src/main/resources/static')
+        staticDir.mkdirs()
+        file('src/main/resources/static/redoc.html').bytes = outputHtml.bytes
+        println "[buildRedocly] static 복사 완료: src/main/resources/static/redoc.html"
+    }
+}
