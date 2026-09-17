@@ -769,7 +769,11 @@ tasks.register('buildRedocly', Exec) {
 
     commandLine 'npx', '--yes', '@redocly/cli', 'build-docs',
         specFile.absolutePath,
-        '--output', outputHtml.absolutePath
+        '--output', outputHtml.absolutePath,
+        '--theme.openapi.colors.primary.main=#3D6CD4',
+        '--theme.openapi.sidebar.activeTextColor=#3D6CD4',
+        '--theme.openapi.sidebar.activeBgColor=#EEF2FD',
+        '--theme.openapi.sidebar.groupItems.textTransform=uppercase'
 
     doLast {
         println "[buildRedocly] HTML 생성 완료: ${outputHtml.absolutePath}"
