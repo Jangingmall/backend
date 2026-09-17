@@ -233,7 +233,8 @@ class PaymentServiceTest {
         when(orders.findByOrderNumberForUpdate(order.getOrderNumber())).thenReturn(Optional.of(order));
         assertThatThrownBy(() -> service.confirm(1L,
             new PaymentService.Confirm("pay_key", order.getOrderNumber(), 1L)))
-            .isInstanceOf(BusinessRuleViolationException.class);
+            .isInstanceOf(DomainException.class)
+            .hasMessageContaining(ErrorCode.PAYMENT_AMOUNT_MISMATCH.defaultMessage());
         verify(paymentGateway, never()).confirm(any(), any(), any(Long.class));
     }
 

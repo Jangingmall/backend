@@ -17,6 +17,6 @@ public sealed interface ReactNode permits ReactNode.ElementNode, ReactNode.TextN
     record TextNode(
         String id,
         String value,
-        List<String> marks
+        List<Map<String, Object>> marks
     ) implements ReactNode {}
 }

@@ -170,19 +170,39 @@ class ProductControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("상품 전체 목록 조회 — ON_SALE 상품을 소비자가 조회한다")
+    @DisplayName("상품 전체 목록 조회 — 필터와 함께 ON_SALE 상품을 조회한다")
     void list() throws Exception {
         Page<ProductResponse> page = new PageImpl<>(List.of(SAMPLE));
-        when(productService.findOnSale(any())).thenReturn(page);
+        when(productService.findOnSale(any(), any())).thenReturn(page);
 
-        mockMvc.perform(get("/api/products"))
+        mockMvc.perform(get("/api/products")
+                .param("keyword", "청자")
+                .param("categoryId", "1")
+                .param("sort", "NEWEST")
+                .param("page", "0")
+                .param("size", "20"))
             .andExpect(status().isOk())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "product-list",
                 resource(ResourceSnippetParameters.builder()
                     .tag("상품")
                     .summary("상품 목록")
-                    .description("판매 중(ON_SALE)인 상품 목록을 페이징으로 조회합니다.")
+                    .description("판매 중 상품 목록을 필터와 함께 조회합니다.\n"
+                        + "- sort: NEWEST(기본) | PRICE_ASC | PRICE_DESC | POPULAR\n"
+                        + "- excludeSoldOut=true 이면 ON_SALE만 반환 (기본: ON_SALE+SOLD_OUT 포함)")
+                    .queryParameters(
+                        parameterWithName("keyword").description("상품명 검색어 (선택)").optional(),
+                        parameterWithName("categoryId").description("카테고리 ID (선택)").optional(),
+                        parameterWithName("subcategoryId").description("서브카테고리 ID (선택)").optional(),
+                        parameterWithName("giftTheme").description("선물 테마 (선택)").optional(),
+                        parameterWithName("sort").description("정렬: NEWEST | PRICE_ASC | PRICE_DESC | POPULAR").optional(),
+                        parameterWithName("minPrice").description("최소 가격 (선택)").optional(),
+                        parameterWithName("maxPrice").description("최대 가격 (선택)").optional(),
+                        parameterWithName("excludeSoldOut").description("품절 제외 여부 (기본: false)").optional(),
+                        parameterWithName("artisanId").description("특정 장인의 상품만 조회 (선택)").optional(),
+                        parameterWithName("page").description("페이지 번호 (0부터, 기본: 0)").optional(),
+                        parameterWithName("size").description("페이지 크기 (기본: 20)").optional()
+                    )
                     .responseFields(successEnvelopeFields(PRODUCT_FIELDS))
                     .build()
                 )

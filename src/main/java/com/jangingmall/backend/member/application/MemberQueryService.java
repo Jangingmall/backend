@@ -2,9 +2,12 @@ package com.jangingmall.backend.member.application;
 
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
+import com.jangingmall.backend.member.domain.MemberActivityRepository;
 import com.jangingmall.backend.member.domain.MemberRole;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,17 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberQueryService {
     private final MemberAccess access;
     private final MemberReadRepository reads;
+    private final MemberActivityRepository activities;
 
     @Transactional(readOnly = true)
-    public CursorPage<Map<String, Object>> wishes(Long memberId, PageRequest page) {
+    public Page<Map<String, Object>> wishes(Long memberId, Pageable pageable) {
         access.requireRole(memberId, MemberRole.USER);
-        return reads.wishes(memberId, page);
+        return reads.wishes(memberId, pageable);
     }
 
     @Transactional(readOnly = true)
-    public CursorPage<Map<String, Object>> orders(Long memberId, PageRequest page, String status) {
+    public Page<Map<String, Object>> orders(Long memberId, Pageable pageable, String status) {
         access.requireRole(memberId, MemberRole.USER);
-        return reads.orders(memberId, page, status);
+        return reads.orders(memberId, pageable, status);
     }
 
     @Transactional(readOnly = true)
@@ -32,8 +36,14 @@ public class MemberQueryService {
     }
 
     @Transactional(readOnly = true)
-    public CursorPage<Map<String, Object>> reviews(Long memberId, PageRequest page, boolean writable) {
+    public Page<Map<String, Object>> reviews(Long memberId, Pageable pageable, boolean writable) {
         access.requireRole(memberId, MemberRole.USER);
-        return reads.reviews(memberId, page, writable);
+        return reads.reviews(memberId, pageable, writable);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isWished(Long memberId, Long productId) {
+        access.requireRole(memberId, MemberRole.USER);
+        return activities.isWished(memberId, productId);
     }
 }

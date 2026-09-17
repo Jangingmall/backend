@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -74,9 +75,22 @@ public class ProductController {
 
     @GetMapping
     public ApiResponse<Page<ProductResponse>> list(
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) Long categoryId,
+        @RequestParam(required = false) Long subcategoryId,
+        @RequestParam(required = false) String giftTheme,
+        @RequestParam(required = false) String sort,
+        @RequestParam(required = false) Integer minPrice,
+        @RequestParam(required = false) Integer maxPrice,
+        @RequestParam(required = false) Boolean excludeSoldOut,
+        @RequestParam(required = false) Long artisanId,
         @PageableDefault(size = 20) Pageable pageable
     ) {
-        return ApiResponse.ok(productService.findOnSale(pageable));
+        ProductCommand.Search search = new ProductCommand.Search(
+            keyword, categoryId, subcategoryId, giftTheme, sort,
+            minPrice, maxPrice, excludeSoldOut, artisanId
+        );
+        return ApiResponse.ok(productService.findOnSale(search, pageable));
     }
 
     @GetMapping("/{productId}")

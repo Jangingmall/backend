@@ -102,7 +102,7 @@ public class PaymentService {
             throw new DomainException(ErrorCode.NOT_FOUND);
         }
         if (order.getTotalAmount() != command.amount()) {
-            throw new BusinessRuleViolationException("요청 금액이 주문 금액과 일치하지 않습니다.");
+            throw new DomainException(ErrorCode.PAYMENT_AMOUNT_MISMATCH);
         }
         Payment payment = payments.findByOrderIdForUpdate(order.getId())
             .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));

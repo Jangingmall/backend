@@ -127,14 +127,15 @@ class ProductServiceTest {
     }
 
     @Test
-    @DisplayName("판매 중 상품 목록을 페이징으로 조회할 수 있다")
+    @DisplayName("판매 중 상품 목록을 필터와 함께 페이징으로 조회할 수 있다")
     void findOnSale() {
         Product product = Product.create(1L, null, null, "제목", "설명", 1000, 5, null);
         ReflectionTestUtils.setField(product, "status", ProductStatus.ON_SALE);
         Page<Product> page = new PageImpl<>(List.of(product));
-        when(productRepository.findByStatus(eq(ProductStatus.ON_SALE), any())).thenReturn(page);
+        when(productRepository.findOnSale(any(), any())).thenReturn(page);
 
-        Page<ProductResponse> result = productService.findOnSale(PageRequest.of(0, 20));
+        ProductCommand.Search search = new ProductCommand.Search(null, null, null, null, null, null, null, null, null);
+        Page<ProductResponse> result = productService.findOnSale(search, PageRequest.of(0, 20));
 
         assertThat(result.getTotalElements()).isEqualTo(1);
         assertThat(result.getContent().get(0).status()).isEqualTo("ON_SALE");

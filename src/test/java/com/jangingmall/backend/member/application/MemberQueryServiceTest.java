@@ -23,9 +23,11 @@ class MemberQueryServiceTest {
     @Mock private MemberReadRepository reads;
     private MemberQueryService service;
 
+    @Mock private com.jangingmall.backend.member.domain.MemberActivityRepository activities;
+
     @BeforeEach
     void setUp() {
-        service = new MemberQueryService(access, reads);
+        service = new MemberQueryService(access, reads, activities);
     }
 
     @Test

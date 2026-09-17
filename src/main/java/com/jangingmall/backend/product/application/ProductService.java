@@ -61,8 +61,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductResponse> findOnSale(Pageable pageable) {
-        return productRepository.findByStatus(ProductStatus.ON_SALE, pageable).map(ProductResponse::from);
+    public Page<ProductResponse> findOnSale(ProductCommand.Search search, Pageable pageable) {
+        return productRepository.findOnSale(search, pageable).map(ProductResponse::from);
     }
 
     @Transactional(readOnly = true)

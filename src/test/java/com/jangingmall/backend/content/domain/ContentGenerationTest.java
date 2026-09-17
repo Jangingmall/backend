@@ -27,7 +27,7 @@ class ContentGenerationTest {
     void complete() {
         ContentGeneration generation = ContentGeneration.create(1L, "img1", "상품명", "과정", "관리");
 
-        generation.complete(REACT_DOCUMENT_JSON);
+        generation.complete(REACT_DOCUMENT_JSON, "idem-key");
 
         assertThat(generation.getStatus()).isEqualTo(GenerationStatus.COMPLETED);
         assertThat(generation.getReactDocument()).isEqualTo(REACT_DOCUMENT_JSON);

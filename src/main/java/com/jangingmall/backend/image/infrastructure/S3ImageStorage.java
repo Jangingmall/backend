@@ -6,6 +6,7 @@ import com.jangingmall.backend.image.domain.ImagePurpose;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
@@ -57,6 +58,23 @@ public class S3ImageStorage implements ImageStorage {
             s3.deleteObject(request -> request.bucket(bucket(purpose)).key(objectKey));
         } catch (S3Exception exception) {
             throw new IllegalStateException("S3 이미지를 삭제할 수 없습니다.", exception);
+        }
+    }
+
+    @Override
+    public void put(ImagePurpose purpose, String objectKey, String contentType, byte[] data) {
+        try {
+            s3.putObject(
+                PutObjectRequest.builder()
+                    .bucket(bucket(purpose))
+                    .key(objectKey)
+                    .contentType(contentType)
+                    .contentLength((long) data.length)
+                    .build(),
+                RequestBody.fromBytes(data)
+            );
+        } catch (S3Exception exception) {
+            throw new IllegalStateException("S3 이미지 업로드에 실패했습니다.", exception);
         }
     }
 
