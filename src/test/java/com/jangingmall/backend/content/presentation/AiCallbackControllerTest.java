@@ -198,10 +198,10 @@ class AiCallbackControllerTest extends RestDocsControllerTest {
     );
 
     private static final org.springframework.restdocs.payload.FieldDescriptor[] ACK_FIELDS = {
-        fieldWithPath("data.generationId").type(JsonFieldType.STRING).description("생성 요청 ID"),
-        fieldWithPath("data.productId").type(JsonFieldType.STRING).description("상품 ID"),
+        fieldWithPath("data.generation_id").type(JsonFieldType.STRING).description("생성 요청 ID"),
+        fieldWithPath("data.product_id").type(JsonFieldType.STRING).description("상품 ID"),
         fieldWithPath("data.status").type(JsonFieldType.STRING).description("처리 결과 (SAVED | ALREADY_SAVED)"),
-        fieldWithPath("data.savedAt").type(JsonFieldType.STRING).optional().description("저장 완료 시각"),
+        fieldWithPath("data.saved_at").type(JsonFieldType.STRING).optional().description("저장 완료 시각"),
     };
 
     @Test
