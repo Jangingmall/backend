@@ -2,6 +2,8 @@
 
 백엔드를 로컬에서 실행하고 AI 서버와 연동하는 방법을 설명합니다.
 
+---
+
 ## 1. 백엔드 실행
 
 ### 사전 조건
@@ -9,64 +11,248 @@
 | 항목 | 버전 |
 |------|------|
 | Java | 25 |
-| Redis | 7.x (로컬 실행 또는 Docker) |
-
-Redis가 없으면 이메일 인증·토큰 저장이 동작하지 않습니다.
+| PostgreSQL | 18+ (Docker로 간단히 실행 가능) |
+| Redis | 8+ (Docker로 간단히 실행 가능) |
 
 ```bash
-# Redis Docker로 실행
-docker run -d -p 6379:6379 redis:7
+# PostgreSQL + Redis Docker 실행
+docker run -d -p 5432:5432 -e POSTGRES_DB=jangingmall -e POSTGRES_USER=dev -e POSTGRES_PASSWORD=dev postgres:18
+docker run -d -p 6379:6379 redis:8
 ```
+
+### `.env` 파일 설정
+
+프로젝트 루트에 `.env` 파일을 생성합니다.
+
+```dotenv
+# AI 서버 URL (AI팀 서버 주소로 변경)
+AI_SGLANG_URL=http://localhost:8001
+AI_OLLAMA_URL=http://localhost:8002
+
+# DB
+DB_URL=jdbc:postgresql://localhost:5432/jangingmall
+DB_USERNAME=dev
+DB_PASSWORD=dev
+
+# 기타 (local 프로파일 기본값이 있어 생략 가능)
+```
+
+- `AI_SGLANG_URL`: 챗봇 추천 서버 (`POST /ai/chat`)
+- `AI_OLLAMA_URL`: 콘텐츠 생성·상품 동기화 서버 (`POST /ai/products`, sync, PUT, DELETE)
 
 ### 실행
 
 ```bash
-./gradlew bootRun --args='--spring.profiles.active=local-h2'
+./gradlew bootRun --args='--spring.profiles.active=local'
 ```
 
-- 포트: `8080`
-- DB: H2 인메모리 (PostgreSQL 모드)
-- H2 콘솔: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:jangingmall`)
-
----
-
-## 2. AI 서버 URL 설정
-
-백엔드는 기능별로 **두 개의 AI 서버 URL**을 분리해서 사용합니다.
-
-| 환경변수 | 용도 | 기본값 |
-|----------|------|--------|
-| `AI_SGLANG_URL` | 챗봇 추천 (`POST /ai/chat`) | `http://localhost:8001` |
-| `AI_OLLAMA_URL` | 콘텐츠 생성·상품 동기화 (`POST /ai/products`, `/ai/products/sync`, `PUT`, `DELETE`) | `http://localhost:8002` |
-
-로컬 실행 시 포트가 다르다면 오버라이드합니다.
+포트: `8080`. H2 인메모리 환경을 원하면 `local` 프로파일(H2)로 실행하면 `.env` 없이도 됩니다.
 
 ```bash
-./gradlew bootRun --args='--spring.profiles.active=local-h2 --ai.sglang-url=http://localhost:YOUR_SGLANG_PORT --ai.ollama-url=http://localhost:YOUR_OLLAMA_PORT'
+./gradlew bootRun --args='--spring.profiles.active=local'
 ```
 
-두 서버가 같은 호스트라면 동일한 URL을 지정해도 됩니다.
+---
+
+## 2. Dev 토큰 발급 (로컬 전용)
+
+AI 팀은 회원가입·아티산 승인 플로우 없이 ARTISAN 토큰을 발급받을 수 있습니다.
+이 엔드포인트는 **`local` / `local-postgresql` 프로파일에서만 활성화**됩니다.
+
+### 2-1. `POST /dev/setup` — 테스트 아티산 + 상품 자동 생성
+
+처음 한 번 실행하면 DB에 개발용 아티산과 상품을 생성하고 artisanId, productId, 7일짜리 ARTISAN 토큰을 반환합니다.
+이미 존재하면 기존 데이터를 재사용합니다 (멱등 실행).
+
+```bash
+curl -s -X POST http://localhost:8080/dev/setup | jq .
+```
+
+**Response 예시**
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "artisanId": 1,
+    "productId": 1,
+    "accessToken": "eyJhbGci..."
+  }
+}
+```
+
+- `artisanId`: 이 값이 이후 generation 요청의 소유권 기준이 됩니다.
+- `productId`: `POST /api/content/products/{productId}/generations` 에서 사용합니다.
+- `accessToken`: 7일 유효. `Authorization: Bearer <token>` 헤더에 사용합니다.
+
+### 2-2. `POST /dev/token` — 역할별 토큰 발급 (memberId 지정)
+
+memberId를 직접 알고 있을 때 사용합니다.
+
+```bash
+# ARTISAN 토큰 (memberId 직접 지정)
+curl -s -X POST "http://localhost:8080/dev/token?role=ARTISAN&memberId=1" | jq .
+
+# ADMIN 토큰
+curl -s -X POST "http://localhost:8080/dev/token?role=ADMIN&memberId=1" | jq .
+
+# USER 토큰 (기본값)
+curl -s -X POST "http://localhost:8080/dev/token?role=USER&memberId=1" | jq .
+```
+
+**Response 예시**
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "accessToken": "eyJhbGci...",
+    "role": "ARTISAN",
+    "memberId": 1
+  }
+}
+```
+
+> `/dev/setup` 이 반환한 `artisanId`를 `memberId`로 사용하면 product 소유권 체크를 통과합니다.
 
 ---
 
-## 3. 백엔드 챗봇 API와의 접점
+## 3. BE → AI → BE 전체 흐름 (콘텐츠 생성)
 
-세션 관리·대화 이력은 백엔드 담당입니다. AI 서버는 `/ai/chat` 하나만 구현하면 됩니다.
+```
+장인 (ARTISAN JWT)
+  │
+  └─► POST /api/content/products/{productId}/generations
+        백엔드: ContentGeneration 저장 (status=PROCESSING), 202 반환
+        백엔드: @Async로 POST /ai/products 호출 ──────────────────────────► AI 서버
+                                                                              │  생성 완료 후
+                                                                              ▼
+        백엔드: POST /internal/generations/{generationId}/complete ◄──────── AI 서버
+        백엔드: ContentGeneration.complete(), ContentBlock 저장
+```
 
-| 메서드 | 경로 | AI 연동 |
-|--------|------|---------|
-| POST | /api/chatbot/sessions | — |
-| POST | /api/chatbot/sessions/{sessionId}/messages | **내부에서 /ai/chat 호출** |
-| GET | /api/chatbot/sessions/{sessionId}/messages | — |
-| DELETE | /api/chatbot/sessions/{sessionId} | — |
+### 3-1. Step 1 — 생성 요청
+
+```bash
+# 먼저 /dev/setup 으로 받은 값 사용
+ARTISAN_TOKEN="eyJhbGci..."
+PRODUCT_ID=1
+
+curl -s -X POST "http://localhost:8080/api/content/products/${PRODUCT_ID}/generations" \
+  -H "Authorization: Bearer ${ARTISAN_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "images": ["https://cdn.example.com/img1.jpg", "https://cdn.example.com/img2.jpg"],
+    "productName": "청자 다완",
+    "howMade": "전통 물레 성형 후 1280도 환원소성",
+    "careTips": "중성세제로 손세척, 자연건조"
+  }' | jq .
+```
+
+**Response (202 Accepted)**
+
+```json
+{
+  "success": true,
+  "status": 202,
+  "data": {
+    "generationId": 1,
+    "productId": 1,
+    "status": "PROCESSING",
+    "requestedAt": "2026-09-16T10:00:00",
+    "completedAt": null
+  }
+}
+```
+
+이후 백엔드는 비동기로 AI 서버에 `POST /ai/products`를 호출합니다. (`generationId` 기록)
+
+### 3-2. Step 2 — AI 서버가 받는 요청 (`POST /ai/products`)
+
+백엔드가 AI 서버로 전송하는 요청 형식입니다.
+
+```json
+{
+  "generationId": 1,
+  "productId": 1,
+  "images": [
+    "https://cdn.example.com/img1.jpg",
+    "https://cdn.example.com/img2.jpg"
+  ],
+  "productName": "청자 다완",
+  "howMade": "전통 물레 성형 후 1280도 환원소성",
+  "careTips": "중성세제로 손세척, 자연건조"
+}
+```
+
+**Response**: 형식 자유 (백엔드에서 사용하지 않음). 2xx / 4xx / 5xx 어느 쪽이든 콜백 방식으로 결과를 전달합니다.
+
+### 3-3. Step 3 — AI 서버가 결과를 콜백 (`POST /internal/generations/{generationId}/complete`)
+
+생성 완료 후 AI 서버 → 백엔드로 호출합니다.  
+**인증 불필요** — `/internal/**` 경로는 퍼블릭입니다.
+
+```bash
+GENERATION_ID=1
+
+curl -s -X POST "http://localhost:8080/internal/generations/${GENERATION_ID}/complete" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reactDocument": {
+      "schemaVersion": "2.0",
+      "canvasWidth": 774,
+      "root": [
+        {
+          "tag": "section",
+          "props": {},
+          "children": [
+            { "tag": "h2", "props": {}, "children": [{ "tag": "text", "props": { "value": "청자 다완의 이야기" }, "children": [] }] },
+            { "tag": "p",  "props": {}, "children": [{ "tag": "text", "props": { "value": "60년 경력 도예 장인이 빚은 작품입니다." }, "children": [] }] }
+          ]
+        }
+      ]
+    }
+  }' | jq .
+```
+
+**reactDocument 필드 형식**: AI Pydantic 모델(`ReactDetailPageDocumentDto`)이 검증한 AST 객체입니다. 백엔드는 이 JSON을 그대로 저장·서빙합니다.
+
+**Response (200 OK)**
+
+```json
+{
+  "success": true,
+  "status": 200,
+  "data": {
+    "generationId": 1,
+    "productId": 1,
+    "status": "COMPLETED",
+    "requestedAt": "2026-09-16T10:00:00",
+    "completedAt": "2026-09-16T10:01:30"
+  }
+}
+```
+
+### 3-4. Step 4 — 상태 폴링 (선택)
+
+AI 서버가 콜백 전까지 상태를 확인하려면:
+
+```bash
+curl -s "http://localhost:8080/api/content/products/${PRODUCT_ID}/generations/${GENERATION_ID}" \
+  -H "Authorization: Bearer ${ARTISAN_TOKEN}" | jq .data.status
+```
+
+- `PROCESSING`: 아직 생성 중
+- `COMPLETED`: 완료
+- `FAILED`: AI 서버 오류 또는 타임아웃
 
 ---
 
-## 4. AI 서버가 구현해야 할 API
+## 4. AI 서버가 구현해야 할 API 전체 목록
 
 ### 4-1. 챗봇: `POST /ai/chat`
-
-백엔드가 내부적으로 호출합니다. AI 서버가 이 엔드포인트를 제공해야 합니다.
 
 **Request**
 
@@ -81,8 +267,6 @@ docker run -d -p 6379:6379 redis:7
 }
 ```
 
-- `history`: 최근 6턴 이내 대화 이력 (오래된 순)
-
 **Response**
 
 ```json
@@ -90,174 +274,84 @@ docker run -d -p 6379:6379 redis:7
   "reply": "어머니께 도자기 찻잔 세트를 추천드립니다.",
   "intent": "GIFT_RECOMMENDATION",
   "product_ids": [1, 2, 5],
-  "suggestions": [
-    "3만원 이하로 보여줘",
-    "목칠공예 작품도 있어?"
-  ]
+  "suggestions": ["3만원 이하로 보여줘", "목칠공예 작품도 있어?"]
 }
 ```
 
-- `intent`: 자유 문자열 (예: `GIFT_RECOMMENDATION`, `PRODUCT_SEARCH`)
-- `product_ids`: 백엔드 DB에 존재하는 상품 ID 배열. 없는 ID는 자동으로 제외됩니다.
-- `suggestions`: 후속 질문 제안, 최대 3개
-- 응답 실패·타임아웃 시 백엔드가 최대 2회 재시도 후 fallback 메시지를 반환합니다.
+- 응답 실패·타임아웃 시 백엔드가 최대 2회 재시도 후 fallback 반환
+- `product_ids`: 백엔드 DB에 없는 ID는 자동 제외
 
----
+### 4-2. 콘텐츠 생성: `POST /ai/products`
 
-### 4-2. 콘텐츠 생성 요청: `POST /ai/products`
-
-장인이 콘텐츠 생성을 요청할 때 백엔드가 호출합니다.
-
-**Request**
-
-```json
-{
-  "generationId": 42,
-  "productId": 7,
-  "images": [
-    "https://cdn.example.com/img1.jpg",
-    "https://cdn.example.com/img2.jpg"
-  ],
-  "productName": "청자 다완",
-  "howMade": "전통 물레 성형 후 1280도 환원소성",
-  "careTips": "중성세제로 손세척, 자연건조"
-}
-```
-
-**Response**: 형식 자유 (백엔드에서 사용하지 않음)
-
-생성이 완료되면 아래 콜백으로 결과를 전송합니다 (4-5 참조).
-
----
+→ 3-2 참조
 
 ### 4-3. 상품 동기화: `POST /ai/products/sync`
 
-상품이 게시(`ON_SALE`)될 때 백엔드가 자동으로 호출합니다.
-
-**Request**
+상품이 `ON_SALE` 상태로 변경될 때 자동 호출됩니다.
 
 ```json
 {
   "artisan": {
-    "artisan_id": 10,
-    "business_name": "김도예공방",
-    "certification_level": "명장",
-    "region": "경기도 이천시"
+    "artisan_id": 1,
+    "name": "Dev 공방",
+    "certification_level": "일반",
+    "introduction": "개발 테스트용 공방"
   },
   "product": {
-    "product_id": 7,
-    "name": "청자 다완",
-    "category_code": "도자공예",
-    "subcategory_code": "다기",
-    "material": "청자토",
+    "product_id": 1,
+    "title": "[DEV] 청자 다완 테스트 상품",
+    "category": null,
+    "material": null,
     "price": 85000,
-    "color": "WHITE",
-    "gift_theme": ["PARENTS", "WEDDING"],
-    "purpose_tags": ["다도", "선물"],
-    "making_story": "전통 물레 성형 후 1280도 환원소성",
-    "usage_care": "중성세제로 손세척, 자연건조",
-    "production_period_days": 14,
-    "status": "ON_SALE"
+    "gift_theme": [],
+    "purpose_tags": [],
+    "making_story": null,
+    "usage_care": null,
+    "production_period_days": null,
+    "color": []
   }
 }
 ```
 
-**Response**: 2xx면 성공으로 처리 (body 무시)
-
----
+**Response**: 2xx면 성공. 실패 시 오류 로그만 기록 (상품 게시는 계속 진행됨)
 
 ### 4-4. 상품 수정 동기화: `PUT /ai/products/{productId}`
 
-상품 정보가 수정될 때 백엔드가 자동으로 호출합니다.
-
-**Request**
-
-```json
-{
-  "product": {
-    "name": "청자 다완 (개정판)",
-    "category_code": "도자공예",
-    "material": "청자토",
-    "price": 90000,
-    "color": "WHITE",
-    "gift_theme": ["PARENTS"],
-    "purpose_tags": ["다도"],
-    "making_story": "전통 물레 성형",
-    "usage_care": "손세척 권장",
-    "production_period_days": 21
-  }
-}
-```
-
-**Response**: 2xx면 성공으로 처리
-
----
+**Request**: 4-3의 `product` 객체와 동일한 구조  
+**Response**: 2xx면 성공
 
 ### 4-5. 상품 삭제 동기화: `DELETE /ai/products/{productId}`
 
-상품이 삭제될 때 백엔드가 자동으로 호출합니다.
-
-- Request body 없음
-- Response: 2xx면 성공으로 처리
+Request body 없음. Response: 2xx면 성공
 
 ---
 
-## 4. 백엔드가 제공하는 콜백 API
-
-### `POST /internal/generations/{generationId}/complete`
-
-AI 콘텐츠 생성이 완료됐을 때 AI 서버 → 백엔드로 호출합니다.
-인증 불필요 (내부 전용 엔드포인트).
-
-**Request**
-
-```json
-{
-  "blocks": "[{\"tag\":\"h2\",\"text\":\"작품 소개\"},{\"tag\":\"p\",\"text\":\"60년 경력...\"}]"
-}
-```
-
-- `blocks`: JSON 문자열 (배열을 stringify한 값)
-- 각 블록 형식: `{ "tag": "h2"|"p"|"img"|"video", "text": "...", "imageUrl": "...", "videoUrl": "..." }`
-
-**Response**
-
-```json
-{
-  "success": true,
-  "status": 200,
-  "data": {
-    "generationId": 42,
-    "productId": 7,
-    "status": "COMPLETED"
-  }
-}
-```
-
----
-
-## 5. 빠른 동작 확인
-
-서버 실행 후 아래 순서로 연동을 확인할 수 있습니다.
+## 5. 전체 흐름 빠른 검증
 
 ```bash
-# 1. 세션 생성 (토큰 없이도 동작)
-curl -s -X POST http://localhost:8080/api/chatbot/sessions \
-  -H "Authorization: Bearer <JWT>" | jq .
+# 1. 서버 실행 확인
+curl -s http://localhost:8080/healthz | jq .
 
-# 2. 메시지 전송 — AI 서버가 실행 중이면 실제 추천, 없으면 fallback
-curl -s -X POST http://localhost:8080/api/chatbot/sessions/{sessionId}/messages \
-  -H "Authorization: Bearer <JWT>" \
-  -H "Content-Type: application/json" \
-  -d '{"content": "엄마 환갑 선물 추천해줘"}' | jq .
+# 2. Dev 아티산 + 상품 생성 및 토큰 발급 (결과에서 artisanId, productId, accessToken 기록)
+curl -s -X POST http://localhost:8080/dev/setup | jq .
 
-# 3. 콘텐츠 생성 콜백 테스트
-curl -s -X POST http://localhost:8080/internal/generations/1/complete \
+# 3. 콘텐츠 생성 요청 (ARTISAN_TOKEN과 PRODUCT_ID는 위 결과 사용)
+curl -s -X POST "http://localhost:8080/api/content/products/1/generations" \
+  -H "Authorization: Bearer <ARTISAN_TOKEN>" \
   -H "Content-Type: application/json" \
-  -d '{"blocks": "[{\"tag\":\"h2\",\"text\":\"작품 소개\"},{\"tag\":\"p\",\"text\":\"장인의 이야기\"}]"}' | jq .
+  -d '{"images":[],"productName":"청자 다완","howMade":"전통 물레 성형","careTips":"손세척"}' | jq .
+
+# 4. AI 서버 없이 콜백 직접 호출로 흐름 검증 (GENERATION_ID는 위 결과 사용)
+curl -s -X POST "http://localhost:8080/internal/generations/1/complete" \
+  -H "Content-Type: application/json" \
+  -d '{"reactDocument":{"schemaVersion":"2.0","canvasWidth":774,"root":[]}}' | jq .
+
+# 5. 상태 확인 → COMPLETED여야 정상
+curl -s "http://localhost:8080/api/content/products/1/generations/1" \
+  -H "Authorization: Bearer <ARTISAN_TOKEN>" | jq .data.status
 ```
 
-JWT 발급은 `POST /api/member/signup` → `POST /api/member/login` 순서로 진행합니다.
+> Step 3과 4 사이에 실제 AI 서버가 `/ai/products`를 받아서 콜백을 보내면, Step 4의 수동 콜백 없이도 자동으로 COMPLETED가 됩니다.
 
 ---
 
@@ -266,6 +360,7 @@ JWT 발급은 `POST /api/member/signup` → `POST /api/member/login` 순서로 �
 | 상황 | 백엔드 동작 |
 |------|------------|
 | AI `/ai/chat` 연결 실패 | 최대 2회 재시도 후 `"현재 AI 추천을 이용할 수 없습니다"` 반환 |
+| AI `/ai/products` 실패/타임아웃 | generation status → `FAILED`, 오류 로그 기록 |
 | AI `/ai/products/sync` 실패 | 오류 로그 기록 후 무시 (상품 게시 자체는 성공) |
-| AI `/ai/products/{id}` 실패 | 오류 로그 기록 후 무시 |
-| 타임아웃 | 기본 30초 (`ai.timeout-seconds` 설정 가능) |
+| 콜백 `/internal/...` 없이 AI 무응답 | `FAILED` — 백엔드가 다시 시도하지 않음. AI 서버가 콜백을 보내야 함 |
+| 타임아웃 | 기본 30초 (`ai.timeout-seconds` 설정) |
