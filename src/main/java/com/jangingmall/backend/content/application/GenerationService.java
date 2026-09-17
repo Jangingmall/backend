@@ -4,11 +4,8 @@ import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
-import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
-import com.jangingmall.backend.image.application.ImageStorage;
-import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductErrorMessage;
 import com.jangingmall.backend.product.domain.ProductRepository;
@@ -17,11 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Map;
-import java.util.Optional;
+import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @Service
@@ -32,7 +25,7 @@ public class GenerationService {
     private final ProductRepository productRepository;
     private final AiContentClient aiContentClient;
     private final ContentService contentService;
-    private final ImageStorage imageStorage;
+    private final ObjectMapper objectMapper;
 
     @Transactional
     public GenerationResponse request(GenerationCommand.Request command) {
@@ -54,37 +47,16 @@ public class GenerationService {
     }
 
     @Transactional
-    public BeToAiPersistAckResponse complete(
-        GenerationCommand.Complete command,
-        MultipartFile detailPageImage,
-        Map<String, MultipartFile> sectionFiles,
-        Map<String, MultipartFile> photoFiles,
-        String productIdStr
-    ) {
-        Optional<ContentGeneration> existing = generationRepository.findByIdempotencyKey(command.idempotencyKey());
-        if (existing.isPresent() && existing.get().getStatus() == GenerationStatus.COMPLETED) {
-            ContentGeneration gen = existing.get();
-            return new BeToAiPersistAckResponse(
-                gen.getId().toString(), productIdStr, "ALREADY_SAVED", gen.getCompletedAt()
-            );
-        }
-
-        ContentGeneration generation = generationRepository.findById(Long.parseLong(command.generationId()))
+    public GenerationResponse complete(GenerationCommand.Complete command) {
+        ContentGeneration generation = generationRepository.findById(command.generationId())
             .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
-
-        uploadDetailPageImage(command.generationId(), detailPageImage);
-        uploadPhotoFiles(command.generationId(), photoFiles);
-
         generation.complete(command.reactDocumentJson(), command.idempotencyKey());
         ContentGeneration saved = generationRepository.save(generation);
         contentService.storeReactDocument(
             new ContentCommand.StoreReactDocument(saved.getProductId(), command.reactDocumentJson(), null)
         );
         log.info("AI 콜백 완료 generationId={}", command.generationId());
-
-        return new BeToAiPersistAckResponse(
-            command.generationId(), productIdStr, "SAVED", saved.getCompletedAt()
-        );
+        return GenerationResponse.from(saved);
     }
 
     @Transactional(readOnly = true)
@@ -121,45 +93,6 @@ public class GenerationService {
             generationRepository.save(generation);
             log.error("AI 콘텐츠 생성 실패 generationId={} reason={}", generationId, exception.getMessage());
         }
-    }
-
-    private void uploadDetailPageImage(String generationId, MultipartFile file) {
-        try {
-            String key = "ai-generated/" + generationId + "/detail-page." + extension(file.getContentType());
-            imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
-        } catch (IOException exception) {
-            log.error("상세페이지 이미지 업로드 실패 generationId={}", generationId, exception);
-        }
-    }
-
-    private void uploadPhotoFiles(String generationId, Map<String, MultipartFile> photoFiles) {
-        for (Map.Entry<String, MultipartFile> entry : photoFiles.entrySet()) {
-            MultipartFile file = entry.getValue();
-            try {
-                String photoId = extractPhotoId(file.getOriginalFilename());
-                String key = "ai-generated/" + generationId + "/photo-" + photoId + "." + extension(file.getContentType());
-                imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
-            } catch (IOException exception) {
-                log.error("상품 사진 업로드 실패 generationId={} filename={}", generationId, file.getOriginalFilename(), exception);
-            }
-        }
-    }
-
-    private String extension(String contentType) {
-        return switch (contentType == null ? "" : contentType) {
-            case "image/jpeg" -> "jpg";
-            case "image/png" -> "png";
-            case "image/webp" -> "webp";
-            default -> "bin";
-        };
-    }
-
-    private String extractPhotoId(String filename) {
-        if (filename == null) {
-            return "unknown";
-        }
-        String[] parts = filename.replaceAll("\\.[^.]+$", "").split("-");
-        return parts[parts.length - 1];
     }
 
     private Product getProduct(Long productId) {

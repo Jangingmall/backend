@@ -1,15 +1,12 @@
 package com.jangingmall.backend.content.presentation;
 
+import jakarta.validation.constraints.NotNull;
 import tools.jackson.databind.JsonNode;
 
-public sealed interface AiCallbackRequest permits AiCallbackRequest.Persist {
+public sealed interface AiCallbackRequest permits AiCallbackRequest.Complete {
 
-    record Persist(
-        String generationId,
-        String jobId,
-        String requestId,
-        String idempotencyKey,
-        String productId,
-        JsonNode detailPageReactDocument
+    record Complete(
+        @NotNull(message = "react_document는 필수입니다")
+        JsonNode reactDocument
     ) implements AiCallbackRequest {}
 }
