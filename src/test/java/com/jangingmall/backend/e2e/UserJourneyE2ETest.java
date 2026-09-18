@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
@@ -29,7 +30,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("local")
+@ActiveProfiles("local-postgresql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = "management.server.port=-1")
 class UserJourneyE2ETest {
@@ -39,6 +40,9 @@ class UserJourneyE2ETest {
 
     @Autowired
     private JwtProperties jwtProperties;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String artisanToken;
@@ -57,6 +61,7 @@ class UserJourneyE2ETest {
 
         String email = TEST_EMAIL_PREFIX + System.currentTimeMillis() + "@test.com";
         userId = signup(email, "password123!", "홍길동", "01012345678");
+        jdbcTemplate.update("update member set status = 'ACTIVE' where member_id = ?", userId);
         userToken = jwtTokenProvider.createAccessToken(userId, MemberRole.USER);
     }
 
@@ -161,10 +166,7 @@ class UserJourneyE2ETest {
         );
         HttpResponse<String> res = post("/api/member/me/addresses", req, token);
         assertThat(res.statusCode()).isEqualTo(201);
-        // AddressController.create()는 ResponseEntity<AddressData> — ApiResponse 래퍼 없음
-        @SuppressWarnings("unchecked")
-        Map<String, Object> body = objectMapper.readValue(res.body(), Map.class);
-        return longVal(body, "addressId");
+        return longVal(data(res), "addressId");
     }
 
     private Long addCartItem(String token, Long productId) throws Exception {
@@ -253,5 +255,53 @@ class UserJourneyE2ETest {
         Map<String, Object> productData = data(res);
         assertThat(productData.get("productId").toString()).isEqualTo(productId.toString());
         assertThat(productData.get("status")).isEqualTo("ON_SALE");
+    }
+
+    @Test
+    @DisplayName("장바구니 담기 — 상품이 장바구니에 추가된다")
+    void addToCart() throws Exception {
+        Long productId = createProduct();
+
+        PaymentController.CartItemRequest req = new PaymentController.CartItemRequest(
+            productId, 2, List.of(), List.of()
+        );
+        HttpResponse<String> res = post("/api/payments/cart/items", req, userToken);
+        assertThat(res.statusCode()).isEqualTo(201);
+
+        Map<String, Object> cart = data(res);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> sections = (List<Map<String, Object>>) cart.get("sections");
+        assertThat(sections).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("주문 생성 — 장바구니 상품으로 CREATED 상태 주문이 생성된다")
+    void createOrderFromCart() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+
+        PaymentController.CreateOrderRequest req = new PaymentController.CreateOrderRequest(
+            List.of(cartItemId), addressId, "문 앞에 놓아주세요", PaymentMethod.CARD
+        );
+        HttpResponse<String> res = post("/api/payments/orders", req, userToken);
+        assertThat(res.statusCode()).as("body: " + res.body()).isEqualTo(201);
+
+        Map<String, Object> orderData = data(res);
+        assertThat(orderData.get("status")).isEqualTo("CREATED");
+        assertThat(orderData).containsKey("orderId");
+    }
+
+    @Test
+    @DisplayName("주문 생성 — 배송지 없이 요청하면 400이 반환된다")
+    void createOrderWithoutAddress() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+
+        PaymentController.CreateOrderRequest req = new PaymentController.CreateOrderRequest(
+            List.of(cartItemId), 0L, null, PaymentMethod.CARD
+        );
+        HttpResponse<String> res = post("/api/payments/orders", req, userToken);
+        assertThat(res.statusCode()).isBetween(400, 422);
     }
 }
