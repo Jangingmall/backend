@@ -21,12 +21,15 @@ import com.jangingmall.backend.product.domain.ProductStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import com.jangingmall.backend.payment.domain.OrderReturn;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -92,22 +95,41 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
     }
 
     @Override
-    public Page<Map<String, Object>> orders(Long memberId, Pageable pageable, String status) {
+    public Page<Map<String, Object>> orders(Long memberId, Pageable pageable, String status,
+            String from, String to, String artisanName) {
         String filter = orderStatus(status);
-        String filtered = "ALL".equals(filter) ? "" : " AND o.status=:status";
+        StringBuilder where = new StringBuilder("WHERE o.memberId=:memberId");
+        if (!"ALL".equals(filter)) where.append(" AND o.status=:status");
+        LocalDateTime fromDt = parseDateStart(from);
+        LocalDateTime toDt = parseDateEnd(to);
+        if (fromDt != null) where.append(" AND o.createdAt>=:from");
+        if (toDt != null) where.append(" AND o.createdAt<:to");
+        if (hasText(artisanName)) where.append(
+            " AND EXISTS (SELECT 1 FROM MemberOrderItemView i, Product p, ArtisanProfile a"
+                + " WHERE i.orderId=o.id AND p.id=i.productId AND a.id=p.artisanId"
+                + " AND a.businessName LIKE :artisanName)");
+
         var query = entityManager.createQuery(
-                "SELECT o FROM MemberOrderView o WHERE o.memberId=:memberId"
-                    + filtered + " ORDER BY o.id DESC", MemberOrderView.class)
+                "SELECT o FROM MemberOrderView o " + where + " ORDER BY o.id DESC", MemberOrderView.class)
             .setParameter("memberId", memberId)
             .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize());
         var count = entityManager.createQuery(
-                "SELECT count(o) FROM MemberOrderView o WHERE o.memberId=:memberId" + filtered, Long.class)
+                "SELECT count(o) FROM MemberOrderView o " + where, Long.class)
             .setParameter("memberId", memberId);
-        if (!"ALL".equals(filter)) {
-            query.setParameter("status", filter);
-            count.setParameter("status", filter);
-        }
-        List<Map<String, Object>> items = query.getResultList().stream().map(this::orderSummary).toList();
+        applyOrderFilters(query, filter, fromDt, toDt, artisanName);
+        applyOrderFilters(count, filter, fromDt, toDt, artisanName);
+
+        List<MemberOrderView> orderViews = query.getResultList();
+        List<Long> orderIds = orderViews.stream().map(MemberOrderView::getId).toList();
+        Map<Long, List<Map<String, Object>>> itemsByOrder = orderIds.isEmpty()
+            ? Map.of() : fetchOrderItems(orderIds);
+        Map<Long, OrderReturn> returnByOrder = orderIds.isEmpty()
+            ? Map.of() : fetchOrderReturns(orderIds);
+
+        List<Map<String, Object>> items = orderViews.stream()
+            .map(o -> orderListEntry(o, itemsByOrder.getOrDefault(o.getId(), List.of()),
+                returnByOrder.get(o.getId())))
+            .toList();
         return new PageImpl<>(items, pageable, count.getSingleResult());
     }
 
@@ -116,7 +138,36 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
         return entityManager.createQuery(
                 "SELECT o FROM MemberOrderView o WHERE o.id=:id AND o.memberId=:memberId", MemberOrderView.class)
             .setParameter("id", orderId).setParameter("memberId", memberId).getResultStream().findFirst()
-            .map(this::orderDetail);
+            .map(o -> {
+                List<Map<String, Object>> items = fetchOrderItems(List.of(o.getId()))
+                    .getOrDefault(o.getId(), List.of());
+                OrderReturn orderReturn = fetchOrderReturns(List.of(o.getId())).get(o.getId());
+                return orderDetail(o, items, orderReturn);
+            });
+    }
+
+    @Override
+    public Map<String, Object> orderSummary(Long memberId) {
+        LocalDateTime since = LocalDateTime.now().minusMonths(3);
+        List<Object[]> rows = entityManager.createQuery(
+                "SELECT o.status, count(o) FROM MemberOrderView o"
+                    + " WHERE o.memberId=:memberId AND o.createdAt>=:since GROUP BY o.status",
+                Object[].class)
+            .setParameter("memberId", memberId).setParameter("since", since).getResultList();
+        Map<String, Long> counts = rows.stream()
+            .collect(Collectors.toMap(r -> (String) r[0], r -> (Long) r[1]));
+        Map<String, Object> inProgress = new LinkedHashMap<>();
+        inProgress.put("awaitingPayment", counts.getOrDefault("CREATED", 0L));
+        inProgress.put("preparing", counts.getOrDefault("PAID", 0L));
+        inProgress.put("inDelivery", counts.getOrDefault("IN_DELIVERY", 0L));
+        inProgress.put("delivered", counts.getOrDefault("DELIVERED", 0L));
+        Map<String, Object> closedCount = new LinkedHashMap<>();
+        closedCount.put("returnOrExchange", counts.getOrDefault("RETURN_REQUESTED", 0L));
+        closedCount.put("canceled", counts.getOrDefault("CANCELED", 0L));
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("inProgress", inProgress);
+        result.put("closedCount", closedCount);
+        return result;
     }
 
     @Override
@@ -337,7 +388,7 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
         return value;
     }
 
-    private Map<String, Object> orderSummary(MemberOrderView order) {
+    private Map<String, Object> orderBase(MemberOrderView order) {
         Map<String, Object> value = new LinkedHashMap<>();
         value.put("orderId", order.getId());
         value.put("orderNumber", order.getOrderNumber());
@@ -347,20 +398,29 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
         return value;
     }
 
-    private Map<String, Object> orderDetail(MemberOrderView order) {
-        Map<String, Object> value = orderSummary(order);
-        List<Map<String, Object>> items = entityManager.createQuery(
-                "SELECT i FROM MemberOrderItemView i WHERE i.orderId=:orderId ORDER BY i.id", MemberOrderItemView.class)
-            .setParameter("orderId", order.getId()).getResultList().stream().map(item -> {
-                Map<String, Object> line = new LinkedHashMap<>();
-                line.put("orderItemId", item.getId());
-                line.put("productId", item.getProductId());
-                line.put("productName", item.getProductName());
-                line.put("price", item.getPrice());
-                line.put("quantity", item.getQuantity());
-                return line;
-            }).toList();
+    private Map<String, Object> orderListEntry(MemberOrderView order, List<Map<String, Object>> items,
+            OrderReturn orderReturn) {
+        Map<String, Object> value = orderBase(order);
         value.put("items", items);
+        if (orderReturn != null) {
+            Map<String, Object> returnInfo = new LinkedHashMap<>();
+            returnInfo.put("type", orderReturn.getType().name());
+            returnInfo.put("status", orderReturn.getStatus().name());
+            value.put("returnInfo", returnInfo);
+        }
+        return value;
+    }
+
+    private Map<String, Object> orderDetail(MemberOrderView order, List<Map<String, Object>> items,
+            OrderReturn orderReturn) {
+        Map<String, Object> value = orderBase(order);
+        value.put("items", items);
+        if (orderReturn != null) {
+            Map<String, Object> returnInfo = new LinkedHashMap<>();
+            returnInfo.put("type", orderReturn.getType().name());
+            returnInfo.put("status", orderReturn.getStatus().name());
+            value.put("returnInfo", returnInfo);
+        }
         Map<String, Object> address = new LinkedHashMap<>();
         address.put("addressId", order.getAddressId());
         address.put("recipientName", order.getRecipientName());
@@ -371,6 +431,62 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
         address.put("isDefault", false);
         value.put("address", address);
         return value;
+    }
+
+    private Map<Long, List<Map<String, Object>>> fetchOrderItems(List<Long> orderIds) {
+        List<Object[]> rows = entityManager.createQuery(
+                "SELECT i, p FROM MemberOrderItemView i, Product p"
+                    + " WHERE i.productId=p.id AND i.orderId IN :ids ORDER BY i.id",
+                Object[].class)
+            .setParameter("ids", orderIds).getResultList();
+        return rows.stream().collect(Collectors.groupingBy(
+            row -> ((MemberOrderItemView) row[0]).getOrderId(),
+            Collectors.mapping(row -> {
+                MemberOrderItemView item = (MemberOrderItemView) row[0];
+                Product product = (Product) row[1];
+                Map<String, Object> line = new LinkedHashMap<>();
+                line.put("orderItemId", item.getId());
+                line.put("productId", item.getProductId());
+                line.put("productName", item.getProductName());
+                line.put("price", item.getPrice());
+                line.put("quantity", item.getQuantity());
+                line.put("thumbnail", thumbnail(product.getThumbnailUrl()));
+                return line;
+            }, Collectors.toList())
+        ));
+    }
+
+    private Map<Long, OrderReturn> fetchOrderReturns(List<Long> orderIds) {
+        return entityManager.createQuery(
+                "SELECT r FROM OrderReturn r WHERE r.orderId IN :ids", OrderReturn.class)
+            .setParameter("ids", orderIds).getResultList().stream()
+            .collect(Collectors.toMap(OrderReturn::getOrderId, r -> r));
+    }
+
+    private void applyOrderFilters(jakarta.persistence.Query query, String status,
+            LocalDateTime from, LocalDateTime to, String artisanName) {
+        if (!"ALL".equals(status)) query.setParameter("status", status);
+        if (from != null) query.setParameter("from", from);
+        if (to != null) query.setParameter("to", to);
+        if (hasText(artisanName)) query.setParameter("artisanName", "%" + artisanName + "%");
+    }
+
+    private LocalDateTime parseDateStart(String date) {
+        if (!hasText(date)) return null;
+        try {
+            return LocalDate.parse(date).atStartOfDay();
+        } catch (Exception e) {
+            throw new DomainException(ErrorCode.INVALID_INPUT);
+        }
+    }
+
+    private LocalDateTime parseDateEnd(String date) {
+        if (!hasText(date)) return null;
+        try {
+            return LocalDate.parse(date).plusDays(1).atStartOfDay();
+        } catch (Exception e) {
+            throw new DomainException(ErrorCode.INVALID_INPUT);
+        }
     }
 
     private List<Map<String, Object>> topProducts(Long artisanId) {
@@ -430,8 +546,10 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
 
     private String orderStatus(String status) {
         String value = Optional.ofNullable(status).orElse("ALL");
-        if (!Set.of("ALL", "CREATED", "PAID", "PAYMENT_FAILED", "CANCELED", "DELIVERED", "RETURN_REQUESTED")
-            .contains(value)) throw new DomainException(ErrorCode.INVALID_INPUT);
+        if (!Set.of("ALL", "CREATED", "PAID", "PAYMENT_FAILED", "CANCELED",
+                "IN_DELIVERY", "DELIVERED", "RETURN_REQUESTED").contains(value)) {
+            throw new DomainException(ErrorCode.INVALID_INPUT);
+        }
         return value;
     }
 

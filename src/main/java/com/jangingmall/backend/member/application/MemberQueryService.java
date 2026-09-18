@@ -24,15 +24,22 @@ public class MemberQueryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Map<String, Object>> orders(Long memberId, Pageable pageable, String status) {
+    public Page<Map<String, Object>> orders(Long memberId, Pageable pageable, String status,
+            String from, String to, String artisanName) {
         access.requireRole(memberId, MemberRole.USER);
-        return reads.orders(memberId, pageable, status);
+        return reads.orders(memberId, pageable, status, from, to, artisanName);
     }
 
     @Transactional(readOnly = true)
     public Map<String, Object> order(Long memberId, Long orderId) {
         access.requireRole(memberId, MemberRole.USER);
         return reads.order(memberId, orderId).orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> orderCountSummary(Long memberId) {
+        access.requireRole(memberId, MemberRole.USER);
+        return reads.orderSummary(memberId);
     }
 
     @Transactional(readOnly = true)

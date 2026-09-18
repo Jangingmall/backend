@@ -36,7 +36,7 @@ public class DeliveryService {
             .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
         DeliveryStatus currentStatus = trackingGateway.track(delivery.getCarrierCode(), delivery.getTrackingNumber()).status();
         delivery.updateStatus(currentStatus);
-        if (currentStatus == DeliveryStatus.DELIVERED && order.getStatus() == OrderStatus.PAID) {
+        if (currentStatus == DeliveryStatus.DELIVERED && order.getStatus() == OrderStatus.IN_DELIVERY) {
             order.markDelivered();
         }
         return DeliveryData.from(delivery);
@@ -54,6 +54,7 @@ public class DeliveryService {
         if (deliveries.findByOrderId(orderId).isPresent()) {
             throw new DomainException(ErrorCode.CONFLICT);
         }
+        order.markInDelivery();
         deliveries.save(new OrderDelivery(orderId, carrierCode.trim(), carrierName.trim(), trackingNumber.trim()));
     }
 

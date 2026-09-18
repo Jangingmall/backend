@@ -86,6 +86,7 @@ class DeliveryServiceTest {
             List.of(new PurchaseOrder.OrderLine(7L, "청자 다완", 12_500L, 1, 14, "{}")));
         ReflectionTestUtils.setField(order, "id", id);
         order.markPaid();
+        order.markInDelivery();
         return order;
     }
 
