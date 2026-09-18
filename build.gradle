@@ -106,8 +106,22 @@ def snippetsDir = layout.buildDirectory.dir('generated-snippets')
 
 tasks.named('test') {
     outputs.dir(snippetsDir)
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags 'e2e'
+    }
     finalizedBy 'buildRedocly'
+}
+
+tasks.register('e2eTest', Test) {
+    description = 'Runs E2E integration tests requiring PostgreSQL.'
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'e2e'
+    }
+    outputs.dir(snippetsDir)
+    shouldRunAfter 'test'
 }
 
 apply from: 'gradle/documentation.gradle'
