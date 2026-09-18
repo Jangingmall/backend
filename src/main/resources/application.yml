@@ -3,11 +3,13 @@ spring:
     active: local
   servlet:
     multipart:
-      max-file-size: 2MB
-      max-request-size: 50MB
+      max-file-size: 10MB
+      max-request-size: 120MB
 
 server:
   shutdown: graceful
+  tomcat:
+    max-part-count: 50
 
 spring.lifecycle:
   timeout-per-shutdown-phase: 30s
