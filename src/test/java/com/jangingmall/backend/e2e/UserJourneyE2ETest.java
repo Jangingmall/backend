@@ -6,6 +6,7 @@ import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.presentation.dto.MemberAccountRequests;
 import com.jangingmall.backend.member.presentation.dto.MemberSignupRequest;
+import com.jangingmall.backend.payment.application.PaymentGateway;
 import com.jangingmall.backend.payment.domain.PaymentMethod;
 import com.jangingmall.backend.payment.presentation.PaymentController;
 import com.jangingmall.backend.product.presentation.ProductRequest;
@@ -44,6 +45,9 @@ class UserJourneyE2ETest {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private StubPaymentGateway stubPaymentGateway;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String artisanToken;
     private String userToken;
@@ -52,10 +56,11 @@ class UserJourneyE2ETest {
     private static final Long ARTISAN_ID = 1L;
     private static final String TEST_EMAIL_PREFIX = "e2e-test-";
 
-    record OrderResult(Long orderId, String orderNumber) {}
+    record OrderResult(Long orderId, String orderNumber, long totalAmount) {}
 
     @BeforeEach
     void setUp() throws Exception {
+        stubPaymentGateway.reset();
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(jwtProperties);
         artisanToken = jwtTokenProvider.createAccessToken(ARTISAN_ID, MemberRole.ARTISAN);
 
@@ -193,14 +198,24 @@ class UserJourneyE2ETest {
         Map<String, Object> orderData = data(res);
         Long orderId = longVal(orderData, "orderId");
         String orderNumber = (String) orderData.get("orderNumber");
-        return new OrderResult(orderId, orderNumber);
+        long totalAmount = longVal(orderData, "totalAmount");
+        return new OrderResult(orderId, orderNumber, totalAmount);
     }
 
-    // 실제 결제 PG 없이 상태를 PAID로 전환: toss webhook 시뮬레이션
-    private void simulatePaid(String orderNumber) throws Exception {
+    // 실제 결제 PG 없이 상태를 PAID로 전환: prepare → stub 등록 → webhook
+    private void simulatePaid(Long orderId, String orderNumber, long amount) throws Exception {
+        PaymentController.PreparePaymentRequest prepReq = new PaymentController.PreparePaymentRequest(
+            orderId, amount, PaymentMethod.CARD
+        );
+        HttpResponse<String> prepRes = post("/api/payments", prepReq, userToken);
+        assertThat(prepRes.statusCode()).isBetween(200, 201);
+
+        String paymentKey = "stub-pay-" + orderNumber;
+        stubPaymentGateway.register(paymentKey, orderNumber, amount, "DONE");
+
         PaymentController.TossWebhookRequest webhook = new PaymentController.TossWebhookRequest(
             "PAYMENT_STATUS_CHANGED",
-            new PaymentController.TossPaymentData("payKey-" + orderNumber, orderNumber, 85000L, "DONE")
+            new PaymentController.TossPaymentData(paymentKey, orderNumber, amount, "DONE")
         );
         HttpResponse<String> res = post("/api/payments/webhooks/toss", webhook, null);
         assertThat(res.statusCode()).isEqualTo(200);
@@ -302,6 +317,60 @@ class UserJourneyE2ETest {
             List.of(cartItemId), 0L, null, PaymentMethod.CARD
         );
         HttpResponse<String> res = post("/api/payments/orders", req, userToken);
+        assertThat(res.statusCode()).isBetween(400, 422);
+    }
+
+    @Test
+    @DisplayName("결제 웹훅 — DONE 웹훅이 수신되면 주문 상태가 PAID로 전환된다")
+    void webhookTransitionsOrderToPaid() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, cartItemId, addressId);
+
+        simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
+
+        HttpResponse<String> res = get("/api/member/me/orders/" + order.orderId(), userToken);
+        assertThat(res.statusCode()).isEqualTo(200);
+        Map<String, Object> orderData = data(res);
+        assertThat(orderData.get("status")).isEqualTo("PAID");
+    }
+
+    @Test
+    @DisplayName("결제 미확정 — 웹훅 없이 주문은 CREATED 상태를 유지한다")
+    void orderRemainsCreatedWithoutConfirm() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, cartItemId, addressId);
+
+        HttpResponse<String> res = get("/api/member/me/orders/" + order.orderId(), userToken);
+        assertThat(res.statusCode()).isEqualTo(200);
+        Map<String, Object> orderData = data(res);
+        assertThat(orderData.get("status")).isEqualTo("CREATED");
+    }
+
+    @Test
+    @DisplayName("결제 금액 불일치 — 잘못된 금액으로 confirm 요청 시 오류가 반환된다")
+    void confirmWithWrongAmountReturnsMismatch() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, cartItemId, addressId);
+
+        PaymentController.PreparePaymentRequest prepReq = new PaymentController.PreparePaymentRequest(
+            order.orderId(), order.totalAmount(), PaymentMethod.CARD
+        );
+        HttpResponse<String> prepRes = post("/api/payments", prepReq, userToken);
+        assertThat(prepRes.statusCode()).isBetween(200, 201);
+
+        String paymentKey = "stub-pay-" + order.orderNumber();
+        stubPaymentGateway.register(paymentKey, order.orderNumber(), order.totalAmount(), "DONE");
+
+        PaymentController.ConfirmPaymentRequest confirmReq = new PaymentController.ConfirmPaymentRequest(
+            paymentKey, order.orderNumber(), order.totalAmount() + 1L
+        );
+        HttpResponse<String> res = post("/api/payments/confirm", confirmReq, userToken);
         assertThat(res.statusCode()).isBetween(400, 422);
     }
 }

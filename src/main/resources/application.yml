@@ -36,8 +36,8 @@ management:
 
 toss:
   payments:
-    secret-key: ${TOSS_SECRET_KEY:}
-    client-key: ${TOSS_CLIENT_KEY:}
+    secret-key: ${TOSS_SECRET_KEY:test-secret-key-local}
+    client-key: ${TOSS_CLIENT_KEY:test-client-key-local}
     base-url: ${TOSS_API_BASE_URL:https://api.tosspayments.com}
     order-expiration-seconds: ${PAYMENT_ORDER_EXPIRATION_SECONDS:1800}
 
