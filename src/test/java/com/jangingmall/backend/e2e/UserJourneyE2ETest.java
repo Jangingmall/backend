@@ -6,7 +6,6 @@ import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.presentation.dto.MemberAccountRequests;
 import com.jangingmall.backend.member.presentation.dto.MemberSignupRequest;
-import com.jangingmall.backend.payment.application.CartService;
 import com.jangingmall.backend.payment.domain.PaymentMethod;
 import com.jangingmall.backend.payment.presentation.PaymentController;
 import com.jangingmall.backend.product.presentation.ProductRequest;
