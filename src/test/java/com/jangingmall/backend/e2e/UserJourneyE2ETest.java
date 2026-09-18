@@ -285,7 +285,7 @@ class UserJourneyE2ETest {
             List.of(cartItemId), addressId, "문 앞에 놓아주세요", PaymentMethod.CARD
         );
         HttpResponse<String> res = post("/api/payments/orders", req, userToken);
-        assertThat(res.statusCode()).as("body: " + res.body()).isEqualTo(201);
+        assertThat(res.statusCode()).isEqualTo(201);
 
         Map<String, Object> orderData = data(res);
         assertThat(orderData.get("status")).isEqualTo("CREATED");

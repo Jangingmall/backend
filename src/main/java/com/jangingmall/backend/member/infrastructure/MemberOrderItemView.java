@@ -3,15 +3,17 @@ package com.jangingmall.backend.member.infrastructure;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Subselect;
+import org.hibernate.annotations.Synchronize;
 
 @Entity
 @Immutable
-@Table(name = "order_item")
+@Subselect("select order_item_id, order_id, product_id, product_name_snapshot, price_snapshot, quantity from order_item")
+@Synchronize("order_item")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberOrderItemView {
