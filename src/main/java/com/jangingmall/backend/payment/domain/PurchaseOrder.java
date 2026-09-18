@@ -144,17 +144,25 @@ public class PurchaseOrder {
         updatedAt = canceledAt;
     }
 
-    public void markDelivered() {
+    public void markInDelivery() {
         if (status != OrderStatus.PAID) {
-            throw new IllegalStateException("결제 완료 주문만 배송 완료로 변경할 수 있습니다.");
+            throw new IllegalStateException("결제 완료 주문만 배송 중으로 변경할 수 있습니다.");
+        }
+        status = OrderStatus.IN_DELIVERY;
+        updatedAt = Instant.now();
+    }
+
+    public void markDelivered() {
+        if (status != OrderStatus.IN_DELIVERY) {
+            throw new IllegalStateException("배송 중 주문만 배송 완료로 변경할 수 있습니다.");
         }
         status = OrderStatus.DELIVERED;
         updatedAt = Instant.now();
     }
 
     public void requestReturn() {
-        if (status != OrderStatus.PAID && status != OrderStatus.DELIVERED) {
-            throw new IllegalStateException("결제 완료 또는 배송 완료 주문만 반품 신청할 수 있습니다.");
+        if (status != OrderStatus.PAID && status != OrderStatus.IN_DELIVERY && status != OrderStatus.DELIVERED) {
+            throw new IllegalStateException("결제 완료, 배송 중, 또는 배송 완료 주문만 반품 신청할 수 있습니다.");
         }
         status = OrderStatus.RETURN_REQUESTED;
         updatedAt = Instant.now();
