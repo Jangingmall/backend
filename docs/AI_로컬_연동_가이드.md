@@ -226,7 +226,7 @@ curl -s -X POST "http://localhost:8080/api/content/products/${PRODUCT_ID}/genera
 | Part 이름 | 종류 | 설명 |
 |-----------|------|------|
 | `metadata` | form field (JSON) | 생성 메타데이터 |
-| `detail_page_image` | file (image/*) | 전체 상세페이지 이미지 (필수) |
+| `detail_page_image` | file (image/*, optional) | 전체 상세페이지 이미지 |
 | `detail_page_section_02`, `03`, ... | file (image/*, optional) | 섹션별 이미지 |
 | `product_photo_*` | file (image/*, optional) | 상품 사진 (`photo_id` 기반 파일명) |
 
@@ -271,7 +271,6 @@ curl -s -X POST "http://localhost:8080/internal/generations/complete/multipart" 
   -H "Authorization: Bearer ${BACKEND_AUTH_TOKEN}" \
   -H "Idempotency-Key: ${GENERATION_ID}" \
   -F 'metadata={"generationId":"1","jobId":"job-001","requestId":"req-001","idempotencyKey":"1","productId":"1","detailPage":{"reactDocument":{"schemaVersion":"2.0","canvasWidth":774,"root":[{"tag":"h2","props":{},"children":[{"tag":"text","props":{"value":"청자 다완의 이야기"},"children":[]}]}]}}}' \
-  -F "detail_page_image=@/path/to/detail.jpg;type=image/jpeg" \
   | jq .
 ```
 
