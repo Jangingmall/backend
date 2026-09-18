@@ -106,7 +106,9 @@ def snippetsDir = layout.buildDirectory.dir('generated-snippets')
 
 tasks.named('test') {
     outputs.dir(snippetsDir)
-    useJUnitPlatform()
+    useJUnitPlatform {
+        excludeTags 'e2e'
+    }
     finalizedBy 'buildRedocly'
 }
 
