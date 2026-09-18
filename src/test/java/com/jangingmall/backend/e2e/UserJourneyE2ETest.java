@@ -56,7 +56,7 @@ class UserJourneyE2ETest {
     private static final Long ARTISAN_ID = 1L;
     private static final String TEST_EMAIL_PREFIX = "e2e-test-";
 
-    record OrderResult(Long orderId, String orderNumber, long totalAmount) {}
+    record OrderResult(Long orderId, String orderNumber, long totalAmount, List<Long> orderItemIds) {}
 
     @BeforeEach
     void setUp() throws Exception {
@@ -199,7 +199,11 @@ class UserJourneyE2ETest {
         Long orderId = longVal(orderData, "orderId");
         String orderNumber = (String) orderData.get("orderNumber");
         long totalAmount = longVal(orderData, "totalAmount");
-        return new OrderResult(orderId, orderNumber, totalAmount);
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> items = (List<Map<String, Object>>) orderData.get("items");
+        List<Long> orderItemIds = items == null ? List.of()
+            : items.stream().map(item -> longVal(item, "orderItemId")).toList();
+        return new OrderResult(orderId, orderNumber, totalAmount, orderItemIds);
     }
 
     // 실제 결제 PG 없이 상태를 PAID로 전환: prepare → stub 등록 → webhook
@@ -351,6 +355,56 @@ class UserJourneyE2ETest {
     }
 
     @Test
+    @DisplayName("주문 이력 — PAID 주문이 이력 목록에 포함된다")
+    void orderHistoryIncludesPaidOrder() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, cartItemId, addressId);
+        simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
+
+        HttpResponse<String> res = get("/api/member/me/orders?status=PAID", userToken);
+        assertThat(res.statusCode()).isEqualTo(200);
+
+        @SuppressWarnings("unchecked")
+        Map<String, Object> body = objectMapper.readValue(res.body(), Map.class);
+        @SuppressWarnings("unchecked")
+        Map<String, Object> pageData = (Map<String, Object>) body.get("data");
+        @SuppressWarnings("unchecked")
+        List<?> content = (List<?>) pageData.get("content");
+        assertThat(content).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("주문 상세 — items 목록이 포함된다")
+    void orderDetailContainsItems() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, cartItemId, addressId);
+
+        HttpResponse<String> res = get("/api/member/me/orders/" + order.orderId(), userToken);
+        assertThat(res.statusCode()).isEqualTo(200);
+        Map<String, Object> orderData = data(res);
+        @SuppressWarnings("unchecked")
+        List<?> items = (List<?>) orderData.get("items");
+        assertThat(items).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("배송 추적 — 배송 미등록 시 404가 반환된다")
+    void deliveryNotRegisteredReturnsNotFound() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, cartItemId, addressId);
+        simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
+
+        HttpResponse<String> res = get("/api/payments/orders/" + order.orderId() + "/delivery", userToken);
+        assertThat(res.statusCode()).isEqualTo(404);
+    }
+
+    @Test
     @DisplayName("결제 금액 불일치 — 잘못된 금액으로 confirm 요청 시 오류가 반환된다")
     void confirmWithWrongAmountReturnsMismatch() throws Exception {
         Long productId = createProduct();
@@ -371,6 +425,43 @@ class UserJourneyE2ETest {
             paymentKey, order.orderNumber(), order.totalAmount() + 1L
         );
         HttpResponse<String> res = post("/api/payments/confirm", confirmReq, userToken);
+        assertThat(res.statusCode()).isBetween(400, 422);
+    }
+
+    @Test
+    @DisplayName("환불 신청 — PAID 주문에 환불 신청 시 RETURN_REQUESTED 상태로 전환된다")
+    void returnRequestCreatesReturnRecord() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, cartItemId, addressId);
+        simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
+
+        PaymentController.ReturnRequest req = new PaymentController.ReturnRequest(
+            order.orderId(), com.jangingmall.backend.payment.domain.ReturnType.RETURN,
+            order.orderItemIds(), com.jangingmall.backend.payment.domain.ReturnReason.CHANGE_OF_MIND,
+            null, List.of(), null
+        );
+        HttpResponse<String> res = post("/api/payments/returns", req, userToken);
+        assertThat(res.statusCode()).isEqualTo(201);
+        Map<String, Object> returnData = data(res);
+        assertThat(returnData.get("status")).isEqualTo("REQUESTED");
+    }
+
+    @Test
+    @DisplayName("환불 신청 — CREATED 상태 주문은 환불 신청이 거부된다")
+    void returnRequestOnCreatedOrderFails() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, cartItemId, addressId);
+
+        PaymentController.ReturnRequest req = new PaymentController.ReturnRequest(
+            order.orderId(), com.jangingmall.backend.payment.domain.ReturnType.RETURN,
+            order.orderItemIds(), com.jangingmall.backend.payment.domain.ReturnReason.CHANGE_OF_MIND,
+            null, List.of(), null
+        );
+        HttpResponse<String> res = post("/api/payments/returns", req, userToken);
         assertThat(res.statusCode()).isBetween(400, 422);
     }
 }
