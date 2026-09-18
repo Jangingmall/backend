@@ -69,7 +69,9 @@ public class SecurityConfig {
                     .requestMatchers("/internal/**").hasRole("AGENT")
                     .requestMatchers(HttpMethod.POST, "/api/images/presigned-url").hasAnyRole("USER", "ARTISAN", "AGENT")
                     .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
-                    .requestMatchers(HttpMethod.GET,"/api/member/artisans","/api/member/artisans/{artisanId:[0-9]+}").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/member/artisans", "/api/member/artisans/{artisanId:[0-9]+}",
+                        "/api/member/artisans/{artisanId:[0-9]+}/products", "/api/member/artisans/{artisanId:[0-9]+}/reviews").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/payments/webhooks/toss").permitAll()
                     .requestMatchers(HttpMethod.PATCH, "/api/payments/cart/items/*/options").authenticated()
                     .requestMatchers(HttpMethod.POST, "/api/payments/cart/merge").authenticated()
