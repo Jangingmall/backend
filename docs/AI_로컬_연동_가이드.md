@@ -524,7 +524,48 @@ curl -s "http://localhost:8080/api/content/products/${PRODUCT_ID}/contents" \
 
 ---
 
-## 8. 오류 / 타임아웃 동작
+## 8. 생성 데드라인 스케줄러
+
+AI 서버가 콜백을 보내지 않는 경우, 백엔드는 1분 간격으로 `QUEUED` 상태 generation을 스캔하여 데드라인 초과 시 자동 `FAILED` 처리합니다.
+
+### 8-1. 동작 방식
+
+```
+[백엔드 스케줄러 — 1분 간격]
+  ↓
+  findAllByStatus(QUEUED) where requestedAt < now() - 1861초
+  ↓
+  해당 건 각각 fail() → FAILED
+  ↓
+  warn 로그 출력 (generationId, productId, requestedAt)
+```
+
+- **데드라인**: `requestedAt`으로부터 **1861초** (30분 + 1분 버퍼)
+- **스캔 간격**: 60초 (`GENERATION_POLL_SCAN_MILLIS` 환경변수로 조정)
+- **역할**: 콜백 안전망 — 정상 경로는 AI 서버 → `POST /internal/generations/{id}/completion` 콜백
+- **AI 팀 변경 불필요**: BE 내부 스케줄러, AI API 호출 없음
+
+### 8-2. 환경 변수
+
+| 변수명 | 기본값 | 설명 |
+|--------|--------|------|
+| `GENERATION_DEADLINE_SECONDS` | `1861` | requestedAt 기준 FAILED 전환 기준 초 |
+| `GENERATION_POLL_SCAN_MILLIS` | `60000` | 스케줄러 스캔 간격 (ms) |
+
+### 8-3. 로그 확인
+
+데드라인 초과 건 발생 시:
+
+```
+WARN  AI 생성 데드라인 초과 — FAILED 처리 generationId=1 productId=10 requestedAt=2026-09-18T10:00:00
+INFO  AI 생성 데드라인 스캔 완료 — 만료 처리 건수=1
+```
+
+스캔 결과 없으면 로그 없음 (정상 동작).
+
+---
+
+## 9. 오류 / 타임아웃 동작
 
 | 상황 | 백엔드 동작 |
 |------|------------|

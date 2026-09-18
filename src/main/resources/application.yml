@@ -150,6 +150,9 @@ ai:
   content-url: ${AI_CONTENT_URL:http://localhost:8002}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
   internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN:}
+  generation:
+    deadline-seconds: ${GENERATION_DEADLINE_SECONDS:1861}
+    scan-millis: ${GENERATION_POLL_SCAN_MILLIS:60000}
 
 internal-api:
   backend-auth-token: ${BACKEND_AUTH_TOKEN:}
@@ -255,6 +258,9 @@ ai:
   content-url: ${AI_CONTENT_URL:http://localhost:8002}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
   internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN:}
+  generation:
+    deadline-seconds: ${GENERATION_DEADLINE_SECONDS:1861}
+    scan-millis: ${GENERATION_POLL_SCAN_MILLIS:60000}
 
 internal-api:
   backend-auth-token: ${BACKEND_AUTH_TOKEN:}
@@ -359,6 +365,9 @@ ai:
   content-url: ${AI_CONTENT_URL}
   timeout-seconds: 300
   internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN}
+  generation:
+    deadline-seconds: ${GENERATION_DEADLINE_SECONDS:1861}
+    scan-millis: ${GENERATION_POLL_SCAN_MILLIS:60000}
 
 internal-api:
   backend-auth-token: ${BACKEND_AUTH_TOKEN}
