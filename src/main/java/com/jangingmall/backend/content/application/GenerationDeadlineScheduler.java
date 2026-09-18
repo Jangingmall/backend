@@ -23,7 +23,7 @@ public class GenerationDeadlineScheduler {
     @Scheduled(fixedDelayString = "${ai.generation.scan-millis:60000}")
     @Transactional
     public void expireOverdueGenerations() {
-        LocalDateTime deadline = LocalDateTime.now().minusSeconds(properties.getDeadlineSeconds());
+        LocalDateTime deadline = LocalDateTime.now().minusSeconds(properties.deadlineSeconds());
         List<ContentGeneration> overdue = generationRepository.findAllByStatusAndRequestedAtBefore(
             GenerationStatus.QUEUED, deadline
         );

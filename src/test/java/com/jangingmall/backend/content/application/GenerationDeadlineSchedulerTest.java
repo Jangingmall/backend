@@ -38,9 +38,7 @@ class GenerationDeadlineSchedulerTest {
 
     @BeforeEach
     void setUp() {
-        properties = new GenerationProperties();
-        properties.setDeadlineSeconds(1861);
-        properties.setScanMillis(60_000);
+        properties = new GenerationProperties(1861, 60_000);
         scheduler = new GenerationDeadlineScheduler(generationRepository, properties);
     }
 
@@ -141,9 +139,9 @@ class GenerationDeadlineSchedulerTest {
             eq(GenerationStatus.QUEUED), cutoffCaptor.capture())
         ).thenReturn(List.of());
 
-        LocalDateTime before = LocalDateTime.now().minusSeconds(properties.getDeadlineSeconds()).minusSeconds(1);
+        LocalDateTime before = LocalDateTime.now().minusSeconds(properties.deadlineSeconds()).minusSeconds(1);
         scheduler.expireOverdueGenerations();
-        LocalDateTime after = LocalDateTime.now().minusSeconds(properties.getDeadlineSeconds()).plusSeconds(1);
+        LocalDateTime after = LocalDateTime.now().minusSeconds(properties.deadlineSeconds()).plusSeconds(1);
 
         LocalDateTime captured = cutoffCaptor.getValue();
         assertThat(captured).isAfter(before).isBefore(after);
@@ -168,7 +166,6 @@ class GenerationDeadlineSchedulerTest {
     @Test
     @DisplayName("deadlineSeconds=1861 이면 requestedAt + 1861초 초과 항목만 만료된다")
     void deadlineIs1861Seconds() {
-        properties.setDeadlineSeconds(1861);
         ArgumentCaptor<LocalDateTime> cutoffCaptor = ArgumentCaptor.forClass(LocalDateTime.class);
         when(generationRepository.findAllByStatusAndRequestedAtBefore(
             eq(GenerationStatus.QUEUED), cutoffCaptor.capture())
@@ -177,7 +174,7 @@ class GenerationDeadlineSchedulerTest {
         scheduler.expireOverdueGenerations();
 
         LocalDateTime captured = cutoffCaptor.getValue();
-        LocalDateTime expected = LocalDateTime.now().minusSeconds(1861);
+        LocalDateTime expected = LocalDateTime.now().minusSeconds(properties.deadlineSeconds());
         assertThat(captured).isAfterOrEqualTo(expected.minusSeconds(2))
             .isBeforeOrEqualTo(expected.plusSeconds(2));
     }
