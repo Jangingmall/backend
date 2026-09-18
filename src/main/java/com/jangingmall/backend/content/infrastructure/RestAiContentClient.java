@@ -98,6 +98,28 @@ class RestAiContentClient implements AiContentClient {
     }
 
     @Override
+    public String getJobStatus(String jobId) {
+        AiJobStatusResponse response = generationClient.get()
+            .uri("/internal/v1/ai/detail-page-jobs/{jobId}", jobId)
+            .header(AI_INTERNAL_TOKEN_HEADER, aiInternalAuthToken)
+            .retrieve()
+            .body(AiJobStatusResponse.class);
+        return response != null ? response.status() : null;
+    }
+
+    @Override
+    public void approveRender(String jobId, Long generationId) {
+        AiApproveRenderRequest body = new AiApproveRenderRequest(jobId, generationId.toString());
+        generationClient.post()
+            .uri("/internal/v1/ai/detail-page-renders")
+            .header(AI_INTERNAL_TOKEN_HEADER, aiInternalAuthToken)
+            .body(body)
+            .retrieve()
+            .toBodilessEntity();
+        log.info("AI 렌더 승인 완료 jobId={} generationId={}", jobId, generationId);
+    }
+
+    @Override
     public void syncProduct(AiProductSyncPayload payload) {
         try {
             syncClient.post()
@@ -198,6 +220,17 @@ class RestAiContentClient implements AiContentClient {
         String status,
         @JsonProperty("status_url") String statusUrl,
         @JsonProperty("created_at") OffsetDateTime createdAt
+    ) {}
+
+    private record AiJobStatusResponse(
+        @JsonProperty("job_id") String jobId,
+        String status,
+        Integer progress
+    ) {}
+
+    private record AiApproveRenderRequest(
+        @JsonProperty("job_id") String jobId,
+        @JsonProperty("source_generation_id") String sourceGenerationId
     ) {}
 
     private static final class NamedByteArrayResource extends ByteArrayResource {

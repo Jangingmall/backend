@@ -6,6 +6,10 @@ public interface AiContentClient {
 
     AiJobAccepted submitJob(Long generationId, Long productId, List<String> images, String productName, String howMade, String careTips);
 
+    String getJobStatus(String jobId);
+
+    void approveRender(String jobId, Long generationId);
+
     void syncProduct(AiProductSyncPayload payload);
 
     void updateProduct(Long productId, AiProductUpdatePayload payload);
