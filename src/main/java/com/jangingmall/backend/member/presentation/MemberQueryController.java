@@ -43,21 +43,32 @@ public class MemberQueryController {
             : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/orders/summary")
+    @PreAuthorize("hasRole('USER')")
+    public ApiResponse<Map<String, Object>> orderSummary(
+        @AuthenticationPrincipal Long memberId
+    ) {
+        return ApiResponse.ok(queries.orderCountSummary(memberId));
+    }
+
     @GetMapping("/orders")
     @PreAuthorize("hasRole('USER')")
     public ApiResponse<Page<Map<String, Object>>> orders(
         @AuthenticationPrincipal Long memberId,
         @PageableDefault(size = 20) Pageable pageable,
-        @RequestParam(defaultValue = "ALL") String status
+        @RequestParam(defaultValue = "ALL") String status,
+        @RequestParam(required = false) String from,
+        @RequestParam(required = false) String to,
+        @RequestParam(required = false) String artisanName
     ) {
-        return ApiResponse.ok(queries.orders(memberId, pageable, status));
+        return ApiResponse.ok(queries.orders(memberId, pageable, status, from, to, artisanName));
     }
 
     @GetMapping("/orders/{orderId}")
     @PreAuthorize("hasRole('USER')")
     public ApiResponse<Map<String, Object>> order(
         @AuthenticationPrincipal Long memberId,
-        @org.springframework.web.bind.annotation.PathVariable Long orderId
+        @PathVariable Long orderId
     ) {
         return ApiResponse.ok(queries.order(memberId, orderId));
     }
