@@ -1,5 +1,7 @@
 # AI 챗봇 연동 가이드
 
+> 브랜치: `feat/generation-deadline-scheduler` · 커밋: `c14f48f` · 기준일: 2026-09-18
+
 백엔드와 AI 챗봇 서버 간 연동 방식을 설명합니다.
 
 ---
