@@ -3,6 +3,8 @@ package com.jangingmall.backend.content.application;
 import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.Content;
+import com.jangingmall.backend.content.domain.ContentGenerationRepository;
+import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentErrorMessage;
@@ -54,13 +56,15 @@ public class ContentService {
     private final ImageUploadRepository imageUploadRepository;
     private final ImageService imageService;
     private final ObjectMapper objectMapper;
+    private final ContentGenerationRepository generationRepository;
 
     @Autowired
     public ContentService(ContentRepository contentRepository, ContentEditHistoryRepository historyRepository,
                           ProductRepository productRepository, AiContentClient aiContentClient,
                           ArtisanProfileRepository artisanProfileRepository, InterviewRepository interviewRepository,
                           ContentBlockRepository contentBlockRepository, ImageUploadRepository imageUploadRepository,
-                          ImageService imageService, ObjectMapper objectMapper) {
+                          ImageService imageService, ObjectMapper objectMapper,
+                          ContentGenerationRepository generationRepository) {
         this.contentRepository = contentRepository;
         this.historyRepository = historyRepository;
         this.productRepository = productRepository;
@@ -71,13 +75,14 @@ public class ContentService {
         this.imageUploadRepository = imageUploadRepository;
         this.imageService = imageService;
         this.objectMapper = objectMapper;
+        this.generationRepository = generationRepository;
     }
 
     public ContentService(ContentRepository contentRepository, ContentEditHistoryRepository historyRepository,
                           ProductRepository productRepository, AiContentClient aiContentClient,
                           ArtisanProfileRepository artisanProfileRepository, InterviewRepository interviewRepository) {
         this(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository,
-            interviewRepository, null, null, null, null);
+            interviewRepository, null, null, null, null, null);
     }
 
     /** Compatibility constructor used by the JSON editor tests and legacy callers. */
@@ -86,7 +91,7 @@ public class ContentService {
                           ArtisanProfileRepository artisanProfileRepository, InterviewRepository interviewRepository,
                           ObjectMapper objectMapper) {
         this(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository,
-            interviewRepository, null, null, null, objectMapper);
+            interviewRepository, null, null, null, objectMapper, null);
     }
 
     @Transactional(readOnly = true)
@@ -455,7 +460,24 @@ public class ContentService {
         Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
         content.approve(command.factCheckConfirmed(), command.photoMatchConfirmed(), command.displayApprovalBadge());
-        return ContentResponse.StatusChanged.from(contentRepository.save(content));
+        ContentResponse.StatusChanged result = ContentResponse.StatusChanged.from(contentRepository.save(content));
+        triggerAiRenderIfDraftReady(command.productId());
+        return result;
+    }
+
+    private void triggerAiRenderIfDraftReady(Long productId) {
+        if (generationRepository == null) {
+            return;
+        }
+        generationRepository.findFirstByProductIdAndStatusOrderByRequestedAtDesc(productId, GenerationStatus.DRAFT_READY)
+            .ifPresent(generation -> {
+                try {
+                    aiContentClient.approveRender(generation.getJobId(), generation.getId());
+                    log.info("AI 렌더 승인 요청 완료 generationId={} jobId={}", generation.getId(), generation.getJobId());
+                } catch (Exception e) {
+                    log.error("AI 렌더 승인 요청 실패 generationId={} jobId={} reason={}", generation.getId(), generation.getJobId(), e.getMessage());
+                }
+            });
     }
 
     @Transactional

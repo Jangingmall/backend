@@ -15,6 +15,7 @@ interface JpaContentGenerationRepositoryJpa extends JpaRepository<ContentGenerat
     Optional<ContentGeneration> findByIdAndProductId(Long id, Long productId);
     Optional<ContentGeneration> findByIdempotencyKey(String idempotencyKey);
     List<ContentGeneration> findAllByStatusAndRequestedAtBefore(GenerationStatus status, LocalDateTime deadline);
+    Optional<ContentGeneration> findFirstByProductIdAndStatusOrderByRequestedAtDesc(Long productId, GenerationStatus status);
 }
 
 @Repository
@@ -49,5 +50,10 @@ class JpaContentGenerationRepository implements ContentGenerationRepository {
     @Override
     public List<ContentGeneration> findAllByStatusAndRequestedAtBefore(GenerationStatus status, LocalDateTime deadline) {
         return jpa.findAllByStatusAndRequestedAtBefore(status, deadline);
+    }
+
+    @Override
+    public Optional<ContentGeneration> findFirstByProductIdAndStatusOrderByRequestedAtDesc(Long productId, GenerationStatus status) {
+        return jpa.findFirstByProductIdAndStatusOrderByRequestedAtDesc(productId, status);
     }
 }

@@ -4,6 +4,7 @@ public enum GenerationStatus {
     QUEUED,
     PROCESSING,
     ANALYZING,
+    DRAFT_READY,
     COMPLETED,
     FAILED
 }
