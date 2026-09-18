@@ -165,7 +165,14 @@ class MemberActivityControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지(0-based)"),
                         fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
                         fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
-                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
+                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부"),
+                        fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("현재 페이지 요소 수"),
+                        fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("빈 페이지 여부"),
+                        fieldWithPath("data.pageable").type(JsonFieldType.VARIES).description("페이지 요청 정보"),
+                        fieldWithPath("data.sort").type(JsonFieldType.OBJECT).description("정렬 정보"),
+                        fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("정렬 없음 여부"),
+                        fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("정렬 여부"),
+                        fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("미정렬 여부")
                     ))
                     .build()
                 )
