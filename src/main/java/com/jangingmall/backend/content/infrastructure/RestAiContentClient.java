@@ -98,6 +98,23 @@ class RestAiContentClient implements AiContentClient {
     }
 
     @Override
+    public void approveRender(String jobId, Long generationId) {
+        try {
+            AiApproveRenderRequest body = new AiApproveRenderRequest(jobId, generationId.toString());
+            generationClient.post()
+                .uri("/internal/v1/ai/detail-page-renders")
+                .header(AI_INTERNAL_TOKEN_HEADER, aiInternalAuthToken)
+                .body(body)
+                .retrieve()
+                .toBodilessEntity();
+            log.info("AI 렌더 승인 완료 jobId={} generationId={}", jobId, generationId);
+        } catch (RestClientException e) {
+            log.error("AI 렌더 승인 실패 jobId={} generationId={} reason={}", jobId, generationId, e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
     public void syncProduct(AiProductSyncPayload payload) {
         try {
             syncClient.post()
@@ -188,6 +205,11 @@ class RestAiContentClient implements AiContentClient {
     ) {}
 
     private record GenerationOptions(
+        @JsonProperty("source_generation_id") String sourceGenerationId
+    ) {}
+
+    private record AiApproveRenderRequest(
+        @JsonProperty("job_id") String jobId,
         @JsonProperty("source_generation_id") String sourceGenerationId
     ) {}
 
