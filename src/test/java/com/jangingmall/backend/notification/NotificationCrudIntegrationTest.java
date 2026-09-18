@@ -106,7 +106,7 @@ class NotificationCrudIntegrationTest {
     private Long createNotification() throws Exception {
         HttpResponse<String> res = post("/api/notifications",
             new NotificationCreateRequest("테스트 알림", "내용입니다"), userToken);
-        assertThat(res.statusCode()).isEqualTo(200);
+        assertThat(res.statusCode()).isEqualTo(201);
         Map<?, ?> data = (Map<?, ?>) objectMapper.readValue(res.body(), Map.class).get("data");
         return Long.valueOf(data.get("id").toString());
     }

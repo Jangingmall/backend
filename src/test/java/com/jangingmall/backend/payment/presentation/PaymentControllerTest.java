@@ -1,5 +1,6 @@
 package com.jangingmall.backend.payment.presentation;
 
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -38,6 +39,7 @@ import com.jangingmall.backend.payment.domain.ReturnType;
 import jakarta.servlet.http.Cookie;
 import java.time.Instant;
 import java.util.List;
+import com.epages.restdocs.apispec.SimpleType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -170,7 +172,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
     @Test
     @DisplayName("PAY-P2-010/011/012 결제수단 삭제는 200이며 없거나 타인 소유면 404다")
     void deletesPaymentMethod() throws Exception {
-        mockMvc.perform(delete("/api/payments/methods/10").with(user()))
+        mockMvc.perform(delete("/api/payments/methods/{paymentMethodId}", 10L).with(user()))
             .andExpect(status().isOk())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "payment-methods-delete",
@@ -178,6 +180,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
                     .tag("결제수단")
                     .summary("결제수단 삭제")
                     .description("등록된 결제수단을 삭제합니다. 타인의 결제수단이거나 존재하지 않으면 404를 반환합니다.")
+                    .pathParameters(parameterWithName("paymentMethodId").description("삭제할 결제수단 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).optional().description("없음")
                     ))
@@ -185,7 +188,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
                 )
             ));
         doThrow(new DomainException(ErrorCode.NOT_FOUND)).when(paymentProfiles).deleteMethod(1L, 11L);
-        mockMvc.perform(delete("/api/payments/methods/11").with(user()))
+        mockMvc.perform(delete("/api/payments/methods/{paymentMethodId}", 11L).with(user()))
             .andExpect(status().isNotFound()).andExpect(jsonPath("$.errorCode").value("NOT_FOUND"));
     }
 
@@ -327,7 +330,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
     void changesCartItemQuantity() throws Exception {
         when(carts.changeQuantity(eq(1L), eq(null), eq(10L), eq(3))).thenReturn(
             new CartService.CartMutation(emptyCart(), null));
-        mockMvc.perform(patch("/api/payments/cart/items/10").with(user()).contentType(APPLICATION_JSON)
+        mockMvc.perform(patch("/api/payments/cart/items/{cartItemId}", 10L).with(user()).contentType(APPLICATION_JSON)
                 .content("{\"quantity\":3}"))
             .andExpect(status().isOk())
             .andDo(MockMvcRestDocumentationWrapper.document(
@@ -336,6 +339,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
                     .tag("장바구니")
                     .summary("장바구니 수량 변경")
                     .description("장바구니 항목의 수량을 변경합니다.")
+                    .pathParameters(parameterWithName("cartItemId").description("장바구니 항목 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("quantity").type(JsonFieldType.NUMBER).description("변경할 수량 (1 이상)")
                     )
@@ -364,7 +368,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
     @Test
     @DisplayName("PAY-P0-018 장바구니 항목 단건 삭제는 200을 반환한다")
     void deletesCartItem() throws Exception {
-        mockMvc.perform(delete("/api/payments/cart/items/10").with(user()))
+        mockMvc.perform(delete("/api/payments/cart/items/{cartItemId}", 10L).with(user()))
             .andExpect(status().isOk())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "cart-delete-item",
@@ -372,6 +376,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
                     .tag("장바구니")
                     .summary("장바구니 항목 삭제")
                     .description("장바구니에서 특정 항목을 삭제합니다.")
+                    .pathParameters(parameterWithName("cartItemId").description("삭제할 장바구니 항목 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).optional().description("없음")
                     ))
@@ -443,7 +448,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
     void changesCartItemOptions() throws Exception {
         when(carts.changeOptions(eq(1L), eq(null), eq(10L), any())).thenReturn(
             new CartService.CartMutation(emptyCart(), null));
-        mockMvc.perform(patch("/api/payments/cart/items/10/options").with(user()).contentType(APPLICATION_JSON)
+        mockMvc.perform(patch("/api/payments/cart/items/{cartItemId}/options", 10L).with(user()).contentType(APPLICATION_JSON)
                 .content("{\"quantity\":2}"))
             .andExpect(status().isOk())
             .andDo(MockMvcRestDocumentationWrapper.document(
@@ -452,6 +457,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
                     .tag("장바구니")
                     .summary("장바구니 옵션 변경")
                     .description("장바구니 항목의 수량 및 선택 옵션을 변경합니다.")
+                    .pathParameters(parameterWithName("cartItemId").description("장바구니 항목 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("quantity").type(JsonFieldType.NUMBER).optional().description("변경할 수량 (1 이상, 미입력 시 유지)"),
                         fieldWithPath("selectedOptions").type(JsonFieldType.ARRAY).optional().description("변경할 선택 옵션 목록"),
@@ -722,7 +728,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
         PaymentService.PaymentData data = new PaymentService.PaymentData(200L, 100L, "ORD-000001", 25_000L,
             PaymentMethod.CARD, PaymentStatus.CANCELED, Instant.now(), Instant.now());
         when(payments.cancel(1L, 200L, "취소")).thenReturn(data);
-        mockMvc.perform(post("/api/payments/200/cancel").with(user()).contentType(APPLICATION_JSON)
+        mockMvc.perform(post("/api/payments/{paymentId}/cancel", 200L).with(user()).contentType(APPLICATION_JSON)
                 .content("{\"reason\":\"취소\"}"))
             .andExpect(status().isOk()).andExpect(jsonPath("$.data.status").value("CANCELED"))
             .andDo(MockMvcRestDocumentationWrapper.document(
@@ -735,6 +741,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
                         "- 주문제작 착수 후 취소 불가\n" +
                         "- 배송 시작 후 취소 불가\n" +
                         "- 부분 취소 시 배송비 재계산 반영")
+                    .pathParameters(parameterWithName("paymentId").description("취소할 결제 ID").type(SimpleType.INTEGER))
                     .requestFields(
                         fieldWithPath("reason").type(JsonFieldType.STRING).description("취소 사유 (최대 200자)")
                     )
@@ -767,7 +774,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
     void mapsDeliveryEndpoint() throws Exception {
         when(deliveries.get(1L, 100L)).thenReturn(new DeliveryService.DeliveryData(
             100L, "CJ대한통운", "1234567890", DeliveryStatus.IN_TRANSIT));
-        mockMvc.perform(get("/api/payments/orders/100/delivery").with(user()))
+        mockMvc.perform(get("/api/payments/orders/{orderId}/delivery", 100L).with(user()))
             .andExpect(status().isOk()).andExpect(jsonPath("$.data.trackingNumber").value("1234567890"))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "delivery-get",
@@ -778,6 +785,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
                         "**정책**\n" +
                         "- 배송 완료 7일 후 구매 자동 확정 (스케줄러)\n" +
                         "- 택배사 API 미연동 시 운송장 번호 복사만 제공 (P1)")
+                    .pathParameters(parameterWithName("orderId").description("주문 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
                         fieldWithPath("data.carrier").type(JsonFieldType.STRING).description("택배사명"),
@@ -788,7 +796,7 @@ class PaymentControllerTest extends RestDocsControllerTest {
                 )
             ));
         when(deliveries.get(1L, 101L)).thenThrow(new DomainException(ErrorCode.NOT_FOUND));
-        mockMvc.perform(get("/api/payments/orders/101/delivery").with(user())).andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/payments/orders/{orderId}/delivery", 101L).with(user())).andExpect(status().isNotFound());
     }
 
     @Test

@@ -248,12 +248,13 @@ class ImageControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("내부 이미지 검증 API는 관리자만 접근할 수 있다")
-    void verifiesImageAsAdmin() throws Exception {
+    @DisplayName("내부 이미지 검증 API는 AGENT만 접근할 수 있다")
+    void verifiesImageAsAgent() throws Exception {
         when(images.verifyAndConsume(1L, "01JIMAGE000000000000000000"))
             .thenReturn(new ImageService.Verification(true, true, List.of("images/product/1/id/320w.webp")));
 
-        mockMvc.perform(post("/api/internal/images/verify").with(admin())
+        mockMvc.perform(post("/internal/images/verify")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + AGENT_TOKEN)
                 .contentType(APPLICATION_JSON)
                 .content(json(new ImageController.VerifyImageRequest("01JIMAGE000000000000000000", 1L))))
             .andExpect(status().isOk())
@@ -264,7 +265,7 @@ class ImageControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("이미지")
                     .summary("이미지 검증 (내부)")
-                    .description("내부 서비스에서 이미지 존재 여부와 소유권을 검증합니다. 관리자 토큰 필요.")
+                    .description("내부 서비스에서 이미지 존재 여부와 소유권을 검증합니다. AGENT 토큰 필요.")
                     .requestFields(
                         fieldWithPath("imageId").type(JsonFieldType.STRING).description("이미지 ID (ULID)"),
                         fieldWithPath("requesterId").type(JsonFieldType.NUMBER).description("소유자 확인용 회원 ID")
@@ -280,13 +281,12 @@ class ImageControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("내부 이미지 검증 API는 일반 사용자가 접근하면 403을 반환한다")
-    void rejectsInternalVerificationForNonAdmin() throws Exception {
-        mockMvc.perform(post("/api/internal/images/verify").with(user())
+    @DisplayName("내부 이미지 검증 API는 인증 헤더 없이 접근하면 401을 반환한다")
+    void rejectsInternalVerificationWithoutToken() throws Exception {
+        mockMvc.perform(post("/internal/images/verify")
                 .contentType(APPLICATION_JSON)
                 .content(json(new ImageController.VerifyImageRequest("01JIMAGE000000000000000000", 1L))))
-            .andExpect(status().isForbidden())
-            .andDo(documentError("image-internal-verify-forbidden", "이미지", "이미지 검증 — 권한 없음", "관리자가 아니면 403을 반환합니다."));
+            .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -295,7 +295,8 @@ class ImageControllerTest extends RestDocsControllerTest {
         when(images.verifyAndConsume(1L, "01JMISSING0000000000000000"))
             .thenThrow(new DomainException(ErrorCode.NOT_FOUND));
 
-        mockMvc.perform(post("/api/internal/images/verify").with(admin())
+        mockMvc.perform(post("/internal/images/verify")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + AGENT_TOKEN)
                 .contentType(APPLICATION_JSON)
                 .content(json(new ImageController.VerifyImageRequest("01JMISSING0000000000000000", 1L))))
             .andExpect(status().isNotFound())
@@ -359,5 +360,10 @@ class ImageControllerTest extends RestDocsControllerTest {
     private RequestPostProcessor admin() {
         return authentication(new UsernamePasswordAuthenticationToken(
             99L, null, List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+    }
+
+    private RequestPostProcessor agent() {
+        return authentication(new UsernamePasswordAuthenticationToken(
+            0L, null, List.of(new SimpleGrantedAuthority("ROLE_AGENT"))));
     }
 }
