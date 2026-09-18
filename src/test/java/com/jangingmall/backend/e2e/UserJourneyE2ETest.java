@@ -231,7 +231,7 @@ class UserJourneyE2ETest {
     @Test
     @DisplayName("키워드 검색 — 매칭 없으면 빈 목록이 반환된다")
     void keywordSearchNoMatch() throws Exception {
-        HttpResponse<String> res = get("/api/products?keyword=존재하지않는상품XYZ", userToken);
+        HttpResponse<String> res = get("/api/products?keyword=존재하지않는상품XYZ", null);
         assertThat(res.statusCode()).isEqualTo(200);
 
         Map<String, Object> body = objectMapper.readValue(res.body(), Map.class);
