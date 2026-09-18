@@ -77,7 +77,12 @@ class NotificationControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag(TAG)
                     .summary("알림 목록 조회")
-                    .description("로그인한 회원의 알림 목록을 최신순으로 조회합니다.")
+                    .description("로그인한 회원의 알림 목록을 최신순으로 조회합니다.\n\n"
+                        + enumTable("NotificationStatus", entries(
+                            "UNREAD", "읽지 않음",
+                            "READ", "읽음",
+                            "DELETED", "삭제됨"
+                        )))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("알림 ID"),
                         fieldWithPath("data[].title").type(JsonFieldType.STRING).description("알림 제목"),
@@ -364,10 +369,15 @@ class NotificationControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag(TAG)
                     .summary("알림 생성")
-                    .description("알림을 생성하고 SSE 구독자에게 실시간으로 전송합니다.")
+                    .description("알림을 생성하고 SSE 구독자에게 실시간으로 전송합니다.\n\n"
+                        + enumTable("NotificationStatus", entries(
+                            "UNREAD", "읽지 않음",
+                            "READ", "읽음",
+                            "DELETED", "삭제됨"
+                        )))
                     .requestFields(
-                        fieldWithPath("title").type(JsonFieldType.STRING).description("알림 제목"),
-                        fieldWithPath("content").type(JsonFieldType.STRING).description("알림 내용")
+                        fieldWithPath("title").type(JsonFieldType.STRING).description("알림 제목 (@NotBlank, 최대 255자)"),
+                        fieldWithPath("content").type(JsonFieldType.STRING).description("알림 내용 (@NotBlank, 최대 255자)")
                     )
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("알림 ID"),

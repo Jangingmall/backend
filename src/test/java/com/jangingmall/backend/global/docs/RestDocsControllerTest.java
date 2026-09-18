@@ -129,4 +129,51 @@ public abstract class RestDocsControllerTest {
             throw new IllegalArgumentException("JSON 직렬화 실패: " + object.getClass().getSimpleName(), exception);
         }
     }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Enum 표 헬퍼 — description() 끝에 붙여 ReDoc에서 Markdown 표로 렌더링
+    //
+    // 사용법:
+    //   .description("엔드포인트 설명\n\n" + enumTable("OrderStatus", entries(
+    //       "CREATED", "결제 대기",
+    //       "PAID",    "결제 완료"
+    //   )))
+    //
+    //   여러 enum:
+    //   .description("설명\n\n" + enumTables(
+    //       enumTable("ReturnType", entries("RETURN", "환불", "EXCHANGE", "교환")),
+    //       enumTable("ReturnStatus", entries("REQUESTED", "신청", "APPROVED", "승인"))
+    //   ))
+    // ──────────────────────────────────────────────────────────────────────────
+
+    /**
+     * key-value 쌍으로 순서 있는 enum 항목을 만든다.
+     * entries("A", "설명A", "B", "설명B") 형태로 사용한다.
+     */
+    protected static java.util.LinkedHashMap<String, String> entries(String... keyValues) {
+        if (keyValues.length % 2 != 0) {
+            throw new IllegalArgumentException("entries()는 key-value 쌍이어야 합니다.");
+        }
+        java.util.LinkedHashMap<String, String> map = new java.util.LinkedHashMap<>();
+        for (int i = 0; i < keyValues.length; i += 2) {
+            map.put(keyValues[i], keyValues[i + 1]);
+        }
+        return map;
+    }
+
+    /** 단일 enum에 대한 Markdown 표 문자열을 반환한다. */
+    protected static String enumTable(String enumName, java.util.Map<String, String> entries) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("**").append(enumName).append("**\n\n");
+        sb.append("| 값 | 설명 |\n");
+        sb.append("|---|---|\n");
+        entries.forEach((key, desc) ->
+            sb.append("| `").append(key).append("` | ").append(desc).append(" |\n"));
+        return sb.toString();
+    }
+
+    /** 여러 enum 표를 빈 줄로 구분해 이어 붙인다. */
+    protected static String enumTables(String... tables) {
+        return String.join("\n", tables);
+    }
 }

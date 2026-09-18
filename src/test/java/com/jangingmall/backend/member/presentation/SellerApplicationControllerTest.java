@@ -263,7 +263,21 @@ class SellerApplicationControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("판매자 신청 (관리자)")
                     .summary("파이프라인 단계 수정")
-                    .description("판매자 신청 파이프라인의 특정 단계 상태를 수정합니다.")
+                    .description("판매자 신청 파이프라인의 특정 단계 상태를 수정합니다.\n\n"
+                        + enumTables(
+                            enumTable("Step", entries(
+                                "DOCUMENT_REVIEW", "서류 심사",
+                                "CRAFTSMANSHIP_REVIEW", "장인성 심사",
+                                "DIGITAL_CONVERSION", "디지털 전환",
+                                "ORDER_SYSTEM_INTEGRATION", "주문 시스템 연동"
+                            )),
+                            enumTable("Stage", entries(
+                                "PENDING", "대기",
+                                "IN_PROGRESS", "진행 중",
+                                "COMPLETED", "완료",
+                                "FAILED", "실패"
+                            ))
+                        ))
                     .requestFields(
                         fieldWithPath("step").type(JsonFieldType.STRING).description("단계 (DOCUMENT_REVIEW/CRAFTSMANSHIP_REVIEW/DIGITAL_CONVERSION/ORDER_SYSTEM_INTEGRATION)"),
                         fieldWithPath("status").type(JsonFieldType.STRING).description("상태 (PENDING/IN_PROGRESS/COMPLETED/FAILED)"),

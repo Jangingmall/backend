@@ -114,10 +114,11 @@ class ChatControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("챗봇")
                     .summary("챗봇 메시지 전송")
-                    .description("소비자 메시지를 전송하면 AI가 추천 상품과 답변을 반환합니다.")
+                    .description("소비자 메시지를 전송하면 AI가 추천 상품과 답변을 반환합니다.\n\n"
+                        + enumTable("ChatSender", entries("USER", "소비자", "ADMIN", "AI 봇")))
                     .pathParameters(parameterWithName("sessionId").description("세션 ID").type(SimpleType.STRING))
                     .requestFields(
-                        fieldWithPath("content").type(JsonFieldType.STRING).description("소비자 메시지 (최대 2000자)")
+                        fieldWithPath("content").type(JsonFieldType.STRING).description("소비자 메시지 (@NotBlank, 최대 2000자)")
                     )
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.sessionId").type(JsonFieldType.STRING).description("세션 ID"),
@@ -170,7 +171,8 @@ class ChatControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("챗봇")
                     .summary("대화 이력 조회")
-                    .description("세션의 전체 메시지 목록을 전송 시간순으로 조회합니다.")
+                    .description("세션의 전체 메시지 목록을 전송 시간순으로 조회합니다.\n\n"
+                        + enumTable("ChatSender", entries("USER", "소비자", "ADMIN", "AI 봇")))
                     .pathParameters(parameterWithName("sessionId").description("세션 ID").type(SimpleType.STRING))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data[].messageId").type(JsonFieldType.NUMBER).description("메시지 ID"),
