@@ -1,6 +1,7 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -32,20 +34,18 @@ class GenerationAsyncExecutorTest {
     private ContentGenerationRepository generationRepository;
     @Mock
     private AiContentClient aiContentClient;
-    @Mock
-    private ContentService contentService;
 
     @Captor
     private ArgumentCaptor<ContentGeneration> generationCaptor;
 
     private GenerationAsyncExecutor executor;
 
-    private static final String REACT_DOCUMENT_JSON =
-        "{\"schemaVersion\":\"2.0\",\"canvasWidth\":774,\"root\":[]}";
+    private static final AiJobAccepted ACCEPTED_JOB =
+        new AiJobAccepted("job-123", "req-456", "http://ai/status/job-123");
 
     @BeforeEach
     void setUp() {
-        executor = new GenerationAsyncExecutor(generationRepository, aiContentClient, contentService);
+        executor = new GenerationAsyncExecutor(generationRepository, aiContentClient);
     }
 
     private GenerationCommand.Request sampleCommand() {
@@ -53,58 +53,54 @@ class GenerationAsyncExecutorTest {
     }
 
     @Test
-    @DisplayName("AI 호출 성공 시 COMPLETED로 전환하고 react_document를 저장한다")
+    @DisplayName("AI job 제출 성공 시 QUEUED로 전환하고 jobId를 저장한다")
     void onGenerationRequestedSuccess() {
         ContentGeneration generation = ContentGeneration.create(10L, "img1", "청자 다완", "손으로 빚음", "물 닦기");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
         when(generationRepository.save(any())).thenReturn(generation);
-        when(aiContentClient.requestGeneration(any(), any(), any(), any(), any(), any())).thenReturn(REACT_DOCUMENT_JSON);
+        when(aiContentClient.submitJob(any(), any(), any(), any(), any(), any())).thenReturn(ACCEPTED_JOB);
 
         executor.onGenerationRequested(new GenerationRequestedEvent(1L, sampleCommand()));
 
         verify(generationRepository).save(generationCaptor.capture());
-        assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.COMPLETED);
-        assertThat(generationCaptor.getValue().getReactDocument()).isEqualTo(REACT_DOCUMENT_JSON);
-        assertThat(generationCaptor.getValue().getCompletedAt()).isNotNull();
-        verify(contentService).storeReactDocument(any());
+        assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.QUEUED);
+        assertThat(generationCaptor.getValue().getJobId()).isEqualTo("job-123");
     }
 
     @Test
-    @DisplayName("AI 호출 실패 시 최대 2회 재시도 후 FAILED로 전환한다")
+    @DisplayName("AI job 제출 실패 시 최대 2회 재시도 후 FAILED로 전환한다")
     void onGenerationRequestedRetryThenFail() {
         ContentGeneration generation = ContentGeneration.create(10L, "img1", "청자 다완", "손으로 빚음", "물 닦기");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
         when(generationRepository.save(any())).thenReturn(generation);
         doThrow(new RuntimeException("AI 서버 오류")).when(aiContentClient)
-            .requestGeneration(any(), any(), any(), any(), any(), any());
+            .submitJob(any(), any(), any(), any(), any(), any());
 
         executor.onGenerationRequested(new GenerationRequestedEvent(1L, sampleCommand()));
 
-        // 최초 1회 + 재시도 2회 = 총 3회
-        verify(aiContentClient, times(3)).requestGeneration(any(), any(), any(), any(), any(), any());
+        verify(aiContentClient, times(3)).submitJob(any(), any(), any(), any(), any(), any());
         verify(generationRepository).save(generationCaptor.capture());
         assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
-        assertThat(generationCaptor.getValue().getCompletedAt()).isNotNull();
     }
 
     @Test
-    @DisplayName("AI 호출 첫 번째 실패 후 재시도 성공 시 COMPLETED로 전환한다")
+    @DisplayName("AI job 제출 첫 번째 실패 후 재시도 성공 시 QUEUED로 전환한다")
     void onGenerationRequestedRetrySuccess() {
         ContentGeneration generation = ContentGeneration.create(10L, "img1", "청자 다완", "손으로 빚음", "물 닦기");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
         when(generationRepository.save(any())).thenReturn(generation);
-        when(aiContentClient.requestGeneration(any(), any(), any(), any(), any(), any()))
+        when(aiContentClient.submitJob(any(), any(), any(), any(), any(), any()))
             .thenThrow(new RuntimeException("1차 실패"))
-            .thenReturn(REACT_DOCUMENT_JSON);
+            .thenReturn(ACCEPTED_JOB);
 
         executor.onGenerationRequested(new GenerationRequestedEvent(1L, sampleCommand()));
 
-        verify(aiContentClient, times(2)).requestGeneration(any(), any(), any(), any(), any(), any());
+        verify(aiContentClient, times(2)).submitJob(any(), any(), any(), any(), any(), any());
         verify(generationRepository).save(generationCaptor.capture());
-        assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.COMPLETED);
+        assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.QUEUED);
     }
 
     @Test
@@ -112,7 +108,7 @@ class GenerationAsyncExecutorTest {
     void onGenerationRequestedNotFound() {
         when(generationRepository.findByIdAndProductId(999L, 10L)).thenReturn(Optional.empty());
 
-        org.assertj.core.api.Assertions.assertThatThrownBy(
+        assertThatThrownBy(
             () -> executor.onGenerationRequested(new GenerationRequestedEvent(999L, sampleCommand()))
         ).isInstanceOf(NotFoundException.class);
     }

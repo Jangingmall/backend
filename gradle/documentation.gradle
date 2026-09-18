@@ -756,10 +756,10 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
     }
 }
 
-// ── Redocly HTML 생성 ────────────────────────────────────────────────────────
-tasks.register('buildRedocly', Exec) {
+// ── Redocly HTML 생성 (CDN 방식, npx/Node.js 불필요) ────────────────────────
+tasks.register('buildRedocly') {
     dependsOn 'processOpenapi'
-    description = 'Generate Redocly static HTML from api-spec/openapi.json'
+    description = 'Generate Redoc HTML from api-spec/openapi.json using CDN (no Node.js required)'
 
     def specFile   = file('api-spec/openapi.json')
     def outputHtml = file('api-spec/redoc.html')
@@ -767,22 +767,64 @@ tasks.register('buildRedocly', Exec) {
     inputs.file(specFile)
     outputs.file(outputHtml)
 
-    def templateFile = file('api-spec/redoc-template.hbs')
-
-    commandLine 'npx', '--yes', '@redocly/cli', 'build-docs',
-        specFile.absolutePath,
-        '--output', outputHtml.absolutePath,
-        '--template', templateFile.absolutePath,
-        '--theme.openapi.colors.primary.main=#3D6CD4',
-        '--theme.openapi.sidebar.activeTextColor=#3D6CD4',
-        '--theme.openapi.sidebar.activeBgColor=#EEF2FD',
-        '--theme.openapi.sidebar.groupItems.textTransform=uppercase'
-
     doLast {
+        // openapi.json을 인라인으로 임베드 — 외부 파일 요청 없이 단일 HTML로 동작
+        def specJson = specFile.text.replace('</script>', '<\\/script>')
+
+        def html = """\
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>장인몰 (미담) API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+  <style>
+    body { padding: 0; margin: 0; }
+    li[data-item-id^="group/"] {
+      margin-top: 6px;
+      border-top: 1px solid rgba(61, 108, 212, 0.2);
+    }
+    li[data-item-id^="group/"]:first-of-type { border-top: none; margin-top: 0; }
+    li[data-item-id^="group/"] > label > span {
+      font-size: 1.36em !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+  <div id="redoc-container"></div>
+  <script src="https://cdn.redocly.com/redoc/v2.5.4/bundles/redoc.standalone.js"
+    integrity="sha384-w447zOpYfw/1Tv/5AK9NfHTlQIqE3RVR6KY62jCyy9zNDgO64cMwGGP1Fj0zJVf5"
+    crossorigin="anonymous"></script>
+  <script>
+    Redoc.init(
+      ${specJson},
+      {
+        expandResponses: '200,201,202',
+        requiredPropsFirst: true,
+        theme: {
+          colors: { primary: { main: '#3D6CD4' } },
+          sidebar: {
+            activeTextColor: '#3D6CD4',
+            activeBgColor: '#EEF2FD',
+            groupItems: { textTransform: 'uppercase' }
+          }
+        }
+      },
+      document.getElementById('redoc-container')
+    );
+  </script>
+</body>
+</html>
+"""
+        outputHtml.text = html
         println "[buildRedocly] HTML 생성 완료: ${outputHtml.absolutePath}"
+
         def staticDir = file('src/main/resources/static')
         staticDir.mkdirs()
-        file('src/main/resources/static/redoc.html').bytes = outputHtml.bytes
+        file('src/main/resources/static/redoc.html').text = html
         println "[buildRedocly] static 복사 완료: src/main/resources/static/redoc.html"
     }
 }

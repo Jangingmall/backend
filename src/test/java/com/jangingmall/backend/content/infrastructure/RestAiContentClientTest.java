@@ -1,7 +1,8 @@
 package com.jangingmall.backend.content.infrastructure;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.AiProductUpdatePayload;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload.ArtisanInfo;
@@ -15,12 +16,14 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.http.HttpClient;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withNoContent;
@@ -29,11 +32,15 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 class RestAiContentClientTest {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
+        .findAndAddModules()
+        .build();
 
     private MockRestServiceServer generationMockServer;
     private MockRestServiceServer syncMockServer;
     private RestAiContentClient contentClient;
+
+    private static final String AI_INTERNAL_TOKEN = "test-internal-token";
 
     @BeforeEach
     void setUp() {
@@ -43,58 +50,45 @@ class RestAiContentClientTest {
         syncMockServer = MockRestServiceServer.bindTo(syncTemplate).build();
         RestClient generationClient = RestClient.builder(generationTemplate).baseUrl("http://ai-content-server").build();
         RestClient syncClient = RestClient.builder(syncTemplate).baseUrl("http://ai-chat-server").build();
-        contentClient = new RestAiContentClient(generationClient, syncClient);
+        HttpClient httpClient = HttpClient.newBuilder().build();
+        contentClient = new RestAiContentClient(generationClient, syncClient, AI_INTERNAL_TOKEN, OBJECT_MAPPER, httpClient);
     }
 
     @Test
-    @DisplayName("AI 콘텐츠 생성 요청 — generationId, productId, images, productName, howMade, careTips가 올바르게 직렬화되어 /ai/products로 전송된다")
-    void requestGeneration_serializesPayloadCorrectly() throws Exception {
-        String blocksJson = OBJECT_MAPPER.writeValueAsString(
-            List.of(Map.of("order", 1, "tag", "h2", "text", "청자 다완의 이야기"))
-        );
-        generationMockServer.expect(requestTo("http://ai-content-server/ai/products"))
+    @DisplayName("AI job 제출 — multipart로 /internal/v1/ai/detail-page-jobs에 전송하고 jobId를 반환한다")
+    void submitJob_sendsMultipartAndReturnsJobId() throws Exception {
+        String acceptedJson = OBJECT_MAPPER.writeValueAsString(Map.of(
+            "product_id", "10",
+            "job_id", "job-abc",
+            "request_id", "req-def",
+            "status", "QUEUED",
+            "status_url", "http://ai/status/job-abc",
+            "created_at", OffsetDateTime.now().toString()
+        ));
+        generationMockServer
+            .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs"))
             .andExpect(method(HttpMethod.POST))
-            .andExpect(jsonPath("$.generationId").value(42))
-            .andExpect(jsonPath("$.productId").value(10))
-            .andExpect(jsonPath("$.productName").value("청자 다완"))
-            .andExpect(jsonPath("$.howMade").value("손으로 직접 빚음"))
-            .andExpect(jsonPath("$.careTips").value("물기 닦아서 보관"))
-            .andExpect(jsonPath("$.images[0]").value("imageId1"))
-            .andExpect(jsonPath("$.images[1]").value("imageId2"))
-            .andRespond(withSuccess(blocksJson, MediaType.APPLICATION_JSON));
+            .andExpect(header("X-AI-Internal-Token", AI_INTERNAL_TOKEN))
+            .andExpect(header("Idempotency-Key", "42"))
+            .andRespond(withSuccess(acceptedJson, MediaType.APPLICATION_JSON));
 
-        String result = contentClient.requestGeneration(
-            42L, 10L, List.of("imageId1", "imageId2"), "청자 다완", "손으로 직접 빚음", "물기 닦아서 보관"
-        );
+        AiJobAccepted result = contentClient.submitJob(42L, 10L, List.of(), "청자 다완", "손으로 빚음", "물 닦기");
 
         generationMockServer.verify();
-        JsonNode parsed = OBJECT_MAPPER.readTree(result);
-        assertThat(parsed.isArray()).isTrue();
-        assertThat(parsed.get(0).path("tag").asText()).isEqualTo("h2");
+        assertThat(result.jobId()).isEqualTo("job-abc");
+        assertThat(result.requestId()).isEqualTo("req-def");
+        assertThat(result.statusUrl()).isEqualTo("http://ai/status/job-abc");
     }
 
     @Test
-    @DisplayName("AI 콘텐츠 생성 요청 — images 배열이 비어 있어도 빈 배열로 전송된다")
-    void requestGeneration_emptyImages() throws Exception {
-        String blocksJson = OBJECT_MAPPER.writeValueAsString(List.of());
-        generationMockServer.expect(requestTo("http://ai-content-server/ai/products"))
-            .andExpect(method(HttpMethod.POST))
-            .andExpect(jsonPath("$.images").isArray())
-            .andRespond(withSuccess(blocksJson, MediaType.APPLICATION_JSON));
-
-        contentClient.requestGeneration(1L, 10L, List.of(), "상품명", "과정", "관리법");
-
-        generationMockServer.verify();
-    }
-
-    @Test
-    @DisplayName("AI 콘텐츠 생성 요청 — AI 서버 오류 시 RestClientException이 전파된다")
-    void requestGeneration_serverError_throwsException() {
-        generationMockServer.expect(requestTo("http://ai-content-server/ai/products"))
+    @DisplayName("AI job 제출 — AI 서버 오류 시 RestClientException이 전파된다")
+    void submitJob_serverError_throwsException() {
+        generationMockServer
+            .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs"))
             .andRespond(withServerError());
 
         assertThatThrownBy(
-            () -> contentClient.requestGeneration(1L, 10L, List.of("img1"), "상품명", "과정", "관리법")
+            () -> contentClient.submitJob(1L, 10L, List.of(), "상품명", "과정", "관리법")
         ).isInstanceOf(org.springframework.web.client.RestClientException.class);
 
         generationMockServer.verify();
@@ -126,8 +120,7 @@ class RestAiContentClientTest {
         AiProductUpdatePayload.ProductPatch patch = new AiProductUpdatePayload.ProductPatch(
             "청자 다완 (수정)", "도자기", "청자", 90000, List.of(), List.of(), "손으로 빚음", "물 닦기", 30, List.of()
         );
-        AiProductUpdatePayload payload = new AiProductUpdatePayload(patch);
-        contentClient.updateProduct(42L, payload);
+        contentClient.updateProduct(42L, new AiProductUpdatePayload(patch));
 
         syncMockServer.verify();
     }

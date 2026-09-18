@@ -1,6 +1,7 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
@@ -21,10 +22,7 @@ public class GenerationAsyncExecutor {
 
     private final ContentGenerationRepository generationRepository;
     private final AiContentClient aiContentClient;
-    private final ContentService contentService;
 
-    // @TransactionalEventListener(AFTER_COMMIT)이 트랜잭션 외부에서 실행되므로
-    // request()가 커밋된 뒤에야 row가 보임 — @Async 자기 호출 레이스 조건 해소
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onGenerationRequested(GenerationRequestedEvent event) {
@@ -37,7 +35,7 @@ public class GenerationAsyncExecutor {
         Exception lastException = null;
         for (int attempt = 0; attempt <= MAX_RETRY_COUNT; attempt++) {
             try {
-                String reactDocumentJson = aiContentClient.requestGeneration(
+                AiJobAccepted accepted = aiContentClient.submitJob(
                     generationId,
                     command.productId(),
                     command.images(),
@@ -45,21 +43,23 @@ public class GenerationAsyncExecutor {
                     command.howMade(),
                     command.careTips()
                 );
-                generation.complete(reactDocumentJson, generationId.toString());
-                generationRepository.save(generation);
-                contentService.storeReactDocument(
-                    new ContentCommand.StoreReactDocument(command.productId(), reactDocumentJson, command.requesterId())
+                generation.markQueued(
+                    accepted.jobId(),
+                    accepted.requestId(),
+                    generationId.toString(),
+                    accepted.statusUrl()
                 );
-                log.info("AI 콘텐츠 생성 완료 generationId={}", generationId);
+                generationRepository.save(generation);
+                log.info("AI job 제출 완료 generationId={} jobId={}", generationId, accepted.jobId());
                 return;
             } catch (Exception e) {
                 lastException = e;
-                log.warn("AI 콘텐츠 생성 실패 generationId={} attempt={} reason={}", generationId, attempt + 1, e.getMessage());
+                log.warn("AI job 제출 실패 generationId={} attempt={} reason={}", generationId, attempt + 1, e.getMessage());
             }
         }
 
         generation.fail();
         generationRepository.save(generation);
-        log.error("AI 콘텐츠 생성 최종 실패 generationId={} reason={}", generationId, lastException.getMessage());
+        log.error("AI job 제출 최종 실패 generationId={} reason={}", generationId, lastException.getMessage());
     }
 }

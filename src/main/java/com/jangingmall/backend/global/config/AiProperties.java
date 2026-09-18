@@ -6,5 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record AiProperties(
     String chatBotUrl,
     String contentUrl,
-    int timeoutSeconds
+    int timeoutSeconds,
+    String internalAuthToken
 ) {}
