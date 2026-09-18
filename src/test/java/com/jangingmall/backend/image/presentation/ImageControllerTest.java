@@ -66,14 +66,20 @@ class ImageControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("이미지")
                     .summary("Presigned URL 발급")
-                    .description("S3 업로드를 위한 Presigned URL을 발급합니다. 클라이언트는 반환된 URL로 직접 S3에 업로드합니다.")
+                    .description("S3 업로드를 위한 Presigned URL을 발급합니다. 클라이언트는 반환된 URL로 직접 S3에 업로드합니다.\n\n"
+                        + enumTable("ImagePurpose", entries(
+                            "PRODUCT", "상품 이미지",
+                            "ARTISAN", "장인 프로필",
+                            "CONTENT", "콘텐츠 이미지",
+                            "RETURN", "반품 첨부"
+                        )))
                     .requestFields(
                         fieldWithPath("fileName").type(JsonFieldType.STRING).description("원본 파일명"),
                         fieldWithPath("contentType").type(JsonFieldType.STRING).description("MIME 타입 (예: image/webp)"),
-                        fieldWithPath("purpose").type(JsonFieldType.STRING).description("용도 (PRODUCT, PROFILE 등)"),
-                        fieldWithPath("sourceWidth").type(JsonFieldType.NUMBER).description("원본 이미지 너비 (px)"),
-                        fieldWithPath("sourceHeight").type(JsonFieldType.NUMBER).description("원본 이미지 높이 (px)"),
-                        fieldWithPath("variants").type(JsonFieldType.ARRAY).description("업로드할 사이즈 변형 이름 목록 (예: 320w, 640w, 1280w)"),
+                        fieldWithPath("purpose").type(JsonFieldType.STRING).description("용도 (@NotNull, ImagePurpose 값)"),
+                        fieldWithPath("sourceWidth").type(JsonFieldType.NUMBER).description("원본 이미지 너비 (px, @Positive)"),
+                        fieldWithPath("sourceHeight").type(JsonFieldType.NUMBER).description("원본 이미지 높이 (px, @Positive)"),
+                        fieldWithPath("variants").type(JsonFieldType.ARRAY).description("업로드할 사이즈 변형 이름 목록 (예: 320w, 640w, 1280w, @NotEmpty)"),
                         fieldWithPath("memberId").type(JsonFieldType.NUMBER).optional().description("AGENT 전용 — 업로드 소유자 회원 ID (일반 회원은 생략)")
                     )
                     .responseFields(successEnvelopeFields(

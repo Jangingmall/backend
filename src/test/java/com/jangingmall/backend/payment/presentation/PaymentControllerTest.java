@@ -489,10 +489,27 @@ class PaymentControllerTest extends RestDocsControllerTest {
                     .description("장바구니 항목으로 주문을 생성합니다. `Idempotency-Key` 헤더로 중복 생성을 방지합니다.\n\n" +
                         "**정책**\n" +
                         "- 주문번호 형식: `ORD{YYYYMMDD}{NNN}` (예: `ORD20260825001`)\n" +
-                        "- 주문 상태: CREATED → PAID → SHIPPING → DELIVERED → CANCELED\n" +
                         "- 결제 직전 재고 재검증; 부족분은 행 단위로 고지\n" +
                         "- 주문제작 포함 시 전체 상품 함께 배송\n" +
-                        "- 로그인 필수")
+                        "- 로그인 필수\n\n" +
+                        enumTables(
+                            enumTable("OrderStatus", entries(
+                                "CREATED", "주문 생성 (결제 대기)",
+                                "PAID", "결제 완료",
+                                "PAYMENT_FAILED", "결제 실패",
+                                "CANCELED", "취소됨",
+                                "IN_DELIVERY", "배송중",
+                                "DELIVERED", "배송 완료",
+                                "RETURN_REQUESTED", "반품/교환 신청"
+                            )),
+                            enumTable("PaymentMethod", entries(
+                                "CARD", "카드",
+                                "TRANSFER", "계좌이체",
+                                "VIRTUAL_ACCOUNT", "가상계좌",
+                                "MOBILE", "휴대폰 결제",
+                                "EASY_PAY", "간편결제"
+                            ))
+                        ))
                     .requestFields(
                         fieldWithPath("cartItemIds").type(JsonFieldType.ARRAY).description("주문할 장바구니 항목 ID 목록"),
                         fieldWithPath("addressId").type(JsonFieldType.NUMBER).description("배송지 ID"),
@@ -595,7 +612,13 @@ class PaymentControllerTest extends RestDocsControllerTest {
                         "**정책**\n" +
                         "- BE가 토스페이먼츠 서버 측 승인 API를 호출하여 재검증 (클라이언트 응답만으로 확정 금지)\n" +
                         "- 중복 결제 방지: 주문번호 단위 멱등 처리\n" +
-                        "- `orderId` 불일치 또는 금액 위변조 감지 시 422 반환")
+                        "- `orderId` 불일치 또는 금액 위변조 감지 시 422 반환\n\n" +
+                        enumTable("PaymentStatus", entries(
+                            "READY", "준비 (결제 대기)",
+                            "DONE", "승인 완료",
+                            "FAILED", "실패",
+                            "CANCELED", "취소됨"
+                        )))
                     .requestFields(
                         fieldWithPath("paymentKey").type(JsonFieldType.STRING).description("토스페이먼츠 결제 키 (최대 200자)"),
                         fieldWithPath("orderId").type(JsonFieldType.STRING).description("주문번호 (6~64자)"),
@@ -788,7 +811,16 @@ class PaymentControllerTest extends RestDocsControllerTest {
                         "- 신청 시 주문 상태가 `RETURN_REQUESTED`로 전환\n" +
                         "- 주문당 반품·교환 신청 한 건만 허용\n" +
                         "- 클레임 상태 흐름: 접수 → 검토 중 → 승인/반려 → 회수 → 완료\n" +
-                        "- 귀책 판정 3종: 판매자 귀책 / 구매자 귀책 / 협의")
+                        "- 귀책 판정 3종: 판매자 귀책 / 구매자 귀책 / 협의\n\n" +
+                        enumTables(
+                            enumTable("ReturnType", entries("RETURN", "반품", "EXCHANGE", "교환")),
+                            enumTable("ReturnStatus", entries(
+                                "REQUESTED", "신청 접수",
+                                "APPROVED", "승인됨",
+                                "REJECTED", "반려됨",
+                                "COMPLETED", "완료"
+                            ))
+                        ))
                     .requestFields(
                         fieldWithPath("orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
                         fieldWithPath("type").type(JsonFieldType.STRING).description("유형 (RETURN: 반품, EXCHANGE: 교환)"),

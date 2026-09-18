@@ -80,17 +80,18 @@ class MemberControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("회원")
                     .summary("회원가입")
-                    .description("이메일 + 비밀번호로 회원가입합니다. 가입 후 이메일 인증이 필요합니다.")
+                    .description("이메일 + 비밀번호로 회원가입합니다. 가입 후 이메일 인증이 필요합니다.\n\n"
+                        + enumTable("MemberRole", entries("USER", "소비자", "ARTISAN", "장인")))
                     .requestFields(
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-                        fieldWithPath("passwordConfirm").type(JsonFieldType.STRING).description("비밀번호 확인"),
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
-                        fieldWithPath("phone").type(JsonFieldType.STRING).description("전화번호 (숫자만)"),
-                        fieldWithPath("role").type(JsonFieldType.STRING).description("역할 (USER | ARTISAN)"),
-                        fieldWithPath("agreements.age14OrOlder").type(JsonFieldType.BOOLEAN).description("만 14세 이상 동의"),
-                        fieldWithPath("agreements.termsOfService").type(JsonFieldType.BOOLEAN).description("서비스 이용약관 동의"),
-                        fieldWithPath("agreements.privacyCollection").type(JsonFieldType.BOOLEAN).description("개인정보 수집 동의"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일 (@NotBlank, @Email, 최대 255자)"),
+                        fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호 (@NotBlank, 8자 이상 72자 이하)"),
+                        fieldWithPath("passwordConfirm").type(JsonFieldType.STRING).description("비밀번호 확인 (@NotBlank)"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름 (@NotBlank, 최대 50자)"),
+                        fieldWithPath("phone").type(JsonFieldType.STRING).description("전화번호 (@NotBlank, 숫자만 9~20자리)"),
+                        fieldWithPath("role").type(JsonFieldType.STRING).description("역할 (@NotNull, MemberRole 값)"),
+                        fieldWithPath("agreements.age14OrOlder").type(JsonFieldType.BOOLEAN).description("만 14세 이상 동의 (@NotNull)"),
+                        fieldWithPath("agreements.termsOfService").type(JsonFieldType.BOOLEAN).description("서비스 이용약관 동의 (@NotNull)"),
+                        fieldWithPath("agreements.privacyCollection").type(JsonFieldType.BOOLEAN).description("개인정보 수집 동의 (@NotNull)"),
                         fieldWithPath("agreements.marketing").type(JsonFieldType.BOOLEAN).optional().description("마케팅 수신 동의 (선택)")
                     )
                     .responseFields(successEnvelopeFields(

@@ -330,10 +330,16 @@ class ProductControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("상품")
                     .summary("상품 상태 변경")
-                    .description("상품 상태를 변경합니다. 허용 전이: DRAFT→ON_SALE|HIDDEN, ON_SALE→SOLD_OUT|HIDDEN, SOLD_OUT→ON_SALE|HIDDEN, HIDDEN→ON_SALE|DRAFT")
+                    .description("상품 상태를 변경합니다.\n\n"
+                        + enumTable("ProductStatus", entries(
+                            "DRAFT", "초안 (비공개)",
+                            "ON_SALE", "판매 중",
+                            "SOLD_OUT", "품절",
+                            "HIDDEN", "숨김"
+                        )))
                     .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
-                        fieldWithPath("status").type(JsonFieldType.STRING).description("변경할 상태 (ON_SALE/SOLD_OUT/HIDDEN/DRAFT)")
+                        fieldWithPath("status").type(JsonFieldType.STRING).description("변경할 상태 (@NotNull, ProductStatus 값)")
                     )
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data").type(JsonFieldType.NULL).description("데이터 없음")

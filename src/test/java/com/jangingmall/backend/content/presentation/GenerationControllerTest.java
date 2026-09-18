@@ -8,6 +8,7 @@ import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.docs.RestDocsControllerTest;
 import com.jangingmall.backend.global.exception.ForbiddenException;
+import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(GenerationController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, GlobalExceptionHandler.class})
 class GenerationControllerTest extends RestDocsControllerTest {
 
     @MockitoBean
@@ -54,7 +55,7 @@ class GenerationControllerTest extends RestDocsControllerTest {
     private static final org.springframework.restdocs.payload.FieldDescriptor[] GENERATION_FIELDS = {
         fieldWithPath("data.generationId").type(JsonFieldType.NUMBER).description("생성 요청 ID"),
         fieldWithPath("data.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
-        fieldWithPath("data.status").type(JsonFieldType.STRING).description("생성 상태 (PROCESSING | COMPLETED | FAILED)"),
+        fieldWithPath("data.status").type(JsonFieldType.STRING).description("생성 상태"),
         fieldWithPath("data.requestedAt").type(JsonFieldType.STRING).description("요청 시각"),
         fieldWithPath("data.completedAt").type(JsonFieldType.STRING).optional().description("완료 시각 (PROCESSING이면 null)"),
     };
@@ -76,11 +77,18 @@ class GenerationControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("AI 콘텐츠 생성")
                     .summary("AI 상세페이지 생성 요청")
-                    .description("상품 이미지·정보를 AI에 전송하여 상세페이지 콘텐츠 생성을 요청합니다. 즉시 202를 반환하고 생성은 비동기로 처리됩니다.")
+                    .description("상품 이미지·정보를 AI에 전송하여 상세페이지 콘텐츠 생성을 요청합니다. 즉시 202를 반환하고 생성은 비동기로 처리됩니다.\n\n"
+                        + enumTable("GenerationStatus", entries(
+                            "QUEUED", "대기 중",
+                            "PROCESSING", "처리 중",
+                            "ANALYZING", "분석 중",
+                            "COMPLETED", "완료",
+                            "FAILED", "실패"
+                        )))
                     .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
-                        fieldWithPath("images").type(JsonFieldType.ARRAY).description("S3 이미지 ID 목록"),
-                        fieldWithPath("productName").type(JsonFieldType.STRING).description("상품명"),
+                        fieldWithPath("images").type(JsonFieldType.ARRAY).description("S3 이미지 ID 목록 (최대 8장)"),
+                        fieldWithPath("productName").type(JsonFieldType.STRING).description("작품명 (최대 15자)"),
                         fieldWithPath("howMade").type(JsonFieldType.STRING).description("제작 과정"),
                         fieldWithPath("careTips").type(JsonFieldType.STRING).description("관리 방법")
                     )
@@ -101,6 +109,29 @@ class GenerationControllerTest extends RestDocsControllerTest {
                 .content(json(new GenerationRequest.Create(List.of("imageId1"), "청자 다완", "손으로 빚음", "물 닦기"))))
             .andExpect(status().isForbidden())
             .andDo(documentError("generation-request-forbidden", "AI 콘텐츠 생성", "AI 생성 요청 — 권한 없음", "소유자가 아닌 장인이 요청한 경우입니다."));
+    }
+
+    @Test
+    @DisplayName("AI 콘텐츠 생성 요청 — 이미지 9장 이상이면 400을 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void requestTooManyImages() throws Exception {
+        List<String> nineImages = List.of("img1", "img2", "img3", "img4", "img5", "img6", "img7", "img8", "img9");
+        mockMvc.perform(post("/api/content/products/{productId}/generations", 10L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new GenerationRequest.Create(nineImages, "청자 다완", "손으로 직접 빚음", "물기 닦아서 보관"))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errorCode").value("INVALID_INPUT"));
+    }
+
+    @Test
+    @DisplayName("AI 콘텐츠 생성 요청 — 작품명 16자 이상이면 400을 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void requestProductNameTooLong() throws Exception {
+        mockMvc.perform(post("/api/content/products/{productId}/generations", 10L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json(new GenerationRequest.Create(List.of("imageId1"), "일이삼사오육칠팔구십일이삼사오육", "손으로 직접 빚음", "물기 닦아서 보관"))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.errorCode").value("INVALID_INPUT"));
     }
 
     @Test

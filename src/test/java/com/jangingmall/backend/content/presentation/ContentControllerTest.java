@@ -93,7 +93,7 @@ class ContentControllerTest extends RestDocsControllerTest {
     private static final org.springframework.restdocs.payload.FieldDescriptor[] DETAIL_FIELDS = {
         fieldWithPath("data.contentId").type(JsonFieldType.NUMBER).description("콘텐츠 ID"),
         fieldWithPath("data.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
-        fieldWithPath("data.status").type(JsonFieldType.STRING).description("콘텐츠 상태 (DRAFT | PENDING_REVIEW | APPROVED | REJECTED | PUBLISHED)"),
+        fieldWithPath("data.status").type(JsonFieldType.STRING).description("콘텐츠 상태"),
         fieldWithPath("data.version").type(JsonFieldType.NUMBER).description("버전 번호"),
         subsectionWithPath("data.reactDocument").type(JsonFieldType.OBJECT).optional().description("AI가 생성한 react_document AST. schemaVersion, canvasWidth, root[] 구조"),
     };
@@ -114,7 +114,17 @@ class ContentControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("콘텐츠")
                     .summary("콘텐츠 조회")
-                    .description("AI가 생성한 react_document를 조회합니다. reactDocument 필드는 AI 완료 전까지 null입니다.")
+                    .description("AI가 생성한 react_document를 조회합니다. reactDocument 필드는 AI 완료 전까지 null입니다.\n\n"
+                        + enumTables(
+                            enumTable("ContentStatus", entries(
+                                "DRAFT", "AI 생성 초안",
+                                "PENDING_REVIEW", "관리자 검토 요청",
+                                "APPROVED", "승인됨",
+                                "REJECTED", "반려됨",
+                                "PUBLISHED", "게시됨"
+                            )),
+                            enumTable("EditedByType", entries("AI", "AI 생성", "ARTISAN", "장인 편집"))
+                        ))
                     .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(DETAIL_FIELDS))
                     .build()
