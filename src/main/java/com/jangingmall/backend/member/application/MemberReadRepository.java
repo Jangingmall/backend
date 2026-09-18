@@ -9,8 +9,9 @@ import org.springframework.data.domain.Pageable;
 public interface MemberReadRepository {
     Page<SellerApplicationData> applications(Pageable pageable, String status);
     Page<Map<String, Object>> wishes(Long memberId, Pageable pageable);
-    Page<Map<String, Object>> orders(Long memberId, Pageable pageable, String status);
+    Page<Map<String, Object>> orders(Long memberId, Pageable pageable, String status, String from, String to, String artisanName);
     Optional<Map<String, Object>> order(Long memberId, Long orderId);
+    Map<String, Object> orderSummary(Long memberId);
     Page<Map<String, Object>> reviews(Long memberId, Pageable pageable, boolean writable);
     Page<Map<String, Object>> recentViews(Long memberId, Pageable pageable);
     Page<Map<String, Object>> artisans(Pageable pageable, String certification, String category, String initial, String sort);

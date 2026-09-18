@@ -41,7 +41,7 @@ class MemberReadRepositoryJpaIntegrationTest {
 
         assertThat(reads.applications(pageable, "ALL").getContent()).isEmpty();
         assertThat(reads.wishes(999L, pageable).getContent()).isEmpty();
-        assertThat(reads.orders(999L, pageable, "ALL").getContent()).isEmpty();
+        assertThat(reads.orders(999L, pageable, "ALL", null, null, null).getContent()).isEmpty();
         assertThat(reads.order(999L, 999L)).isEmpty();
         assertThat(reads.reviews(999L, pageable, false).getContent()).isEmpty();
         assertThat(reads.reviews(999L, pageable, true).getContent()).isEmpty();
