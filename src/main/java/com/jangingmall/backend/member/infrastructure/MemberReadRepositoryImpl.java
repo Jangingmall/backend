@@ -2,9 +2,7 @@ package com.jangingmall.backend.member.infrastructure;
 
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
-import com.jangingmall.backend.member.application.CursorPage;
 import com.jangingmall.backend.member.application.MemberReadRepository;
-import com.jangingmall.backend.member.application.PageRequest;
 import com.jangingmall.backend.member.application.SellerApplicationData;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,15 +21,12 @@ import com.jangingmall.backend.product.domain.ProductStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -56,21 +51,22 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
     }
 
     @Override
-    public CursorPage<SellerApplicationData> applications(PageRequest page, String status) {
+    public Page<SellerApplicationData> applications(Pageable pageable, String status) {
         SellerApplication.Status filter = applicationStatus(status);
         String condition = filter == null ? "" : " AND a.status=:status";
         var query = entityManager.createQuery(
-                "SELECT a FROM SellerApplication a WHERE a.id<:id" + condition + " ORDER BY a.id DESC",
+                "SELECT a FROM SellerApplication a WHERE 1=1" + condition + " ORDER BY a.id DESC",
                 SellerApplication.class)
-            .setParameter("id", page.beforeId()).setMaxResults(page.limit() + 1);
+            .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize());
         var count = entityManager.createQuery(
             "SELECT count(a) FROM SellerApplication a WHERE 1=1" + condition, Long.class);
         if (filter != null) {
             query.setParameter("status", filter);
             count.setParameter("status", filter);
         }
-        return cursorPage(query.getResultList(), page.limit(), SellerApplication::getId,
-            SellerApplicationData::from, count.getSingleResult());
+        List<SellerApplicationData> items = query.getResultList().stream()
+            .map(SellerApplicationData::from).toList();
+        return new PageImpl<>(items, pageable, count.getSingleResult());
     }
 
     @Override
@@ -129,48 +125,33 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
     }
 
     @Override
-    public CursorPage<Map<String, Object>> recentViews(Long memberId, String cursor, int limit) {
-        String scope = "recent-" + memberId;
-        ProjectionCursor after = ProjectionCursor.parse(cursor, scope, limit);
-        LocalDateTime viewedAt = cursor == null ? LocalDateTime.of(9999, 12, 31, 23, 59, 59)
-            : LocalDateTime.ofEpochSecond(after.value().longValue(), 0, ZoneOffset.UTC);
+    public Page<Map<String, Object>> recentViews(Long memberId, Pageable pageable) {
         String joins = " FROM RecentView rv, Product p, ArtisanProfile a, Member m"
             + " WHERE rv.productId=p.id AND p.artisanId=a.id AND m.id=a.id"
             + " AND rv.memberId=:memberId AND p.status IN :statuses"
             + " AND m.status=:active AND a.certificationStatus=:approved";
         List<Object[]> rows = entityManager.createQuery(
-                "SELECT rv,p,a" + joins
-                    + " AND (rv.viewedAt<:viewedAt OR (rv.viewedAt=:viewedAt AND rv.id<:before))"
-                    + " ORDER BY rv.viewedAt DESC,rv.id DESC", Object[].class)
+                "SELECT rv,p,a" + joins + " ORDER BY rv.viewedAt DESC,rv.id DESC", Object[].class)
             .setParameter("memberId", memberId).setParameter("statuses", VISIBLE_PRODUCTS)
             .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", APPROVED)
-            .setParameter("viewedAt", viewedAt).setParameter("before", after.id())
-            .setMaxResults(limit + 1).getResultList();
+            .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
+            .getResultList();
         long total = entityManager.createQuery("SELECT count(rv)" + joins, Long.class)
             .setParameter("memberId", memberId).setParameter("statuses", VISIBLE_PRODUCTS)
             .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", APPROVED)
             .getSingleResult();
-        boolean more = rows.size() > limit;
-        List<Object[]> kept = rows.stream().limit(limit).toList();
-        List<Map<String, Object>> items = kept.stream().map(row -> {
+        List<Map<String, Object>> items = rows.stream().map(row -> {
             RecentView view = (RecentView) row[0];
             Map<String, Object> value = product((Product) row[1], (ArtisanProfile) row[2]);
             value.put("viewedAt", view.getViewedAt());
             return value;
         }).toList();
-        String next = null;
-        if (more) {
-            RecentView last = (RecentView) kept.getLast()[0];
-            next = new ProjectionCursor(
-                BigDecimal.valueOf(last.getViewedAt().toEpochSecond(ZoneOffset.UTC)), last.getId()).encode(scope);
-        }
-        return new CursorPage<>(items, next, more, total);
+        return new PageImpl<>(items, pageable, total);
     }
 
     @Override
-    public CursorPage<Map<String, Object>> artisans(String cursor, int limit, String certification,
+    public Page<Map<String, Object>> artisans(Pageable pageable, String certification,
             String category, String initial, String sort) {
-        ProjectionCursor after = ProjectionCursor.parse(cursor, sort, limit);
         String metric = artisanMetric(sort);
         StringBuilder where = new StringBuilder(
             " FROM ArtisanProfile a, Member m WHERE m.id=a.id AND m.status=:active"
@@ -186,41 +167,20 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
             case "RECENTLY_JOINED" -> "m.createdAt";
             default -> throw new DomainException(ErrorCode.INVALID_INPUT);
         };
-        String cursorCondition;
-        LocalDateTime joinedBefore = null;
-        if ("RECENTLY_JOINED".equals(metric)) {
-            joinedBefore = cursor == null ? LocalDateTime.of(9999, 12, 31, 23, 59, 59)
-                : LocalDateTime.ofEpochSecond(after.value().longValue(), 0, ZoneOffset.UTC);
-            cursorCondition = " AND (m.createdAt<:metricBefore OR (m.createdAt=:metricBefore AND a.id<:before))";
-        } else {
-            cursorCondition = " AND (" + expression + "<:value OR (" + expression + "=:value AND a.id<:before))";
-        }
+
         var query = entityManager.createQuery(
-            "SELECT a,m," + expression + where + cursorCondition
+            "SELECT a,m," + expression + where
                 + " ORDER BY " + expression + " DESC,a.id DESC", Object[].class);
         setArtisanParameters(query, certification, category, range, "MOST_PRODUCTS".equals(metric));
-        query.setParameter("before", after.id()).setMaxResults(limit + 1);
-        if ("RECENTLY_JOINED".equals(metric)) query.setParameter("metricBefore", joinedBefore);
-        else if ("MOST_PRODUCTS".equals(metric)) query.setParameter("value", after.value().longValue());
-        else query.setParameter("value", after.value());
+        query.setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize());
         List<Object[]> rows = query.getResultList();
 
         var count = entityManager.createQuery("SELECT count(a)" + where, Long.class);
         setArtisanParameters(count, certification, category, range, false);
         long total = count.getSingleResult();
-        boolean more = rows.size() > limit;
-        List<Object[]> kept = rows.stream().limit(limit).toList();
-        List<Map<String, Object>> items = kept.stream()
+        List<Map<String, Object>> items = rows.stream()
             .map(row -> artisan((ArtisanProfile) row[0], ((Number) row[2]).longValue())).toList();
-        String next = null;
-        if (more) {
-            Object[] last = kept.getLast();
-            BigDecimal value = "RECENTLY_JOINED".equals(metric)
-                ? BigDecimal.valueOf(((Member) last[1]).getCreatedAt().toEpochSecond(ZoneOffset.UTC))
-                : new BigDecimal(last[2].toString());
-            next = new ProjectionCursor(value, ((ArtisanProfile) last[0]).getId()).encode(sort);
-        }
-        return new CursorPage<>(items, next, more, total);
+        return new PageImpl<>(items, pageable, total);
     }
 
     @Override
@@ -235,27 +195,30 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
     }
 
     @Override
-    public CursorPage<Map<String, Object>> subscriptions(Long memberId, PageRequest page) {
+    public Page<Map<String, Object>> subscriptions(Long memberId, Pageable pageable) {
         String joins = " FROM ArtisanSubscription s, ArtisanProfile a, Member m"
-            + " WHERE s.artisanId=a.id AND m.id=a.id AND s.memberId=:memberId AND s.id<:before"
+            + " WHERE s.artisanId=a.id AND m.id=a.id AND s.memberId=:memberId"
             + " AND m.status=:active AND m.role=:artisanRole AND a.certificationStatus=:approved";
         List<Object[]> rows = entityManager.createQuery(
                 "SELECT s,a" + joins + " ORDER BY s.id DESC", Object[].class)
-            .setParameter("memberId", memberId).setParameter("before", page.beforeId())
+            .setParameter("memberId", memberId)
             .setParameter("active", MemberStatus.ACTIVE).setParameter("artisanRole", MemberRole.ARTISAN)
-            .setParameter("approved", APPROVED).setMaxResults(page.limit() + 1).getResultList();
+            .setParameter("approved", APPROVED)
+            .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
+            .getResultList();
         long total = entityManager.createQuery("SELECT count(s)" + joins, Long.class)
-            .setParameter("memberId", memberId).setParameter("before", Long.MAX_VALUE)
+            .setParameter("memberId", memberId)
             .setParameter("active", MemberStatus.ACTIVE).setParameter("artisanRole", MemberRole.ARTISAN)
             .setParameter("approved", APPROVED).getSingleResult();
-        return cursorPage(rows, page.limit(), row -> ((ArtisanSubscription) row[0]).getId(), row -> {
+        List<Map<String, Object>> items = rows.stream().map(row -> {
             ArtisanSubscription subscription = (ArtisanSubscription) row[0];
             ArtisanProfile profile = (ArtisanProfile) row[1];
             Map<String, Object> value = artisan(profile, visibleProductCount(profile.getId()));
             value.put("notificationsEnabled", subscription.isNotificationsEnabled());
             value.put("newProductCount", newProductCount(profile.getId(), subscription.getCreatedAt()));
             return value;
-        }, total);
+        }).toList();
+        return new PageImpl<>(items, pageable, total);
     }
 
     @Override
@@ -450,15 +413,6 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
         String resolved = url.startsWith("http://") || url.startsWith("https://")
             ? url : cdn + "/" + url.replaceFirst("^/+", "");
         return List.of(Map.of("url", resolved));
-    }
-
-    private <T, R> CursorPage<R> cursorPage(List<T> rows, int limit, Function<T, Long> id,
-            Function<T, R> mapper, long total) {
-        boolean more = rows.size() > limit;
-        List<T> kept = rows.stream().limit(limit).toList();
-        List<R> items = kept.stream().map(mapper).toList();
-        String next = more ? PageRequest.encode(id.apply(kept.getLast())) : null;
-        return new CursorPage<>(items, next, more, total);
     }
 
     private void setArtisanParameters(Query query, String certification, String category,

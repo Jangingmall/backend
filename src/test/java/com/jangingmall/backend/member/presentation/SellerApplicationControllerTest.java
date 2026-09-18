@@ -18,8 +18,9 @@ import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.docs.RestDocsControllerTest;
 import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
-import com.jangingmall.backend.member.application.CursorPage;
 import com.jangingmall.backend.member.application.SellerApplicationData;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import com.jangingmall.backend.member.application.SellerApplicationPipelineResult;
 import com.jangingmall.backend.member.application.SellerApplicationService;
 import com.jangingmall.backend.member.domain.SellerApplication;
@@ -102,39 +103,43 @@ class SellerApplicationControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("관리자 — 판매자 신청 목록 조회는 커서 페이지로 반환한다")
+    @DisplayName("관리자 — 판매자 신청 목록 조회는 페이지로 반환한다")
     void listApplicationsAsAdmin() throws Exception {
-        CursorPage<SellerApplicationData> page = new CursorPage<>(List.of(SAMPLE), null, false, 1L);
+        Page<SellerApplicationData> page = new PageImpl<>(List.of(SAMPLE));
         when(applications.list(eq(99L), any(), any())).thenReturn(page);
 
         mockMvc.perform(get("/api/admin/seller-applications").with(admin())
-                .param("limit", "20"))
+                .param("page", "0")
+                .param("size", "20"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.items").isArray())
+            .andExpect(jsonPath("$.data.content").isArray())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "seller-application-admin-list",
                 resource(ResourceSnippetParameters.builder()
                     .tag("판매자 신청 (관리자)")
                     .summary("판매자 신청 목록 (관리자)")
-                    .description("전체 판매자 신청 목록을 커서 페이지네이션으로 반환합니다.")
+                    .description("전체 판매자 신청 목록을 페이지네이션으로 반환합니다.")
                     .responseFields(successEnvelopeFields(
-                        fieldWithPath("data.items").type(JsonFieldType.ARRAY).description("신청 목록"),
-                        fieldWithPath("data.items[].applicationId").type(JsonFieldType.NUMBER).description("신청 ID"),
-                        fieldWithPath("data.items[].memberId").type(JsonFieldType.NUMBER).description("신청 회원 ID"),
-                        fieldWithPath("data.items[].businessName").type(JsonFieldType.STRING).description("공방명"),
-                        fieldWithPath("data.items[].status").type(JsonFieldType.STRING).description("신청 상태 (PENDING/APPROVED/REJECTED)"),
-                        fieldWithPath("data.items[].submittedAt").type(JsonFieldType.STRING).description("신청 일시"),
-                        fieldWithPath("data.items[].introduction").type(JsonFieldType.STRING).description("소개"),
-                        fieldWithPath("data.items[].businessLicenseImageUrl").type(JsonFieldType.STRING).description("사업자 등록증 이미지 URL"),
-                        fieldWithPath("data.items[].rejectReason").type(JsonFieldType.STRING).optional().description("거절 사유"),
-                        fieldWithPath("data.items[].pipeline.documentReview").type(JsonFieldType.STRING).description("서류 심사 단계"),
-                        fieldWithPath("data.items[].pipeline.craftsmanshipReview").type(JsonFieldType.STRING).description("장인성 심사 단계"),
-                        fieldWithPath("data.items[].pipeline.digitalConversion").type(JsonFieldType.STRING).description("디지털 전환 단계"),
-                        fieldWithPath("data.items[].pipeline.orderSystemIntegration").type(JsonFieldType.STRING).description("주문 시스템 연동 단계"),
-                        fieldWithPath("data.items[].qualificationTier").type(JsonFieldType.STRING).optional().description("자격 등급"),
-                        fieldWithPath("data.nextCursor").type(JsonFieldType.STRING).optional().description("다음 페이지 커서"),
-                        fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
-                        fieldWithPath("data.totalCount").type(JsonFieldType.NUMBER).description("전체 신청 수")
+                        fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("신청 목록"),
+                        fieldWithPath("data.content[].applicationId").type(JsonFieldType.NUMBER).description("신청 ID"),
+                        fieldWithPath("data.content[].memberId").type(JsonFieldType.NUMBER).description("신청 회원 ID"),
+                        fieldWithPath("data.content[].businessName").type(JsonFieldType.STRING).description("공방명"),
+                        fieldWithPath("data.content[].status").type(JsonFieldType.STRING).description("신청 상태 (PENDING/APPROVED/REJECTED)"),
+                        fieldWithPath("data.content[].submittedAt").type(JsonFieldType.STRING).description("신청 일시"),
+                        fieldWithPath("data.content[].introduction").type(JsonFieldType.STRING).description("소개"),
+                        fieldWithPath("data.content[].businessLicenseImageUrl").type(JsonFieldType.STRING).description("사업자 등록증 이미지 URL"),
+                        fieldWithPath("data.content[].rejectReason").type(JsonFieldType.STRING).optional().description("거절 사유"),
+                        fieldWithPath("data.content[].pipeline.documentReview").type(JsonFieldType.STRING).description("서류 심사 단계"),
+                        fieldWithPath("data.content[].pipeline.craftsmanshipReview").type(JsonFieldType.STRING).description("장인성 심사 단계"),
+                        fieldWithPath("data.content[].pipeline.digitalConversion").type(JsonFieldType.STRING).description("디지털 전환 단계"),
+                        fieldWithPath("data.content[].pipeline.orderSystemIntegration").type(JsonFieldType.STRING).description("주문 시스템 연동 단계"),
+                        fieldWithPath("data.content[].qualificationTier").type(JsonFieldType.STRING).optional().description("자격 등급"),
+                        fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 신청 수"),
+                        fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                        fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지(0-based)"),
+                        fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                        fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
+                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
                     ))
                     .build()
                 )

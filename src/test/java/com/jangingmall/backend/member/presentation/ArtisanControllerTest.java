@@ -18,9 +18,10 @@ import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.docs.RestDocsControllerTest;
 import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
 import com.jangingmall.backend.member.application.ArtisanService;
-import com.jangingmall.backend.member.application.CursorPage;
 import java.util.List;
 import java.util.Map;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -48,33 +49,37 @@ class ArtisanControllerTest extends RestDocsControllerTest {
     );
 
     @Test
-    @DisplayName("장인 목록 조회는 커서 페이지로 반환한다")
+    @DisplayName("장인 목록 조회는 페이지로 반환한다")
     void listArtisans() throws Exception {
-        CursorPage<Map<String, Object>> page = new CursorPage<>(List.of(ARTISAN_ITEM), null, false, 1L);
-        when(artisans.list(any(), any(Integer.class), any(), any(), any(), any())).thenReturn(page);
+        Page<Map<String, Object>> page = new PageImpl<>(List.of(ARTISAN_ITEM));
+        when(artisans.list(any(), any(), any(), any(), any())).thenReturn(page);
 
         mockMvc.perform(get("/api/member/artisans")
-                .param("limit", "20")
+                .param("page", "0")
+                .param("size", "20")
                 .param("sort", "POPULAR"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.items").isArray())
+            .andExpect(jsonPath("$.data.content").isArray())
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "artisan-list",
                 resource(ResourceSnippetParameters.builder()
                     .tag("장인")
                     .summary("장인 목록 조회")
-                    .description("장인 목록을 커서 페이지네이션으로 반환합니다. sort 값: POPULAR, MOST_PRODUCTS, RECENTLY_JOINED")
+                    .description("장인 목록을 페이지네이션으로 반환합니다. sort 값: POPULAR, MOST_PRODUCTS, RECENTLY_JOINED")
                     .responseFields(successEnvelopeFields(
-                        fieldWithPath("data.items").type(JsonFieldType.ARRAY).description("장인 목록"),
-                        fieldWithPath("data.items[].artisanId").type(JsonFieldType.NUMBER).description("장인 ID"),
-                        fieldWithPath("data.items[].businessName").type(JsonFieldType.STRING).description("공방명"),
-                        fieldWithPath("data.items[].category").type(JsonFieldType.STRING).description("카테고리"),
-                        fieldWithPath("data.items[].region").type(JsonFieldType.STRING).description("지역"),
-                        fieldWithPath("data.items[].careerYears").type(JsonFieldType.NUMBER).description("경력 연수"),
-                        fieldWithPath("data.items[].introduction").type(JsonFieldType.STRING).description("소개"),
-                        fieldWithPath("data.nextCursor").type(JsonFieldType.STRING).optional().description("다음 페이지 커서"),
-                        fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
-                        fieldWithPath("data.totalCount").type(JsonFieldType.NUMBER).description("전체 장인 수")
+                        fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("장인 목록"),
+                        fieldWithPath("data.content[].artisanId").type(JsonFieldType.NUMBER).description("장인 ID"),
+                        fieldWithPath("data.content[].businessName").type(JsonFieldType.STRING).description("공방명"),
+                        fieldWithPath("data.content[].category").type(JsonFieldType.STRING).description("카테고리"),
+                        fieldWithPath("data.content[].region").type(JsonFieldType.STRING).description("지역"),
+                        fieldWithPath("data.content[].careerYears").type(JsonFieldType.NUMBER).description("경력 연수"),
+                        fieldWithPath("data.content[].introduction").type(JsonFieldType.STRING).description("소개"),
+                        fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 장인 수"),
+                        fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                        fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지(0-based)"),
+                        fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                        fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
+                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
                     ))
                     .build()
                 )

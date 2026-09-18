@@ -42,10 +42,10 @@ public class MemberActivityController {
     }
 
     @GetMapping("/recent-views")
-    public CursorPage<Map<String, Object>> recent(@AuthenticationPrincipal Long memberId,
-                                                 @RequestParam(required = false) String cursor,
-                                                 @RequestParam(defaultValue = "20") int limit) {
-        return activities.recentViews(memberId, cursor, limit);
+    public org.springframework.data.domain.Page<Map<String, Object>> recent(
+            @AuthenticationPrincipal Long memberId,
+            @org.springframework.data.web.PageableDefault(size = 20) org.springframework.data.domain.Pageable pageable) {
+        return activities.recentViews(memberId, pageable);
     }
 
     @PostMapping("/artisans/{artisanId}/subscribe")
@@ -61,10 +61,10 @@ public class MemberActivityController {
     }
 
     @GetMapping("/artisans/subscriptions")
-    public CursorPage<Map<String, Object>> subscriptions(@AuthenticationPrincipal Long memberId,
-                                                        @RequestParam(required = false) String cursor,
-                                                        @RequestParam(defaultValue = "20") int limit) {
-        return activities.subscriptions(memberId, PageRequest.from(cursor, limit));
+    public org.springframework.data.domain.Page<Map<String, Object>> subscriptions(
+            @AuthenticationPrincipal Long memberId,
+            @org.springframework.data.web.PageableDefault(size = 20) org.springframework.data.domain.Pageable pageable) {
+        return activities.subscriptions(memberId, pageable);
     }
 
     @PatchMapping("/artisans/subscriptions/notifications")

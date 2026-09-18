@@ -4,6 +4,8 @@ import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.member.domain.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,9 +34,9 @@ public class SellerApplicationService {
     }
 
     @Transactional(readOnly = true)
-    public CursorPage<SellerApplicationData> list(Long adminId, PageRequest page, String status) {
+    public Page<SellerApplicationData> list(Long adminId, Pageable pageable, String status) {
         access.requireRole(adminId, MemberRole.ADMIN);
-        return reads.applications(page, status);
+        return reads.applications(pageable, status);
     }
 
     @Transactional(readOnly = true)

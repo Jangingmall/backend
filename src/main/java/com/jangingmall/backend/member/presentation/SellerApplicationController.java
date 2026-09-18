@@ -27,11 +27,11 @@ public class SellerApplicationController {
     }
 
     @GetMapping("/api/admin/seller-applications")
-    public CursorPage<SellerApplicationData> list(@AuthenticationPrincipal Long memberId,
-                                                 @RequestParam(required = false) String cursor,
-                                                 @RequestParam(defaultValue = "20") int limit,
-                                                 @RequestParam(required = false) String status) {
-        return applications.list(memberId, PageRequest.from(cursor, limit), status);
+    public org.springframework.data.domain.Page<SellerApplicationData> list(
+            @AuthenticationPrincipal Long memberId,
+            @org.springframework.data.web.PageableDefault(size = 20) org.springframework.data.domain.Pageable pageable,
+            @RequestParam(required = false) String status) {
+        return applications.list(memberId, pageable, status);
     }
 
     @GetMapping("/api/admin/seller-applications/{applicationId}")
