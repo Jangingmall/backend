@@ -211,4 +211,47 @@ class UserJourneyE2ETest {
     void contextLoads() {
         assertThat(port).isGreaterThan(0);
     }
+
+    @Test
+    @DisplayName("키워드 검색 — 등록된 상품이 검색 결과에 포함된다")
+    void keywordSearchReturnsProduct() throws Exception {
+        Long productId = createProduct();
+
+        HttpResponse<String> res = get("/api/products?keyword=청자", userToken);
+        assertThat(res.statusCode()).isEqualTo(200);
+
+        Map<String, Object> body = objectMapper.readValue(res.body(), Map.class);
+        @SuppressWarnings("unchecked")
+        Map<String, Object> pageData = (Map<String, Object>) body.get("data");
+        @SuppressWarnings("unchecked")
+        List<?> items = (List<?>) pageData.get("content");
+        assertThat(items).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("키워드 검색 — 매칭 없으면 빈 목록이 반환된다")
+    void keywordSearchNoMatch() throws Exception {
+        HttpResponse<String> res = get("/api/products?keyword=존재하지않는상품XYZ", userToken);
+        assertThat(res.statusCode()).isEqualTo(200);
+
+        Map<String, Object> body = objectMapper.readValue(res.body(), Map.class);
+        @SuppressWarnings("unchecked")
+        Map<String, Object> pageData = (Map<String, Object>) body.get("data");
+        @SuppressWarnings("unchecked")
+        List<?> items = (List<?>) pageData.get("content");
+        assertThat(items).isEmpty();
+    }
+
+    @Test
+    @DisplayName("상품 상세 조회 — ON_SALE 상품은 인증 없이 조회된다")
+    void productDetailPublicAccess() throws Exception {
+        Long productId = createProduct();
+
+        HttpResponse<String> res = get("/api/products/" + productId, null);
+        assertThat(res.statusCode()).isEqualTo(200);
+
+        Map<String, Object> productData = data(res);
+        assertThat(productData.get("productId").toString()).isEqualTo(productId.toString());
+        assertThat(productData.get("status")).isEqualTo("ON_SALE");
+    }
 }
