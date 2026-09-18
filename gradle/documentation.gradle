@@ -268,7 +268,8 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
                 technique : [maxLength: 100]
             ],
             'generation-request': [
-                productName: [maxLength: 255]
+                images     : [maxItems: 8],
+                productName: [maxLength: 15]
             ],
             'signup': [
                 email   : [maxLength: 255],
@@ -299,6 +300,8 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
             } else if (fieldConstraints.maxLength != null) {
                 parts << "최대 ${fieldConstraints.maxLength}자"
             }
+            if (fieldConstraints.maxItems != null) parts << "최대 ${fieldConstraints.maxItems}개"
+            if (fieldConstraints.minItems != null) parts << "${fieldConstraints.minItems}개 이상"
             if (fieldConstraints.pattern) parts << "형식: ${fieldConstraints.pattern}"
             if (fieldConstraints.items?.maxLength) parts << "항목 최대 ${fieldConstraints.items.maxLength}자"
             parts.join(', ')
@@ -660,6 +663,12 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
             'interview-find'            : 'ARTISAN',
             'interview-create'          : 'ARTISAN',
             'interview-update'          : 'ARTISAN',
+            // ADMIN 권한
+            'seller-application-admin-' : 'ADMIN',
+            'seller-application-approve': 'ADMIN',
+            'seller-application-reject' : 'ADMIN',
+            'seller-application-pipeline-update': 'ADMIN',
+            'image-verify'              : 'ADMIN',
         ]
 
         def resolveRole = { String oid ->
