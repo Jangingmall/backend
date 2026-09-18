@@ -244,13 +244,29 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("주문")
                     .summary("주문 목록 조회")
-                    .description("""
-                        유저의 주문 목록을 페이지네이션으로 반환합니다.
-                        status 허용값: ALL · CREATED(결제대기) · PAID(결제완료) · PAYMENT_FAILED(결제실패) \
-                        · CANCELED(취소) · IN_DELIVERY(배송중) · DELIVERED(배송완료) · RETURN_REQUESTED(교환/환불신청)
-                        returnInfo: status=RETURN_REQUESTED인 주문에만 포함됩니다.
-                        returnInfo.type — RETURN(환불) | EXCHANGE(교환)
-                        returnInfo.status — REQUESTED(신청) | APPROVED(승인) | REJECTED(불가) | COMPLETED(완료)""")
+                    .description("유저의 주문 목록을 페이지네이션으로 반환합니다.\n"
+                        + "returnInfo는 status=RETURN_REQUESTED인 주문에만 포함됩니다.\n\n"
+                        + enumTables(
+                            enumTable("OrderStatus", entries(
+                                "CREATED",          "결제 대기",
+                                "PAID",             "결제 완료 / 상품 준비 중",
+                                "PAYMENT_FAILED",   "결제 실패",
+                                "CANCELED",         "취소",
+                                "IN_DELIVERY",      "배송 중",
+                                "DELIVERED",        "배송 완료",
+                                "RETURN_REQUESTED", "교환/환불 신청"
+                            )),
+                            enumTable("returnInfo.type", entries(
+                                "RETURN",   "환불",
+                                "EXCHANGE", "교환"
+                            )),
+                            enumTable("returnInfo.status", entries(
+                                "REQUESTED", "신청",
+                                "APPROVED",  "승인",
+                                "REJECTED",  "불가",
+                                "COMPLETED", "완료"
+                            ))
+                        ))
                     .queryParameters(
                         parameterWithName("status").description("주문 상태 필터 (기본: ALL)").optional(),
                         parameterWithName("from").description("조회 시작일 (ISO 8601 date, 예: 2026-01-01)").optional(),
@@ -327,11 +343,29 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("주문")
                     .summary("주문 상세 조회")
-                    .description("""
-                        주문 ID로 특정 주문의 상세 정보를 반환합니다.
-                        returnInfo: status=RETURN_REQUESTED인 주문에만 포함됩니다.
-                        returnInfo.type — RETURN(환불) | EXCHANGE(교환)
-                        returnInfo.status — REQUESTED(신청) | APPROVED(승인) | REJECTED(불가) | COMPLETED(완료)""")
+                    .description("주문 ID로 특정 주문의 상세 정보를 반환합니다.\n"
+                        + "returnInfo는 status=RETURN_REQUESTED인 주문에만 포함됩니다.\n\n"
+                        + enumTables(
+                            enumTable("OrderStatus", entries(
+                                "CREATED",          "결제 대기",
+                                "PAID",             "결제 완료 / 상품 준비 중",
+                                "PAYMENT_FAILED",   "결제 실패",
+                                "CANCELED",         "취소",
+                                "IN_DELIVERY",      "배송 중",
+                                "DELIVERED",        "배송 완료",
+                                "RETURN_REQUESTED", "교환/환불 신청"
+                            )),
+                            enumTable("returnInfo.type", entries(
+                                "RETURN",   "환불",
+                                "EXCHANGE", "교환"
+                            )),
+                            enumTable("returnInfo.status", entries(
+                                "REQUESTED", "신청",
+                                "APPROVED",  "승인",
+                                "REJECTED",  "불가",
+                                "COMPLETED", "완료"
+                            ))
+                        ))
                     .pathParameters(
                         parameterWithName("orderId").description("주문 ID").type(SimpleType.INTEGER)
                     )
@@ -411,7 +445,15 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("주문")
                     .summary("주문 상태별 집계 조회")
-                    .description("최근 3개월 주문을 상태별로 집계합니다. 배송중(IN_DELIVERY)이 실제 카운트에 반영됩니다.")
+                    .description("최근 3개월 주문을 상태별로 집계합니다.\n\n"
+                        + enumTable("OrderStatus → 집계 필드 매핑", entries(
+                            "CREATED",          "awaitingPayment (결제 대기)",
+                            "PAID",             "preparing (상품 준비 중)",
+                            "IN_DELIVERY",      "inDelivery (배송 중)",
+                            "DELIVERED",        "delivered (배송 완료)",
+                            "RETURN_REQUESTED", "returnOrExchange (교환/환불 신청)",
+                            "CANCELED",         "canceled (취소)"
+                        )))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.inProgress").type(JsonFieldType.OBJECT).description("진행 중인 주문 집계"),
                         fieldWithPath("data.inProgress.awaitingPayment").type(JsonFieldType.NUMBER)
