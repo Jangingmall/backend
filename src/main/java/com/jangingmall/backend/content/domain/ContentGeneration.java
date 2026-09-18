@@ -84,6 +84,10 @@ public class ContentGeneration {
         this.status = GenerationStatus.QUEUED;
     }
 
+    public void markDraftReady() {
+        this.status = GenerationStatus.DRAFT_READY;
+    }
+
     public void complete(String reactDocumentJson, String idempotencyKey) {
         this.status = GenerationStatus.COMPLETED;
         this.reactDocument = reactDocumentJson;

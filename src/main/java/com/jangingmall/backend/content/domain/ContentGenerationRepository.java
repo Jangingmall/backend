@@ -10,4 +10,5 @@ public interface ContentGenerationRepository {
     Optional<ContentGeneration> findByIdAndProductId(Long id, Long productId);
     Optional<ContentGeneration> findByIdempotencyKey(String idempotencyKey);
     List<ContentGeneration> findAllByStatusAndRequestedAtBefore(GenerationStatus status, LocalDateTime deadline);
+    Optional<ContentGeneration> findFirstByProductIdAndStatusOrderByRequestedAtDesc(Long productId, GenerationStatus status);
 }
