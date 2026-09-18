@@ -5,6 +5,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +16,13 @@ public class ArtisanController {
     private final ArtisanService artisans;
 
     @GetMapping
-    public CursorPage<Map<String, Object>> list(@RequestParam(required = false) String cursor,
-            @RequestParam(defaultValue = "20") int limit, @RequestParam(required = false) String certificationLevel,
-            @RequestParam(required = false) String category, @RequestParam(required = false) String initial,
+    public Page<Map<String, Object>> list(
+            @PageableDefault(size = 20) Pageable pageable,
+            @RequestParam(required = false) String certificationLevel,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String initial,
             @RequestParam(defaultValue = "POPULAR") String sort) {
-        return artisans.list(cursor, limit, certificationLevel, category, initial, sort);
+        return artisans.list(pageable, certificationLevel, category, initial, sort);
     }
 
     @GetMapping("/{artisanId}")

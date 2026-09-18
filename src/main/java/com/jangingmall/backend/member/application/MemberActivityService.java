@@ -6,6 +6,8 @@ import com.jangingmall.backend.member.domain.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,9 +56,9 @@ public class MemberActivityService {
     }
 
     @Transactional(readOnly = true)
-    public CursorPage<Map<String, Object>> recentViews(Long memberId, String cursor, int limit) {
+    public Page<Map<String, Object>> recentViews(Long memberId, Pageable pageable) {
         access.active(memberId);
-        return reads.recentViews(memberId, cursor, limit);
+        return reads.recentViews(memberId, pageable);
     }
 
     @Transactional
@@ -92,9 +94,9 @@ public class MemberActivityService {
     }
 
     @Transactional(readOnly = true)
-    public CursorPage<Map<String, Object>> subscriptions(Long memberId, PageRequest page) {
+    public Page<Map<String, Object>> subscriptions(Long memberId, Pageable pageable) {
         access.requireRole(memberId, MemberRole.USER);
-        return reads.subscriptions(memberId, page);
+        return reads.subscriptions(memberId, pageable);
     }
 
     private void recordVisible(Long memberId, Long productId, LocalDateTime viewedAt) {

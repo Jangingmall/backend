@@ -7,6 +7,8 @@ import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.member.domain.*;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +44,8 @@ public class ArtisanService {
     }
 
     @Transactional(readOnly = true)
-    public CursorPage<Map<String, Object>> list(String cursor, int limit, String certification, String category, String initial, String sort) {
-        return reads.artisans(cursor, limit, certification, category, initial, sort);
+    public Page<Map<String, Object>> list(Pageable pageable, String certification, String category, String initial, String sort) {
+        return reads.artisans(pageable, certification, category, initial, sort);
     }
 
     @Transactional
