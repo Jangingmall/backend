@@ -6,8 +6,9 @@ import com.jangingmall.backend.global.config.SecurityConfig;
 import com.jangingmall.backend.global.docs.RestDocsControllerTest;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
-import com.jangingmall.backend.member.application.CursorPage;
 import com.jangingmall.backend.member.application.MemberActivityService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -135,32 +136,36 @@ class MemberActivityControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("구독 목록 조회 — 정상 요청은 커서 페이지를 반환한다")
+    @DisplayName("구독 목록 조회 — 정상 요청은 페이지를 반환한다")
     @WithMockUser(roles = "USER")
     void subscriptions() throws Exception {
-        CursorPage<Map<String, Object>> page = new CursorPage<>(List.of(SUBSCRIPTION_ITEM), null, false, 1L);
+        Page<Map<String, Object>> page = new PageImpl<>(List.of(SUBSCRIPTION_ITEM));
         when(activities.subscriptions(any(), any())).thenReturn(page);
 
         mockMvc.perform(get("/api/member/artisans/subscriptions")
-                .param("limit", "20"))
+                .param("page", "0")
+                .param("size", "20"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.items").isArray())
-            .andExpect(jsonPath("$.data.totalCount").value(1))
+            .andExpect(jsonPath("$.data.content").isArray())
+            .andExpect(jsonPath("$.data.totalElements").value(1))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "member-subscriptions",
                 resource(ResourceSnippetParameters.builder()
                     .tag("장인 구독")
                     .summary("구독 장인 목록")
-                    .description("내가 구독한 장인 목록을 커서 페이지네이션으로 반환합니다.")
+                    .description("내가 구독한 장인 목록을 페이지네이션으로 반환합니다.")
                     .responseFields(successEnvelopeFields(
-                        fieldWithPath("data.items").type(JsonFieldType.ARRAY).description("구독 장인 목록"),
-                        fieldWithPath("data.items[].artisanId").type(JsonFieldType.NUMBER).description("장인 ID"),
-                        fieldWithPath("data.items[].businessName").type(JsonFieldType.STRING).description("장인 상호명"),
-                        fieldWithPath("data.items[].notificationsEnabled").type(JsonFieldType.BOOLEAN).description("알림 수신 여부"),
-                        fieldWithPath("data.items[].newProductCount").type(JsonFieldType.NUMBER).description("신규 상품 수"),
-                        fieldWithPath("data.nextCursor").type(JsonFieldType.STRING).optional().description("다음 페이지 커서"),
-                        fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"),
-                        fieldWithPath("data.totalCount").type(JsonFieldType.NUMBER).description("전체 구독 수")
+                        fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("구독 장인 목록"),
+                        fieldWithPath("data.content[].artisanId").type(JsonFieldType.NUMBER).description("장인 ID"),
+                        fieldWithPath("data.content[].businessName").type(JsonFieldType.STRING).description("장인 상호명"),
+                        fieldWithPath("data.content[].notificationsEnabled").type(JsonFieldType.BOOLEAN).description("알림 수신 여부"),
+                        fieldWithPath("data.content[].newProductCount").type(JsonFieldType.NUMBER).description("신규 상품 수"),
+                        fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("전체 구독 수"),
+                        fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("전체 페이지 수"),
+                        fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재 페이지(0-based)"),
+                        fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                        fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
+                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
                     ))
                     .build()
                 )

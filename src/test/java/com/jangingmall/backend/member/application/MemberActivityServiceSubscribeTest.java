@@ -14,6 +14,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -123,7 +127,7 @@ class MemberActivityServiceSubscribeTest {
         doThrow(new DomainException(ErrorCode.FORBIDDEN))
             .when(access).requireRole(eq(1L), eq(MemberRole.USER));
 
-        assertThatThrownBy(() -> service.subscriptions(1L, PageRequest.from(null, 20)))
+        assertThatThrownBy(() -> service.subscriptions(1L, PageRequest.of(0, 20)))
             .isInstanceOfSatisfying(DomainException.class,
                 ex -> assertThat(ex.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN));
     }
@@ -131,11 +135,11 @@ class MemberActivityServiceSubscribeTest {
     @Test
     @DisplayName("구독 목록 — reads에 페이지 요청을 위임한다")
     void subscriptions() {
-        PageRequest page = PageRequest.from(null, 20);
-        CursorPage<Map<String, Object>> expected = new CursorPage<>(List.of(), null, false, 0);
+        Pageable page = PageRequest.of(0, 20);
+        Page<Map<String, Object>> expected = new PageImpl<>(List.of());
         when(reads.subscriptions(1L, page)).thenReturn(expected);
 
-        CursorPage<Map<String, Object>> result = service.subscriptions(1L, page);
+        Page<Map<String, Object>> result = service.subscriptions(1L, page);
 
         verify(access).requireRole(1L, MemberRole.USER);
         assertThat(result).isEqualTo(expected);
