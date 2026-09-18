@@ -8,6 +8,7 @@ import com.jangingmall.backend.notification.application.NotificationSseService;
 import com.jangingmall.backend.notification.application.UnreadCountResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -40,12 +42,13 @@ public class NotificationController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('USER')")
     public ApiResponse<NotificationResponse> create(
         @AuthenticationPrincipal Long memberId,
         @RequestBody @Valid NotificationCreateRequest request
     ) {
-        return ApiResponse.ok(notificationService.create(memberId, request));
+        return ApiResponse.created(notificationService.create(memberId, request));
     }
 
     @GetMapping

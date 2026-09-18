@@ -51,8 +51,8 @@ public class ImageController {
         return ApiResponse.ok(null);
     }
 
-    @PostMapping("/api/internal/images/verify")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/internal/images/verify")
+    @PreAuthorize("hasRole('AGENT')")
     public ApiResponse<ImageService.Verification> verify(@Valid @RequestBody VerifyImageRequest request) {
         return ApiResponse.ok(images.verifyAndConsume(request.requesterId(), request.imageId()));
     }

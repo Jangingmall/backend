@@ -352,7 +352,7 @@ class NotificationControllerTest extends RestDocsControllerTest {
     // ────────────────────────────── POST /api/notifications ──────────────────────────────
 
     @Test
-    @DisplayName("알림 생성 — 200 성공")
+    @DisplayName("알림 생성 — 201 성공")
     @WithMockUser(roles = "USER")
     void create_success() throws Exception {
         when(notificationService.create(any(), any())).thenReturn(SAMPLE);
@@ -362,7 +362,7 @@ class NotificationControllerTest extends RestDocsControllerTest {
         mockMvc.perform(post("/api/notifications")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json(request)))
-            .andExpect(status().isOk())
+            .andExpect(status().isCreated())
             .andExpect(jsonPath("$.data.title").value("주문 완료"))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "notification-create-200",

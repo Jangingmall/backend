@@ -170,7 +170,7 @@ class NotificationSseIntegrationTest {
             .build();
 
         HttpResponse<String> postResponse = postClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
-        assertThat(postResponse.statusCode()).isEqualTo(200);
+        assertThat(postResponse.statusCode()).isEqualTo(201);
 
         boolean notificationArrived = notificationLatch.await(5, TimeUnit.SECONDS);
         assertThat(errors).isEmpty();

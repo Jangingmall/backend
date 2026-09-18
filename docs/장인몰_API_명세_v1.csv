@@ -2847,9 +2847,9 @@
   ""status"": 403,
   ""errorCode"": ""FORBIDDEN""
 }"
-이미지,유창민,POST,/api/internal/images/verify,이미지 소유권/존재 검증(내부 전용),"상품·콘텐츠 등 타 서비스가 imageId를 자신의 엔티티에 저장하기 직전, 요청자 소유 여부와 variant 전체의 S3 실제 존재 여부(HeadObject)를 내부적으로 검증한다",Internal(Service-to-Service),예정,P0,"{
+이미지,유창민,POST,/internal/images/verify,이미지 소유권/존재 검증(내부 전용),"상품·콘텐츠 등 타 서비스가 imageId를 자신의 엔티티에 저장하기 직전, 요청자 소유 여부와 variant 전체의 S3 실제 존재 여부(HeadObject)를 내부적으로 검증한다",Internal(Service-to-Service),예정,P0,"{
   ""method"": ""POST"",
-  ""url"": ""/api/internal/images/verify"",
+  ""url"": ""/internal/images/verify"",
   ""headers"": {
     ""Content-Type"": ""application/json"",
     ""Authorization"": ""Bearer {accessToken}""
