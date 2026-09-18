@@ -473,9 +473,9 @@ public class ContentService {
             .ifPresent(generation -> {
                 try {
                     aiContentClient.approveRender(generation.getJobId(), generation.getId());
-                    log.info("AI 렌더 승인 요청 완료 generationId={} jobId={}", generation.getId(), generation.getJobId());
                 } catch (Exception e) {
-                    log.error("AI 렌더 승인 요청 실패 generationId={} jobId={} reason={}", generation.getId(), generation.getJobId(), e.getMessage());
+                    log.error("AI 렌더 승인 요청 실패 generationId={} jobId={} reason={}",
+                        generation.getId(), generation.getJobId(), e.getMessage());
                 }
             });
     }

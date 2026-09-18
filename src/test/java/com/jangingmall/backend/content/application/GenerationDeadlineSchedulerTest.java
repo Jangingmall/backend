@@ -1,5 +1,6 @@
 package com.jangingmall.backend.content.application;
 
+import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
@@ -30,6 +31,9 @@ class GenerationDeadlineSchedulerTest {
     @Mock
     private ContentGenerationRepository generationRepository;
 
+    @Mock
+    private AiContentClient aiContentClient;
+
     @Captor
     private ArgumentCaptor<ContentGeneration> savedCaptor;
 
@@ -39,7 +43,7 @@ class GenerationDeadlineSchedulerTest {
     @BeforeEach
     void setUp() {
         properties = new GenerationProperties(1861, 60_000);
-        scheduler = new GenerationDeadlineScheduler(generationRepository, properties);
+        scheduler = new GenerationDeadlineScheduler(generationRepository, properties, aiContentClient);
     }
 
     private ContentGeneration queuedGeneration(Long id, LocalDateTime requestedAt) {
@@ -177,5 +181,60 @@ class GenerationDeadlineSchedulerTest {
         LocalDateTime expected = LocalDateTime.now().minusSeconds(properties.deadlineSeconds());
         assertThat(captured).isAfterOrEqualTo(expected.minusSeconds(2))
             .isBeforeOrEqualTo(expected.plusSeconds(2));
+    }
+
+    @Test
+    @DisplayName("AI 상태가 DRAFT_READY이면 generation 상태를 DRAFT_READY로 전이한다")
+    void pollDraftReady() {
+        ContentGeneration gen = queuedGeneration(1L, LocalDateTime.now().minusSeconds(60));
+        when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of(gen));
+        when(aiContentClient.getJobStatus("job-1")).thenReturn("DRAFT_READY");
+        when(generationRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(generationRepository).save(savedCaptor.capture());
+        assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.DRAFT_READY);
+    }
+
+    @Test
+    @DisplayName("AI 상태가 FAILED이면 generation 상태를 FAILED로 전이한다")
+    void pollFailed() {
+        ContentGeneration gen = queuedGeneration(2L, LocalDateTime.now().minusSeconds(60));
+        when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of(gen));
+        when(aiContentClient.getJobStatus("job-2")).thenReturn("FAILED");
+        when(generationRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(generationRepository).save(savedCaptor.capture());
+        assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+    }
+
+    @Test
+    @DisplayName("AI 상태 조회 실패 시 예외를 삼키고 다음 generation을 계속 처리한다")
+    void pollExceptionIsSwallowed() {
+        ContentGeneration gen1 = queuedGeneration(1L, LocalDateTime.now().minusSeconds(60));
+        ContentGeneration gen2 = queuedGeneration(2L, LocalDateTime.now().minusSeconds(60));
+        when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of(gen1, gen2));
+        when(aiContentClient.getJobStatus("job-1")).thenThrow(new RuntimeException("AI 연결 실패"));
+        when(aiContentClient.getJobStatus("job-2")).thenReturn("DRAFT_READY");
+        when(generationRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(generationRepository, times(1)).save(any());
+        assertThat(gen2.getStatus()).isEqualTo(GenerationStatus.DRAFT_READY);
+    }
+
+    @Test
+    @DisplayName("QUEUED generation이 없으면 AI 상태 조회를 하지 않는다")
+    void pollEmptyBatch() {
+        when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of());
+
+        scheduler.pollQueuedGenerations();
+
+        verify(aiContentClient, never()).getJobStatus(any());
+        verify(generationRepository, never()).save(any());
     }
 }
