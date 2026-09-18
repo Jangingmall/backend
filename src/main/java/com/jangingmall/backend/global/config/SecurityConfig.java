@@ -7,6 +7,7 @@ import com.jangingmall.backend.global.security.JwtAuthenticationFilter;
 import com.jangingmall.backend.global.security.JwtProperties;
 import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.global.security.AiCallbackFilter;
+import com.jangingmall.backend.content.application.GenerationProperties;
 import com.jangingmall.backend.member.application.EmailVerificationProperties;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,7 +35,7 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class, InternalApiProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;

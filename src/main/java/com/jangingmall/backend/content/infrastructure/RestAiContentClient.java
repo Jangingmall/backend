@@ -57,6 +57,7 @@ class RestAiContentClient implements AiContentClient {
         this.httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
             .connectTimeout(timeout)
+            .followRedirects(HttpClient.Redirect.NORMAL)
             .build();
         JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(httpClient);
         factory.setReadTimeout(timeout);
