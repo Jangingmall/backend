@@ -1,7 +1,9 @@
 .git
 .github
 .gradle
-build
+build/*
+!build/extracted/
+!build/extracted/**
 out
 .idea
 *.iml
