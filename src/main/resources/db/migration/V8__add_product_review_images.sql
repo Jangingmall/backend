@@ -1,2 +1,0 @@
-ALTER TABLE product_review
-    ADD COLUMN IF NOT EXISTS images JSONB NOT NULL DEFAULT '[]';
