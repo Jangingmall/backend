@@ -2,7 +2,6 @@
 -- 1. 대분류(Category)
 -- ------------------------------------------------------------
 INSERT INTO category (category_id, name)
-OVERRIDING SYSTEM VALUE
 VALUES (1, '키친·다이닝'),
        (2, '홈·인테리어'),
        (3, '패션·액세서리'),
@@ -16,7 +15,6 @@ ON CONFLICT (category_id) DO UPDATE SET name = EXCLUDED.name;
 -- 2. 소분류(Subcategory)
 -- ------------------------------------------------------------
 INSERT INTO subcategory (subcategory_id, category_id, name)
-OVERRIDING SYSTEM VALUE
 VALUES
     (1, 1, '다기·찻잔'),
     (2, 1, '그릇·접시'),
@@ -84,7 +82,6 @@ ON CONFLICT (subcategory_id) DO UPDATE
 INSERT INTO member (member_id, email, password_hash, name, nickname, phone,
                     role, status, age14_or_older, terms_agreed, privacy_agreed, marketing_agreed,
                     created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
     (1, 'artisan1@sample.local', '$2a$10$sampleHashSeedData00000000000000000000000000', '우희열', '우희열 명인', '010-0000-0001',
      'ARTISAN', 'ACTIVE', TRUE, TRUE, TRUE, FALSE, NOW(), NOW()),
@@ -349,7 +346,6 @@ INSERT INTO product (product_id, artisan_id, category_id, subcategory_id,
                  thumbnail_url, production_period_days,
                  is_limited, is_custom_order, is_single_item, has_gift_wrap,
                  status, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
 
     (1, 14, 1, 1,
@@ -758,7 +754,6 @@ INSERT INTO product (product_id, artisan_id, category_id, subcategory_id,
                  thumbnail_url, production_period_days,
                  is_limited, is_custom_order, is_single_item, has_gift_wrap,
                  status, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
 
     (101, 17, 1, 7,
@@ -1167,7 +1162,6 @@ INSERT INTO product (product_id, artisan_id, category_id, subcategory_id,
                  thumbnail_url, production_period_days,
                  is_limited, is_custom_order, is_single_item, has_gift_wrap,
                  status, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
 
     (201, 28, 2, 15,
@@ -1576,7 +1570,6 @@ INSERT INTO product (product_id, artisan_id, category_id, subcategory_id,
                  thumbnail_url, production_period_days,
                  is_limited, is_custom_order, is_single_item, has_gift_wrap,
                  status, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
 
     (301, 31, 3, 23,
@@ -1985,7 +1978,6 @@ INSERT INTO product (product_id, artisan_id, category_id, subcategory_id,
                  thumbnail_url, production_period_days,
                  is_limited, is_custom_order, is_single_item, has_gift_wrap,
                  status, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
 
     (401, 40, 4, 30,
@@ -2394,7 +2386,6 @@ INSERT INTO product (product_id, artisan_id, category_id, subcategory_id,
                  thumbnail_url, production_period_days,
                  is_limited, is_custom_order, is_single_item, has_gift_wrap,
                  status, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
 
     (501, 44, 5, 39,
@@ -2803,7 +2794,6 @@ INSERT INTO product (product_id, artisan_id, category_id, subcategory_id,
                  thumbnail_url, production_period_days,
                  is_limited, is_custom_order, is_single_item, has_gift_wrap,
                  status, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
 
     (601, 10, 6, 48,
@@ -3212,7 +3202,6 @@ INSERT INTO product (product_id, artisan_id, category_id, subcategory_id,
                  thumbnail_url, production_period_days,
                  is_limited, is_custom_order, is_single_item, has_gift_wrap,
                  status, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
 VALUES
 
     (702, 59, 7, 54,
