@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("e2e")
 @ActiveProfiles("local-postgresql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = "management.server.port=-1")
+    properties = {"management.server.port=-1", "spring.sql.init.mode=never"})
 class UserJourneyE2ETest {
 
     @LocalServerPort
