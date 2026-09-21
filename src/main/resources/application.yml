@@ -79,6 +79,7 @@ spring:
   sql:
     init:
       mode: always
+      data-locations: classpath:data.sql,classpath:data-sequence-reset.sql
   data:
     redis:
       host: localhost
