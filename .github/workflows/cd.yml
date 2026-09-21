@@ -3,14 +3,16 @@ name: CD
 on:
   push:
     branches: [ develop ]
+  workflow_dispatch:
 
 concurrency:
   group: cd-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  AWS_REGION: ${{ vars.AWS_REGION }}
-  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: jangin-app
+  AWS_ROLE_ARN: arn:aws:iam::750240012008:role/jangin-gha-backend-ci
 
 permissions:
   contents: read
@@ -52,7 +54,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -64,29 +66,33 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
-          IMAGE_TAG="staging-${SHORT_SHA}"
+          IMAGE_TAG="sha-${{ github.sha }}"
           IMAGE_URI="${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}"
-          echo "image-uri=${IMAGE_URI}" >> $GITHUB_OUTPUT
-          echo "image-tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
-          echo "ecr-registry=${ECR_REGISTRY}" >> $GITHUB_OUTPUT
+          echo "image-uri=${IMAGE_URI}" >> ${GITHUB_OUTPUT}
+          echo "image-tag=${IMAGE_TAG}" >> ${GITHUB_OUTPUT}
+          echo "ecr-registry=${ECR_REGISTRY}" >> ${GITHUB_OUTPUT}
 
       - name: Check if image already exists in ECR
         id: ecr-check
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          DIGEST=$(aws ecr describe-images \
-            --repository-name "$ECR_REPOSITORY" \
+          set +e
+          RESULT=$(aws ecr describe-images \
+            --repository-name "${ECR_REPOSITORY}" \
             --image-ids imageTag="${{ steps.meta.outputs.image-tag }}" \
             --query 'imageDetails[0].imageDigest' \
-            --output text 2>/dev/null || echo "")
-          if [ -n "$DIGEST" ] && [ "$DIGEST" != "None" ]; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-            echo "digest=${DIGEST}" >> $GITHUB_OUTPUT
+            --output text 2>&1)
+          STATUS=$?
+          set -e
+
+          if [ "${STATUS}" -eq 0 ] && [ -n "${RESULT}" ] && [ "${RESULT}" != "None" ]; then
+            echo "exists=true" >> ${GITHUB_OUTPUT}
+            echo "digest=${RESULT}" >> ${GITHUB_OUTPUT}
+          elif [ "${STATUS}" -ne 0 ] && echo "${RESULT}" | grep -q 'ImageNotFoundException'; then
+            echo "exists=false" >> ${GITHUB_OUTPUT}
+            echo "digest=" >> ${GITHUB_OUTPUT}
           else
-            echo "exists=false" >> $GITHUB_OUTPUT
-            echo "digest=" >> $GITHUB_OUTPUT
+            echo "${RESULT}" >&2
+            exit "${STATUS}"
           fi
 
       - name: Set up Docker Buildx
@@ -110,11 +116,11 @@ jobs:
         id: resolve
         run: |
           if [ "${{ steps.ecr-check.outputs.exists }}" == "true" ]; then
-            echo "digest=${{ steps.ecr-check.outputs.digest }}" >> $GITHUB_OUTPUT
+            echo "digest=${{ steps.ecr-check.outputs.digest }}" >> ${GITHUB_OUTPUT}
             echo "Reusing existing image: ${{ steps.meta.outputs.image-uri }}"
             echo "Digest: ${{ steps.ecr-check.outputs.digest }}"
           else
-            echo "digest=${{ steps.push.outputs.digest }}" >> $GITHUB_OUTPUT
+            echo "digest=${{ steps.push.outputs.digest }}" >> ${GITHUB_OUTPUT}
             echo "Pushed new image: ${{ steps.meta.outputs.image-uri }}"
             echo "Digest: ${{ steps.push.outputs.digest }}"
           fi
