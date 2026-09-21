@@ -126,3 +126,4 @@ tasks.register('e2eTest', Test) {
 
 apply from: 'gradle/documentation.gradle'
 apply from: 'gradle/local.gradle'
+apply from: 'gradle/prod-smoke.gradle'

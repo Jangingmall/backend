@@ -1,0 +1,82 @@
+// prod 프로필 환경변수 바인딩 + 빈 생성 smoke test
+// bootJar를 실행해 prod 프로필로 ApplicationContext 기동을 확인하고 즉시 종료한다.
+// 외부 서비스(DB, Redis 등) 없이 동작하며, "Started JangingmallApplication" 로그를 성공 조건으로 사용한다.
+// 사용: ./gradlew prodSmokeTest
+tasks.register('prodSmokeTest') {
+    group = 'verification'
+    description = 'prod 프로필로 ApplicationContext 기동을 검증합니다 (외부 서비스 불필요).'
+    dependsOn 'bootJar'
+
+    doLast {
+        def jarFile = bootJar.archiveFile.get().asFile.absolutePath
+        def javaExec = org.gradle.internal.jvm.Jvm.current().javaExecutable.absolutePath
+
+        def smokeEnv = [
+            'SPRING_PROFILES_ACTIVE'                                          : 'prod',
+            'SPRING_MAIN_WEB_APPLICATION_TYPE'                                : 'none',
+            // Hibernate — DB 연결 없이 방언만 지정
+            'SPRING_JPA_PROPERTIES_HIBERNATE_TEMP_USE_JDBC_METADATA_DEFAULTS' : 'false',
+            'SPRING_JPA_DATABASE_PLATFORM'                                    : 'org.hibernate.dialect.PostgreSQLDialect',
+            // Flyway, 스케줄러 비활성화
+            'SPRING_FLYWAY_ENABLED'                                           : 'false',
+            'SPRING_TASK_SCHEDULING_ENABLED'                                  : 'false',
+            // prod 필수 환경변수 더미값
+            'DB_URL'                              : 'jdbc:postgresql://localhost:5432/smoke',
+            'DB_USERNAME'                         : 'smoke',
+            'DB_PASSWORD'                         : 'smoke',
+            'REDIS_HOST'                          : 'localhost',
+            'MAIL_HOST'                           : 'localhost',
+            'MAIL_USERNAME'                       : 'smoke@example.com',
+            'MAIL_PASSWORD'                       : 'smoke',
+            'JWT_SECRET'                          : 'smoke-secret-key-minimum-256-bits-for-hs256-algorithm-padding',
+            'KAKAO_CLIENT_ID'                     : 'smoke-kakao-id',
+            'KAKAO_CLIENT_SECRET'                 : 'smoke-kakao-secret',
+            'NAVER_CLIENT_ID'                     : 'smoke-naver-id',
+            'EMAIL_VERIFICATION_URL'              : 'http://smoke/verify',
+            'EMAIL_VERIFICATION_SUCCESS_REDIRECT' : 'http://smoke/',
+            'MAIL_FROM'                           : 'no-reply@smoke.local',
+            'OAUTH_FRONTEND_REDIRECT_URL'         : 'http://smoke/oauth/callback',
+            'IMAGE_BASE_URL'                      : 'http://smoke/images',
+            'IMAGE_UPLOAD_BUCKET'                 : 'smoke-bucket',
+            'IMAGE_RETURN_BUCKET'                 : 'smoke-return-bucket',
+            'AI_CHAT_BOT_URL'                     : 'http://smoke:8001',
+            'AI_CONTENT_URL'                      : 'http://smoke:8002',
+            'AI_INTERNAL_AUTH_TOKEN'              : 'smoke-ai-token',
+            'BACKEND_AUTH_TOKEN'                  : 'smoke-backend-token',
+        ]
+
+        def pb = new ProcessBuilder([javaExec, '-jar', jarFile, '--spring.main.web-application-type=none'])
+        pb.environment().putAll(smokeEnv)
+        pb.redirectErrorStream(true)
+
+        def process = pb.start()
+        def started = false
+        def failed = false
+        def output = new StringBuilder()
+
+        def reader = new BufferedReader(new InputStreamReader(process.inputStream))
+        def line
+        while ((line = reader.readLine()) != null) {
+            output.append(line).append('\n')
+            if (line.contains('Started JangingmallApplication')) {
+                started = true
+                break
+            }
+            if (line.contains('APPLICATION FAILED TO START') || line.contains('BeanCreationException')) {
+                failed = true
+                break
+            }
+        }
+        reader.close()
+        process.destroyForcibly()
+        process.waitFor(10, java.util.concurrent.TimeUnit.SECONDS)
+
+        if (failed || !started) {
+            throw new GradleException(
+                "prod smoke test FAILED — ApplicationContext 기동 실패\n${output.toString().takeRight(3000)}"
+            )
+        }
+
+        println 'prod smoke test PASSED — ApplicationContext 기동 성공'
+    }
+}
