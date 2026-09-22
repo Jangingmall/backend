@@ -99,7 +99,7 @@ public class MemberAuthenticationService {
             member.getId(),
             member.getEmail(),
             member.getName(),
-            member.getRole(), member.getNickname(), member.getProfileImageUrl(), providerOf(member.getId())
+            member.getRole(), member.getNickname(), member.getProfileImageUrl(), providerOf(member.getId()), member.getPhone()
         );
     }
 

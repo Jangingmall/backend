@@ -17,7 +17,8 @@ public record MemberLoginResponse(
                 session.nickname(),
                 session.role(),
                 session.profileImageUrl(),
-                session.provider()
+                session.provider(),
+                session.phone()
             )
         );
     }

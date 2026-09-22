@@ -4,8 +4,6 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -22,7 +20,6 @@ import com.jangingmall.backend.global.docs.RestDocsControllerTest;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
-import com.jangingmall.backend.member.application.EmailVerificationService;
 import com.jangingmall.backend.member.application.MemberAuthenticationService;
 import com.jangingmall.backend.member.application.MemberProfile;
 import com.jangingmall.backend.member.application.MemberService;
@@ -30,7 +27,6 @@ import com.jangingmall.backend.member.application.MemberSession;
 import com.jangingmall.backend.member.application.MemberSignupResult;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.domain.MemberStatus;
-import com.jangingmall.backend.member.presentation.dto.EmailVerificationRequest;
 import com.jangingmall.backend.member.presentation.dto.MemberLoginRequest;
 import com.jangingmall.backend.member.presentation.dto.MemberSignupRequest;
 import jakarta.servlet.http.Cookie;
@@ -57,14 +53,12 @@ class MemberControllerTest extends RestDocsControllerTest {
     @MockitoBean
     private MemberAuthenticationService memberAuthenticationService;
 
-    @MockitoBean
-    private EmailVerificationService emailVerificationService;
-
     @Test
     @DisplayName("정상 회원가입 요청은 201과 회원 정보를 반환한다")
     void signUp() throws Exception {
         when(memberService.signUp(any())).thenReturn(new MemberSignupResult(
-            1L, "artisan@example.com", "김도공", null, MemberRole.USER, null, MemberStatus.PENDING_VERIFICATION));
+            1L, "artisan@example.com", "김도공", null, MemberRole.USER, null, MemberStatus.ACTIVE,
+            null, "01012345678"));
 
         mockMvc.perform(post("/api/member/signup")
                 .contentType(APPLICATION_JSON)
@@ -75,12 +69,13 @@ class MemberControllerTest extends RestDocsControllerTest {
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.data.accessToken").value(nullValue()))
             .andExpect(jsonPath("$.data.member.memberId").value(1))
+            .andExpect(jsonPath("$.data.member.phone").value("01012345678"))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "member-signup",
                 resource(ResourceSnippetParameters.builder()
                     .tag("회원")
                     .summary("회원가입")
-                    .description("이메일 + 비밀번호로 회원가입합니다. 가입 후 이메일 인증이 필요합니다.\n\n"
+                    .description("이메일 + 비밀번호로 회원가입합니다. 가입 즉시 로그인할 수 있습니다.\n\n"
                         + enumTable("MemberRole", entries("USER", "소비자", "ARTISAN", "장인")))
                     .requestFields(
                         fieldWithPath("email").type(JsonFieldType.STRING).description("이메일 (@NotBlank, @Email, 최대 255자)"),
@@ -95,10 +90,11 @@ class MemberControllerTest extends RestDocsControllerTest {
                         fieldWithPath("agreements.marketing").type(JsonFieldType.BOOLEAN).optional().description("마케팅 수신 동의 (선택)")
                     )
                     .responseFields(successEnvelopeFields(
-                        fieldWithPath("data.accessToken").type(JsonFieldType.STRING).optional().description("액세스 토큰 (가입 직후는 null — 이메일 인증 후 발급)"),
+                        fieldWithPath("data.accessToken").type(JsonFieldType.STRING).optional().description("액세스 토큰 (가입 직후는 null)"),
                         fieldWithPath("data.member.memberId").type(JsonFieldType.NUMBER).description("회원 ID"),
                         fieldWithPath("data.member.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.member.name").type(JsonFieldType.STRING).description("이름"),
+                        fieldWithPath("data.member.phone").type(JsonFieldType.STRING).description("전화번호"),
                         fieldWithPath("data.member.nickname").type(JsonFieldType.STRING).optional().description("닉네임"),
                         fieldWithPath("data.member.role").type(JsonFieldType.STRING).description("역할"),
                         fieldWithPath("data.member.profileImageUrl").type(JsonFieldType.STRING).optional().description("프로필 이미지 URL"),
@@ -140,7 +136,8 @@ class MemberControllerTest extends RestDocsControllerTest {
     @DisplayName("정상 로그인은 Access Token과 HttpOnly Refresh Token 쿠키를 반환한다")
     void login() throws Exception {
         when(memberAuthenticationService.login("artisan@example.com", "password")).thenReturn(
-            new MemberSession("access-token", "refresh-token", 1L, "artisan@example.com", "김도공", MemberRole.USER));
+            new MemberSession("access-token", "refresh-token", 1L, "artisan@example.com", "김도공", MemberRole.USER,
+                null, null, null, "01012345678"));
 
         mockMvc.perform(post("/api/member/login")
                 .contentType(APPLICATION_JSON)
@@ -148,6 +145,7 @@ class MemberControllerTest extends RestDocsControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.accessToken").value("access-token"))
             .andExpect(jsonPath("$.data.member.memberId").value(1))
+            .andExpect(jsonPath("$.data.member.phone").value("01012345678"))
             .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie"))
                 .contains("refreshToken=refresh-token").contains("HttpOnly").contains("Secure"))
             .andDo(MockMvcRestDocumentationWrapper.document(
@@ -165,6 +163,7 @@ class MemberControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.member.memberId").type(JsonFieldType.NUMBER).description("회원 ID"),
                         fieldWithPath("data.member.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.member.name").type(JsonFieldType.STRING).description("이름"),
+                        fieldWithPath("data.member.phone").type(JsonFieldType.STRING).description("전화번호"),
                         fieldWithPath("data.member.nickname").type(JsonFieldType.STRING).optional().description("닉네임"),
                         fieldWithPath("data.member.role").type(JsonFieldType.STRING).description("역할"),
                         fieldWithPath("data.member.profileImageUrl").type(JsonFieldType.STRING).optional().description("프로필 이미지 URL"),
@@ -216,58 +215,6 @@ class MemberControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("인증 이메일 재전송은 토큰 유효시간을 반환한다")
-    void resendVerificationEmail() throws Exception {
-        when(emailVerificationService.sendVerification("artisan@example.com")).thenReturn(1800L);
-
-        mockMvc.perform(post("/api/member/email-verifications")
-                .contentType(APPLICATION_JSON)
-                .content(json(new EmailVerificationRequest("artisan@example.com"))))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.expiresInSeconds").value(1800))
-            .andDo(MockMvcRestDocumentationWrapper.document(
-                "member-email-verification-resend",
-                resource(ResourceSnippetParameters.builder()
-                    .tag("회원")
-                    .summary("인증 이메일 재전송")
-                    .description("가입 시 발송된 인증 이메일을 재전송합니다.")
-                    .requestFields(
-                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
-                    )
-                    .responseFields(successEnvelopeFields(
-                        fieldWithPath("data.expiresInSeconds").type(JsonFieldType.NUMBER).description("인증 링크 유효 시간 (초)")
-                    ))
-                    .build()
-                )
-            ));
-    }
-
-    @Test
-    @DisplayName("유효한 이메일 인증 링크는 회원을 활성화하고 홈으로 리다이렉트한다")
-    void verifyEmail() throws Exception {
-        mockMvc.perform(get("/api/member/email-verifications/verify")
-                .queryParam("token", "verification-token"))
-            .andExpect(status().isFound())
-            .andExpect(result -> assertThat(result.getResponse().getHeader("Location"))
-                .isEqualTo("http://localhost:3000/"));
-
-        verify(emailVerificationService).verify("verification-token");
-    }
-
-    @Test
-    @DisplayName("만료된 이메일 인증 링크도 계약에 따라 홈으로 리다이렉트한다")
-    void redirectExpiredEmailVerification() throws Exception {
-        doThrow(new DomainException(ErrorCode.TOKEN_EXPIRED))
-            .when(emailVerificationService).verify("expired-token");
-
-        mockMvc.perform(get("/api/member/email-verifications/verify")
-                .queryParam("token", "expired-token"))
-            .andExpect(status().isFound())
-            .andExpect(result -> assertThat(result.getResponse().getHeader("Location"))
-                .isEqualTo("http://localhost:3000/"));
-    }
-
-    @Test
     @DisplayName("로그아웃은 Refresh Token 쿠키를 만료시킨다")
     void logout() throws Exception {
         mockMvc.perform(post("/api/member/logout")
@@ -294,13 +241,14 @@ class MemberControllerTest extends RestDocsControllerTest {
     @DisplayName("인증된 사용자는 내 정보를 조회한다")
     void getMe() throws Exception {
         when(memberAuthenticationService.getProfile(1L)).thenReturn(
-            new MemberProfile(1L, "artisan@example.com", "김도공", MemberRole.USER, null, null, "naver"));
+            new MemberProfile(1L, "artisan@example.com", "김도공", MemberRole.USER, null, null, "kakao", "01012345678"));
 
         mockMvc.perform(get("/api/member/me")
                 .with(authentication(new UsernamePasswordAuthenticationToken(
                     1L, null, List.of(new SimpleGrantedAuthority("ROLE_USER"))))))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.memberId").value(1))
+            .andExpect(jsonPath("$.data.phone").value("01012345678"))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "member-get-me",
                 resource(ResourceSnippetParameters.builder()
@@ -311,10 +259,11 @@ class MemberControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 ID"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
+                        fieldWithPath("data.phone").type(JsonFieldType.STRING).description("전화번호"),
                         fieldWithPath("data.nickname").type(JsonFieldType.STRING).optional().description("닉네임"),
                         fieldWithPath("data.role").type(JsonFieldType.STRING).description("역할"),
                         fieldWithPath("data.profileImageUrl").type(JsonFieldType.STRING).optional().description("프로필 이미지 URL"),
-                        fieldWithPath("data.provider").type(JsonFieldType.STRING).optional().description("소셜 로그인 제공자 (naver, kakao 등. 일반 가입은 null)")
+                        fieldWithPath("data.provider").type(JsonFieldType.STRING).optional().description("소셜 로그인 제공자 (kakao, 일반 가입은 null)")
                     ))
                     .build()
                 )

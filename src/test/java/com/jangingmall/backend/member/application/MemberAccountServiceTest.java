@@ -41,14 +41,15 @@ class MemberAccountServiceTest {
         Member member = activeMember();
         when(access.lock(1L)).thenReturn(member);
         when(socialAccounts.findFirstByMemberIdOrderByIdAsc(1L))
-            .thenReturn(Optional.of(new MemberSocialAccount(1L, "naver", "provider-id", "artisan@example.com")));
+            .thenReturn(Optional.of(new MemberSocialAccount(1L, "kakao", "provider-id", "artisan@example.com")));
 
         MemberProfile profile = accounts.update(1L, Optional.empty(), Optional.of("도공이"), Optional.of("01099998888"));
 
         assertThat(profile.name()).isEqualTo("김도공");
         assertThat(profile.nickname()).isEqualTo("도공이");
         assertThat(profile.profileImageUrl()).isNull();
-        assertThat(profile.provider()).isEqualTo("naver");
+        assertThat(profile.provider()).isEqualTo("kakao");
+        assertThat(profile.phone()).isEqualTo("01099998888");
         assertThat(member.getPhone()).isEqualTo("01099998888");
     }
 
