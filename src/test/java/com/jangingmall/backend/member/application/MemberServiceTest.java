@@ -19,7 +19,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -32,9 +31,6 @@ class MemberServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
-    @Mock
-    private ApplicationEventPublisher eventPublisher;
-
     @Captor
     private ArgumentCaptor<Member> memberCaptor;
 
@@ -42,11 +38,11 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        memberService = new MemberService(memberRepository, passwordEncoder, eventPublisher);
+        memberService = new MemberService(memberRepository, passwordEncoder);
     }
 
     @Test
-    @DisplayName("정상 회원가입 시 비밀번호를 해시 처리하고 이메일 인증 대기 회원을 저장한다")
+    @DisplayName("정상 회원가입 시 비밀번호를 해시 처리하고 즉시 활성 회원을 저장한다")
     void signUp() {
         MemberSignupCommand command = validCommand();
         when(memberRepository.existsByEmail(command.email())).thenReturn(false);
@@ -62,14 +58,13 @@ class MemberServiceTest {
         verify(memberRepository).save(memberCaptor.capture());
         Member savedMember = memberCaptor.getValue();
         assertThat(savedMember.getPasswordHash()).isEqualTo("hashed-password");
-        assertThat(savedMember.getStatus().name()).isEqualTo("PENDING_VERIFICATION");
+        assertThat(savedMember.getStatus().name()).isEqualTo("ACTIVE");
         assertThat(savedMember.isMarketingAgreed()).isTrue();
         assertThat(result.memberId()).isEqualTo(1L);
         assertThat(result.email()).isEqualTo(command.email());
         assertThat(result.name()).isEqualTo(command.name());
         assertThat(result.role()).isEqualTo(MemberRole.USER);
-        assertThat(result.status().name()).isEqualTo("PENDING_VERIFICATION");
-        verify(eventPublisher).publishEvent(any(MemberRegisteredEvent.class));
+        assertThat(result.status().name()).isEqualTo("ACTIVE");
     }
 
     @Test

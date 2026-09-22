@@ -95,7 +95,7 @@ public class Member {
         this.name = name;
         this.phone = phone;
         this.role = role;
-        this.status = MemberStatus.PENDING_VERIFICATION;
+        this.status = MemberStatus.ACTIVE;
         this.age14OrOlder = age14OrOlder;
         this.termsAgreed = termsAgreed;
         this.privacyAgreed = privacyAgreed;

@@ -6,7 +6,7 @@ import java.util.Locale;
 
 public record OAuthIdentity(String provider,String subject,String email) {
     public OAuthIdentity {
-        if (!("kakao".equals(provider) || "naver".equals(provider)) || subject == null || subject.isBlank() || subject.length()>255
+        if (!"kakao".equals(provider) || subject == null || subject.isBlank() || subject.length()>255
             || email == null || !email.matches("[^\\s@]+@[^\\s@]+\\.[^\\s@]+") || email.length()>255) {
             throw new DomainException(ErrorCode.UNAUTHORIZED);
         }

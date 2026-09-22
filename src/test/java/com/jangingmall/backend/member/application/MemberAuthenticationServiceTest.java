@@ -96,17 +96,6 @@ class MemberAuthenticationServiceTest {
     }
 
     @Test
-    @DisplayName("이메일 인증 대기 회원은 로그인할 수 없다")
-    void loginPendingVerificationMember() {
-        Member member = member();
-        when(memberRepository.findByEmail("artisan@example.com")).thenReturn(Optional.of(member));
-
-        assertThatThrownBy(() -> memberAuthenticationService.login("artisan@example.com", "password"))
-            .isInstanceOfSatisfying(DomainException.class,
-                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN));
-    }
-
-    @Test
     @DisplayName("잘못된 비밀번호는 UNAUTHORIZED를 반환한다")
     void loginWithInvalidPassword() {
         Member member = activeMember();

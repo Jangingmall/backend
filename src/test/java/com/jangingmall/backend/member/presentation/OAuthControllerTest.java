@@ -60,25 +60,16 @@ class OAuthControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("네이버 OAuth 로그인 리다이렉트는 302를 반환한다")
-    void naverRedirect() throws Exception {
+    @DisplayName("비활성화한 네이버 OAuth 리다이렉트는 존재하지 않는다")
+    void rejectNaverRedirect() throws Exception {
         mockMvc.perform(get("/api/member/oauth2/naver"))
-            .andExpect(status().isFound())
-            .andDo(MockMvcRestDocumentationWrapper.document(
-                "oauth-naver-redirect",
-                resource(ResourceSnippetParameters.builder()
-                    .tag("소셜 로그인")
-                    .summary("네이버 로그인 리다이렉트")
-                    .description("네이버 OAuth2 인증 페이지로 리다이렉트합니다.")
-                    .build()
-                )
-            ));
+            .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("최초 소셜 로그인 교환은 onboardingRequired=true와 HttpOnly 온보딩 쿠키를 반환한다")
     void exchangesFirstLoginTicket() throws Exception {
-        OAuthIdentity identity = new OAuthIdentity("naver", "provider-subject", "social@example.com");
+        OAuthIdentity identity = new OAuthIdentity("kakao", "provider-subject", "social@example.com");
         when(oauth.exchange("ticket")).thenReturn(new OAuthMemberService.Grant(null, identity));
         when(oauth.onboarding(identity)).thenReturn("onboarding-token");
 
@@ -108,9 +99,9 @@ class OAuthControllerTest extends RestDocsControllerTest {
     @DisplayName("추가정보 입력은 온보딩 쿠키를 지우고 Access Token과 Refresh Cookie를 발급한다")
     void completesProfileFromOnboardingCookie() throws Exception {
         when(oauth.complete(eq("onboarding-token"), any())).thenReturn(
-            new MemberSignupResult(7L, "social@example.com", "김도공", null, MemberRole.USER, null, MemberStatus.ACTIVE, "naver"));
+            new MemberSignupResult(7L, "social@example.com", "김도공", null, MemberRole.USER, null, MemberStatus.ACTIVE, "kakao"));
         when(authentication.socialSession(7L)).thenReturn(
-            new MemberSession("access-token", "refresh-token", 7L, "social@example.com", "김도공", MemberRole.USER, null, null, "naver"));
+            new MemberSession("access-token", "refresh-token", 7L, "social@example.com", "김도공", MemberRole.USER, null, null, "kakao"));
 
         mockMvc.perform(post("/api/member/oauth2/complete-profile")
                 .cookie(new Cookie("oauthOnboarding", "onboarding-token"))
@@ -145,7 +136,7 @@ class OAuthControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.role").type(JsonFieldType.STRING).description("역할"),
                         fieldWithPath("data.accessToken").type(JsonFieldType.STRING).description("액세스 토큰"),
-                        fieldWithPath("data.provider").type(JsonFieldType.STRING).optional().description("소셜 로그인 제공자 (kakao | naver)")
+                        fieldWithPath("data.provider").type(JsonFieldType.STRING).optional().description("소셜 로그인 제공자 (kakao)")
                     ))
                     .build()
                 )

@@ -25,11 +25,6 @@ public class OAuthController {
         return ResponseEntity.status(302).location(URI.create("/oauth2/authorization/kakao")).build();
     }
 
-    @GetMapping("/naver")
-    public ResponseEntity<Void> naver() {
-        return ResponseEntity.status(302).location(URI.create("/oauth2/authorization/naver")).build();
-    }
-
     @PostMapping("/exchange")
     public ResponseEntity<ExchangeResponse> exchange(@CookieValue(value="oauthTicket",required=false) String ticket) {
         var grant=oauth.exchange(Optional.ofNullable(ticket).filter(value->!value.isBlank())

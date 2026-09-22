@@ -68,7 +68,6 @@ class UserJourneyE2ETest {
 
         String email = TEST_EMAIL_PREFIX + System.currentTimeMillis() + "@test.com";
         userId = signup(email, "password123!", "홍길동", "01012345678");
-        jdbcTemplate.update("update member set status = 'ACTIVE' where member_id = ?", userId);
         userToken = jwtTokenProvider.createAccessToken(userId, MemberRole.USER);
     }
 

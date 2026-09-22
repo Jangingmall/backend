@@ -41,6 +41,9 @@ toss:
     base-url: ${TOSS_API_BASE_URL:https://api.tosspayments.com}
     order-expiration-seconds: ${PAYMENT_ORDER_EXPIRATION_SECONDS:1800}
 
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://127.0.0.1:3000,https://stg.midam.store,https://midam.store}
+
 delivery:
   sweet-tracker:
     api-key: ${SWEET_TRACKER_API_KEY:}
@@ -84,11 +87,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-  mail:
-    host: ${MAIL_HOST:localhost}
-    port: ${MAIL_PORT:1025}
-    username: ${MAIL_USERNAME:}
-    password: ${MAIL_PASSWORD:}
   security:
     oauth2:
       client:
@@ -99,23 +97,12 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             authorization-grant-type: authorization_code
             scope: profile_nickname, account_email
-          naver:
-            client-id: local-naver-client-id
-            client-secret: local-naver-client-secret
-            redirect-uri: "{baseUrl}/login/oauth2/code/naver"
-            authorization-grant-type: authorization_code
-            scope: name, email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-          naver:
-            authorization-uri: https://nid.naver.com/oauth2.0/authorize
-            token-uri: https://nid.naver.com/oauth2.0/token
-            user-info-uri: https://openapi.naver.com/v1/nid/me
-            user-name-attribute: response
 
 jwt:
   secret: local-dev-secret-key-minimum-256-bits-for-hs256-algorithm
@@ -124,11 +111,6 @@ jwt:
   refresh-cookie-secure: false
 
 member:
-  email-verification:
-    verification-url: ${EMAIL_VERIFICATION_URL:http://localhost:8080/api/member/email-verifications/verify}
-    success-redirect-url: ${EMAIL_VERIFICATION_SUCCESS_REDIRECT:http://localhost:3000/}
-    from: ${MAIL_FROM:no-reply@jangingmall.local}
-    token-expiry-seconds: 1800
   oauth:
     frontend-redirect-url: ${OAUTH_FRONTEND_REDIRECT_URL:http://localhost:3000/oauth/callback}
     http-timeout-millis: ${OAUTH_HTTP_TIMEOUT_MILLIS:5000}
@@ -192,11 +174,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-  mail:
-    host: localhost
-    port: 1025
-    username:
-    password:
   security:
     oauth2:
       client:
@@ -207,23 +184,12 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             authorization-grant-type: authorization_code
             scope: profile_nickname, account_email
-          naver:
-            client-id: local-naver-client-id
-            client-secret: local-naver-client-secret
-            redirect-uri: "{baseUrl}/login/oauth2/code/naver"
-            authorization-grant-type: authorization_code
-            scope: name, email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-          naver:
-            authorization-uri: https://nid.naver.com/oauth2.0/authorize
-            token-uri: https://nid.naver.com/oauth2.0/token
-            user-info-uri: https://openapi.naver.com/v1/nid/me
-            user-name-attribute: response
 
 jwt:
   secret: local-h2-secret-key-minimum-256-bits-for-hs256-algorithm
@@ -232,11 +198,6 @@ jwt:
   refresh-cookie-secure: false
 
 member:
-  email-verification:
-    verification-url: http://localhost:8080/api/member/email-verifications/verify
-    success-redirect-url: http://localhost:3000/
-    from: no-reply@jangingmall.local
-    token-expiry-seconds: 1800
   oauth:
     frontend-redirect-url: http://localhost:3000/oauth/callback
     http-timeout-millis: 5000
@@ -293,17 +254,6 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT:6379}
-  mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
   security:
     oauth2:
       client:
@@ -314,23 +264,12 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             authorization-grant-type: authorization_code
             scope: profile_nickname, account_email
-          naver:
-            client-id: ${NAVER_CLIENT_ID}
-            client-secret: ${NAVER_CLIENT_SECRET:local-naver-client-secret}
-            redirect-uri: "{baseUrl}/login/oauth2/code/naver"
-            authorization-grant-type: authorization_code
-            scope: name, email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-          naver:
-            authorization-uri: https://nid.naver.com/oauth2.0/authorize
-            token-uri: https://nid.naver.com/oauth2.0/token
-            user-info-uri: https://openapi.naver.com/v1/nid/me
-            user-name-attribute: response
 
 jwt:
   secret: ${JWT_SECRET}
@@ -339,11 +278,6 @@ jwt:
   refresh-cookie-secure: true
 
 member:
-  email-verification:
-    verification-url: ${EMAIL_VERIFICATION_URL}
-    success-redirect-url: ${EMAIL_VERIFICATION_SUCCESS_REDIRECT}
-    from: ${MAIL_FROM}
-    token-expiry-seconds: ${EMAIL_VERIFICATION_TTL_SECONDS:1800}
   oauth:
     frontend-redirect-url: ${OAUTH_FRONTEND_REDIRECT_URL}
     http-timeout-millis: ${OAUTH_HTTP_TIMEOUT_MILLIS:5000}
