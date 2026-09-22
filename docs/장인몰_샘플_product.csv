@@ -16,7 +16,7 @@ P014,S015,신정희요 덤벙이 다완,1,KITCHEN,키친·다이닝,1,TEAWARE,�
 P015,S006,이종덕 나주 옻칠 찻잔 받침 세트,1,KITCHEN,키친·다이닝,1,TEAWARE,다기·찻잔,85000,정교하게 가공된 목제 옻칠 잔받침 5개,원목 옻칠,전북 전주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p15.jpg,https://nihc.go.kr,verified_3,true
 P016,S016,징광옹기 옹기 찻사발,1,KITCHEN,키친·다이닝,1,TEAWARE,다기·찻잔,50000,투박하면서도 따뜻한 질감의 옹기 말차사발,옹기,전남 보성,http://www.jingkwang.co.kr,http://jingkwang.co.kr/p16.jpg,https://kcdfshop.kr,verified_3,true
 P017,S014,영남요 청화백자 찻잔,1,KITCHEN,키친·다이닝,1,TEAWARE,다기·찻잔,70000,청화 코발트 문양이 새겨진 백자 잔,백자,경북 문경,http://www.youngnamyo.com,http://youngnamyo.com/p17.jpg,https://nihc.go.kr,verified_3,true
-P018,S021,전통 문양 현대식 다기 찻잔(더미),1,KITCHEN,키친·다이닝,1,TEAWARE,다기·찻잔,35000,더미 수량 보완용 가상 다기 상품,도자기,경기 이천,,,,,unverified,false
+P018,S021,전통 문양 현대식 다기 찻잔(더미),1,KITCHEN,키친·다이닝,1,TEAWARE,다기·찻잔,35000,더미 수량 보완용 가상 다기 상품,도자기,경기 이천,,,unverified,false
 P019,S011,김수영 방짜유기 4인 옥식기 옥접시 세트,1,KITCHEN,키친·다이닝,2,PLATE_BOWL,그릇·접시,680000,무형유산 유기장이 두드려 만든 4인 유기 식기,방짜유기,경기 안성,http://www.유기.kr,http://유기.kr/p19.jpg,https://nihc.go.kr,verified_3,true
 P020,S012,이형근 방짜유기 원형 찬접시 5종 세트,1,KITCHEN,키친·다이닝,2,PLATE_BOWL,그릇·접시,240000,다양한 크기의 옥접시 5종 구성,방짜유기,경남 거창,http://www.yugi.or.kr,http://yugi.or.kr/p20.jpg,https://support.nihc.go.kr,verified_3,true
 P021,S013,광주요 먹빛 옥형 접시 세트,1,KITCHEN,키친·다이닝,2,PLATE_BOWL,그릇·접시,120000,먹빛의 기품을 더한 현대적 도자 접시,도자기,경기 이천,https://www.kwangjuyo.com,https://kwangjuyo.com/p21.jpg,https://www.kcdfshop.kr,verified_3,true
@@ -38,7 +38,7 @@ P036,S017,허진규 옹기 둥근 나물 접시,1,KITCHEN,키친·다이닝,2,PL
 P037,S020,강진 청자 붓터치 원형 볼,1,KITCHEN,키친·다이닝,2,PLATE_BOWL,그릇·접시,48000,청자 유약 표면에 현대적 붓터치를 더한 대접,청자,전남 강진,http://www.dadowon.co.kr,http://dadowon.co.kr/p37.jpg,https://kcdfshop.kr,verified_2,true
 P038,S014,김정옥 영남요 분청 고블렛 접시,1,KITCHEN,키친·다이닝,2,PLATE_BOWL,그릇·접시,90000,굽이 높은 형태의 디저트용 분청 접시,도자기,경북 문경,http://www.youngnamyo.com,http://youngnamyo.com/p38.jpg,https://nihc.go.kr,verified_3,true
 P039,S012,이형근 방짜유기 타원 사각 접시,1,KITCHEN,키친·다이닝,2,PLATE_BOWL,그릇·접시,110000,생선구이나 전을 담기 좋은 직사각형 접시,방짜유기,경남 거창,http://www.yugi.or.kr,http://yugi.or.kr/p39.jpg,https://support.nihc.go.kr,verified_3,true
-P040,S021,전통 문양 현대식 그릇 접시(더미),1,KITCHEN,키친·다이닝,2,PLATE_BOWL,그릇·접시,30000,더미 수량 보완용 가상 접시 상품,도자기,경기 이천,,,,,unverified,false
+P040,S021,전통 문양 현대식 그릇 접시(더미),1,KITCHEN,키친·다이닝,2,PLATE_BOWL,그릇·접시,30000,더미 수량 보완용 가상 접시 상품,도자기,경기 이천,,,unverified,false
 P041,S011,김수영 방짜유기 무광 수저 2벌 세트,1,KITCHEN,키친·다이닝,3,CUTLERY,수저·젓가락,50000,보통 성인이 사용하기에 적합한 은은한 무광 수저,방짜유기,경기 안성,http://www.유기.kr,http://유기.kr/p41.jpg,https://nihc.go.kr,verified_3,true
 P042,S012,이형근 방짜유기 고급 옥수저 5벌 세트,1,KITCHEN,키친·다이닝,3,CUTLERY,수저·젓가락,135000,가족용 옥수저 5벌 구성 선물세트,방짜유기,경남 거창,http://www.yugi.or.kr,http://yugi.or.kr/p42.jpg,https://support.nihc.go.kr,verified_3,true
 P043,S018,남원목기 천연 옻칠 숟가락 젓가락 세트,1,KITCHEN,키친·다이닝,3,CUTLERY,수저·젓가락,25000,천연 옻칠로 항균성이 뛰어난 목수저,원목 옻칠,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p43.jpg,https://nonghyupmall.com,verified_3,true
@@ -52,7 +52,7 @@ P050,S018,남원목기 박달나무 옻칠 수저,1,KITCHEN,키친·다이닝,3,
 P051,S020,강진 청자 수저받침 오리 모양 5개,1,KITCHEN,키친·다이닝,3,CUTLERY,수저·젓가락,25000,원앙 오리 형상의 상감청자 수저받침,청자,전남 강진,http://www.dadowon.co.kr,http://dadowon.co.kr/p51.jpg,https://kcdfshop.kr,verified_2,true
 P052,S011,김수영 방짜유기 단조 수저 세트,1,KITCHEN,키친·다이닝,3,CUTLERY,수저·젓가락,38000,망치질 자국이 남아있는 정통 단조 수저,방짜유기,경기 안성,http://www.유기.kr,http://유기.kr/p52.jpg,https://nihc.go.kr,verified_3,true
 P053,S012,이형근 방짜유기 롱 티스푼 포크 세트,1,KITCHEN,키친·다이닝,3,CUTLERY,수저·젓가락,30000,디저트 및 음료용 유기 티스푼과 포크,방짜유기,경남 거창,http://www.yugi.or.kr,http://yugi.or.kr/p53.jpg,https://support.nihc.go.kr,verified_3,true
-P054,S021,전통 문양 현대식 수저 젓가락(더미),1,KITCHEN,키친·다이닝,3,CUTLERY,수저·젓가락,15000,더미 수량 보완용 가상 수저 상품,방짜유기,경기 이천,,,,,unverified,false
+P054,S021,전통 문양 현대식 수저 젓가락(더미),1,KITCHEN,키친·다이닝,3,CUTLERY,수저·젓가락,15000,더미 수량 보완용 가상 수저 상품,방짜유기,경기 이천,,,unverified,false
 P055,S011,김수영 방짜유기 주전자 및 술잔 4인 세트,1,KITCHEN,키친·다이닝,4,CUP_LIQUOR,컵·술병·술잔,420000,주전자와 옥술잔 4개로 구성된 유기 주류 세트,방짜유기,경기 안성,http://www.유기.kr,http://유기.kr/p55.jpg,https://nihc.go.kr,verified_3,true
 P056,S012,이형근 방짜유기 옥주병 술잔 세트,1,KITCHEN,키친·다이닝,4,CUP_LIQUOR,컵·술병·술잔,280000,슬림한 호병 형태의 유기 술병 세트,방짜유기,경남 거창,http://www.yugi.or.kr,http://yugi.or.kr/p56.jpg,https://support.nihc.go.kr,verified_3,true
 P057,S013,광주요 소리잔 미수 2인 세트,1,KITCHEN,키친·다이닝,4,CUP_LIQUOR,컵·술병·술잔,60000,전통 술을 즐길 때 청아한 소리가 나는 도자 잔,도자기,경기 이천,https://www.kwangjuyo.com,https://kwangjuyo.com/p57.jpg,https://www.kcdfshop.kr,verified_3,true
@@ -68,7 +68,7 @@ P066,S017,허진규 옹기 옹기 찻컵,1,KITCHEN,키친·다이닝,4,CUP_LIQUO
 P067,S011,김수영 방짜유기 소주잔 4개 세트,1,KITCHEN,키친·다이닝,4,CUP_LIQUOR,컵·술병·술잔,65000,전통 소주나 미니어처 약주용 미니 잔,방짜유기,경기 안성,http://www.유기.kr,http://유기.kr/p67.jpg,https://nihc.go.kr,verified_3,true
 P068,S020,강진 청자 상감 미니 술병,1,KITCHEN,키친·다이닝,4,CUP_LIQUOR,컵·술병·술잔,85000,한 손에 들어오는 아담한 크기의 청자 호병,청자,전남 강진,http://www.dadowon.co.kr,http://dadowon.co.kr/p68.jpg,https://kcdfshop.kr,verified_2,true
 P069,S013,광주요 백자 가볍 잔 2종,1,KITCHEN,키친·다이닝,4,CUP_LIQUOR,컵·술병·술잔,38000,얇고 가벼운 두께감이 특징인 현대 백자 잔,백자,경기 이천,https://www.kwangjuyo.com,https://kwangjuyo.com/p69.jpg,https://www.kcdfshop.kr,verified_3,true
-P070,S021,전통 문양 현대식 컵 술병 술잔(더미),1,KITCHEN,키친·다이닝,4,CUP_LIQUOR,컵·술병·술잔,20000,더미 수량 보완용 가상 술잔 상품,도자기,경기 이천,,,,,unverified,false
+P070,S021,전통 문양 현대식 컵 술병 술잔(더미),1,KITCHEN,키친·다이닝,4,CUP_LIQUOR,컵·술병·술잔,20000,더미 수량 보완용 가상 술잔 상품,도자기,경기 이천,,,unverified,false
 P071,S006,이종덕 무형유산 나주반 전통 소반,1,KITCHEN,키친·다이닝,5,SOBAN_TRAY,소반·쟁반,850000,은행나무 상판과 변죽을 칠기 가공한 소반,은행나무 옻칠,전북 전주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p71.jpg,https://nihc.go.kr,verified_3,true
 P072,S006,이종덕 무형유산 해주반 조각 소반,1,KITCHEN,키친·다이닝,5,SOBAN_TRAY,소반·쟁반,1200000,투각 문양 다리가 투시된 황해도식 해주반,고급 원목,전북 전주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p72.jpg,https://nihc.go.kr,verified_3,true
 P073,S006,이종덕 통영반 옻칠 팔각 소반,1,KITCHEN,키친·다이닝,5,SOBAN_TRAY,소반·쟁반,950000,팔각형 상판에 정교한 나전 문양이 들어간 상,원목 나전,전북 전주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p73.jpg,https://nihc.go.kr,verified_3,true
@@ -83,7 +83,7 @@ P081,S006,이종덕 조선시대 해주형 꽃소반,1,KITCHEN,키친·다이닝
 P082,S018,남원목기 옻칠 손잡이 트레이,1,KITCHEN,키친·다이닝,5,SOBAN_TRAY,소반·쟁반,92000,양쪽에 손잡이가 뚫려 있어 운반이 쉬운 쟁반,원목 옻칠,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p82.jpg,https://nonghyupmall.com,verified_3,true
 P083,S006,이종덕 사각 단각 소반,1,KITCHEN,키친·다이닝,5,SOBAN_TRAY,소반·쟁반,680000,외다리 및 단단한 판다리 구조의 사각 소반,원목 옻칠,전북 전주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p83.jpg,https://nihc.go.kr,verified_3,true
 P084,S018,남원목기 원목 티트레이 쟁반,1,KITCHEN,키친·다이닝,5,SOBAN_TRAY,소반·쟁반,50000,1인용 찻잔과 디저트를 올리기 적합한 미니 쟁반,원목 옻칠,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p84.jpg,https://nonghyupmall.com,verified_3,true
-P085,S021,전통 문양 현대식 소반 쟁반(더미),1,KITCHEN,키친·다이닝,5,SOBAN_TRAY,소반·쟁반,60000,더미 수량 보완용 가상 소반 상품,원목,경기 이천,,,,,unverified,false
+P085,S021,전통 문양 현대식 소반 쟁반(더미),1,KITCHEN,키친·다이닝,5,SOBAN_TRAY,소반·쟁반,60000,더미 수량 보완용 가상 소반 상품,원목,경기 이천,,,unverified,false
 P086,S018,남원목기 느티나무 통원목 도마,1,KITCHEN,키친·다이닝,6,KNIFE_BOARD,칼·도마,120000,집성목이 아닌 통원목을 잘라 제작한 고급 도마,느티나무,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p86.jpg,https://nonghyupmall.com,verified_3,true
 P087,S018,남원목기 산청 캄포 통나무 수제 도마,1,KITCHEN,키친·다이닝,6,KNIFE_BOARD,칼·도마,95000,향균력이 뛰어나고 나무 향이 은은한 도마,캄포나무,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p87.jpg,https://nonghyupmall.com,verified_3,true
 P088,S018,남원목기 박달나무 단단한 빵도마,1,KITCHEN,키친·다이닝,6,KNIFE_BOARD,칼·도마,65000,밀도가 높아 칼자국이 잘 나지 않는 박달 도마,박달나무,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p88.jpg,https://nonghyupmall.com,verified_3,true
@@ -95,7 +95,7 @@ P093,S018,남원목기 느티나무 핸들 트레이 도마,1,KITCHEN,키친·�
 P094,S018,남원목기 느티나무 미니 찻도마,1,KITCHEN,키친·다이닝,6,KNIFE_BOARD,칼·도마,38000,다도 시 찻잎이나 과일을 자르는 미니 도마,느티나무,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p94.jpg,https://nonghyupmall.com,verified_3,true
 P095,S011,김수영 방짜유기 단조 생선 칼,1,KITCHEN,키친·다이닝,6,KNIFE_BOARD,칼·도마,160000,생선 손질 및 단단한 재료 손질용 유기 칼,방짜유기,경기 안성,http://www.유기.kr,http://유기.kr/p95.jpg,https://nihc.go.kr,verified_3,true
 P096,S018,남원목기 물푸레나무 사각 도마,1,KITCHEN,키친·다이닝,6,KNIFE_BOARD,칼·도마,75000,선명한 나뭇결과 묵직함이 특징인 도마,물푸레나무,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p96.jpg,https://nonghyupmall.com,verified_3,true
-P097,S021,전통 문양 현대식 칼 도마(더미),1,KITCHEN,키친·다이닝,6,KNIFE_BOARD,칼·도마,30000,더미 수량 보완용 가상 도마 상품,원목,경기 이천,,,,,unverified,false
+P097,S021,전통 문양 현대식 칼 도마(더미),1,KITCHEN,키친·다이닝,6,KNIFE_BOARD,칼·도마,30000,더미 수량 보완용 가상 도마 상품,원목,경기 이천,,,unverified,false
 P098,S016,징광옹기 전통 천연잿물 씨간장 항아리 20L,1,KITCHEN,키친·다이닝,7,JAR_ONGGI,항아리·옹기,280000,발효에 최적화된 숨쉬는 대형 전통 옹기,옹기,전남 보성,http://www.jingkwang.co.kr,http://jingkwang.co.kr/p98.jpg,https://kcdfshop.kr,verified_3,true
 P099,S017,허진규 옹기 숨쉬는 외고산 된장 항아리 10L,1,KITCHEN,키친·다이닝,7,JAR_ONGGI,항아리·옹기,180000,울산 외고산 옹기장 보유자의 손길로 빚은 장독,옹기,울산 울주,http://www.onggi.or.kr,http://onggi.or.kr/p99.jpg,https://nihc.go.kr,verified_3,true
 P100,S016,징광옹기 미니 쌀독 옹기 10kg,1,KITCHEN,키친·다이닝,7,JAR_ONGGI,항아리·옹기,160000,습기를 조절해 쌀벌레 생성을 막아주는 쌀독,옹기,전남 보성,http://www.jingkwang.co.kr,http://jingkwang.co.kr/p100.jpg,https://kcdfshop.kr,verified_3,true
@@ -109,7 +109,7 @@ P107,S017,허진규 옹기 옹기 젓갈 단지 8L,1,KITCHEN,키친·다이닝,7
 P108,S016,징광옹기 전통 옹기 뚝배기 단지,1,KITCHEN,키친·다이닝,7,JAR_ONGGI,항아리·옹기,75000,직화열을 버티는 전통 토속 뚝배기,옹기,전남 보성,http://www.jingkwang.co.kr,http://jingkwang.co.kr/p108.jpg,https://kcdfshop.kr,verified_3,true
 P109,S017,허진규 옹기 외고산 미니 장독대 4종,1,KITCHEN,키친·다이닝,7,JAR_ONGGI,항아리·옹기,110000,인테리어 소품 및 소량 양념 보관용 미니 항아리,옹기,울산 울주,http://www.onggi.or.kr,http://onggi.or.kr/p109.jpg,https://nihc.go.kr,verified_3,true
 P110,S016,징광옹기 옹기 수저통 및 단지,1,KITCHEN,키친·다이닝,7,JAR_ONGGI,항아리·옹기,40000,물 빠짐 구멍이 잘 만들어진 식탁용 옹기 수저통,옹기,전남 보성,http://www.jingkwang.co.kr,http://jingkwang.co.kr/p110.jpg,https://kcdfshop.kr,verified_3,true
-P111,S021,전통 문양 현대식 항아리 옹기(더미),1,KITCHEN,키친·다이닝,7,JAR_ONGGI,항아리·옹기,40000,더미 수량 보완용 가상 항아리 상품,옹기,경기 이천,,,,,unverified,false
+P111,S021,전통 문양 현대식 항아리 옹기(더미),1,KITCHEN,키친·다이닝,7,JAR_ONGGI,항아리·옹기,40000,더미 수량 보완용 가상 항아리 상품,옹기,경기 이천,,,unverified,false
 P112,S017,허진규 옹기 전통 옹기 무균 뚝배기,1,KITCHEN,키친·다이닝,8,POT_CAULDRON,냄비·솥,45000,세제가 스며들지 않는 천연유약 내열 뚝배기,옹기,울산 울주,http://www.onggi.or.kr,http://onggi.or.kr/p112.jpg,https://nihc.go.kr,verified_3,true
 P113,S011,김수영 방짜유기 1인 전골 냄비,1,KITCHEN,키친·다이닝,8,POT_CAULDRON,냄비·솥,250000,열전도율이 우수해 깊은 맛을 내는 유기 전골 냄비,방짜유기,경기 안성,http://www.유기.kr,http://유기.kr/p113.jpg,https://nihc.go.kr,verified_3,true
 P114,S017,허진규 옹기 옹기 2인 밥솥,1,KITCHEN,키친·다이닝,8,POT_CAULDRON,냄비·솥,85000,가스레인지 직화로 윤기 있는 솥밥을 짓는 옹기 솥,옹기,울산 울주,http://www.onggi.or.kr,http://onggi.or.kr/p114.jpg,https://nihc.go.kr,verified_3,true
@@ -119,7 +119,7 @@ P117,S012,이형근 방짜유기 무유기 찌개 냄비,1,KITCHEN,키친·다�
 P118,S017,허진규 옹기 옹기 내열 전골 냄비,1,KITCHEN,키친·다이닝,8,POT_CAULDRON,냄비·솥,78000,직화 및 오븐 사용이 가능한 세라믹형 옹기 냄비,옹기,울산 울주,http://www.onggi.or.kr,http://onggi.or.kr/p118.jpg,https://nihc.go.kr,verified_3,true
 P119,S011,김수영 방짜유기 샤브샤브 냄비,1,KITCHEN,키친·다이닝,8,POT_CAULDRON,냄비·솥,320000,넓은 목을 가진 모던 디자인의 유기 전골 냄비,방짜유기,경기 안성,http://www.유기.kr,http://유기.kr/p119.jpg,https://nihc.go.kr,verified_3,true
 P120,S016,징광옹기 옹기 직화 찌개 냄비,1,KITCHEN,키친·다이닝,8,POT_CAULDRON,냄비·솥,50000,된장찌개 및 김치찌개 조리에 탁월한 옹기 용기,옹기,전남 보성,http://www.jingkwang.co.kr,http://jingkwang.co.kr/p120.jpg,https://kcdfshop.kr,verified_3,true
-P121,S021,전통 문양 현대식 냄비 솥(더미),1,KITCHEN,키친·다이닝,8,POT_CAULDRON,냄비·솥,35000,더미 수량 보완용 가상 냄비 상품,옹기,경기 이천,,,,,unverified,false
+P121,S021,전통 문양 현대식 냄비 솥(더미),1,KITCHEN,키친·다이닝,8,POT_CAULDRON,냄비·솥,35000,더미 수량 보완용 가상 냄비 상품,옹기,경기 이천,,,unverified,false
 P122,S018,남원목기 무형유산 옻칠 목제기 47P 풀세트,1,KITCHEN,키친·다이닝,9,JEGI_VESSEL,제기,890000,지리산 통원목을 깎아 만든 옻칠 제기 제사상 세트,원목 옻칠,전북 남원,http://www.namwonmokgi.com,http://namwonmokgi.com/p122.jpg,https://nonghyupmall.com,verified_3,true
 P123,S027,에이치케이스튜디오 활짝핀 연꽃 LED 조명 오르골,2,HOME,홈·인테리어,10,LIGHTING,조명,61000,연꽃 문양이 회전하며 은은한 불빛을 내는 LED 조명,원목 아크릴,서울 마포,https://www.kcdfshop.kr,https://kcdfshop.kr/p123.jpg,https://kcdfshop.kr,verified_3,true
 P124,S027,에이치케이스튜디오 까치호랑이 오르골 무드등,2,HOME,홈·인테리어,10,LIGHTING,조명,56000,까치와 호랑이 민화를 입체 조형으로 살린 조명,원목,서울 마포,https://www.kcdfshop.kr,https://kcdfshop.kr/p124.jpg,https://kcdfshop.kr,verified_3,true
@@ -133,8 +133,8 @@ P131,S023,이형만 나전칠기 상감 LED 미니 조명,2,HOME,홈·인테리�
 P132,S027,에이치케이스튜디오 단오풍정 그림 무드등,2,HOME,홈·인테리어,10,LIGHTING,조명,51000,신윤복의 단오풍정 명화를 은은한 불빛으로 표현,원목,서울 마포,https://www.kcdfshop.kr,https://kcdfshop.kr/p132.jpg,https://kcdfshop.kr,verified_3,true
 P133,S024,박강용 대나무 댓살 살문 한지 조명,2,HOME,홈·인테리어,10,LIGHTING,조명,220000,전통 창살 형태의 프레임에서 빛이 나오는 등,대나무 한지,전북 남원,http://www.namwonott.com,http://namwonott.com/p133.jpg,https://kcdf.or.kr,verified_3,true
 P134,S028,양석중 전통 창살 미니 등잔대 조명,2,HOME,홈·인테리어,10,LIGHTING,조명,480000,조선 목가구 결구 기법으로 짜맞춘 등잔 형태 조명,느티나무,경기 안성,http://www.somok.or.kr,http://somok.or.kr/p134.jpg,https://nihc.go.kr,verified_3,true
-P135,S030,전통 문양 현대식 스탠드 조명(더미),2,HOME,홈·인테리어,10,LIGHTING,조명,45000,더미 수량 보완용 가상 조명 상품,한지 원목,경기 이천,,,,,unverified,false
-P136,S030,전통 문양 현대식 아크릴 무드등(더미),2,HOME,홈·인테리어,10,LIGHTING,조명,38000,더미 수량 보완용 가상 조명 상품,아크릴,경기 이천,,,,,unverified,false
+P135,S030,전통 문양 현대식 스탠드 조명(더미),2,HOME,홈·인테리어,10,LIGHTING,조명,45000,더미 수량 보완용 가상 조명 상품,한지 원목,경기 이천,,,unverified,false
+P136,S030,전통 문양 현대식 아크릴 무드등(더미),2,HOME,홈·인테리어,10,LIGHTING,조명,38000,더미 수량 보완용 가상 조명 상품,아크릴,경기 이천,,,unverified,false
 P137,S023,이형만 무형유산 나전칠기 적매화 한지 보석함,2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,185000,적매화 문양 자개와 천연 옻칠로 장식된 보석함,나전 원목,강원 원주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p137.jpg,https://support.nihc.go.kr,verified_3,true
 P138,S022,이재만 화각장 십장생문 2단 보석함,2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,2500000,황소 뿔 극세 가공 채색 기법의 최고급 화각 보석함,우각 원목,경기 인천,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p138.jpg,https://nihc.go.kr,verified_3,true
 P139,S023,이형만 나전칠기 당초문 3단 서랍 수납함,2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,450000,당초 문양 자개가 화려하게 도포된 정리함,나전 옻칠,강원 원주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p139.jpg,https://support.nihc.go.kr,verified_3,true
@@ -151,8 +151,8 @@ P149,S023,이형만 나전칠기 국화문 소형 보석함,2,HOME,홈·인테�
 P150,S025,소품쟁이 전통 자수 골무 수납함,2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,85000,색색의 자수 골무와 바느질 도구를 담는 함,명주실 원목,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p150.jpg,https://jasukim.kr,verified_2,true
 P151,S024,박강용 옻칠 나전 은사 콤비 수납함,2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,390000,옻칠 바탕에 은사와 자개가 동시에 들어간 함,원목 나전은,전북 남원,http://www.namwonott.com,http://namwonott.com/p151.jpg,https://kcdf.or.kr,verified_3,true
 P152,S023,이형만 나전칠기 구름운문 보석함,2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,190000,구름 문양이 자개로 드리워진 고풍스러운 함,나전 옻칠,강원 원주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p152.jpg,https://support.nihc.go.kr,verified_3,true
-P153,S030,전통 문양 현대식 수납함 보석함(더미),2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,50000,더미 수량 보완용 가상 보석함 상품,나전 원목,경기 이천,,,,,unverified,false
-P154,S030,전통 문양 현대식 미니 수납함(더미),2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,35000,더미 수량 보완용 가상 수저 상품,원목,경기 이천,,,,,unverified,false
+P153,S030,전통 문양 현대식 수납함 보석함(더미),2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,50000,더미 수량 보완용 가상 보석함 상품,나전 원목,경기 이천,,,unverified,false
+P154,S030,전통 문양 현대식 미니 수납함(더미),2,HOME,홈·인테리어,11,STORAGE_JEWELRY,수납함·보석함,35000,더미 수량 보완용 가상 수저 상품,원목,경기 이천,,,unverified,false
 P155,S026,조화자 백자 청화 도자기 화병,2,HOME,홈·인테리어,12,VASE_FLOWER,화병·꽃,180000,푸른 코발트 빛깔로 모란을 그린 백자 화병,백자,서울 성북,http://www.minhwa.co.kr,http://minhwa.co.kr/p155.jpg,https://kcdfshop.kr,verified_2,true
 P156,S024,박강용 옻칠 원목 둔각 달화병,2,HOME,홈·인테리어,12,VASE_FLOWER,화병·꽃,220000,원목을 둥글게 깎아 옻칠 입혀 건조 꽃을 꽂는 화병,원목 옻칠,전북 남원,http://www.namwonott.com,http://namwonott.com/p156.jpg,https://kcdf.or.kr,verified_3,true
 P157,S026,조화자 분청 모란문 오목 화병,2,HOME,홈·인테리어,12,VASE_FLOWER,화병·꽃,150000,분청사기 특유의 질감이 살아있는 화병,도자기,서울 성북,http://www.minhwa.co.kr,http://minhwa.co.kr/p157.jpg,https://kcdfshop.kr,verified_2,true
@@ -165,7 +165,7 @@ P163,S026,조화자 철화백자 도롱뇽문 화병,2,HOME,홈·인테리어,12
 P164,S024,박강용 주칠 원통형 옻칠 화병,2,HOME,홈·인테리어,12,VASE_FLOWER,화병·꽃,170000,붉은 주칠 마감의 곧은 원통형 꽃병,원목 옻칠,전북 남원,http://www.namwonott.com,http://namwonott.com/p164.jpg,https://kcdf.or.kr,verified_3,true
 P165,S026,조화자 분청 철화 문양 투박 화병,2,HOME,홈·인테리어,12,VASE_FLOWER,화병·꽃,140000,자연스러운 질감과 거친 표면이 멋스러운 화병,도자기,서울 성북,http://www.minhwa.co.kr,http://minhwa.co.kr/p165.jpg,https://kcdfshop.kr,verified_2,true
 P166,S023,이형만 나전칠기 당초문 사각 화병,2,HOME,홈·인테리어,12,VASE_FLOWER,화병·꽃,320000,사면 전체에 자개 장식이 입혀진 전시용 화병,나전 옻칠,강원 원주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p166.jpg,https://support.nihc.go.kr,verified_3,true
-P167,S030,전통 문양 현대식 화병 꽃(더미),2,HOME,홈·인테리어,12,VASE_FLOWER,화병·꽃,40000,더미 수량 보완용 가상 화병 상품,도자기,경기 이천,,,,,unverified,false
+P167,S030,전통 문양 현대식 화병 꽃(더미),2,HOME,홈·인테리어,12,VASE_FLOWER,화병·꽃,40000,더미 수량 보완용 가상 화병 상품,도자기,경기 이천,,,unverified,false
 P168,S023,이형만 나전칠기 십장생문 탁상시계,2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,180000,십장생 자개 장식이 도포된 원목 탁상시계,나전 원목,강원 원주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p168.jpg,https://support.nihc.go.kr,verified_3,true
 P169,S025,소품쟁이 자수 십장생 벽걸이 수자수 액자,2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,280000,손으로 직접 자수를 놓아 원목 프레임에 넣은 벽장식,명주실 원목,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p169.jpg,https://jasukim.kr,verified_2,true
 P170,S023,이형만 나전칠기 일월오봉도 원형 벽시계,2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,250000,왕권을 상징하는 일월오봉 자개가 들어간 벽시계,나전 원목,강원 원주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p170.jpg,https://support.nihc.go.kr,verified_3,true
@@ -176,8 +176,8 @@ P174,S023,이형만 나전칠기 매화 한지 사각 벽시계,2,HOME,홈·인�
 P175,S027,에이치케이스튜디오 모란 문양 미니 시계,2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,42000,책상 위에 세워둘 수 있는 전통 문양 탁상시계,원목,서울 마포,https://www.kcdfshop.kr,https://kcdfshop.kr/p175.jpg,https://kcdfshop.kr,verified_3,true
 P176,S025,소품쟁이 연화도 손자수 미니 패브릭 벽장식,2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,95000,연꽃과 붕어가 들어간 액자형 패브릭 벽장식,비단 실,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p176.jpg,https://jasukim.kr,verified_2,true
 P177,S024,박강용 주칠 한지 혼합 사각 벽시계,2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,110000,주칠 프레임과 한지 시계판이 조화로운 시계,원목 한지,전북 남원,http://www.namwonott.com,http://namwonott.com/p177.jpg,https://kcdf.or.kr,verified_3,true
-P178,S030,전통 문양 현대식 시계 벽장식(더미),2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,35000,더미 수량 보완용 가상 시계 상품,원목,경기 이천,,,,,unverified,false
-P179,S030,전통 문양 현대식 미니 액자 시계(더미),2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,28000,더미 수량 보완용 가상 시계 상품,원목,경기 이천,,,,,unverified,false
+P178,S030,전통 문양 현대식 시계 벽장식(더미),2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,35000,더미 수량 보완용 가상 시계 상품,원목,경기 이천,,,unverified,false
+P179,S030,전통 문양 현대식 미니 액자 시계(더미),2,HOME,홈·인테리어,13,CLOCK_WALL,시계·벽장식,28000,더미 수량 보완용 가상 시계 상품,원목,경기 이천,,,unverified,false
 P180,S025,소품쟁이 삼베 고급 전통 문양 발,2,HOME,홈·인테리어,14,BLIND_SCREEN,발·가림막,180000,통풍이 잘되는 삼베에 수자수로 문양을 넣은 발,삼베 명주실,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p180.jpg,https://jasukim.kr,verified_2,true
 P181,S024,박강용 대나무 살문 1단 전통 가림막,2,HOME,홈·인테리어,14,BLIND_SCREEN,발·가림막,350000,얇게 쪼갠 대나무 살을 엮어 만든 실내 가림막,대나무 원목,전북 남원,http://www.namwonott.com,http://namwonott.com/p181.jpg,https://kcdf.or.kr,verified_3,true
 P182,S025,소품쟁이 조각보 모시 3단 창문 발,2,HOME,홈·인테리어,14,BLIND_SCREEN,발·가림막,150000,색색의 모시 조각을 이어 붙여 만든 전통 발,모시,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p182.jpg,https://jasukim.kr,verified_2,true
@@ -187,7 +187,7 @@ P185,S024,박강용 옻칠 대나무 통발 가림막,2,HOME,홈·인테리어,1
 P186,S025,소품쟁이 명주 국화 자수 2단 가림막,2,HOME,홈·인테리어,14,BLIND_SCREEN,발·가림막,190000,국화 문양이 자수 처리된 현관 및 방문용 발,명주,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p186.jpg,https://jasukim.kr,verified_2,true
 P187,S028,양석중 세살문 한지 3폭 원목 가림막,2,HOME,홈·인테리어,14,BLIND_SCREEN,발·가림막,1200000,세밀한 촘촘 창살에 한지를 매화 모양으로 입힌 스크린,원목 한지,경기 안성,http://www.somok.or.kr,http://somok.or.kr/p187.jpg,https://nihc.go.kr,verified_3,true
 P188,S025,소품쟁이 삼베 칠보문양 1단 문발,2,HOME,홈·인테리어,14,BLIND_SCREEN,발·가림막,110000,칠보 보석 문양이 새겨진 자연스러운 삼베 발,삼베,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p188.jpg,https://jasukim.kr,verified_2,true
-P189,S030,전통 문양 현대식 발 가림막(더미),2,HOME,홈·인테리어,14,BLIND_SCREEN,발·가림막,50000,더미 수량 보완용 가상 가림막 상품,면 원목,경기 이천,,,,,unverified,false
+P189,S030,전통 문양 현대식 발 가림막(더미),2,HOME,홈·인테리어,14,BLIND_SCREEN,발·가림막,50000,더미 수량 보완용 가상 가림막 상품,면 원목,경기 이천,,,unverified,false
 P190,S028,양석중 무형유산 사방탁자 4단 원목 가구,2,HOME,홈·인테리어,15,FURNITURE,가구,2800000,조선 선비의 사랑방을 대표하는 사방탁자 가구,느티나무,경기 안성,http://www.somok.or.kr,http://somok.or.kr/p190.jpg,https://nihc.go.kr,verified_3,true
 P191,S028,양석중 전통 느티나무 2층 머릿장,2,HOME,홈·인테리어,15,FURNITURE,가구,3500000,안방 의복 및 소품 보관용 전통 머릿장,느티나무 두석,경기 안성,http://www.somok.or.kr,http://somok.or.kr/p191.jpg,https://nihc.go.kr,verified_3,true
 P192,S023,이형만 나전칠기 십장생 문갑 2층 장,2,HOME,홈·인테리어,15,FURNITURE,가구,8500000,자개 십장생이 명품 화려함을 더한 안방 문갑,나전 오동나무,강원 원주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p192.jpg,https://support.nihc.go.kr,verified_3,true
@@ -202,7 +202,7 @@ P200,S023,이형만 나전칠기 포도문 콘솔 탁자,2,HOME,홈·인테리�
 P201,S028,양석중 원목 반닫이 궤,2,HOME,홈·인테리어,15,FURNITURE,가구,2400000,앞문이 반으로 열리는 강직한 느낌의 전통 반닫이,소나무 두석,경기 안성,http://www.somok.or.kr,http://somok.or.kr/p201.jpg,https://nihc.go.kr,verified_3,true
 P202,S024,박강용 주칠 원목 대형 찻상,2,HOME,홈·인테리어,15,FURNITURE,가구,1800000,4~6인이 함께 쓸 수 있는 고급 옻칠 대형 상,원목 옻칠,전북 남원,http://www.namwonott.com,http://namwonott.com/p202.jpg,https://kcdf.or.kr,verified_3,true
 P203,S028,양석중 고가구 삼층장,2,HOME,홈·인테리어,15,FURNITURE,가구,4800000,3층 구조로 수납력이 높은 정통 소목 수제 장,느티나무 오동나무,경기 안성,http://www.somok.or.kr,http://somok.or.kr/p203.jpg,https://nihc.go.kr,verified_3,true
-P204,S030,전통 문양 현대식 가구(더미),2,HOME,홈·인테리어,15,FURNITURE,가구,300000,더미 수량 보완용 가상 가구 상품,원목,경기 이천,,,,,unverified,false
+P204,S030,전통 문양 현대식 가구(더미),2,HOME,홈·인테리어,15,FURNITURE,가구,300000,더미 수량 보완용 가상 가구 상품,원목,경기 이천,,,unverified,false
 P205,S029,김극천 무형유산 황동 나비 장석 2개 세트,2,HOME,홈·인테리어,16,HARDWARE_HANDLE,장석·손잡이,85000,나비 모양으로 조각된 가구 정면 장식 황동 장석,황동,경남 통영,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p205.jpg,https://nihc.go.kr,verified_3,true
 P206,S029,김극천 두석장 백동 제비꼬리 가구 손잡이 4개,2,HOME,홈·인테리어,16,HARDWARE_HANDLE,장석·손잡이,65000,제비 꼬리 형상의 은빛 백동 서랍 손잡이,백동,경남 통영,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p206.jpg,https://nihc.go.kr,verified_3,true
 P207,S029,김극천 두석장 무쇠 박쥐 문양 모서리 장석 4개,2,HOME,홈·인테리어,16,HARDWARE_HANDLE,장석·손잡이,55000,복을 부르는 박쥐 문양의 가구 모서리 보강 장석,무쇠,경남 통영,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p207.jpg,https://nihc.go.kr,verified_3,true
@@ -213,7 +213,7 @@ P211,S029,김극천 무쇠 전통 자물쇠 및 열쇠 세트,2,HOME,홈·인테
 P212,S029,김극천 백동 화형 둥근 보목 장석 4개,2,HOME,홈·인테리어,16,HARDWARE_HANDLE,장석·손잡이,38000,꽃 모양 판 위에 못 머리를 감싸는 장식 장석,백동,경남 통영,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p212.jpg,https://nihc.go.kr,verified_3,true
 P213,S029,김극천 황동 십장생문 자물쇠 장석,2,HOME,홈·인테리어,16,HARDWARE_HANDLE,장석·손잡이,150000,십장생 조각이 들어간 고급 대형 은장 자물쇠,황동,경남 통영,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p213.jpg,https://nihc.go.kr,verified_3,true
 P214,S029,김극천 백동 귀두문 가구 걸쇠 손잡이 2개,2,HOME,홈·인테리어,16,HARDWARE_HANDLE,장석·손잡이,50000,귀면 문양으로 악귀를 쫓는 의미를 담은 손잡이,백동,경남 통영,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p214.jpg,https://nihc.go.kr,verified_3,true
-P215,S030,전통 문양 현대식 장석 손잡이(더미),2,HOME,홈·인테리어,16,HARDWARE_HANDLE,장석·손잡이,20000,더미 수량 보완용 가상 장석 상품,황동,경기 이천,,,,,unverified,false
+P215,S030,전통 문양 현대식 장석 손잡이(더미),2,HOME,홈·인테리어,16,HARDWARE_HANDLE,장석·손잡이,20000,더미 수량 보완용 가상 장석 상품,황동,경기 이천,,,unverified,false
 P216,S034,전통 은가락지 세트 (2개입),3,FASHION,패션·액세서리,17,RING_EARRING,반지·귀걸이,120000,순은을 다듬어 수공예로 만든 클래식 쌍가락지,순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p216.jpg,https://kcdfshop.kr,verified_2,true
 P217,S034,천연 옥 은 칠보 귀걸이,3,FASHION,패션·액세서리,17,RING_EARRING,반지·귀걸이,85000,원형 천연 옥 위에 칠보 장식을 더한 귀걸이,천연옥 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p217.jpg,https://kcdfshop.kr,verified_2,true
 P218,S035,전통 매듭 매화 매듭 반지,3,FASHION,패션·액세서리,17,RING_EARRING,반지·귀걸이,32000,명주실 매듭으로 매화 꽃을 연출한 가벼운 반지,명주실,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p218.jpg,https://kcdf.or.kr,verified_2,true
@@ -225,7 +225,7 @@ P223,S034,은 투각 모란문 반지,3,FASHION,패션·액세서리,17,RING_EAR
 P224,S035,매듭 생동끈 미니 귀걸이,3,FASHION,패션·액세서리,17,RING_EARRING,반지·귀걸이,28000,데일리로 착용하기 좋은 아담한 매듭 귀걸이,명주실,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p224.jpg,https://kcdf.or.kr,verified_2,true
 P225,S034,산호 은장식 마노 반지,3,FASHION,패션·액세서리,17,RING_EARRING,반지·귀걸이,190000,붉은 산호 원석과 은 세공이 입체적인 반지,산호 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p225.jpg,https://kcdfshop.kr,verified_2,true
 P226,S034,백옥 링 은 귀걸이,3,FASHION,패션·액세서리,17,RING_EARRING,반지·귀걸이,75000,맑은 백옥을 링 형태로 다듬어 매달은 귀걸이,백옥 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p226.jpg,https://kcdfshop.kr,verified_2,true
-P227,S037,전통 문양 현대식 반지 귀걸이(더미),3,FASHION,패션·액세서리,17,RING_EARRING,반지·귀걸이,25000,더미 수량 보완용 가상 액세서리 상품,순은,경기 이천,,,,,unverified,false
+P227,S037,전통 문양 현대식 반지 귀걸이(더미),3,FASHION,패션·액세서리,17,RING_EARRING,반지·귀걸이,25000,더미 수량 보완용 가상 액세서리 상품,순은,경기 이천,,,unverified,false
 P228,S005,김혜순 무형유산 병아리 매듭 목걸이,3,FASHION,패션·액세서리,18,NECKLACE_BRACELET,목걸이·팔찌,180000,전통 병아리 매듭에 원석 펜던트를 달은 목걸이,명주실 천연옥,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p228.jpg,https://support.nihc.go.kr,verified_3,true
 P229,S035,김은영 칠보 매듭 팔찌,3,FASHION,패션·액세서리,18,NECKLACE_BRACELET,목걸이·팔찌,65000,칠보 구슬과 전통 날개 매듭으로 이어 만든 팔찌,칠보 명주실,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p229.jpg,https://kcdf.or.kr,verified_2,true
 P230,S034,은 상감 옥 펜던트 목걸이,3,FASHION,패션·액세서리,18,NECKLACE_BRACELET,목걸이·팔찌,140000,옥 판 위에 은으로 모란을 입사한 목걸이,천연옥 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p230.jpg,https://kcdfshop.kr,verified_2,true
@@ -239,7 +239,7 @@ P237,S005,김혜순 무형유산 봉술 매듭 목걸이,3,FASHION,패션·액�
 P238,S035,오색 매듭 가죽 매치 팔찌,3,FASHION,패션·액세서리,18,NECKLACE_BRACELET,목걸이·팔찌,48000,전통 오색실 매듭과 천연 가죽끈을 믹스한 팔찌,명주실 가죽,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p238.jpg,https://kcdf.or.kr,verified_2,true
 P239,S034,호박 원석 세공 은 목걸이,3,FASHION,패션·액세서리,18,NECKLACE_BRACELET,목걸이·팔찌,170000,따뜻한 호박석을 돋보이게 프레임 처리한 목걸이,호박 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p239.jpg,https://kcdfshop.kr,verified_2,true
 P240,S035,백옥 산호 2연 매듭 팔찌,3,FASHION,패션·액세서리,18,NECKLACE_BRACELET,목걸이·팔찌,78000,백옥과 산호 구슬을 교차 배치한 고급 매듭 팔찌,백옥 산호 명주실,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p240.jpg,https://kcdf.or.kr,verified_2,true
-P241,S037,전통 문양 현대식 목걸이 팔찌(더미),3,FASHION,패션·액세서리,18,NECKLACE_BRACELET,목걸이·팔찌,30000,더미 수량 보완용 가상 액세서리 상품,명주실,경기 이천,,,,,unverified,false
+P241,S037,전통 문양 현대식 목걸이 팔찌(더미),3,FASHION,패션·액세서리,18,NECKLACE_BRACELET,목걸이·팔찌,30000,더미 수량 보완용 가상 액세서리 상품,명주실,경기 이천,,,unverified,false
 P242,S005,김혜순 무형유산 삼작 노리개,3,FASHION,패션·액세서리,19,NORIGAE_BROOCH,노리개·브로치,850000,옥, 산호, 호박 3가지 주머니가 어우러진 최고급 노리개,천연옥 명주실,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p242.jpg,https://nihc.go.kr,verified_3,true
 P243,S005,김혜순 정통 명주실 매듭 단작 노리개,3,FASHION,패션·액세서리,19,NORIGAE_BROOCH,노리개·브로치,150000,천연 염색 명주실을 매듭지어 만든 한복 장신구,명주실 원앙옥,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p243.jpg,https://nihc.go.kr,verified_3,true
 P244,S035,김은영 은장도 매듭 노리개,3,FASHION,패션·액세서리,19,NORIGAE_BROOCH,노리개·브로치,280000,미니 은장도가 중앙에 장식된 호신용 단작 노리개,순은 명주실,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p244.jpg,https://kcdf.or.kr,verified_2,true
@@ -255,7 +255,7 @@ P253,S005,김혜순 박쥐 매듭 미니 노리개,3,FASHION,패션·액세서�
 P254,S035,자수 자개 모란문 코사지,3,FASHION,패션·액세서리,19,NORIGAE_BROOCH,NORIGAE_BROOCH,82000,손자수 모란 패브릭과 자개가 결합된 브로치,비단 자개,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p254.jpg,https://kcdf.or.kr,verified_2,true
 P255,S034,은 칠보 당초문 스카프 링 브로치,3,FASHION,패션·액세서리,19,NORIGAE_BROOCH,NORIGAE_BROOCH,70000,스카프를 고정하면서 브로치로도 쓰는 겸용 고리,칠보 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p255.jpg,https://kcdfshop.kr,verified_2,true
 P256,S005,김혜순 자수 복주머니 3작 노리개,3,FASHION,패션·액세서리,19,NORIGAE_BROOCH,NORIGAE_BROOCH,480000,색동 자수 주머니 3개가 엮인 고풍스러운 노리개,명주실 비단,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p256.jpg,https://support.nihc.go.kr,verified_3,true
-P257,S037,전통 문양 현대식 노리개 브로치(더미),3,FASHION,패션·액세서리,19,NORIGAE_BROOCH,NORIGAE_BROOCH,35000,더미 수량 보완용 가상 노리개 상품,명주실,경기 이천,,,,,unverified,false
+P257,S037,전통 문양 현대식 노리개 브로치(더미),3,FASHION,패션·액세서리,19,NORIGAE_BROOCH,NORIGAE_BROOCH,35000,더미 수량 보완용 가상 노리개 상품,명주실,경기 이천,,,unverified,false
 P258,S034,전통 순은 용두 비녀,3,FASHION,패션·액세서리,20,HAIRPIN_BINYEO,머리핀·비녀,450000,용의 머리를 정교하게 세공한 전통 은비녀,순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p258.jpg,https://kcdfshop.kr,verified_2,true
 P259,S034,비취 원석 봉황 비녀,3,FASHION,패션·액세서리,20,HAIRPIN_BINYEO,머리핀·비녀,380000,비취 머리에 봉황을 새긴 예단용 비녀,비취 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p259.jpg,https://kcdfshop.kr,verified_2,true
 P260,S034,은 칠보 매화 떨잠 뒤꼬지,3,FASHION,패션·액세서리,20,HAIRPIN_BINYEO,머리핀·비녀,180000,움직일 때마다 떨새가 흔들리는 궁중 떨잠,칠보 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p260.jpg,https://kcdfshop.kr,verified_2,true
@@ -267,7 +267,7 @@ P265,S034,흑각 원목 국화 조각 비녀,3,FASHION,패션·액세서리,20,H
 P266,S034,은 칠보 모란꽃 뒤꼬지 2종 세트,3,FASHION,패션·액세서리,20,HAIRPIN_BINYEO,머리핀·비녀,140000,화려한 칠보 모란이 조각된 쌍 뒤꼬지,칠보 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p266.jpg,https://kcdfshop.kr,verified_2,true
 P267,S035,매듭 첩지 머리장식 핀,3,FASHION,패션·액세서리,20,HAIRPIN_BINYEO,머리핀·비녀,68000,가르마 중앙에 얹는 봉황 모양 매듭 첩지 핀,명주실 비단,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p267.jpg,https://kcdf.or.kr,verified_2,true
 P268,S034,호박 상감 은 가락 비녀,3,FASHION,패션·액세서리,20,HAIRPIN_BINYEO,머리핀·비녀,220000,길쭉한 잠두에 호박석이 박힌 고급 은비녀,호박 순은,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p268.jpg,https://kcdfshop.kr,verified_2,true
-P269,S037,전통 문양 현대식 머리핀 비녀(더미),3,FASHION,패션·액세서리,20,HAIRPIN_BINYEO,머리핀·비녀,20000,더미 수량 보완용 가상 비녀 상품,순은,경기 이천,,,,,unverified,false
+P269,S037,전통 문양 현대식 머리핀 비녀(더미),3,FASHION,패션·액세서리,20,HAIRPIN_BINYEO,머리핀·비녀,20000,더미 수량 보완용 가상 비녀 상품,순은,경기 이천,,,unverified,false
 P270,S032,방연옥 무형유산 한산모시 100% 옥색 스카프,3,FASHION,패션·액세서리,21,SCARF_MUFFLER,스카프·머플러,280000,한산 수제 모시를 옥색으로 천연 염색한 스카프,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p270.jpg,https://support.nihc.go.kr,verified_3,true
 P271,S032,방연옥 한산모시 감나무 천연염색 머플러,3,FASHION,패션·액세서리,21,SCARF_MUFFLER,스카프·머플러,320000,감물 염색으로 그윽한 갈색빛을 띠는 여름 머플러,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p271.jpg,https://support.nihc.go.kr,verified_3,true
 P272,S036,예당 한복 실크 조각보 머플러,3,FASHION,패션·액세서리,21,SCARF_MUFFLER,스카프·머플러,120000,다양한 색상의 실크 조각을 이어 붙인 스카프,실크,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p272.jpg,https://shopofkorea.com,verified_2,true
@@ -278,7 +278,7 @@ P276,S036,예당 양단 한복 패치워크 스카프,3,FASHION,패션·액세�
 P277,S032,방연옥 한산모시 먹물 염색 롱 스카프,3,FASHION,패션·액세서리,21,SCARF_MUFFLER,스카프·머플러,290000,먹 염색 특유의 그라데이션이 차분한 스카프,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p277.jpg,https://support.nihc.go.kr,verified_3,true
 P278,S036,예당 손자수 매화 실크 미니 스카프,3,FASHION,패션·액세서리,21,SCARF_MUFFLER,스카프·머플러,68000,모서리에 매화 한 송이가 수놓아진 쁘띠 스카프,실크 자수,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p278.jpg,https://shopofkorea.com,verified_2,true
 P279,S032,방연옥 한산모시 쑥 염색 그린 숄,3,FASHION,패션·액세서리,21,SCARF_MUFFLER,스카프·머플러,310000,강화 쑥으로 염색해 은은한 올리브 빛이 나는 숄,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p279.jpg,https://support.nihc.go.kr,verified_3,true
-P280,S037,전통 문양 현대식 스카프 머플러(더미),3,FASHION,패션·액세서리,21,SCARF_MUFFLER,스카프·머플러,40000,더미 수량 보완용 가상 스카프 상품,실크,경기 이천,,,,,unverified,false
+P280,S037,전통 문양 현대식 스카프 머플러(더미),3,FASHION,패션·액세서리,21,SCARF_MUFFLER,스카프·머플러,40000,더미 수량 보완용 가상 스카프 상품,실크,경기 이천,,,unverified,false
 P281,S036,예당 한복 원단 전통 조각보 토트백,3,FASHION,패션·액세서리,22,BAG_POUCH,가방·파우치,150000,전통 조각보 이어붙이기 방식으로 만든 토트백,실크 원목손잡이,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p281.jpg,https://shopofkorea.com,verified_2,true
 P282,S031,구혜자 무형유산 손자수 누비 토트백,3,FASHION,패션·액세서리,22,BAG_POUCH,가방·파우치,280000,정교한 세로 누비에 수자수를 더한 손가방,명주실 면,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p282.jpg,https://nihc.go.kr,verified_3,true
 P283,S036,예당 전통 자수 화장품 파우치,3,FASHION,패션·액세서리,22,BAG_POUCH,가방·파우치,35000,모란 자수가 입체적으로 들어간 수납 파우치,양단 비단,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p283.jpg,https://shopofkorea.com,verified_2,true
@@ -296,7 +296,7 @@ P294,S031,구혜자 침선장 색동 미니 돈주머니,3,FASHION,패션·액�
 P295,S036,예당 손자수 매화 스트링 파우치,3,FASHION,패션·액세서리,22,BAG_POUCH,가방·파우치,38000,끈을 당겨 닫는 원형 매화 자수 파우치,비단 자수,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p295.jpg,https://shopofkorea.com,verified_2,true
 P296,S031,구혜자 전통 모시 조각보 클러치,3,FASHION,패션·액세서리,22,BAG_POUCH,가방·파우치,170000,여름철凉感을 주는 시원한 모시 클러치,한산모시,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p296.jpg,https://nihc.go.kr,verified_3,true
 P297,S036,예당 한복 원단 여행용 대형 파우치,3,FASHION,패션·액세서리,22,BAG_POUCH,가방·파우치,48000,속옷이나 의류를 나누어 담기 좋은 대형 파우치,양단,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p297.jpg,https://shopofkorea.com,verified_2,true
-P298,S037,전통 문양 현대식 가방 파우치(더미),3,FASHION,패션·액세서리,22,BAG_POUCH,가방·파우치,35000,더미 수량 보완용 가상 가방 상품,면,경기 이천,,,,,unverified,false
+P298,S037,전통 문양 현대식 가방 파우치(더미),3,FASHION,패션·액세서리,22,BAG_POUCH,가방·파우치,35000,더미 수량 보완용 가상 가방 상품,면,경기 이천,,,unverified,false
 P299,S036,예당 전통 나전 자개 포인트 장장어 지갑,3,FASHION,패션·액세서리,23,WALLET_CARD,지갑·카드지갑,120000,지퍼 부분에 자개 장식을 붙인 소가죽 장지갑,천연소가죽 자개,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p299.jpg,https://shopofkorea.com,verified_2,true
 P300,S036,예당 한복지 조각보 슬림 카드지갑,3,FASHION,패션·액세서리,23,WALLET_CARD,지갑·카드지갑,28000,주머니에 쏙 들어가는 한복 원단 카드케이스,양단 실크,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p300.jpg,https://shopofkorea.com,verified_2,true
 P301,S031,구혜자 전통 누비 지퍼 동전지갑,3,FASHION,패션·액세서리,23,WALLET_CARD,지갑·카드지갑,35000,손누비 원단에 태극 매듭 술이 달린 동전지갑,명주실 면,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p301.jpg,https://nihc.go.kr,verified_3,true
@@ -311,7 +311,7 @@ P309,S036,예당 모란문 음각 소가죽 카드홀더,3,FASHION,패션·액�
 P310,S031,구혜자 손자수 매화 삼각 지갑,3,FASHION,패션·액세서리,23,WALLET_CARD,지갑·카드지갑,36000,독특한 삼각형 접이 구조의 손자수 지갑,비단,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p310.jpg,https://nihc.go.kr,verified_3,true
 P311,S036,예당 한복 양단 똑딱이 동전지갑,3,FASHION,패션·액세서리,23,WALLET_CARD,지갑·카드지갑,22000,금속 프레임 프레임 조임 방식의 동전지갑,양단 금속,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p311.jpg,https://shopofkorea.com,verified_2,true
 P312,S036,예당 전통 자수 아코디언 카드지갑,3,FASHION,패션·액세서리,23,WALLET_CARD,지갑·카드지갑,48000,내부가 아코디언처럼 펼쳐지는 자수 지갑,양단,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p312.jpg,https://shopofkorea.com,verified_2,true
-P313,S037,전통 문양 현대식 지갑 카드지갑(더미),3,FASHION,패션·액세서리,23,WALLET_CARD,지갑·카드지갑,20000,더미 수량 보완용 가상 지갑 상품,소가죽,경기 이천,,,,,unverified,false
+P313,S037,전통 문양 현대식 지갑 카드지갑(더미),3,FASHION,패션·액세서리,23,WALLET_CARD,지갑·카드지갑,20000,더미 수량 보완용 가상 지갑 상품,소가죽,경기 이천,,,unverified,false
 P314,S033,김기찬 무형유산 하회탈 양반 부네 열쇠고리 세트,3,FASHION,패션·액세서리,24,KEYRING,키링·열쇠고리,5980,양반탈과 부네탈 형상의 입체 목각 열쇠고리 세트,원목,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p314.jpg,https://shopofkorea.com,verified_3,true
 P315,S033,김기찬 무형유산 양반탈 단품 키링,3,FASHION,패션·액세서리,24,KEYRING,키링·열쇠고리,2990,익살스러운 양반탈 목조각 키링,원목,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p315.jpg,https://shopofkorea.com,verified_3,true
 P316,S035,김은영 전통 매듭 실크 키링,3,FASHION,패션·액세서리,24,KEYRING,키링·열쇠고리,18000,가방이나 에어팟 케이스에 거는 매듭 키링,명주실 금속,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p316.jpg,https://kcdf.or.kr,verified_2,true
@@ -325,7 +325,7 @@ P323,S034,은 세공 태극문 키링,3,FASHION,패션·액세서리,24,KEYRING,
 P324,S033,김기찬 초랭이탈 백탈 열쇠고리,3,FASHION,패션·액세서리,24,KEYRING,키링·열쇠고리,3500,초랭이탈의 장난기 어린 표정을 살린 열쇠고리,원목,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p324.jpg,https://shopofkorea.com,verified_3,true
 P325,S035,자수 복주머니 미니 키링,3,FASHION,패션·액세서리,24,KEYRING,키링·열쇠고리,16000,복 자가 수놓아진 미니 주머니 키링,비단,서울 종로,http://www.maeulp.or.kr,http://maeulp.or.kr/p325.jpg,https://kcdf.or.kr,verified_2,true
 P326,S036,예당 전통 단청 문양 아크릴 키링,3,FASHION,패션·액세서리,24,KEYRING,키링·열쇠고리,9800,단청의 화려한 색감을 투명 아크릴에 인쇄한 키링,아크릴,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p326.jpg,https://shopofkorea.com,verified_2,true
-P327,S037,전통 문양 현대식 키링 열쇠고리(더미),3,FASHION,패션·액세서리,24,KEYRING,키링·열쇠고리,8000,더미 수량 보완용 가상 키링 상품,원목,경기 이천,,,,,unverified,false
+P327,S037,전통 문양 현대식 키링 열쇠고리(더미),3,FASHION,패션·액세서리,24,KEYRING,키링·열쇠고리,8000,더미 수량 보완용 가상 키링 상품,원목,경기 이천,,,unverified,false
 P328,S033,김기찬 무형유산 설송 합죽선 매화 부채,3,FASHION,패션·액세서리,25,FAN,부채,32990,매화 그림과 옥 장식이 더해진 수제 합죽선,한지 대나무,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p328.jpg,https://shopofkorea.com,verified_3,true
 P329,S033,김기찬 무형유산 오죽선 호랑이 그림 부채,3,FASHION,패션·액세서리,25,FAN,부채,12000,검은 대나무 댓살에 호랑이가 그려진 오죽선,오죽 한지,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p329.jpg,https://shopofkorea.com,verified_3,true
 P330,S033,김기찬 낙죽 삼태극 단선 선부채,3,FASHION,패션·액세서리,25,FAN,부채,25000,빨강, 파랑, 노랑 삼태극 문양이 그려진 둥근 부채,한지 대나무,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p330.jpg,https://support.nihc.go.kr,verified_3,true
@@ -341,7 +341,7 @@ P339,S032,방연옥 한산모시 단선 파스텔 부채,3,FASHION,패션·액�
 P340,S033,김기찬 단청 문양 삼태극 펼침 부채,3,FASHION,패션·액세서리,25,FAN,부채,15000,단청의 색감을 부채 가장자리에 입힌 한지 부채,한지 대나무,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p340.jpg,https://support.nihc.go.kr,verified_3,true
 P341,S033,김기찬 무형유산 수제 낙죽 선추 부채,3,FASHION,패션·액세서리,25,FAN,부채,110000,선추에 나침반이 내장된 희귀 전통 합죽선,한지 대나무,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p341.jpg,https://support.nihc.go.kr,verified_3,true
 P342,S033,김기찬 풍속화 신윤복 미인도 부채,3,FASHION,패션·액세서리,25,FAN,부채,16000,신윤복의 미인도가 정교하게 인쇄된 감성 부채,한지 대나무,경남 하동,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p342.jpg,https://support.nihc.go.kr,verified_3,true
-P343,S037,전통 문양 현대식 부채(더미),3,FASHION,패션·액세서리,25,FAN,부채,10000,더미 수량 보완용 가상 부채 상품,한지 대나무,경기 이천,,,,,unverified,false
+P343,S037,전통 문양 현대식 부채(더미),3,FASHION,패션·액세서리,25,FAN,부채,10000,더미 수량 보완용 가상 부채 상품,한지 대나무,경기 이천,,,unverified,false
 P344,S031,구혜자 무형유산 당의 한복 맞춤 세트,3,FASHION,패션·액세서리,26,HANBOK,한복·생활한복,2500000,궁중 예복인 당의 양식을 재현한 전통 한복,명주 실크,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p344.jpg,https://nihc.go.kr,verified_3,true
 P345,S036,예당 철릭 원피스 생활한복,3,FASHION,패션·액세서리,26,HANBOK,한복·생활한복,185000,조선 무관의 철릭 의상을 현대 원피스로 재해석,면 리넨,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p345.jpg,https://shopofkorea.com,verified_2,true
 P346,S031,구혜자 전통 남자 두루마기,3,FASHION,패션·액세서리,26,HANBOK,한복·생활한복,1200000,풍성한 품과 정교한 바느질이 돋보이는 두루마기,명주,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p346.jpg,https://nihc.go.kr,verified_3,true
@@ -353,7 +353,7 @@ P351,S036,예당 마 저고리 남성 생활한복,3,FASHION,패션·액세서�
 P352,S031,구혜자 전통 여자 액주름포 한복,3,FASHION,패션·액세서리,26,HANBOK,한복·생활한복,1500000,겨드랑이 밑에 주름이 잡힌 조선 초기 의상,명주,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p352.jpg,https://nihc.go.kr,verified_3,true
 P353,S036,예당 아동용 색동 저고리 치마 세트,3,FASHION,패션·액세서리,26,HANBOK,한복·생활한복,125000,명절이나 돌잔치에 입히기 좋은 아동 한복,양단,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p353.jpg,https://shopofkorea.com,verified_2,true
 P354,S032,방연옥 한산모시 여아 모시 원피스,3,FASHION,패션·액세서리,26,HANBOK,한복·생활한복,320000,천연 염색 모시 원단으로 만든 아동 모시 옷,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p354.jpg,https://support.nihc.go.kr,verified_3,true
-P355,S037,전통 문양 현대식 한복 생활한복(더미),3,FASHION,패션·액세서리,26,HANBOK,한복·생활한복,80000,더미 수량 보완용 가상 한복 상품,면,경기 이천,,,,,unverified,false
+P355,S037,전통 문양 현대식 한복 생활한복(더미),3,FASHION,패션·액세서리,26,HANBOK,한복·생활한복,80000,더미 수량 보완용 가상 한복 상품,면,경기 이천,,,unverified,false
 P356,S002,정춘모 무형유산 흑대립 정통 조선 갓,3,FASHION,패션·액세서리,27,GAT_HAT,갓·모자,3500000,말총과 대올을 정밀하게 엮어 만든 성인 정장 갓,말총 대나무,서울 강남,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p356.jpg,https://nihc.go.kr,verified_3,true
 P357,S002,정춘모 무형유산 조선 시대 정자관,3,FASHION,패션·액세서리,27,GAT_HAT,갓·모자,1800000,양반 선비들이 평상시 집안에서 쓰던 말총 모자,말총,서울 강남,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p357.jpg,https://nihc.go.kr,verified_3,true
 P358,S002,정춘모 수제 말총 탕건,3,FASHION,패션·액세서리,27,GAT_HAT,갓·모자,1200000,갓 아래에 받쳐 쓰던 말총으로 엮은 탕건,말총,서울 강남,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p358.jpg,https://nihc.go.kr,verified_3,true
@@ -363,7 +363,7 @@ P361,S036,예당 털 굴레 아동 겨울 머리 모자,3,FASHION,패션·액세
 P362,S032,방연옥 한산모시 여름 모시 파나마 햇,3,FASHION,패션·액세서리,27,GAT_HAT,갓·모자,150000,한산모시로 짠 자외선 차단 야외 모자,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p362.jpg,https://support.nihc.go.kr,verified_3,true
 P363,S002,정춘모 조선 무관 전립 갓,3,FASHION,패션·액세서리,27,GAT_HAT,갓·모자,2200000,털을 다져 만든 단단한 무관용 모자,모펠트 옥,서울 강남,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p363.jpg,https://nihc.go.kr,verified_3,true
 P364,S036,예당 여성 남바위 방한 모자,3,FASHION,패션·액세서리,27,GAT_HAT,갓·모자,68000,정수리가 뚫려 있고 귀와 목을 덮는 방한모,양단 털,서울 중구,http://www.yedang.co.kr,http://yedang.co.kr/p364.jpg,https://shopofkorea.com,verified_2,true
-P365,S037,전통 문양 현대식 갓 모자(더미),3,FASHION,패션·액세서리,27,GAT_HAT,갓·모자,35000,더미 수량 보완용 가상 모자 상품,말총,경기 이천,,,,,unverified,false
+P365,S037,전통 문양 현대식 갓 모자(더미),3,FASHION,패션·액세서리,27,GAT_HAT,갓·모자,35000,더미 수량 보완용 가상 모자 상품,말총,경기 이천,,,unverified,false
 P366,S002,정춘모 무형유산 말총 망건,3,FASHION,패션·액세서리,28,MANGGEON_HAIR,망건·머리장식,1500000,상투를 틀 때 머리를 매만지는 말총 이마 띠,말총 옥관자,서울 강남,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p366.jpg,https://nihc.go.kr,verified_3,true
 P367,S002,정춘모 수제 옥관자 망건 풍잠 세트,3,FASHION,패션·액세서리,28,MANGGEON_HAIR,망건·머리장식,2200000,백옥 관자와 호박 풍잠이 포함된 완품 망건,말총 백옥,서울 강남,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p367.jpg,https://nihc.go.kr,verified_3,true
 P368,S034,순은 호박 풍잠 갓 끈 장식,3,FASHION,패션·액세서리,28,MANGGEON_HAIR,망건·머리장식,350000,갓 위에 얹어 갓끈을 고정하는 은 호박 장식,순은 호박,서울 종로,http://www.binyeo.co.kr,http://binyeo.co.kr/p368.jpg,https://kcdfshop.kr,verified_2,true
@@ -384,8 +384,8 @@ P382,S038,김각한 각자장 단령석 조각 벼루,4,DESK,데스크·문구,2
 P383,S040,숍오브코리아 고급 칠보 연적 및 붓받침,4,DESK,데스크·문구,29,BRUSH_INK_STONE,붓·먹·벼루,48000,은은한 칠보 유약이 도포된 도자기 연적,도자기 칠보,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p383.jpg,https://shopofkorea.com,verified_3,true
 P384,S042,성심필방 양모 청화 도자 자루 붓,4,DESK,데스크·문구,29,BRUSH_INK_STONE,붓·먹·벼루,65000,붓 자루를 백자 청화 도자기 형태로 만든 붓,양모 백자,전북 전주,http://www.sungsimpil.co.kr,http://sungsimpil.co.kr/p384.jpg,https://kcdfshop.kr,verified_2,true
 P385,S040,숍오브코리아 정통 유기 붓걸이,4,DESK,데스크·문구,29,BRUSH_INK_STONE,붓·먹·벼루,75000,서예 붓을 걸어 건조하는 방짜유기 붓걸이,방짜유기,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p385.jpg,https://shopofkorea.com,verified_3,true
-P386,S043,전통 문양 현대식 붓 먹 벼루(더미),4,DESK,데스크·문구,29,BRUSH_INK_STONE,붓·먹·벼루,30000,더미 수량 보완용 가상 붓 상품,원목,경기 이천,,,,,unverified,false
-P387,S043,전통 문양 현대식 미니 벼루(더미),4,DESK,데스크·문구,29,BRUSH_INK_STONE,붓·먹·벼루,25000,더미 수량 보완용 가상 벼루 상품,돌,경기 이천,,,,,unverified,false
+P386,S043,전통 문양 현대식 붓 먹 벼루(더미),4,DESK,데스크·문구,29,BRUSH_INK_STONE,붓·먹·벼루,30000,더미 수량 보완용 가상 붓 상품,원목,경기 이천,,,unverified,false
+P387,S043,전통 문양 현대식 미니 벼루(더미),4,DESK,데스크·문구,29,BRUSH_INK_STONE,붓·먹·벼루,25000,더미 수량 보완용 가상 벼루 상품,돌,경기 이천,,,unverified,false
 P388,S039,윤규상 무형유산 수제 닥종이 한지 편지지 세트,4,DESK,데스크·문구,30,HANJI_STATIONERY,한지·편지지,18000,천연 닥나무로 한장씩 떠낸 수제 한지 편지지,닥종이 한지,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p388.jpg,https://kcdf.or.kr,verified_3,true
 P389,S039,윤규상 전통 꽃잎 한지 엽서 5종 세트,4,DESK,데스크·문구,30,HANJI_STATIONERY,한지·편지지,12000,한지 속에 실제 말린 꽃잎을 넣어 만든 엽서,한지 생화,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p389.jpg,https://kcdf.or.kr,verified_3,true
 P390,S041,국립박물관 훈민정음 언해본 한지 방명록,4,DESK,데스크·문구,30,HANJI_STATIONERY,한지·편지지,25000,훈민정음 서문 서체가 표지에 인쇄된 한지 노트,한지,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p390.jpg,https://smilebox.tistory.com,verified_3,true
@@ -400,7 +400,7 @@ P398,S040,숍오브코리아 단청 문양 한지 스티커 세트,4,DESK,데스
 P399,S041,국립박물관 신윤복 풍속도 한지 L홀더 파일,4,DESK,데스크·문구,30,HANJI_STATIONERY,한지·편지지,5000,한지 질감을 결합한 에코 서류 L홀더,한지 PP,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p399.jpg,https://smilebox.tistory.com,verified_3,true
 P400,S039,윤규상 100% 닥나무 한지 캘리그라피 용지 20매,4,DESK,데스크·문구,30,HANJI_STATIONERY,한지·편지지,22000,먹 번짐이 아름다운 캘리그라피 전용 고급 한지,닥종이 한지,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p400.jpg,https://kcdf.or.kr,verified_3,true
 P401,S040,숍오브코리아 선비의 서재 한지 노트,4,DESK,데스크·문구,30,HANJI_STATIONERY,한지·편지지,14000,전통 제본 방식인 오선 매듭법으로 제본된 노트,한지 실,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p401.jpg,https://shopofkorea.com,verified_3,true
-P402,S043,전통 문양 현대식 한지 편지지(더미),4,DESK,데스크·문구,30,HANJI_STATIONERY,한지·편지지,10000,더미 수량 보완용 가상 한지 상품,한지,경기 이천,,,,,unverified,false
+P402,S043,전통 문양 현대식 한지 편지지(더미),4,DESK,데스크·문구,30,HANJI_STATIONERY,한지·편지지,10000,더미 수량 보완용 가상 한지 상품,한지,경기 이천,,,unverified,false
 P403,S040,숍오브코리아 나전칠기 나비 자개 수제 볼펜,4,DESK,데스크·문구,31,PEN_FOUNTAIN,볼펜·만년필,45000,배럴 표면에 자개 나비 문양이 도포된 볼펜,자개 금속,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p403.jpg,https://shopofkorea.com,verified_3,true
 P404,S041,국립박물관 백자 청화 모란문 고급 만년필,4,DESK,데스크·문구,31,PEN_FOUNTAIN,볼펜·만년필,120000,백자 청화 기법을 배럴 디자인에 적용한 만년필,세라믹 독일닙,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p404.jpg,https://smilebox.tistory.com,verified_3,true
 P405,S040,숍오브코리아 옻칠 원목 수제 수성펜,4,DESK,데스크·문구,31,PEN_FOUNTAIN,볼펜·만년필,68000,지리산 원목을 깎아 옻칠을 여러 번 입힌 수성펜,원목 옻칠,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p405.jpg,https://shopofkorea.com,verified_3,true
@@ -410,7 +410,7 @@ P408,S040,숍오브코리아 단청 문양 세라믹 만년필,4,DESK,데스크�
 P409,S040,숍오브코리아 나전 십장생문 회전식 볼펜,4,DESK,데스크·문구,31,PEN_FOUNTAIN,볼펜·만년필,52000,십장생 자개 장식이 들어간 고급 비즈니스 볼펜,자개 금속,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p409.jpg,https://shopofkorea.com,verified_3,true
 P410,S041,국립박물관 고려청자 상감 학문 볼펜 세트,4,DESK,데스크·문구,31,PEN_FOUNTAIN,볼펜·만년필,42000,청자 상감 학 문양을 재현한 볼펜 및 케이스,세라믹,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p410.jpg,https://smilebox.tistory.com,verified_3,true
 P411,S040,숍오브코리아 황동 주물 전통 펜 및 펜대,4,DESK,데스크·문구,31,PEN_FOUNTAIN,볼펜·만년필,75000,묵직한 황동 묵직함이 도드라지는 전통 딥펜 세트,황동,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p411.jpg,https://shopofkorea.com,verified_3,true
-P412,S043,전통 문양 현대식 볼펜 만년필(더미),4,DESK,데스크·문구,31,PEN_FOUNTAIN,볼펜·만년필,20000,더미 수량 보완용 가상 볼펜 상품,원목,경기 이천,,,,,unverified,false
+P412,S043,전통 문양 현대식 볼펜 만년필(더미),4,DESK,데스크·문구,31,PEN_FOUNTAIN,볼펜·만년필,20000,더미 수량 보완용 가상 볼펜 상품,원목,경기 이천,,,unverified,false
 P413,S040,숍오브코리아 나전칠기 적매화 자개 명함집,4,DESK,데스크·문구,32,CARD_CASE,명함집,25000,적매화 자개가 전면에 화려하게 도포된 명함 케이스,자개 금속,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p413.jpg,https://shopofkorea.com,verified_3,true
 P414,S040,숍오브코리아 나전칠기 일월오봉도 명함갑,4,DESK,데스크·문구,32,CARD_CASE,명함집,28000,왕권을 상징하는 일월오봉 자개가 세공된 명함집,자개 금속,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p414.jpg,https://shopofkorea.com,verified_3,true
 P415,S039,윤규상 닥종이 수제 한지 명함지갑,4,DESK,데스크·문구,32,CARD_CASE,명함집,18000,질긴 닥종이 한지에 옻칠 코팅을 더한 슬림 명함집,한지 옻칠,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p415.jpg,https://kcdf.or.kr,verified_3,true
@@ -422,7 +422,7 @@ P420,S041,국립박물관 신윤복 미인도 자개 명함갑,4,DESK,데스크�
 P421,S040,숍오브코리아 황동 주물 훈민정음 각인 명함집,4,DESK,데스크·문구,32,CARD_CASE,명함집,38000,훈민정음 언해본이 묵직하게 조각된 황동 명함집,황동,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p421.jpg,https://shopofkorea.com,verified_3,true
 P422,S039,윤규상 천연염색 한지 매듭 명함케이스,4,DESK,데스크·문구,32,CARD_CASE,명함집,20000,쪽염색 한지 바탕에 단아한 매듭 고리를 단 명함집,한지 명주실,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p422.jpg,https://kcdf.or.kr,verified_3,true
 P423,S040,숍오브코리아 나전칠기 쌍학문 포켓 명함집,4,DESK,데스크·문구,32,CARD_CASE,명함집,26000,쌍학이 날아오르는 문양의 고급 비즈니스 명함집,자개 금속,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p423.jpg,https://shopofkorea.com,verified_3,true
-P424,S043,전통 문양 현대식 명함집(더미),4,DESK,데스크·문구,32,CARD_CASE,명함집,15000,더미 수량 보완용 가상 명함집 상품,금속,경기 이천,,,,,unverified,false
+P424,S043,전통 문양 현대식 명함집(더미),4,DESK,데스크·문구,32,CARD_CASE,명함집,15000,더미 수량 보완용 가상 명함집 상품,금속,경기 이천,,,unverified,false
 P425,S040,숍오브코리아 나전칠기 적매화 한지 필함 필통,4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,19990,적매화 자개 문양과 한지가 결합된 고급 필함,나전 한지,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p425.jpg,https://shopofkorea.com,verified_3,true
 P426,S038,김각한 각자장 사군자 조각 원목 필통,4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,180000,사군자가 음각으로 수놓아진 사각 통원목 필함,느티나무,경기 군포,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p426.jpg,https://nihc.go.kr,verified_3,true
 P427,S041,국립박물관 고려청자 상감 연로학경문 펜꽂이,4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,35000,청자 학 문양의 미니 원통형 연필꽂이,청자,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p427.jpg,https://smilebox.tistory.com,verified_3,true
@@ -432,8 +432,8 @@ P430,S038,김각한 각자장 훈민정음 서각 원목 필함,4,DESK,데스크
 P431,S040,숍오브코리아 나전칠기 매화문 슬라이드 필통,4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,22000,슬라이딩 방식으로 여닫는 휴대용 자개 필통,자개 목재,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p431.jpg,https://shopofkorea.com,verified_3,true
 P432,S041,국립박물관 백자 청화 난초문 도자 펜꽂이,4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,38000,단아한 백자 형태의 데스크용 다용도 펜꽂이,백자,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p432.jpg,https://smilebox.tistory.com,verified_3,true
 P433,S040,숍오브코리아 황동 주물 사각 데스크 오거나이저,4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,65000,펜과 명함을 동시에 꽂을 수 있는 전통 황동 펜꽂이,황동,서울 종로,https://shopofkorea.com,https://shopofkorea.com/p433.jpg,https://shopofkorea.com,verified_3,true
-P434,S043,전통 문양 현대식 펜꽂이(더미),4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,25000,더미 수량 보완용 가상 상품,원목,경기 이천,,,,,unverified,false
-P435,S043,전통 문양 현대식 미니 필통(더미),4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,18000,더미 수량 보완용 가상 필통 상품,원목,경기 이천,,,,,unverified,false
+P434,S043,전통 문양 현대식 펜꽂이(더미),4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,25000,더미 수량 보완용 가상 상품,원목,경기 이천,,,unverified,false
+P435,S043,전통 문양 현대식 미니 필통(더미),4,DESK,데스크·문구,33,PENCIL_CASE,필통·펜꽂이,18000,더미 수량 보완용 가상 필통 상품,원목,경기 이천,,,unverified,false
 P436,S031,구혜자 무형유산 정통 양단 방석 (2개 세트),5,FABRIC,패브릭·생활,34,CUSHION_BOLSTER,방석·보료,180000,전통 양단 원단에 솜을 넣어 정갈하게 누빈 방석,양단 실크,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p436.jpg,https://nihc.go.kr,verified_3,true
 P437,S025,소품쟁이 손자수 모란문 명주 방석,5,FABRIC,패브릭·생활,34,CUSHION_BOLSTER,방석·보료,120000,중앙에 부귀를 상징하는 모란 자수가 수놓아진 방석,명주실 비단,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p437.jpg,https://jasukim.kr,verified_2,true
 P438,S032,방연옥 한산모시 시원한 여름 1인 방석,5,FABRIC,패브릭·생활,34,CUSHION_BOLSTER,방석·보료,85000,바람이 잘 통해 여름철 쾌적한 한산모시 방석,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p438.jpg,https://support.nihc.go.kr,verified_3,true
@@ -443,7 +443,7 @@ P441,S031,구혜자 정통 궁중 모란 자수 보료 3종,5,FABRIC,패브릭·
 P442,S032,방연옥 한산모시 조각보 사각 방석,5,FABRIC,패브릭·생활,34,CUSHION_BOLSTER,방석·보료,95000,오색 모시 조각을 정성스레 이어 붙인 방석,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p442.jpg,https://support.nihc.go.kr,verified_3,true
 P443,S025,소품쟁이 삼베 사계절 원목 의자 방석,5,FABRIC,패브릭·생활,34,CUSHION_BOLSTER,방석·보료,48000,자연스러운 삼베 질감이 식탁 의자에 잘 어울리는 방석,삼베,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p443.jpg,https://jasukim.kr,verified_2,true
 P444,S031,구혜자 전통 목단문 누비 좌식 방석,5,FABRIC,패브릭·생활,34,CUSHION_BOLSTER,방석·보료,110000,오선 촘촘한 누비 바느질로 착석감이 뛰어난 방석,명주,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p444.jpg,https://nihc.go.kr,verified_3,true
-P445,S047,전통 문양 현대식 방석 보료(더미),5,FABRIC,패브릭·생활,34,CUSHION_BOLSTER,방석·보료,35000,더미 수량 보완용 가상 방석 상품,면,경기 이천,,,,,unverified,false
+P445,S047,전통 문양 현대식 방석 보료(더미),5,FABRIC,패브릭·생활,34,CUSHION_BOLSTER,방석·보료,35000,더미 수량 보완용 가상 방석 상품,면,경기 이천,,,unverified,false
 P446,S031,구혜자 무형유산 정통 명주 실크 솜이불,5,FABRIC,패브릭·생활,35,BEDDING,침구·이불,850000,100% 명주실 실크 원단과 목화솜으로 만든 정통 이불,실크 목화솜,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p446.jpg,https://nihc.go.kr,verified_3,true
 P447,S031,구혜자 전통 손누비 차렵이불,5,FABRIC,패브릭·생활,35,BEDDING,침구·이불,450000,사계절 사용하기 알맞은 일정한 간격의 누비 이불,명주 면,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p447.jpg,https://nihc.go.kr,verified_3,true
 P448,S032,방연옥 한산모시 100% 여름 모시 이불,5,FABRIC,패브릭·생활,35,BEDDING,침구·이불,680000,여름철 열기를 시원하게 식혀주는 수제 한산모시 이불,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p448.jpg,https://support.nihc.go.kr,verified_3,true
@@ -452,7 +452,7 @@ P450,S031,구혜자 정통 예단 한복이불 세트,5,FABRIC,패브릭·생활
 P451,S025,소품쟁이 손자수 원통형 목베개,5,FABRIC,패브릭·생활,35,BEDDING,침구·이불,58000,경추를 받쳐주는 원통형 구조의 수자수 베개,비단 메밀,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p451.jpg,https://jasukim.kr,verified_2,true
 P452,S032,방연옥 한산모시 홑이불 및 베갯잇,5,FABRIC,패브릭·생활,35,BEDDING,침구·이불,380000,모시 홑이불과 베개 커버 2장 구성의 여름 세트,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p452.jpg,https://support.nihc.go.kr,verified_3,true
 P453,S031,구혜자 전통 십장생 자수 베개,5,FABRIC,패브릭·생활,35,BEDDING,침구·이불,120000,양쪽 모서리에 십장생 자수가 박힌 전통 베개,명주 자수,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p453.jpg,https://nihc.go.kr,verified_3,true
-P454,S047,전통 문양 현대식 침구 이불(더미),5,FABRIC,패브릭·생활,35,BEDDING,침구·이불,150000,더미 수량 보완용 가상 침구 상품,면,경기 이천,,,,,unverified,false
+P454,S047,전통 문양 현대식 침구 이불(더미),5,FABRIC,패브릭·생활,35,BEDDING,침구·이불,150000,더미 수량 보완용 가상 침구 상품,면,경기 이천,,,unverified,false
 P455,S032,방연옥 한산모시 천연염색 식탁 러너 (길이 150cm),5,FABRIC,패브릭·생활,36,TABLECLOTH_RUNNER,테이블보·러너,180000,감물 및 쪽염색 모시를 이어 만든 다도용 러너,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p455.jpg,https://support.nihc.go.kr,verified_3,true
 P456,S025,소품쟁이 모시 조각보 테이블 러너,5,FABRIC,패브릭·생활,36,TABLECLOTH_RUNNER,테이블보·러너,120000,색색의 모시 조각보 기법이 정갈한 식탁 러너,모시,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p456.jpg,https://jasukim.kr,verified_2,true
 P457,S044,박인숙 강릉자수 야생화 매트 2개 세트,5,FABRIC,패브릭·생활,36,TABLECLOTH_RUNNER,테이블보·러너,45000,강릉 전통 자수 야생화가 수놓아진 티매트,리넨 자수,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p457.jpg,https://kcdfshop.kr,verified_3,true
@@ -463,7 +463,7 @@ P461,S031,구혜자 전통 명주 조각보 롱 러너,5,FABRIC,패브릭·생�
 P462,S032,방연옥 한산모시 쪽빛 천연염색 티코스터 세트,5,FABRIC,패브릭·생활,36,TABLECLOTH_RUNNER,테이블보·러너,28000,쪽염색의 단아함을 담은 4인용 찻잔 받침,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p462.jpg,https://support.nihc.go.kr,verified_3,true
 P463,S025,소품쟁이 리넨 전통 창살문 테이블매트,5,FABRIC,패브릭·생활,36,TABLECLOTH_RUNNER,테이블보·러너,25000,전통 세살문 문양이 프린팅된 실용적 테이블매트,리넨,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p463.jpg,https://jasukim.kr,verified_2,true
 P464,S044,박인숙 강릉자수 수저받침 패브릭 매트,5,FABRIC,패브릭·생활,36,TABLECLOTH_RUNNER,테이블보·러너,18000,수저를 올려두기 좋은 소형 수저 패브릭 매트,면 자수,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p464.jpg,https://kcdfshop.kr,verified_3,true
-P465,S047,전통 문양 현대식 테이블보 러너(더미),5,FABRIC,패브릭·생활,36,TABLECLOTH_RUNNER,테이블보·러너,20000,더미 수량 보완용 가상 러너 상품,면,경기 이천,,,,,unverified,false
+P465,S047,전통 문양 현대식 테이블보 러너(더미),5,FABRIC,패브릭·생활,36,TABLECLOTH_RUNNER,테이블보·러너,20000,더미 수량 보완용 가상 러너 상품,면,경기 이천,,,unverified,false
 P466,S045,장윤영 미니 보자기 - 흉배보,5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,16000,조선 관복 흉배 문양이 현대적으로 인쇄된 보자기,실크,서울 마포,https://www.kcdfshop.kr,https://kcdfshop.kr/p466.jpg,https://kcdfshop.kr,verified_3,true
 P467,S045,장윤영 미니 보자기 - 적의보,5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,16000,왕비의 적의 문양을 단아하게 표현한 소형 보자기,실크,서울 마포,https://www.kcdfshop.kr,https://kcdfshop.kr/p467.jpg,https://kcdfshop.kr,verified_3,true
 P468,S031,구혜자 무형유산 정통 실크 겹보자기,5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,120000,양면 색상이 달라 다채로운 연출이 가능한 보자기,명주 실크,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p468.jpg,https://nihc.go.kr,verified_3,true
@@ -478,8 +478,8 @@ P476,S045,장윤영 오간자 은사 투명 보자기,5,FABRIC,패브릭·생활
 P477,S044,박인숙 강릉자수 십장생 조각 보자기,5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,110000,장수 문양 조각을 이어서 수놓은 보자기,면 자수,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p477.jpg,https://kcdfshop.kr,verified_3,true
 P478,S025,소품쟁이 자수 향낭 복주머니,5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,35000,천연 한방 향재가 내장된 전통 매듭 향주머니,비단 한약재,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p478.jpg,https://jasukim.kr,verified_2,true
 P479,S031,구혜자 궁중 예단용 은사 자수 대형 보자기,5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,220000,은사로 영쌍 봉황을 수놓은 최고급 보자기,명주 은사,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p479.jpg,https://nihc.go.kr,verified_3,true
-P480,S047,전통 문양 현대식 보자기 복주머니(더미),5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,15000,더미 수량 보완용 가상 보자기 상품,면,경기 이천,,,,,unverified,false
-P481,S047,전통 문양 현대식 미니 복주머니(더미),5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,10000,더미 수량 보완용 가상 복주머니 상품,비단,경기 이천,,,,,unverified,false
+P480,S047,전통 문양 현대식 보자기 복주머니(더미),5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,15000,더미 수량 보완용 가상 보자기 상품,면,경기 이천,,,unverified,false
+P481,S047,전통 문양 현대식 미니 복주머니(더미),5,FABRIC,패브릭·생활,37,BOJAGI_POUCH,보자기·복주머니,10000,더미 수량 보완용 가상 복주머니 상품,비단,경기 이천,,,unverified,false
 P482,S044,박인숙 강릉자수 보자기 안경닦이 겸 손수건,5,FABRIC,패브릭·생활,38,HANDKERCHIEF,손수건,7000,자수 문양이 인쇄된 초극세사 기능성 손수건,마이크로파이버,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p482.jpg,https://kcdfshop.kr,verified_3,true
 P483,S032,방연옥 한산모시 수제 천연염색 손수건,5,FABRIC,패브릭·생활,38,HANDKERCHIEF,손수건,35000,모시와 면을 혼방하여 땀 흡수력이 뛰어난 손수건,한산모시 면,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p483.jpg,https://support.nihc.go.kr,verified_3,true
 P484,S025,소품쟁이 실크 손자수 매화 손수건,5,FABRIC,패브릭·생활,38,HANDKERCHIEF,손수건,28000,모서리에 매화 자수가 돋보이는 고급 실크 손수건,실크,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p484.jpg,https://jasukim.kr,verified_2,true
@@ -491,7 +491,7 @@ P489,S025,소품쟁이 60수 고급 면 모란 손수건,5,FABRIC,패브릭·생
 P490,S032,방연옥 한산모시 감물 천연염색 손수건,5,FABRIC,패브릭·생활,38,HANDKERCHIEF,손수건,30000,감물 염색 고유의 항균성이 담긴 여름 손수건,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p490.jpg,https://support.nihc.go.kr,verified_3,true
 P491,S044,박인숙 강릉자수 나비와 모란 손수건,5,FABRIC,패브릭·생활,38,HANDKERCHIEF,손수건,20000,나비가 모란에 앉은 형상의 수자수 손수건,면 100%,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p491.jpg,https://kcdfshop.kr,verified_3,true
 P492,S025,소품쟁이 전통 색동 띠 면 손수건,5,FABRIC,패브릭·생활,38,HANDKERCHIEF,손수건,12000,가장자리에 색동 바이어스를 두른 아담한 손수건,순면,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p492.jpg,https://jasukim.kr,verified_2,true
-P493,S047,전통 문양 현대식 손수건(더미),5,FABRIC,패브릭·생활,38,HANDKERCHIEF,손수건,8000,더미 수량 보완용 가상 손수건 상품,면,경기 이천,,,,,unverified,false
+P493,S047,전통 문양 현대식 손수건(더미),5,FABRIC,패브릭·생활,38,HANDKERCHIEF,손수건,8000,더미 수량 보완용 가상 손수건 상품,면,경기 이천,,,unverified,false
 P494,S032,방연옥 한산모시 천연염색 주방 앞치마,5,FABRIC,패브릭·생활,39,APRON_FABRIC,앞치마·주방패브릭,120000,천연 쪽염 모시 원단으로 만든 프리미엄 주방 앞치마,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p494.jpg,https://support.nihc.go.kr,verified_3,true
 P495,S025,소품쟁이 전통 모시 조각보 앞치마,5,FABRIC,패브릭·생활,39,APRON_FABRIC,앞치마·주방패브릭,85000,가슴 포켓에 모시 조각보 포인트가 들어간 앞치마,리넨 모시,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p495.jpg,https://jasukim.kr,verified_2,true
 P496,S044,박인숙 강릉자수 야생화 주방 냄비장갑 세트,5,FABRIC,패브릭·생활,39,APRON_FABRIC,앞치마·주방패브릭,32000,손자수 야생화가 새겨진 주방 열차단 오븐 장갑,면 100%,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p496.jpg,https://kcdfshop.kr,verified_3,true
@@ -501,7 +501,7 @@ P499,S025,소품쟁이 삼베 전통 식기 건조 타월 2장,5,FABRIC,패브�
 P500,S032,방연옥 한산모시 미니 원피스형 앞치마,5,FABRIC,패브릭·생활,39,APRON_FABRIC,앞치마·주방패브릭,135000,원피스처럼 입는 고급스러운 모시 앞치마,한산모시,충남 서천,http://www.mosi.go.kr,http://mosi.go.kr/p500.jpg,https://support.nihc.go.kr,verified_3,true
 P501,S044,박인숙 강릉자수 주방 행주 세트 (3개입),5,FABRIC,패브릭·생활,39,APRON_FABRIC,앞치마·주방패브릭,18000,전통 모란 및 야생화 자수 포인트 주방 행주,순면,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p501.jpg,https://kcdfshop.kr,verified_3,true
 P502,S025,소품쟁이 전통 무늬 주방 장갑 손잡이 커버,5,FABRIC,패브릭·생활,39,APRON_FABRIC,앞치마·주방패브릭,15000,냉장고 및 오븐 손잡이에 씌우는 전통 패브릭 커버,면,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p502.jpg,https://jasukim.kr,verified_2,true
-P503,S047,전통 문양 현대식 앞치마 주방패브릭(더미),5,FABRIC,패브릭·생활,39,APRON_FABRIC,앞치마·주방패브릭,20000,더미 수량 보완용 가상 앞치마 상품,면,경기 이천,,,,,unverified,false
+P503,S047,전통 문양 현대식 앞치마 주방패브릭(더미),5,FABRIC,패브릭·생활,39,APRON_FABRIC,앞치마·주방패브릭,20000,더미 수량 보완용 가상 앞치마 상품,면,경기 이천,,,unverified,false
 P504,S004,윤규상 무형유산 한지 조각우산 (대) - 7색,5,FABRIC,패브릭·생활,40,MAT_SEDGE,돗자리·왕골,400000,전통 한지와 대나무 살로 수제 제작한 우산,한지 대나무,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p504.jpg,https://kcdf.or.kr,verified_3,true
 P505,S004,윤규상 한지 조각우산 (특대),5,FABRIC,패브릭·생활,40,MAT_SEDGE,돗자리·왕골,1000000,웅장한 크기와 정교한 기선이 돋보이는 대형 양산,한지 대나무,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p505.jpg,https://kcdf.or.kr,verified_3,true
 P506,S004,윤규상 한지 파라솔,5,FABRIC,패브릭·생활,40,MAT_SEDGE,돗자리·왕골,2800000,야외 정원 및 차양용 전통 수제 한지 파라솔,한지 대나무,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p506.jpg,https://kcdf.or.kr,verified_3,true
@@ -509,7 +509,7 @@ P507,S032,방연옥 한산모시 여름 모시 돗자리 (1인용),5,FABRIC,패�
 P508,S025,소품쟁이 강화 왕골 수제 미니 돗자리,5,FABRIC,패브릭·생활,40,MAT_SEDGE,돗자리·왕골,180000,강화 화문석 기법으로 짜여진 야외 다도용 돗자리,왕골,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p508.jpg,https://jasukim.kr,verified_2,true
 P509,S025,소품쟁이 왕골 화문석 다도 방석 돗자리,5,FABRIC,패브릭·생활,40,MAT_SEDGE,돗자리·왕골,220000,꽃 문양이 수놓아진 최고급 왕골 화문석 돗자리,왕골,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p509.jpg,https://jasukim.kr,verified_2,true
 P510,S004,윤규상 한지 조각우산 (소) - 7색,5,FABRIC,패브릭·생활,40,MAT_SEDGE,돗자리·왕골,300000,여성 및 아동용 아담한 전통 한지 우산,한지 대나무,충북 충주,https://www.kcdfshop.kr,https://kcdfshop.kr/p510.jpg,https://kcdf.or.kr,verified_3,true
-P511,S047,전통 문양 현대식 돗자리 왕골(더미),5,FABRIC,패브릭·생활,40,MAT_SEDGE,돗자리·왕골,50000,더미 수량 보완용 가상 돗자리 상품,왕골,경기 이천,,,,,unverified,false
+P511,S047,전통 문양 현대식 돗자리 왕골(더미),5,FABRIC,패브릭·생활,40,MAT_SEDGE,돗자리·왕골,50000,더미 수량 보완용 가상 돗자리 상품,왕골,경기 이천,,,unverified,false
 P512,S044,박인숙 강릉자수 모란문 수자수 액자,5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,150000,강릉 전통 자수 기법으로 수놓은 원목 액자,명주실 원목,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p512.jpg,https://kcdfshop.kr,verified_3,true
 P513,S025,소품쟁이 전통 십장생 손자수 벽걸이 소품,5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,210000,장수와 복을 기원하는 십장생 수자수 벽장식,명주실 비단,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p513.jpg,https://jasukim.kr,verified_2,true
 P514,S046,인네이처 반달나무 빗 (얼레빗),5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,33000,원목을 반달 모양으로 다듬어 빗살을 선 정갈한 빗,원목,경기 양평,https://www.kcdfshop.kr,https://kcdfshop.kr/p514.jpg,https://kcdfshop.kr,verified_3,true
@@ -520,8 +520,8 @@ P518,S031,구혜자 전통 침선 누비 안경집 소품,5,FABRIC,패브릭·�
 P519,S044,박인숙 강릉자수 연화문 원형 자수 수틀,5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,65000,원형 수틀에 연꽃을 수놓아 벽에 거는 인테리어 소품,명주실 대나무,강원 강릉,https://www.kcdfshop.kr,https://kcdfshop.kr/p519.jpg,https://kcdfshop.kr,verified_3,true
 P520,S025,소품쟁이 궁중 자수 열쇠고리 패치 소품,5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,25000,가방이나 옷에 부착하는 궁중 자수 와펜 소품,비단 자수,서울 종로,http://www.jasukim.kr,http://jasukim.kr/p520.jpg,https://jasukim.kr,verified_2,true
 P521,S046,인네이처 원목 수제 빗 (참빗),5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,42000,빗살이 매우 촘촘하여 머리를 정돈하기 좋은 참빗,원목,경기 양평,https://www.kcdfshop.kr,https://kcdfshop.kr/p521.jpg,https://kcdfshop.kr,verified_3,true
-P522,S047,전통 문양 현대식 자수 액자 소품(더미),5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,30000,더미 수량 보완용 가상 자수 상품,명주실,경기 이천,,,,,unverified,false
-P523,S047,전통 문양 현대식 미니 자수 소품(더미),5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,20000,더미 수량 보완용 가상 소품 상품,비단,경기 이천,,,,,unverified,false
+P522,S047,전통 문양 현대식 자수 액자 소품(더미),5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,30000,더미 수량 보완용 가상 자수 상품,명주실,경기 이천,,,unverified,false
+P523,S047,전통 문양 현대식 미니 자수 소품(더미),5,FABRIC,패브릭·생활,41,EMBROIDERY_PROP,자수 액자·소품,20000,더미 수량 보완용 가상 소품 상품,비단,경기 이천,,,unverified,false
 P524,S049,종로불교사 일월오봉도 캔버스 아트 액자,6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,180000,왕권을 상징하는 일월오봉도를 원화 화질로 재현한 액자,원목 캔버스,서울 종로,https://www.jongrobulkyosa.co.kr,https://jongro.co.kr/p524.jpg,https://jongrobulkyosa.co.kr,verified_2,true
 P525,S026,조화자 민화 오색 연화도 원목 액자,6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,120000,부귀와 평화를 기원하는 연꽃 민화 수묵채색 액자,원목 한지,서울 성북,http://www.minhwa.co.kr,http://minhwa.co.kr/p525.jpg,https://kcdfshop.kr,verified_2,true
 P526,S049,종로불교사 까치와 호랑이 민화 액자,6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,95000,액운을 막고 기쁜 소식을 가져다주는 호작도 액자,원목 캔버스,서울 종로,https://www.jongrobulkyosa.co.kr,https://jongro.co.kr/p526.jpg,https://jongrobulkyosa.co.kr,verified_2,true
@@ -534,8 +534,8 @@ P532,S049,종로불교사 십장생도 대형 캔버스 아트 액자,6,ART,아�
 P533,S041,국립박물관 김홍도 타작도 풍속화 액자,6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,75000,조선 서민들의 활기찬 삶을 그려낸 풍속화 액자,원목,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p533.jpg,https://smilebox.tistory.com,verified_3,true
 P534,S026,조화자 어변성룡도 출세 기원 민화 액자,6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,160000,잉어가 용으로 변하는 등용문 민화 액자,원목 한지,서울 성북,http://www.minhwa.co.kr,http://minhwa.co.kr/p534.jpg,https://kcdfshop.kr,verified_2,true
 P535,S049,종로불교사 연꽃과 붕어 부귀도 액자,6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,110000,풍요와 번창을 의미하는 연못 풍경 그림 액자,원목 캔버스,서울 종로,https://www.jongrobulkyosa.co.kr,https://jongro.co.kr/p535.jpg,https://jongrobulkyosa.co.kr,verified_2,true
-P536,S053,전통 문양 현대식 액자 그림(더미),6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,40000,더미 수량 보완용 가상 그림 액자 상품,원목,경기 이천,,,,,unverified,false
-P537,S053,전통 문양 미니 그림 액자(더미),6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,25000,더미 수량 보완용 가상 액자 상품,원목,경기 이천,,,,,unverified,false
+P536,S053,전통 문양 현대식 액자 그림(더미),6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,40000,더미 수량 보완용 가상 그림 액자 상품,원목,경기 이천,,,unverified,false
+P537,S053,전통 문양 미니 그림 액자(더미),6,ART,아트·컬렉션,42,FRAME_PAINTING,액자·그림,25000,더미 수량 보완용 가상 액자 상품,원목,경기 이천,,,unverified,false
 P538,S049,종로불교사 일월오봉도 금병풍 (4폭),6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,950000,금박 탕진 기법으로 왕권을 표현한 4폭 병풍,비단 금박 원목,서울 종로,https://www.jongrobulkyosa.co.kr,https://jongro.co.kr/p538.jpg,https://jongrobulkyosa.co.kr,verified_2,true
 P539,S049,종로불교사 연꽃 반야심경 병풍 (4폭),6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,250000,연꽃 수묵화와 반야심경 서예가 어우러진 병풍,원목 한지,서울 종로,https://www.jongrobulkyosa.co.kr,https://jongro.co.kr/p539.jpg,https://jongrobulkyosa.co.kr,verified_2,true
 P540,S049,종로불교사 팔선녀 병풍 (4폭),6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,380000,여덟 선녀가 그려진 전통 불교 민속 병풍,비단 원목,서울 종로,https://www.jongrobulkyosa.co.kr,https://jongro.co.kr/p540.jpg,https://jongrobulkyosa.co.kr,verified_2,true
@@ -549,8 +549,8 @@ P547,S049,종로불교사 일월오봉도 금병풍 8폭 대형,6,ART,아트·�
 P548,S041,국립박물관 세한도 수묵 표구 족자,6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,85000,추사 김정희의 세한도를 영인 재현한 수묵 족자,한지 비단,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p548.jpg,https://smilebox.tistory.com,verified_3,true
 P549,S038,김각한 각자장 훈민정음 언해본 전통 족자,6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,180000,목판에서 직접 탁본하여 만든 고급 서예 족자,한지 비단,경기 군포,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p549.jpg,https://nihc.go.kr,verified_3,true
 P550,S026,조화자 백자 청화 도자기 그림 족자,6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,120000,청화백자 항아리 도판 그림이 수놓아진 인테리어 족자,비단,서울 성북,http://www.minhwa.co.kr,http://minhwa.co.kr/p550.jpg,https://kcdfshop.kr,verified_2,true
-P551,S053,전통 문양 현대식 병풍 족자(더미),6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,150000,더미 수량 보완용 가상 병풍 상품,원목,경기 이천,,,,,unverified,false
-P552,S053,전통 문양 미니 병풍(더미),6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,80000,더미 수량 보완용 가상 병풍 상품,원목,경기 이천,,,,,unverified,false
+P551,S053,전통 문양 현대식 병풍 족자(더미),6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,150000,더미 수량 보완용 가상 병풍 상품,원목,경기 이천,,,unverified,false
+P552,S053,전통 문양 미니 병풍(더미),6,ART,아트·컬렉션,43,SCREEN_SCROLL,병풍·족자,80000,더미 수량 보완용 가상 병풍 상품,원목,경기 이천,,,unverified,false
 P553,S038,김각한 무형유산 화성행궁 현판 서각 복원작,6,ART,아트·컬렉션,44,CALLIGRAPHY_ENGRAVING,서예·서각,1500000,조선 정조대 화성행궁 현판을 정서각으로 복원한 작,원목 양각,경기 군포,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p553.jpg,https://nihc.go.kr,verified_3,true
 P554,S038,김각한 각자장 금강경 목판 서각,6,ART,아트·컬렉션,44,CALLIGRAPHY_ENGRAVING,서예·서각,850000,건봉사 금강경후불 목판 기법을 살린 서각 작품,오동나무,경기 군포,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p554.jpg,https://nihc.go.kr,verified_3,true
 P555,S038,김각한 정서각 한자 가훈 목판,6,ART,아트·컬렉션,44,CALLIGRAPHY_ENGRAVING,서예·서각,350000,가문의 번창을 기원하는 한자 가훈 양각 목판,느티나무,경기 군포,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p555.jpg,https://nihc.go.kr,verified_3,true
@@ -560,7 +560,7 @@ P558,S038,김각한 도당 현판 주련 서각 소품,6,ART,아트·컬렉션,4
 P559,S041,국립박물관 추사 김정희 서예 캘리그라피 족자,6,ART,아트·컬렉션,44,CALLIGRAPHY_ENGRAVING,서예·서각,95000,추사체의 당당한 필필을 복원한 영인 족자,한지 비단,서울 용산,https://www.museumshop.or.kr,https://museumshop.or.kr/p559.jpg,https://smilebox.tistory.com,verified_3,true
 P560,S038,김각한 사군자 서각 원목 주련,6,ART,아트·컬렉션,44,CALLIGRAPHY_ENGRAVING,서예·서각,420000,매난국죽과 서예 구절이 결합된 원목 주련,원목 채색,경기 군포,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p560.jpg,https://nihc.go.kr,verified_3,true
 P561,S038,김각한 복을 부르는 한자 福 서각 소품,6,ART,아트·컬렉션,44,CALLIGRAPHY_ENGRAVING,서예·서각,120000,입체 복 자가 도드라지는 미니 원목 서각 판,느티나무,경기 군포,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p561.jpg,https://nihc.go.kr,verified_3,true
-P562,S053,전통 문양 현대식 서예 서각(더미),6,ART,아트·컬렉션,44,CALLIGRAPHY_ENGRAVING,서예·서각,50000,더미 수량 보완용 가상 서각 상품,원목,경기 이천,,,,,unverified,false
+P562,S053,전통 문양 현대식 서예 서각(더미),6,ART,아트·컬렉션,44,CALLIGRAPHY_ENGRAVING,서예·서각,50000,더미 수량 보완용 가상 서각 상품,원목,경기 이천,,,unverified,false
 P563,S050,불교존 꽃원앙 전통 수제 목각 장식 (쌍),6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,69990,신혼 부부 선물용 알록달록한 수제 원앙 목각 세트,원목,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p563.jpg,https://shopofkorea.com,verified_3,true
 P564,S051,하회탈공방 천하대장군 지하여장군 목장승 세트,6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,5000,액운을 막아주는 아담한 5cm 목장승 세트,원목,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p564.jpg,https://buddhazone.co.kr,verified_3,true
 P565,S051,하회탈공방 원목 수제 해태상 목조각 (쌍),6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,180000,불길과 재앙을 차단하는 해태 형상 입체 목조각,원목,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p565.jpg,https://shopofkorea.com,verified_3,true
@@ -571,8 +571,8 @@ P569,S050,불교존 수공예 나무 코뚜레 액막이 장식,6,ART,아트·�
 P570,S051,하회탈공방 느티나무 용문양 목조각 조형물,6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,450000,통원목을 조각하여 여의주를 문 용을 표현한 조각,느티나무,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p570.jpg,https://shopofkorea.com,verified_3,true
 P571,S050,불교존 전통 미니 곰방대 담뱃대 목조각,6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,5000,옛날 담뱃대 모형의 인테리어 민속 목공예품,원목 금속,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p571.jpg,https://buddhazone.co.kr,verified_2,true
 P572,S051,하회탈공방 봉황 원목 삼차원 입체 조각,6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,320000,날개를 단 봉황이 비상하는 모습을 깎아낸 작품,원목,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p572.jpg,https://shopofkorea.com,verified_3,true
-P573,S053,전통 문양 현대식 목조각 조형(더미),6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,40000,더미 수량 보완용 가상 목조각 상품,원목,경기 이천,,,,,unverified,false
-P574,S053,전통 문양 미니 목조각(더미),6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,20000,더미 수량 보완용 가상 목조각 상품,원목,경기 이천,,,,,unverified,false
+P573,S053,전통 문양 현대식 목조각 조형(더미),6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,40000,더미 수량 보완용 가상 목조각 상품,원목,경기 이천,,,unverified,false
+P574,S053,전통 문양 미니 목조각(더미),6,ART,아트·컬렉션,45,WOOD_CARVING,목조각·조형,20000,더미 수량 보완용 가상 목조각 상품,원목,경기 이천,,,unverified,false
 P575,S051,하회탈공방 정통 수제 안동 하회탈 (양반탈),6,ART,아트·컬렉션,46,DOLL_MASK,전통인형·탈,85000,턱이 움직이는 정통 양반탈 수제 원목 가면,오동나무,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p575.jpg,https://shopofkorea.com,verified_3,true
 P576,S051,하회탈공방 정통 수제 안동 하회탈 (부네탈),6,ART,아트·컬렉션,46,DOLL_MASK,전통인형·탈,85000,수줍은 미소를 띤 계집 하회 부네탈,오동나무,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p576.jpg,https://shopofkorea.com,verified_3,true
 P577,S051,하회탈공방 봉산탈춤 익살 얼굴 봉산탈,6,ART,아트·컬렉션,46,DOLL_MASK,전통인형·탈,65000,붉은 얼굴과 하얀 눈썹의 봉산탈춤 가면,종이 흙,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p577.jpg,https://shopofkorea.com,verified_3,true
@@ -586,7 +586,7 @@ P584,S050,불교존 조선 혼례 신랑신부 세라믹 인형,6,ART,아트·�
 P585,S051,하회탈공방 미니 하회탈 5종 벽걸이 장식 세트,6,ART,아트·컬렉션,46,DOLL_MASK,전통인형·탈,95000,양반, 부네, 각시, 초랭이, 할미 탈 미니 세트,오동나무,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p585.jpg,https://shopofkorea.com,verified_3,true
 P586,S051,하회탈공방 먹중탈 봉산탈춤 가면,6,ART,아트·컬렉션,46,DOLL_MASK,전통인형·탈,65000,검은 얼굴에 먹칠이 들어간 봉산탈춤 승려 탈,종이 흙,경북 안동,http://www.mask.vnet.co.kr,http://mask.vnet.co.kr/p586.jpg,https://shopofkorea.com,verified_3,true
 P587,S031,구혜자 전통 궁중 나인 비단 인형,6,ART,아트·컬렉션,46,DOLL_MASK,전통인형·탈,180000,궁중 나인의 평상시 한복 차림을 표현한 인형,닥종이 비단,서울 종로,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p587.jpg,https://nihc.go.kr,verified_3,true
-P588,S053,전통 문양 현대식 전통인형 탈(더미),6,ART,아트·컬렉션,46,DOLL_MASK,전통인형·탈,30000,더미 수량 보완용 가상 인형 상품,닥종이,경기 이천,,,,,unverified,false
+P588,S053,전통 문양 현대식 전통인형 탈(더미),6,ART,아트·컬렉션,46,DOLL_MASK,전통인형·탈,30000,더미 수량 보완용 가상 인형 상품,닥종이,경기 이천,,,unverified,false
 P589,S048,유영기 무형유산 정통 시누대 전통 화살 (영전),6,ART,아트·컬렉션,47,SWORD_WEAPON,장도·전통무구,180000,국왕의 명을 전할 때 사용하는 의식용 전죽 화살,시누대 꿩깃,경기 파주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p589.jpg,https://nihc.go.kr,verified_3,true
 P590,S048,유영기 궁시장 수제 전통 조선 활 (각궁),6,ART,아트·컬렉션,47,SWORD_WEAPON,장도·전통무구,850000,물뿔과 민어 부레풀로 만든 사격용 조선 각궁,물뿔 대나무,경기 파주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p590.jpg,https://nihc.go.kr,verified_3,true
 P591,S050,불교존 방짜 별상칼 호신용 은장도,6,ART,아트·컬렉션,47,SWORD_WEAPON,장도·전통무구,20000,절개의 상징이자 액운을 쳐내는 방짜 별상칼,방짜유기,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p591.jpg,https://buddhazone.co.kr,verified_2,true
@@ -594,7 +594,7 @@ P592,S052,남경숙 무형유산 순은 투각 조각 은장도,6,ART,아트·�
 P593,S048,유영기 무형유산 유엽전 수제 화살 세트 (5시),6,ART,아트·컬렉션,47,SWORD_WEAPON,장도·전통무구,350000,무과 시험 및 습사에 쓰인 정통 유엽전 화살,시누대 철,경기 파주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p593.jpg,https://nihc.go.kr,verified_3,true
 P594,S052,남경숙 조각장 칠보 장식 수제 미니 은장도,6,ART,아트·컬렉션,47,SWORD_WEAPON,장도·전통무구,450000,매듭 술과 칠보 장식이 결합된 여성용 소형 장도,순은 칠보,서울 강남,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p594.jpg,https://support.nihc.go.kr,verified_3,true
 P595,S048,유영기 전통 편전 애기살 과 칠전 세트,6,ART,아트·컬렉션,47,SWORD_WEAPON,장도·전통무구,280000,통아를 통해 멀리 날아가는 수제 애기살 세트,시누대 깃,경기 파주,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p595.jpg,https://nihc.go.kr,verified_3,true
-P596,S053,전통 문양 현대식 장도 전통무구(더미),6,ART,아트·컬렉션,47,SWORD_WEAPON,장도·전통무구,100000,더미 수량 보완용 가상 장도 상품,순은,경기 이천,,,,,unverified,false
+P596,S053,전통 문양 현대식 장도 전통무구(더미),6,ART,아트·컬렉션,47,SWORD_WEAPON,장도·전통무구,100000,더미 수량 보완용 가상 장도 상품,순은,경기 이천,,,unverified,false
 P597,S008,윤종국 무형유산 전통 용고 북,6,ART,아트·컬렉션,48,INSTRUMENT,전통악기,1500000,통원목 가죽 판에 용 그림을 그려 넣은 전통 북,원목 소가죽,경기 구리,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p597.jpg,https://support.nihc.go.kr,verified_3,true
 P598,S008,윤종국 무형유산 진고 대형 전통 북,6,ART,아트·컬렉션,48,INSTRUMENT,전통악기,3500000,궁중 제례악 및 연회에 쓰이는 웅장한 대형 북,원목 우피,경기 구리,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p598.jpg,https://support.nihc.go.kr,verified_3,true
 P599,S008,윤종국 전통 소북 수제 가죽 북,6,ART,아트·컬렉션,48,INSTRUMENT,전통악기,280000,농악이나 무속에서 리듬을 맞추는 중형 소북,원목 소가죽,경기 구리,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p599.jpg,https://support.nihc.go.kr,verified_3,true
@@ -605,7 +605,7 @@ P603,S010,영도불교공예 수공예 미니 장구,6,ART,아트·컬렉션,48,
 P604,S008,윤종국 단소 전통 대나무 관악기,6,ART,아트·컬렉션,48,INSTRUMENT,전통악기,120000,오죽 대나무를 다듬어 맑은 소리를 내는 단소,오죽,경기 구리,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p604.jpg,https://support.nihc.go.kr,verified_3,true
 P605,S010,영도불교공예 국악 연주용 전통 태평소,6,ART,아트·컬렉션,48,INSTRUMENT,전통악기,220000,유기 태평소 동구와 유자목 몸통으로 제작된 악기,유자목 유기,부산 영도,https://ydbk.co.kr,https://ydbk.co.kr/p605.jpg,https://ydbk.co.kr,verified_2,true
 P606,S008,윤종국 전통 소고 북 및 채 세트,6,ART,아트·컬렉션,48,INSTRUMENT,전통악기,95000,손에 쥐고 춤을 추며 두드리는 전통 소고 북,원목 개가죽,경기 구리,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p606.jpg,https://support.nihc.go.kr,verified_3,true
-P607,S053,전통 문양 현대식 전통악기(더미),6,ART,아트·컬렉션,48,INSTRUMENT,전통악기,50000,더미 수량 보완용 가상 악기 상품,원목 가죽,경기 이천,,,,,unverified,false
+P607,S053,전통 문양 현대식 전통악기(더미),6,ART,아트·컬렉션,48,INSTRUMENT,전통악기,50000,더미 수량 보완용 가상 악기 상품,원목 가죽,경기 이천,,,unverified,false
 P608,S050,불교존 맑고 향기롭게 연꽃 문종 풍경,6,ART,아트·컬렉션,49,BUDDHIST_ITEM,불교용품,34000,현관문이나 창가에 달면 연꽃 맑은 소리가 나는 풍경,놋쇠,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p608.jpg,https://buddhazone.co.kr,verified_2,true
 P609,S050,불교존 김홍도 타작도 풍경,6,ART,아트·컬렉션,49,BUDDHIST_ITEM,불교용품,20000,풍속화 타작도 패널이 달려 바람에 흔들리는 풍경,황동,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p609.jpg,https://buddhazone.co.kr,verified_2,true
 P610,S050,불교존 황동 코뚜레 현관문 풍경,6,ART,아트·컬렉션,49,BUDDHIST_ITEM,불교용품,40000,황동 코뚜레와 종이 결합된 악귀 차단용 문종,황동,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p610.jpg,https://buddhazone.co.kr,verified_2,true
@@ -618,7 +618,7 @@ P616,S010,영도불교공예 원목 소나무 수제 촛대 (쌍),6,ART,아트·
 P617,S050,불교존 오색실 엽전꾸러미 금전재물 부적,6,ART,아트·컬렉션,49,BUDDHIST_ITEM,불교용품,5000,오색 매듭실에 엽전 10개를 엮은 금전운 소품,황동 명주실,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p617.jpg,https://buddhazone.co.kr,verified_2,true
 P618,S010,영도불교공예 수공예 향로 및 단조 향도구,6,ART,아트·컬렉션,49,BUDDHIST_ITEM,불교용품,120000,연꽃 피어오르는 모양의 단조 놋쇠 향로,방짜유기,부산 영도,https://ydbk.co.kr,https://ydbk.co.kr/p618.jpg,https://ydbk.co.kr,verified_2,true
 P619,S050,불교존 복주머니 문종 풍경,6,ART,아트·컬렉션,49,BUDDHIST_ITEM,불교용품,32990,복을 다잡아 주는 복주머니 형상 놋쇠 문종,놋쇠,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p619.jpg,https://shopofkorea.com,verified_3,true
-P620,S053,전통 문양 현대식 불교용품(더미),6,ART,아트·컬렉션,49,BUDDHIST_ITEM,불교용품,25000,더미 수량 보완용 가상 불교용품 상품,놋쇠,경기 이천,,,,,unverified,false
+P620,S053,전통 문양 현대식 불교용품(더미),6,ART,아트·컬렉션,49,BUDDHIST_ITEM,불교용품,25000,더미 수량 보완용 가상 불교용품 상품,놋쇠,경기 이천,,,unverified,false
 P621,S050,불교존 방짜 마패 5마 합격 출세 기원 소장품,6,ART,아트·컬렉션,50,COLLECTIBLE,소장품,25000,암행어사의 5마 마패를 두꺼운 방짜유기로 재현,방짜유기,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p621.jpg,https://buddhazone.co.kr,verified_2,true
 P622,S050,불교존 방짜 마패 5개 세트,6,ART,아트·컬렉션,50,COLLECTIBLE,소장품,100000,1마부터 5마까지 마패 풀세트 모형 소장품,방짜유기,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p622.jpg,https://buddhazone.co.kr,verified_2,true
 P623,S050,불교존 금도금 마패 5개 고급 소장품 세트,6,ART,아트·컬렉션,50,COLLECTIBLE,소장품,250000,순금 도금 처리되어 수집 및 관상 가치가 높은 세트,금도금 유기,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p623.jpg,https://buddhazone.co.kr,verified_2,true
@@ -627,7 +627,7 @@ P625,S050,불교존 방짜 엽전 소장품 10개,6,ART,아트·컬렉션,50,COL
 P626,S050,불교존 대나무 갈퀴 재물재수 소장품,6,ART,아트·컬렉션,50,COLLECTIBLE,소장품,10000,재물과 대운을 긁어모은다는 상징적인 미니 갈퀴,대나무 짚,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p626.jpg,https://buddhazone.co.kr,verified_2,true
 P627,S050,불교존 행운의 키복조리 대형 돈벼락 세트,6,ART,아트·컬렉션,50,COLLECTIBLE,소장품,50000,곡식을 까부르는 키에 엽전과 복주머니를 더한 소품,대나무 짚 엽전,서울 종로,https://www.buddhazone.co.kr,https://buddhazone.co.kr/p627.jpg,https://buddhazone.co.kr,verified_2,true
 P628,S052,남경숙 무형유산 은입사 상감 단검 소장품,6,ART,아트·컬렉션,50,COLLECTIBLE,소장품,2500000,철판 위에 은실을 두드려 박아 문양을 넣은 단검,철 은상감,서울 강남,http://www.kpicaa.co.kr,http://kpicaa.co.kr/p628.jpg,https://support.nihc.go.kr,verified_3,true
-P629,S053,전통 문양 현대식 소장품(더미),6,ART,아트·컬렉션,50,COLLECTIBLE,소장품,30000,더미 수량 보완용 가상 소장품 상품,놋쇠,경기 이천,,,,,unverified,falseP630,S001,우희열 명인 한산소곡주 18도 1.8L 2병 세트,7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,64800,백제 전통 감길주 방식 찹쌀 살균 약주,찹쌀 누룩,충남 서천,https://soollove.com,https://soollove.com/p630.jpg,https://sogokju.co.kr,verified_3,true
+P629,S053,전통 문양 현대식 소장품(더미),6,ART,아트·컬렉션,50,COLLECTIBLE,소장품,30000,더미 수량 보완용 가상 소장품 상품,놋쇠,경기 이천,,,unverified,falseP630,S001,우희열 명인 한산소곡주 18도 1.8L 2병 세트,7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,64800,백제 전통 감길주 방식 찹쌀 살균 약주,찹쌀 누룩,충남 서천,https://soollove.com,https://soollove.com/p630.jpg,https://sogokju.co.kr,verified_3,true
 P631,S054,문배주양조원 문배술 헤리티지 25도 500ml,7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,13320,문배나무 과실 향이 느껴지는 무형유산 증류주,조 찰수수,경기 김포,https://soollove.com,https://soollove.com/p631.jpg,http://www.moonbae.net,verified_3,true
 P632,S055,박흥선 명인 솔송주 13도 700ml,7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,18000,지리산 솔잎과 송순을 넣어 은은한 솔향이 나는 약주,찹쌀 솔잎,경남 함양,https://soollove.com,https://soollove.com/p632.jpg,http://www.sol-song.co.kr,verified_3,true
 P633,S056,전주이강주 특3호 25도 1L 에밀레종 도자기,7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,40500,배 생강 계피 울금이 조화된 조선 3대 명주,배 생강 계피,전북 전주,https://soollove.com,https://soollove.com/p633.jpg,http://www.leegangju.co.kr,verified_3,true
@@ -650,8 +650,8 @@ P649,S054,문배주양조원 문배술 명작1000 40도 1L 세트,7,FOOD,식품�
 P650,S057,조옥화 안동소주 민속 도자기 45도 400ml,7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,25000,전통 하회탈 문양 도자기 병에 담긴 안동소주,쌀 누룩,경북 안동,http://www.andongsoju.com,http://andongsoju.com/p650.jpg,https://arca.live/b/alcohol/39250274,verified_3,true
 P651,S058,박재서 안동소주 호병 35도 500ml,7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,18000,부드러운 35도 맛의 호병 유리병 안동소주,백미,경북 안동,http://www.andongsojumall.com,http://andongsoju.com/p651.jpg,https://arca.live/b/alcohol/39250274,verified_3,true
 P652,S056,전주이강주 25도 375ml 유리병,7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,12000,부담 없는 가격에 즐기는 이강주 기본 유리병,배 생강,전북 전주,https://soollove.com,https://soollove.com/p652.jpg,http://www.leegangju.co.kr,verified_3,true
-P653,S061,전통 문양 현대식 전통주(더미),7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,15000,더미 수량 보완용 가상 전통주 상품,찹쌀,경기 이천,,,,,unverified,false
-P654,S061,전통 문양 미니 전통주(더미),7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,10000,더미 수량 보완용 가상 전통주 상품,쌀,경기 이천,,,,,unverified,false
+P653,S061,전통 문양 현대식 전통주(더미),7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,15000,더미 수량 보완용 가상 전통주 상품,찹쌀,경기 이천,,,unverified,false
+P654,S061,전통 문양 미니 전통주(더미),7,FOOD,식품·전통주,51,TRADITIONAL_LIQUOR,전통주,10000,더미 수량 보완용 가상 전통주 상품,쌀,경기 이천,,,unverified,false
 P655,S003,김동곤 명차 일상다완 우전 잎차 30g,7,FOOD,식품·전통주,52,TEA,차,54000,곡우 전 어린 찻잎을 덖어 만든 최고급 수제 녹차,녹차잎 100%,경남 하동,https://www.sktea.com,https://sktea.com/p655.jpg,https://koreagrandmaster.com,verified_3,true
 P656,S003,김동곤 명차 일상다완 천하춘 잎차 30g,7,FOOD,식품·전통주,52,TEA,차,81000,지리산 사월 온날 어린 찻잎만 덖어낸 지리산 녹차,녹차잎 100%,경남 하동,https://www.sktea.com,https://sktea.com/p656.jpg,https://koreagrandmaster.com,verified_3,true
 P657,S003,김동곤 명차 일상다완 천고향 잎차 30g,7,FOOD,식품·전통주,52,TEA,차,54000,붉은 황색과 부드러운 향미가 일품인 전통 발효차,찻잎,경남 하동,https://www.sktea.com,https://sktea.com/p657.jpg,https://koreagrandmaster.com,verified_3,true
@@ -672,8 +672,8 @@ P671,S003,김동곤 명차 무형유산 수제 생강나무꽃차,7,FOOD,식품�
 P672,S003,김동곤 명차 국화차 유리병 30g,7,FOOD,식품·전통주,52,TEA,차,22000,노란 감국 꽃송이가 피어나는 향긋한 국화차,국화,경남 하동,https://www.sktea.com,https://sktea.com/p672.jpg,https://koreagrandmaster.com,verified_3,true
 P673,S003,김동곤 명차 하동 덖음 뽕잎차 삼각티백,7,FOOD,식품·전통주,52,TEA,차,16000,단맛과 구수함이 느껴지는 카페인 프리 뽕잎차,뽕잎,경남 하동,https://www.sktea.com,https://sktea.com/p673.jpg,https://koreagrandmaster.com,verified_3,true
 P674,S003,김동곤 명차 이슬차 산수유 블렌딩 차,7,FOOD,식품·전통주,52,TEA,차,24000,천연 단맛을 내는 수국잎과 산수유 차,수국잎 산수유,경남 하동,https://www.sktea.com,https://sktea.com/p674.jpg,https://koreagrandmaster.com,verified_3,true
-P675,S061,전통 문양 현대식 차(더미),7,FOOD,식품·전통주,52,TEA,차,15000,더미 수량 보완용 가상 차 상품,녹차,경기 이천,,,,,unverified,false
-P676,S061,전통 문양 미니 차 세트(더미),7,FOOD,식품·전통주,52,TEA,차,10000,더미 수량 보완용 가상 차 상품,차,경기 이천,,,,,unverified,false
+P675,S061,전통 문양 현대식 차(더미),7,FOOD,식품·전통주,52,TEA,차,15000,더미 수량 보완용 가상 차 상품,녹차,경기 이천,,,unverified,false
+P676,S061,전통 문양 미니 차 세트(더미),7,FOOD,식품·전통주,52,TEA,차,10000,더미 수량 보완용 가상 차 상품,차,경기 이천,,,unverified,false
 P677,S007,기순도 명가 유기전통된장 320g,7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,20900,360년 내림 씨간장을 더해 2년 이상 숙성한 된장,대두 천일염,전남 담양,https://kisundo.com,https://kisundo.com/p677.jpg,https://koreagrandmaster.com,verified_3,true
 P678,S007,기순도 명가 전통된장 900g,7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,31400,전통 항아리에서 자연 발효된 100% 국산 된장,대두,전남 담양,https://kisundo.com,https://kisundo.com/p678.jpg,https://koreagrandmaster.com,verified_3,true
 P679,S007,기순도 명가 전통장 모음 추 선물세트,7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,185000,진장, 된장, 고추장, 찹쌀조청이 포함된 고급 세트,전통장 세트,전남 담양,https://kisundo.com,https://kisundo.com/p679.jpg,https://koreagrandmaster.com,verified_3,true
@@ -690,8 +690,8 @@ P689,S007,기순도 명가 찹쌀조청 1kg,7,FOOD,식품·전통주,53,JANG_PIC
 P690,S007,기순도 명가 무말랭이 장아찌 500g,7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,15000,꼬들꼬들한 무말랭이에 씨간장 양념을 더한 장아찌,무말랭이 씨간장,전남 담양,https://kisundo.com,https://kisundo.com/p690.jpg,https://koreagrandmaster.com,verified_3,true
 P691,S059,강순의 명가 굴비 고추장장아찌 300g,7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,38000,영광 굴비 살을 찢어 전통 고추장에 잰 최고급 장아찌,굴비 고추장,경기 남양주,http://www.kangsoone.co.kr,http://kangsoone.co.kr/p691.jpg,https://koreagrandmaster.com,verified_3,true
 P692,S007,기순도 명가 콩자반 간장조림 400g,7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,12000,검은콩을 종가집 국간장으로 단단하게 조린 반찬,검은콩 간장,전남 담양,https://kisundo.com,https://kisundo.com/p692.jpg,https://koreagrandmaster.com,verified_3,true
-P693,S061,전통 문양 현대식 장 장아찌(더미),7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,15000,더미 수량 보완용 가상 장 상품,대두,경기 이천,,,,,unverified,false
-P694,S061,전통 문양 미니 장 세트(더미),7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,10000,더미 수량 보완용 가상 장 상품,고춧가루,경기 이천,,,,,unverified,false
+P693,S061,전통 문양 현대식 장 장아찌(더미),7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,15000,더미 수량 보완용 가상 장 상품,대두,경기 이천,,,unverified,false
+P694,S061,전통 문양 미니 장 세트(더미),7,FOOD,식품·전통주,53,JANG_PICKLE,장·장아찌,10000,더미 수량 보완용 가상 장 상품,고춧가루,경기 이천,,,unverified,false
 P695,S059,강순의 명가 치자백김치 3kg,7,FOOD,식품·전통주,54,KIMCHI,김치,24000,치자물을 들여 노랗고 우아하며 시원한 백김치,배추 치자,경기 남양주,http://www.kangsoone.co.kr,http://kangsoone.co.kr/p695.jpg,https://koreagrandmaster.com,verified_3,true
 P696,S059,강순의 명가 파김치 1kg + 1kg 세트,7,FOOD,식품·전통주,54,KIMCHI,김치,26000,알싸한 쪽파에 멸치액젓과 찹쌀풀로 양념한 파김치,쪽파 멸치액젓,경기 남양주,http://www.kangsoone.co.kr,http://kangsoone.co.kr/p696.jpg,https://koreagrandmaster.com,verified_3,true
 P697,S059,강순의 명가 나주 종가 포기김치 5kg,7,FOOD,식품·전통주,54,KIMCHI,김치,45000,깊은 젓갈 맛과 아삭한 배추가 조화로운 포기김치,절임배추 고춧가루,경기 남양주,http://www.kangsoone.co.kr,http://kangsoone.co.kr/p697.jpg,https://koreagrandmaster.com,verified_3,true
@@ -702,8 +702,8 @@ P701,S059,강순의 명가 깍두기 무김치 3kg,7,FOOD,식품·전통주,54,K
 P702,S059,강순의 명가 깻잎김치 1kg,7,FOOD,식품·전통주,54,KIMCHI,김치,19000,한장씩 정성스레 양념을 얹은 향긋한 깻잎김치,깻잎,경기 남양주,http://www.kangsoone.co.kr,http://kangsoone.co.kr/p702.jpg,https://koreagrandmaster.com,verified_3,true
 P703,S059,강순의 명가 오이소박이 2kg,7,FOOD,식품·전통주,54,KIMCHI,김치,27000,오이 속에 부추 양념을 꽉 채워 아삭함이 살아있는 김치,오이 부추,경기 남양주,http://www.kangsoone.co.kr,http://kangsoone.co.kr/p703.jpg,https://koreagrandmaster.com,verified_3,true
 P704,S059,강순의 명가 갓물김치 3kg,7,FOOD,식품·전통주,54,KIMCHI,김치,29000,시원한 갓 향이 동치미 국물처럼 배어난 물김치,갓 절임배추,경기 남양주,http://www.kangsoone.co.kr,http://kangsoone.co.kr/p704.jpg,https://koreagrandmaster.com,verified_3,true
-P705,S061,전통 문양 현대식 김치(더미),7,FOOD,식품·전통주,54,KIMCHI,김치,20000,더미 수량 보완용 가상 김치 상품,절임배추,경기 이천,,,,,unverified,false
-P706,S061,전통 문양 미니 김치 세트(더미),7,FOOD,식품·전통주,54,KIMCHI,김치,15000,더미 수량 보완용 가상 김치 상품,무,경기 이천,,,,,unverified,false
+P705,S061,전통 문양 현대식 김치(더미),7,FOOD,식품·전통주,54,KIMCHI,김치,20000,더미 수량 보완용 가상 김치 상품,절임배추,경기 이천,,,unverified,false
+P706,S061,전통 문양 미니 김치 세트(더미),7,FOOD,식품·전통주,54,KIMCHI,김치,15000,더미 수량 보완용 가상 김치 상품,무,경기 이천,,,unverified,false
 P707,S009,담양한과 3단 예향 명절 한과선물세트,7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,78900,유과 약과 다식 세트로 구성된 보자기 포장 한과,찹쌀 쌀조청,전남 담양,https://nonghyupmall.com,https://nonghyupmall.com/p707.jpg,https://hange.co.kr,verified_3,true
 P708,S009,담양한과 2단 미향 명절 한과선물세트,7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,43900,알차게 들어간 실속형 2단 수제 한과 세트,찹쌀 튀밥,전남 담양,https://nonghyupmall.com,https://nonghyupmall.com/p708.jpg,https://hange.co.kr,verified_3,true
 P709,S009,담양한과 2단 백리향 명절 한과선물세트,7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,105900,국산 찹쌀과 천연 재료로 빛깔을 낸 명품 한과,찹쌀 조청,전남 담양,https://nonghyupmall.com,https://nonghyupmall.com/p709.jpg,https://hange.co.kr,verified_3,true
@@ -718,8 +718,8 @@ P717,S009,담양한과 찹쌀 수제 개성약과 세트,7,FOOD,식품·전통�
 P718,S060,호정가 유영군 하루영양바 20개입 1+1,7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,28800,전통 조청으로 뭉쳐 만든 퓨전 견과류 하루영양바,아몬드 조청,전남 담양,https://nonghyupmall.com,https://nonghyupmall.com/p718.jpg,http://www.hojungfood.co.kr,verified_3,true
 P719,S009,담양한과 수제 쌀강정 3종 종합 세트,7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,22000,백미, 백련초, 뽕잎 쌀강정 3가지 맛 모음,쌀 조청,전남 담양,https://nonghyupmall.com,https://nonghyupmall.com/p719.jpg,https://hange.co.kr,verified_3,true
 P720,S060,호정가 유영군 미니 약과 500g 2봉,7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,14900,한입에 쏙 들어가는 귀여운 크기의 꿀 약과,밀가루 찹쌀,전남 담양,https://nonghyupmall.com,https://nonghyupmall.com/p720.jpg,http://www.hojungfood.co.kr,verified_3,true
-P721,S061,전통 문양 현대식 떡 한과(더미),7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,15000,더미 수량 보완용 가상 한과 상품,찹쌀,경기 이천,,,,,unverified,false
-P722,S061,전통 문양 미니 한과 세트(더미),7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,10000,더미 수량 보완용 가상 한과 상품,조청,경기 이천,,,,,unverified,false
+P721,S061,전통 문양 현대식 떡 한과(더미),7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,15000,더미 수량 보완용 가상 한과 상품,찹쌀,경기 이천,,,unverified,false
+P722,S061,전통 문양 미니 한과 세트(더미),7,FOOD,식품·전통주,55,RICECAKE_HANGWA,떡·한과,10000,더미 수량 보완용 가상 한과 상품,조청,경기 이천,,,unverified,false
 P723,S009,담양한과 궁중 명가 한과 육포 종합 선물세트,7,FOOD,식품·전통주,56,ROYAL_FOOD_SET,궁중음식·선물세트,180000,궁중 한과와 수제 한우 육포가 포장된 고급 세트,찹쌀 한우,전남 담양,https://nonghyupmall.com,https://nonghyupmall.com/p723.jpg,https://hange.co.kr,verified_3,true
 P724,S007,기순도 명가 궁중 내림 장 선물세트,7,FOOD,식품·전통주,56,ROYAL_FOOD_SET,궁중음식·선물세트,220000,씨간장, 찰고추장, 칠장 등 궁중 명가 장 세트,전통장,전남 담양,https://kisundo.com,https://kisundo.com/p724.jpg,https://koreagrandmaster.com,verified_3,true
 P725,S003,김동곤 명차 궁중 진상 차 및 도자기 다관 세트,7,FOOD,식품·전통주,56,ROYAL_FOOD_SET,궁중음식·선물세트,190000,왕실에 진상되던 수제 잎차와 도자기 다기 세트,수제차 백자,경남 하동,https://www.sktea.com,https://sktea.com/p725.jpg,https://koreagrandmaster.com,verified_3,true
@@ -727,4 +727,4 @@ P726,S056,전주이강주 궁중 이강주 에밀레종 고급 도자기 세트,
 P727,S001,우희열 명인 궁중 소곡주 한과 이중 선물세트,7,FOOD,식품·전통주,56,ROYAL_FOOD_SET,궁중음식·선물세트,150000,한산소곡주 도자기 병과 담양 수제 한과 세트,소곡주 한과,충남 서천,https://soollove.com,https://soollove.com/p727.jpg,https://sogokju.co.kr,verified_3,true
 P728,S059,강순의 명가 궁중 내림 김치 및 장아찌 5종 세트,7,FOOD,식품·전통주,56,ROYAL_FOOD_SET,궁중음식·선물세트,135000,백김치, 파김치, 굴비장아찌 등 종가집 내림 찬 세트,김치 장아찌,경기 남양주,http://www.kangsoone.co.kr,http://kangsoone.co.kr/p728.jpg,https://koreagrandmaster.com,verified_3,true
 P729,S060,호정가 유영군 궁중 약과 및 정과 명품 세트,7,FOOD,식품·전통주,56,ROYAL_FOOD_SET,궁중음식·선물세트,110000,도라지정과, 개성약과, 찹쌀유과가 조화로운 선물세트,조청 견과,전남 담양,https://nonghyupmall.com,https://nonghyupmall.com/p729.jpg,http://www.hojungfood.co.kr,verified_3,true
-P730,S061,전통 문양 현대식 궁중음식 선물세트(더미),7,FOOD,식품·전통주,56,ROYAL_FOOD_SET,궁중음식·선물세트,50000,더미 수량 보완용 가상 궁중 선물세트 상품,전통식품,경기 이천,,,,,unverified,false
+P730,S061,전통 문양 현대식 궁중음식 선물세트(더미),7,FOOD,식품·전통주,56,ROYAL_FOOD_SET,궁중음식·선물세트,50000,더미 수량 보완용 가상 궁중 선물세트 상품,전통식품,경기 이천,,,unverified,false
