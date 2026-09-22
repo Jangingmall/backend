@@ -5,12 +5,17 @@ import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.image.application.ImageService;
 import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.member.domain.*;
+import com.jangingmall.backend.revalidate.domain.RevalidateEvent;
+import com.jangingmall.backend.revalidate.domain.RevalidateEventType;
+import java.time.Instant;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.UUID;
 
 @Service
 public class ArtisanService {
@@ -18,18 +23,20 @@ public class ArtisanService {
     private final ArtisanProfileRepository artisans;
     private final MemberReadRepository reads;
     private final ImageService images;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
     public ArtisanService(MemberAccess access, ArtisanProfileRepository artisans, MemberReadRepository reads,
-                          ImageService images) {
+                          ImageService images, ApplicationEventPublisher eventPublisher) {
         this.access = access;
         this.artisans = artisans;
         this.reads = reads;
         this.images = images;
+        this.eventPublisher = eventPublisher;
     }
 
     public ArtisanService(MemberAccess access, ArtisanProfileRepository artisans, MemberReadRepository reads) {
-        this(access, artisans, reads, null);
+        this(access, artisans, reads, null, null);
     }
 
     @Transactional(readOnly = true)
@@ -70,6 +77,7 @@ public class ArtisanService {
         artisan.updateBiography(changes.certifiedYear(), changes.lineage(), changes.quote(), changes.bio(), changes.videoUrl());
         artisans.save(artisan);
         artisans.flush();
+        eventPublisher.publishEvent(RevalidateEvent.ofArtisan(RevalidateEventType.ARTISAN_UPDATED, UUID.randomUUID().toString(), Instant.now(), memberId));
         return detail(memberId);
     }
 

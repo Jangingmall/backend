@@ -25,7 +25,10 @@ import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductErrorMessage;
 import com.jangingmall.backend.product.domain.ProductRepository;
+import com.jangingmall.backend.revalidate.domain.RevalidateEvent;
+import com.jangingmall.backend.revalidate.domain.RevalidateEventType;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,7 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.node.ObjectNode;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -41,6 +45,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -57,6 +62,7 @@ public class ContentService {
     private final ImageService imageService;
     private final ObjectMapper objectMapper;
     private final ContentGenerationRepository generationRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
     public ContentService(ContentRepository contentRepository, ContentEditHistoryRepository historyRepository,
@@ -64,7 +70,8 @@ public class ContentService {
                           ArtisanProfileRepository artisanProfileRepository, InterviewRepository interviewRepository,
                           ContentBlockRepository contentBlockRepository, ImageUploadRepository imageUploadRepository,
                           ImageService imageService, ObjectMapper objectMapper,
-                          ContentGenerationRepository generationRepository) {
+                          ContentGenerationRepository generationRepository,
+                          ApplicationEventPublisher eventPublisher) {
         this.contentRepository = contentRepository;
         this.historyRepository = historyRepository;
         this.productRepository = productRepository;
@@ -76,13 +83,14 @@ public class ContentService {
         this.imageService = imageService;
         this.objectMapper = objectMapper;
         this.generationRepository = generationRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public ContentService(ContentRepository contentRepository, ContentEditHistoryRepository historyRepository,
                           ProductRepository productRepository, AiContentClient aiContentClient,
                           ArtisanProfileRepository artisanProfileRepository, InterviewRepository interviewRepository) {
         this(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository,
-            interviewRepository, null, null, null, null, null);
+            interviewRepository, null, null, null, null, null, null);
     }
 
     /** Compatibility constructor used by the JSON editor tests and legacy callers. */
@@ -91,7 +99,7 @@ public class ContentService {
                           ArtisanProfileRepository artisanProfileRepository, InterviewRepository interviewRepository,
                           ObjectMapper objectMapper) {
         this(contentRepository, historyRepository, productRepository, aiContentClient, artisanProfileRepository,
-            interviewRepository, null, null, null, objectMapper, null);
+            interviewRepository, null, null, null, objectMapper, null, null);
     }
 
     @Transactional(readOnly = true)
@@ -497,6 +505,9 @@ public class ContentService {
         content.publish();
         ContentResponse.StatusChanged result = ContentResponse.StatusChanged.from(contentRepository.save(content));
         syncPublishedProductToAi(command.productId());
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_CONTENT_PUBLISHED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
+        }
         return result;
     }
 

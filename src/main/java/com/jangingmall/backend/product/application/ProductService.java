@@ -21,15 +21,20 @@ import com.jangingmall.backend.product.domain.ProductRepository;
 import com.jangingmall.backend.product.domain.ProductStatus;
 import com.jangingmall.backend.product.domain.Subcategory;
 import com.jangingmall.backend.product.domain.SubcategoryRepository;
+import com.jangingmall.backend.revalidate.domain.RevalidateEvent;
+import com.jangingmall.backend.revalidate.domain.RevalidateEventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -44,13 +49,15 @@ public class ProductService {
     private final ImageService imageService;
     private final ContentRepository contentRepository;
     private final ContentBlockRepository contentBlockRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
     public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository,
                           SubcategoryRepository subcategoryRepository, AiContentClient aiContentClient,
                           InterviewRepository interviewRepository, ProductImageRepository productImageRepository,
                           ImageService imageService, ContentRepository contentRepository,
-                          ContentBlockRepository contentBlockRepository) {
+                          ContentBlockRepository contentBlockRepository,
+                          ApplicationEventPublisher eventPublisher) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.subcategoryRepository = subcategoryRepository;
@@ -60,6 +67,7 @@ public class ProductService {
         this.imageService = imageService;
         this.contentRepository = contentRepository;
         this.contentBlockRepository = contentBlockRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     /** Backward-compatible constructor for callers that only manage legacy thumbnailUrl products. */
@@ -67,7 +75,7 @@ public class ProductService {
                           SubcategoryRepository subcategoryRepository, AiContentClient aiContentClient,
                           InterviewRepository interviewRepository) {
         this(productRepository, categoryRepository, subcategoryRepository, aiContentClient, interviewRepository,
-            null, null, null, null);
+            null, null, null, null, null);
     }
 
     @Transactional
@@ -90,6 +98,7 @@ public class ProductService {
         );
         Product saved = productRepository.save(product);
         replaceImages(saved, command.images(), command.artisanId(), true);
+        eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_CREATED, UUID.randomUUID().toString(), Instant.now(), saved.getId()));
         return response(saved);
     }
 
@@ -136,6 +145,7 @@ public class ProductService {
         replaceImages(product, command.images(), command.requesterId(), false);
         ProductResponse response = response(product);
         notifyAiProductUpdated(command.productId(), product);
+        eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_UPDATED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
         return response;
     }
 
@@ -144,6 +154,7 @@ public class ProductService {
         Product product = getProduct(command.productId());
         ProductStatus next = ProductStatus.valueOf(command.status());
         product.changeStatus(next, command.requesterId());
+        eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_STATUS_CHANGED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
     }
 
     @Transactional
@@ -155,6 +166,7 @@ public class ProductService {
             productImageRepository.deleteByProductId(productId);
         }
         productRepository.delete(product);
+        eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_DELETED, UUID.randomUUID().toString(), Instant.now(), productId));
     }
 
     private void notifyAiProductUpdated(Long productId, Product product) {

@@ -35,7 +35,7 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class, com.jangingmall.backend.revalidate.application.RevalidateProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
