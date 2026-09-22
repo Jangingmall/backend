@@ -20,6 +20,7 @@
 *.env
 *.env.local
 *.env.*.local
+!.ai/pr-policy.env
 
 /pr-output.md
 /docs/wiki/
