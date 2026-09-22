@@ -27,6 +27,7 @@ import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
 import com.jangingmall.backend.payment.application.CartService;
 import com.jangingmall.backend.payment.application.DeliveryService;
+import com.jangingmall.backend.payment.application.DeliveryTrackingGateway;
 import com.jangingmall.backend.payment.application.PaymentProfileService;
 import com.jangingmall.backend.payment.application.PaymentService;
 import com.jangingmall.backend.payment.application.ReturnService;
@@ -770,10 +771,85 @@ class PaymentControllerTest extends RestDocsControllerTest {
     }
 
     @Test
+    @DisplayName("결제 대기 주문 취소·배송지 변경·구매 확정 API를 사용자 주문 기준으로 제공한다")
+    void mapsCustomerOrderActions() throws Exception {
+        when(payments.cancelOrder(1L, 100L)).thenReturn(
+            new PaymentService.OrderActionData(100L, OrderStatus.CANCELED, Instant.now(), null));
+        when(payments.changeShippingAddress(1L, 100L, 9L)).thenReturn(
+            new PaymentService.ShippingAddressData(100L, 9L, "홍길동", "01012345678", "03187", "서울", "101호"));
+        when(payments.confirmPurchase(1L, 100L)).thenReturn(
+            new PaymentService.OrderActionData(100L, OrderStatus.PURCHASE_CONFIRMED, null, Instant.now()));
+
+        mockMvc.perform(post("/api/payments/orders/{orderId}/cancel", 100L).with(user()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.status").value("CANCELED"))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "order-cancel-before-payment",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("주문")
+                    .summary("결제 대기 주문 취소")
+                    .description("CREATED 주문만 취소합니다. 준비된 결제는 외부 PG 호출 없이 취소하고 예약 재고를 복구합니다.")
+                    .pathParameters(parameterWithName("orderId").description("주문 ID").type(SimpleType.INTEGER))
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
+                        fieldWithPath("data.status").type(JsonFieldType.STRING).description("주문 상태(CANCELED)"),
+                        fieldWithPath("data.canceledAt").type(JsonFieldType.STRING).description("취소 일시"),
+                        fieldWithPath("data.purchaseConfirmedAt").type(JsonFieldType.STRING).optional().description("구매 확정 일시")
+                    ))
+                    .build()
+                )
+            ));
+        mockMvc.perform(patch("/api/payments/orders/{orderId}/shipping-address", 100L).with(user())
+                .contentType(APPLICATION_JSON).content("{\"addressId\":9}"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.addressId").value(9))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "order-change-shipping-address",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("주문")
+                    .summary("주문 배송지 변경")
+                    .description("CREATED 또는 PAID 주문의 배송지 스냅샷만 본인 주소록의 주소로 바꿉니다.")
+                    .pathParameters(parameterWithName("orderId").description("주문 ID").type(SimpleType.INTEGER))
+                    .requestFields(fieldWithPath("addressId").type(JsonFieldType.NUMBER).description("본인 주소록의 배송지 ID"))
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
+                        fieldWithPath("data.addressId").type(JsonFieldType.NUMBER).description("적용한 배송지 ID"),
+                        fieldWithPath("data.recipientName").type(JsonFieldType.STRING).description("수령인"),
+                        fieldWithPath("data.phone").type(JsonFieldType.STRING).description("수령인 전화번호"),
+                        fieldWithPath("data.zipCode").type(JsonFieldType.STRING).description("우편번호"),
+                        fieldWithPath("data.address1").type(JsonFieldType.STRING).description("기본 주소"),
+                        fieldWithPath("data.address2").type(JsonFieldType.STRING).optional().description("상세 주소")
+                    ))
+                    .build()
+                )
+            ));
+        mockMvc.perform(post("/api/payments/orders/{orderId}/purchase-confirmation", 100L).with(user()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.status").value("PURCHASE_CONFIRMED"))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "order-purchase-confirmation",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("주문")
+                    .summary("구매 확정")
+                    .description("DELIVERED 주문을 PURCHASE_CONFIRMED로 변경합니다. 구매 확정 뒤에는 반품 신청할 수 없습니다.")
+                    .pathParameters(parameterWithName("orderId").description("주문 ID").type(SimpleType.INTEGER))
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
+                        fieldWithPath("data.status").type(JsonFieldType.STRING).description("주문 상태(PURCHASE_CONFIRMED)"),
+                        fieldWithPath("data.canceledAt").type(JsonFieldType.STRING).optional().description("취소 일시"),
+                        fieldWithPath("data.purchaseConfirmedAt").type(JsonFieldType.STRING).description("구매 확정 일시")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
     @DisplayName("PAY-P1-003~007 배송조회는 200·404·401 계약을 전달한다")
     void mapsDeliveryEndpoint() throws Exception {
         when(deliveries.get(1L, 100L)).thenReturn(new DeliveryService.DeliveryData(
-            100L, "CJ대한통운", "1234567890", DeliveryStatus.IN_TRANSIT));
+            100L, "04", "CJ대한통운", "CJ대한통운", "1234567890", DeliveryStatus.IN_TRANSIT,
+            List.of(new DeliveryTrackingGateway.TrackingEvent("2026-09-22 10:00:00", "서울", "상품 인수", DeliveryStatus.IN_TRANSIT))));
         mockMvc.perform(get("/api/payments/orders/{orderId}/delivery", 100L).with(user()))
             .andExpect(status().isOk()).andExpect(jsonPath("$.data.trackingNumber").value("1234567890"))
             .andDo(MockMvcRestDocumentationWrapper.document(
@@ -783,14 +859,21 @@ class PaymentControllerTest extends RestDocsControllerTest {
                     .summary("배송 조회")
                     .description("주문의 배송 추적 정보를 조회합니다.\n\n" +
                         "**정책**\n" +
-                        "- 배송 완료 7일 후 구매 자동 확정 (스케줄러)\n" +
-                        "- 택배사 API 미연동 시 운송장 번호 복사만 제공 (P1)")
+                        "- 배송 완료 후 고객이 구매 확정할 수 있습니다.\n" +
+                        "- 택배사 코드·운송장·이동 이력을 함께 제공합니다.")
                     .pathParameters(parameterWithName("orderId").description("주문 ID").type(SimpleType.INTEGER))
                     .responseFields(successEnvelopeFields(
                         fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
+                        fieldWithPath("data.carrierCode").type(JsonFieldType.STRING).optional().description("스마트택배 택배사 코드"),
+                        fieldWithPath("data.carrierName").type(JsonFieldType.STRING).description("택배사명"),
                         fieldWithPath("data.carrier").type(JsonFieldType.STRING).description("택배사명"),
                         fieldWithPath("data.trackingNumber").type(JsonFieldType.STRING).description("운송장 번호"),
-                        fieldWithPath("data.status").type(JsonFieldType.STRING).description("배송 상태")
+                        fieldWithPath("data.status").type(JsonFieldType.STRING).description("배송 상태"),
+                        fieldWithPath("data.history").type(JsonFieldType.ARRAY).description("배송 이동 이력"),
+                        fieldWithPath("data.history[].occurredAt").type(JsonFieldType.STRING).optional().description("이동 시각(택배사 원문)"),
+                        fieldWithPath("data.history[].location").type(JsonFieldType.STRING).optional().description("처리 위치"),
+                        fieldWithPath("data.history[].description").type(JsonFieldType.STRING).optional().description("처리 내용"),
+                        fieldWithPath("data.history[].status").type(JsonFieldType.STRING).description("해당 이력의 배송 상태")
                     ))
                     .build()
                 )

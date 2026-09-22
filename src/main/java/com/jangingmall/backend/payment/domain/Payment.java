@@ -102,4 +102,14 @@ public class Payment {
         canceledAt = Instant.now();
         updatedAt = canceledAt;
     }
+
+    /** Cancels a locally prepared payment before it has a provider payment key; no provider call is required. */
+    public void cancelBeforeApproval() {
+        if (status != PaymentStatus.READY) {
+            throw new IllegalStateException("결제 준비 상태만 취소할 수 있습니다.");
+        }
+        status = PaymentStatus.CANCELED;
+        canceledAt = Instant.now();
+        updatedAt = canceledAt;
+    }
 }

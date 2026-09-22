@@ -4,6 +4,8 @@ import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.payment.application.DeliveryTrackingGateway;
 import com.jangingmall.backend.payment.application.SweetTrackerProperties;
 import com.jangingmall.backend.payment.domain.DeliveryStatus;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -35,9 +37,40 @@ public class SweetTrackerDeliveryTrackingGateway implements DeliveryTrackingGate
                 throw new BusinessRuleViolationException("배송 정보를 조회할 수 없습니다.");
             }
             boolean completed = Boolean.TRUE.equals(response.get("complete")) || "Y".equals(response.get("completeYN"));
-            return new TrackingSnapshot(completed ? DeliveryStatus.DELIVERED : DeliveryStatus.IN_TRANSIT);
+            DeliveryStatus status = completed ? DeliveryStatus.DELIVERED : DeliveryStatus.IN_TRANSIT;
+            return new TrackingSnapshot(status, history(response, status));
         } catch (RestClientException exception) {
             throw new BusinessRuleViolationException("배송 정보를 조회할 수 없습니다.");
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<TrackingEvent> history(Map<String, Object> response, DeliveryStatus finalStatus) {
+        Object value = response.get("trackingDetails");
+        if (!(value instanceof List<?> details)) {
+            return List.of();
+        }
+        List<TrackingEvent> result = new ArrayList<>();
+        for (int index = 0; index < details.size(); index++) {
+            if (!(details.get(index) instanceof Map<?, ?> row)) {
+                continue;
+            }
+            String occurredAt = text(row, "timeString", "time", "timeDate");
+            String location = text(row, "where", "location", "telno");
+            String description = text(row, "kind", "details", "description");
+            DeliveryStatus eventStatus = index == details.size() - 1 ? finalStatus : DeliveryStatus.IN_TRANSIT;
+            result.add(new TrackingEvent(occurredAt, location, description, eventStatus));
+        }
+        return List.copyOf(result);
+    }
+
+    private String text(Map<?, ?> row, String... keys) {
+        for (String key : keys) {
+            Object value = row.get(key);
+            if (value != null && !String.valueOf(value).isBlank()) {
+                return String.valueOf(value);
+            }
+        }
+        return null;
     }
 }
