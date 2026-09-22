@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 interface ProductImageJpaRepository extends JpaRepository<ProductImage, Long> {
     List<ProductImage> findByProductIdOrderByDisplayOrderAsc(Long productId);
 
+    List<ProductImage> findByProductIdInOrderByProductIdAscDisplayOrderAsc(List<Long> productIds);
+
     void deleteByProductId(Long productId);
 }
 
@@ -25,6 +27,14 @@ class JpaProductImageRepository implements ProductImageRepository {
     @Override
     public List<ProductImage> findByProductIdOrderByDisplayOrderAsc(Long productId) {
         return jpa.findByProductIdOrderByDisplayOrderAsc(productId);
+    }
+
+    @Override
+    public List<ProductImage> findByProductIdInOrderByProductIdAscDisplayOrderAsc(List<Long> productIds) {
+        if (productIds == null || productIds.isEmpty()) {
+            return List.of();
+        }
+        return jpa.findByProductIdInOrderByProductIdAscDisplayOrderAsc(productIds);
     }
 
     @Override
