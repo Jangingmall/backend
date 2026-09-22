@@ -17,4 +17,11 @@ public class ImageStorageProperties {
     private int presignExpirySeconds = 300;
     private long unusedRetentionSeconds = 24L * 60 * 60;
     private long maxFileSizeBytes = 10L * 1024 * 1024;
+
+    public String getRegion() {
+        if (region == null || region.isBlank()) {
+            return "ap-northeast-2";
+        }
+        return region;
+    }
 }
