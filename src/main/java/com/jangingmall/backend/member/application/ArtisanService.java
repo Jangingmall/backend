@@ -77,7 +77,9 @@ public class ArtisanService {
         artisan.updateBiography(changes.certifiedYear(), changes.lineage(), changes.quote(), changes.bio(), changes.videoUrl());
         artisans.save(artisan);
         artisans.flush();
-        eventPublisher.publishEvent(RevalidateEvent.ofArtisan(RevalidateEventType.ARTISAN_UPDATED, UUID.randomUUID().toString(), Instant.now(), memberId));
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(RevalidateEvent.ofArtisan(RevalidateEventType.ARTISAN_UPDATED, UUID.randomUUID().toString(), Instant.now(), memberId));
+        }
         return detail(memberId);
     }
 

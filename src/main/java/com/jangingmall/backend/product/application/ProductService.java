@@ -98,7 +98,9 @@ public class ProductService {
         );
         Product saved = productRepository.save(product);
         replaceImages(saved, command.images(), command.artisanId(), true);
-        eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_CREATED, UUID.randomUUID().toString(), Instant.now(), saved.getId()));
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_CREATED, UUID.randomUUID().toString(), Instant.now(), saved.getId()));
+        }
         return response(saved);
     }
 
@@ -145,7 +147,9 @@ public class ProductService {
         replaceImages(product, command.images(), command.requesterId(), false);
         ProductResponse response = response(product);
         notifyAiProductUpdated(command.productId(), product);
-        eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_UPDATED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_UPDATED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
+        }
         return response;
     }
 
@@ -154,7 +158,9 @@ public class ProductService {
         Product product = getProduct(command.productId());
         ProductStatus next = ProductStatus.valueOf(command.status());
         product.changeStatus(next, command.requesterId());
-        eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_STATUS_CHANGED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_STATUS_CHANGED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
+        }
     }
 
     @Transactional
@@ -166,7 +172,9 @@ public class ProductService {
             productImageRepository.deleteByProductId(productId);
         }
         productRepository.delete(product);
-        eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_DELETED, UUID.randomUUID().toString(), Instant.now(), productId));
+        if (eventPublisher != null) {
+            eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_DELETED, UUID.randomUUID().toString(), Instant.now(), productId));
+        }
     }
 
     private void notifyAiProductUpdated(Long productId, Product product) {

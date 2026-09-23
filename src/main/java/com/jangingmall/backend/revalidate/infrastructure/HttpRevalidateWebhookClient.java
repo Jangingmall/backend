@@ -4,6 +4,7 @@ import com.jangingmall.backend.revalidate.application.RevalidateProperties;
 import com.jangingmall.backend.revalidate.domain.RevalidateEvent;
 import com.jangingmall.backend.revalidate.domain.RevalidateWebhookClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,7 @@ public class HttpRevalidateWebhookClient implements RevalidateWebhookClient {
     private final RevalidateProperties properties;
     private final ObjectMapper objectMapper;
 
+    @Autowired
     HttpRevalidateWebhookClient(RevalidateProperties properties, ObjectMapper objectMapper) {
         this.properties = properties;
         this.objectMapper = objectMapper;
