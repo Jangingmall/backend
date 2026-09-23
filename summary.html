@@ -33,14 +33,14 @@
 </nav>
 <div class="container">
   <h1>API 요약</h1>
-  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 103개 엔드포인트 · 2026-09-23 12:28 UTC</div>
+  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 103개 엔드포인트 · 2026-09-23 12:36 UTC</div>
   <input class="search" type="text" placeholder="경로 또는 설명으로 검색..." oninput="filterTable(this.value)"/>
   <table id="tbl">
     <thead><tr><th>Method</th><th>경로</th><th>설명</th><th>권한</th></tr></thead>
     <tbody>
       <tr class="tag-header"><td colspan="4"><strong>AI 콘텐츠 생성</strong></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/generations</td><td>AI 상세페이지 생성 요청</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/generations/{generationId}</td><td>AI 생성 상태 조회 (COMPLETED)</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/generations/{generationId}</td><td>AI 생성 상태 조회 (PROCESSING)</td><td><span class="role">ARTISAN</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>AI 콜백 (내부)</strong></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/internal/generations/{generationId}/completion</td><td>AI 생성 완료 콜백</td><td><span class="role">USER</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>결제</strong></td></tr>
@@ -95,7 +95,7 @@
       <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/notifications/{notificationId}</td><td>알림 삭제</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/notifications/{notificationId}/read</td><td>알림 읽음 처리</td><td><span class="role">USER</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>이미지</strong></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/images/presigned-url</td><td>Presigned URL 발급 (AGENT)</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/images/presigned-url</td><td>Presigned URL 발급</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/images/{imageId}</td><td>미사용 이미지 삭제</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/internal/images/verify</td><td>이미지 검증 (내부)</td><td><span class="role">USER</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>장바구니</strong></td></tr>

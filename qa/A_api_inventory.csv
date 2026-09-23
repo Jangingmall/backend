@@ -3,7 +3,7 @@ POST-chatbot-session-create,챗봇,POST,/api/chatbot/sessions,chatbot-session-cr
 DELETE-chatbot-session-end,챗봇,DELETE,/api/chatbot/sessions/{sessionId},chatbot-session-end,NO,PUBLIC,-,200,,NORMAL,챗봇 세션 종료
 GET-chatbot-message-list,챗봇,GET,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-list,NO,PUBLIC,-,200,,NORMAL,대화 이력 조회
 POST-chatbot-message-send,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,NO,PUBLIC,api-chatbot-sessions-sessionId-messages-645351721,201,,NORMAL,챗봇 메시지 전송
-GET-content-get,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,YES,ARTISAN,-,200,"403,404,401",NORMAL,콘텐츠 조회
+GET-content-get,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,YES,ARTISAN,-,200,"401,404,403",NORMAL,콘텐츠 조회
 GET-content-version-history,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,YES,ARTISAN,-,200,403,NORMAL,버전 이력 조회
 PATCH-content-bulk-update,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,YES,ARTISAN,api-content-products-productId-contents-contentId150470655,200,422,NORMAL,문단 일괄 수정
 POST-content-approve,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,YES,ARTISAN,api-content-products-productId-contents-contentId-approve2046505670,200,422,NORMAL,콘텐츠 승인
@@ -11,12 +11,12 @@ PATCH-content-block-update,콘텐츠,PATCH,/api/content/products/{productId}/con
 POST-content-reject,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,YES,ARTISAN,-,200,422,NORMAL,콘텐츠 반려
 POST-content-submit,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,YES,ARTISAN,-,200,,NORMAL,검토 요청
 POST-generation-request,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,YES,ARTISAN,api-content-products-productId-generations356953192,202,403,NORMAL,AI 상세페이지 생성 요청
-GET-generation-poll-,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,YES,ARTISAN,-,200,404,NORMAL,AI 생성 상태 조회 (COMPLETED)
+GET-generation-poll-,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,YES,ARTISAN,-,200,404,NORMAL,AI 생성 상태 조회 (PROCESSING)
 GET-interview-find,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,YES,ARTISAN,-,200,404,NORMAL,취재 데이터 조회
-POST-interview-create,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,YES,ARTISAN,api-content-products-productId-interview2125928306,201,"409,403",NORMAL,취재 데이터 등록
-PATCH-interview-update,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,YES,ARTISAN,api-content-products-productId-interview515382983,200,"403,404",NORMAL,취재 데이터 수정
+POST-interview-create,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,YES,ARTISAN,api-content-products-productId-interview2125928306,201,"403,409",NORMAL,취재 데이터 등록
+PATCH-interview-update,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,YES,ARTISAN,api-content-products-productId-interview515382983,200,"404,403",NORMAL,취재 데이터 수정
 POST-content-publish,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,YES,ARTISAN,-,200,422,NORMAL,상품 게시
-POST-image-presigned-url,이미지,POST,/api/images/presigned-url,image-presigned-url,YES,USER,api-images-presigned-url-449903825,200,"400,401",NORMAL,Presigned URL 발급 (AGENT)
+POST-image-presigned-url,이미지,POST,/api/images/presigned-url,image-presigned-url,YES,USER,api-images-presigned-url-1187326752,200,"400,401",NORMAL,Presigned URL 발급
 DELETE-image-delete,이미지,DELETE,/api/images/{imageId},image-delete,YES,USER,-,200,"409,403",NORMAL,미사용 이미지 삭제
 GET-artisan-list,장인,GET,/api/member/artisans,artisan-list,YES,USER,-,200,,NORMAL,장인 목록 조회
 POST-seller-application-apply,판매자 신청,POST,/api/member/artisans/applications,seller-application-apply,YES,USER,api-member-artisans-applications-1305820327,201,,NORMAL,판매자 신청 제출
@@ -24,7 +24,7 @@ GET-seller-application-mine,판매자 신청,GET,/api/member/artisans/applicatio
 GET-artisan-mine,장인,GET,/api/member/artisans/me,artisan-mine,YES,USER,-,200,,NORMAL,내 장인 프로필 조회
 PATCH-artisan-update,장인,PATCH,/api/member/artisans/me,artisan-update,YES,USER,api-member-artisans-me-1803287,200,,NORMAL,장인 프로필 수정
 GET-member-subscriptions,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,YES,USER,-,200,401,NORMAL,구독 장인 목록
-PATCH-member-notifications,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,YES,USER,api-member-artisans-subscriptions-notifications1775079949,200,"400,401",NORMAL,구독 알림 설정
+PATCH-member-notifications,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,YES,USER,api-member-artisans-subscriptions-notifications1775079949,200,"401,400",NORMAL,구독 알림 설정
 GET-artisan-detail,장인,GET,/api/member/artisans/{artisanId},artisan-detail,YES,USER,-,200,,NORMAL,장인 상세 조회
 POST-member-subscribe,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,YES,USER,-,200,"404,401",NORMAL,장인 구독
 DELETE-member-unsubscribe,장인 구독,DELETE,/api/member/artisans/{artisanId}/subscribe,member-unsubscribe,YES,USER,-,200,401,NORMAL,장인 구독 취소
@@ -57,9 +57,9 @@ POST-notification-create-200,알림,POST,/api/notifications,notification-create-
 PATCH-notification-read-all-200,알림,PATCH,/api/notifications/read-all,notification-read-all-200,YES,USER,-,200,,NORMAL,전체 읽음 처리
 GET-notification-stream-200,알림,GET,/api/notifications/stream,notification-stream-200,YES,USER,-,200,,NORMAL,SSE 실시간 알림 구독
 GET-notification-unread-count-200,알림,GET,/api/notifications/unread-count,notification-unread-count-200,YES,USER,-,200,,NORMAL,읽지 않은 알림 수 조회
-GET-notification-get-one-,알림,GET,/api/notifications/{notificationId},notification-get-one-,YES,USER,-,200,"404,403",NORMAL,알림 단건 조회
+GET-notification-get-one-,알림,GET,/api/notifications/{notificationId},notification-get-one-,YES,USER,-,200,"403,404",NORMAL,알림 단건 조회
 DELETE-notification-delete-,알림,DELETE,/api/notifications/{notificationId},notification-delete-,YES,USER,-,200,422,NORMAL,알림 삭제
-PATCH-notification-read-,알림,PATCH,/api/notifications/{notificationId}/read,notification-read-,YES,USER,-,200,"422,404",NORMAL,알림 읽음 처리
+PATCH-notification-read-,알림,PATCH,/api/notifications/{notificationId}/read,notification-read-,YES,USER,-,200,"404,422",NORMAL,알림 읽음 처리
 POST-payment-prepare,결제,POST,/api/payments,payment-prepare,YES,USER,api-payments999605347,201,,CORE,결제 준비
 GET-cart-get,장바구니,GET,/api/payments/cart,cart-get,YES,USER,-,200,,CORE,장바구니 조회
 POST-cart-add-item,장바구니,POST,/api/payments/cart/items,cart-add-item,YES,USER,api-payments-cart-items166605304,201,,CORE,장바구니 상품 추가
@@ -83,7 +83,7 @@ POST-returns-request,반품/교환,POST,/api/payments/returns,returns-request,YE
 POST-payment-webhook-toss,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,YES,USER,api-payments-webhooks-toss2067222078,200,,CORE,토스페이먼츠 웹훅 수신
 POST-payment-cancel,결제,POST,/api/payments/{paymentId}/cancel,payment-cancel,YES,USER,api-payments-paymentId-cancel813387520,200,,CORE,결제 취소
 GET-product-list,상품,GET,/api/products,product-list,NO,PUBLIC,-,200,,CORE,상품 목록
-POST-product-create,상품,POST,/api/products,product-create,YES,ARTISAN,api-products-467839916,201,"401,403",CORE,상품 등록
+POST-product-create,상품,POST,/api/products,product-create,YES,ARTISAN,api-products-467839916,201,"403,401",CORE,상품 등록
 GET-category-list,카테고리,GET,/api/products/categories,category-list,NO,PUBLIC,-,200,,NORMAL,카테고리 목록
 GET-category-main-list,카테고리,GET,/api/products/categories/main,category-main-list,NO,PUBLIC,-,200,,NORMAL,메인 카테고리 목록
 GET-material-list,카테고리,GET,/api/products/materials,material-list,NO,PUBLIC,-,200,,NORMAL,소재 목록
