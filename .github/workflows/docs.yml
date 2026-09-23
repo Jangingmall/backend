@@ -30,14 +30,24 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          distribution: temurin
+          java-version: '25'
           cache: gradle
 
-      - name: Run tests & build public docs
-        run: ./gradlew test buildRedoclyPublic --no-daemon
-        env:
-          SPRING_PROFILES_ACTIVE: test
+      - name: Cache Gradle wrapper distribution
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/wrapper/dists
+          key: gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run tests & generate OpenAPI spec
+        run: ./gradlew test processOpenapi --no-daemon --build-cache
+
+      - name: Build public docs
+        run: ./gradlew processOpenapiPublic buildRedoclyPublic --no-daemon
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -45,5 +55,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./api-spec/public
           publish_branch: gh-pages
-          cname: jangingmall.github.io
           commit_message: "docs: update API docs from ${{ github.sha }}"
