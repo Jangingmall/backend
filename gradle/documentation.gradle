@@ -997,7 +997,7 @@ tasks.register('buildTypeScriptTypes') {
 // types.html  : FE팀  — types.d.ts 인라인 코드 뷰어
 // summary.html: PM팀  — 엔드포인트 요약 테이블
 tasks.register('buildApiSummaryHtml') {
-    dependsOn 'processOpenapiPublic'
+    dependsOn 'processOpenapiPublic', 'buildTypeScriptTypes'
     description = 'Generate hub/postman/types/summary HTML pages for each team'
 
     def specFile  = file('api-spec/public/openapi.json')

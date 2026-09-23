@@ -50,19 +50,9 @@ jobs:
       - name: Run tests & generate OpenAPI spec
         run: ./gradlew test processOpenapi --no-daemon --build-cache
 
-      - name: Build public Redoc docs
-        run: ./gradlew processOpenapiPublic buildRedoclyPublic --no-daemon
-
-      - name: Build Postman Collection
+      - name: Build all public artifacts
+        run: ./gradlew processOpenapiPublic buildRedoclyPublic buildPostmanCollection buildTypeScriptTypes buildApiSummaryHtml --no-daemon --continue
         continue-on-error: true
-        run: ./gradlew buildPostmanCollection --no-daemon
-
-      - name: Build TypeScript types
-        continue-on-error: true
-        run: ./gradlew buildTypeScriptTypes --no-daemon
-
-      - name: Build API summary HTML
-        run: ./gradlew buildApiSummaryHtml --no-daemon
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
