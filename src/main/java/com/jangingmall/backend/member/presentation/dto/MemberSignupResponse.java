@@ -17,7 +17,8 @@ public record MemberSignupResponse(
                 result.nickname(),
                 result.role(),
                 result.profileImageUrl(),
-                result.provider()
+                result.provider(),
+                result.phone()
             )
         );
     }

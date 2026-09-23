@@ -45,7 +45,7 @@ class MemberAccountControllerTest extends RestDocsControllerTest {
     @DisplayName("내 프로필 수정은 변경된 프로필을 반환한다")
     void updateProfile() throws Exception {
         when(accounts.update(eq(1L), any(), any(), any())).thenReturn(
-            new MemberProfile(1L, "artisan@example.com", "새이름", MemberRole.USER, "새닉네임", null, null));
+            new MemberProfile(1L, "artisan@example.com", "새이름", MemberRole.USER, "새닉네임", null, null, "01012345678"));
 
         mockMvc.perform(patch("/api/member/me").with(user())
                 .contentType(APPLICATION_JSON)
@@ -53,6 +53,7 @@ class MemberAccountControllerTest extends RestDocsControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.memberId").value(1))
             .andExpect(jsonPath("$.data.name").value("새이름"))
+            .andExpect(jsonPath("$.data.phone").value("01012345678"))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "member-account-update",
                 resource(ResourceSnippetParameters.builder()
@@ -68,6 +69,7 @@ class MemberAccountControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.memberId").type(JsonFieldType.NUMBER).description("회원 ID"),
                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일"),
                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름"),
+                        fieldWithPath("data.phone").type(JsonFieldType.STRING).description("전화번호"),
                         fieldWithPath("data.nickname").type(JsonFieldType.STRING).optional().description("닉네임"),
                         fieldWithPath("data.role").type(JsonFieldType.STRING).description("역할"),
                         fieldWithPath("data.profileImageUrl").type(JsonFieldType.STRING).optional().description("프로필 이미지 URL"),

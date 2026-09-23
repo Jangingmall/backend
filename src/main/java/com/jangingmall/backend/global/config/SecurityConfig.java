@@ -8,10 +8,10 @@ import com.jangingmall.backend.global.security.JwtProperties;
 import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.global.security.AiCallbackFilter;
 import com.jangingmall.backend.content.application.GenerationProperties;
-import com.jangingmall.backend.member.application.EmailVerificationProperties;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -28,22 +28,30 @@ import org.springframework.beans.factory.ObjectProvider;
 import com.jangingmall.backend.member.infrastructure.MemberOAuthSecurity;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, EmailVerificationProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class, com.jangingmall.backend.revalidate.application.RevalidateProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;
     private final Environment environment;
+    private final String corsAllowedOrigins;
 
-    public SecurityConfig(ObjectMapper objectMapper, Environment environment) {
+    public SecurityConfig(ObjectMapper objectMapper, Environment environment,
+                          @Value("${cors.allowed-origins}") String corsAllowedOrigins) {
         this.objectMapper = objectMapper;
         this.environment = environment;
+        this.corsAllowedOrigins = corsAllowedOrigins;
     }
 
     @Bean
@@ -63,6 +71,7 @@ public class SecurityConfig {
         }
         http
             .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> {})
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> {
                 auth.dispatcherTypeMatchers(DispatcherType.ASYNC).permitAll()
@@ -92,6 +101,23 @@ public class SecurityConfig {
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(aiCallbackFilter, JwtAuthenticationFilter.class);
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.stream(corsAllowedOrigins.split(","))
+            .map(String::trim)
+            .filter(origin -> !origin.isEmpty())
+            .toList());
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

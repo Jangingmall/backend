@@ -50,7 +50,8 @@ class ImageControllerTest extends RestDocsControllerTest {
     void createsPresignedUrl() throws Exception {
         when(images.createPresignedUpload(eq(1L), any())).thenReturn(new ImageService.PresignedUpload(
             "01JIMAGE000000000000000000",
-            List.of(new ImageService.VariantUpload("320w", "images/product/1/id/320w.webp", "https://s3.example/320w")),
+            List.of(new ImageService.VariantUpload("320w", "images/product/1/id/320w.webp",
+                "https://s3.example/320w", "https://img.example/images/product/1/id/320w.webp")),
             300));
 
         mockMvc.perform(post("/api/images/presigned-url").with(user())
@@ -61,6 +62,9 @@ class ImageControllerTest extends RestDocsControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.data.imageId").value("01JIMAGE000000000000000000"))
             .andExpect(jsonPath("$.data.expiresInSeconds").value(300))
+            .andExpect(jsonPath("$.data.uploads[0].uploadUrl").value("https://s3.example/320w"))
+            .andExpect(jsonPath("$.data.variants[0].uploadUrl").value("https://s3.example/320w"))
+            .andExpect(jsonPath("$.data.uploads[0].viewUrl").value("https://img.example/images/product/1/id/320w.webp"))
             .andDo(MockMvcRestDocumentationWrapper.document(
                 "image-presigned-url",
                 resource(ResourceSnippetParameters.builder()
@@ -87,7 +91,15 @@ class ImageControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.uploads").type(JsonFieldType.ARRAY).description("각 변형별 업로드 URL"),
                         fieldWithPath("data.uploads[].variant").type(JsonFieldType.STRING).description("변형 이름"),
                         fieldWithPath("data.uploads[].objectKey").type(JsonFieldType.STRING).description("S3 오브젝트 키"),
-                        fieldWithPath("data.uploads[].presignedUrl").type(JsonFieldType.STRING).description("S3 Presigned URL"),
+                        fieldWithPath("data.uploads[].uploadUrl").type(JsonFieldType.STRING).description("S3 PUT 전용 Presigned URL"),
+                        fieldWithPath("data.uploads[].viewUrl").type(JsonFieldType.STRING).description("공개 이미지 조회 URL (RETURN 용도는 null)"),
+                        fieldWithPath("data.uploads[].presignedUrl").type(JsonFieldType.STRING).description("기존 클라이언트 호환용 uploadUrl 별칭"),
+                        fieldWithPath("data.variants").type(JsonFieldType.ARRAY).description("신규 클라이언트용 uploads 별칭"),
+                        fieldWithPath("data.variants[].variant").type(JsonFieldType.STRING).description("변형 이름"),
+                        fieldWithPath("data.variants[].objectKey").type(JsonFieldType.STRING).description("S3 오브젝트 키"),
+                        fieldWithPath("data.variants[].uploadUrl").type(JsonFieldType.STRING).description("S3 PUT 전용 Presigned URL"),
+                        fieldWithPath("data.variants[].viewUrl").type(JsonFieldType.STRING).description("공개 이미지 조회 URL (RETURN 용도는 null)"),
+                        fieldWithPath("data.variants[].presignedUrl").type(JsonFieldType.STRING).description("기존 클라이언트 호환용 uploadUrl 별칭"),
                         fieldWithPath("data.expiresInSeconds").type(JsonFieldType.NUMBER).description("URL 유효 시간 (초)")
                     ))
                     .build()
@@ -100,7 +112,8 @@ class ImageControllerTest extends RestDocsControllerTest {
     void createsPresignedUrlFromContractShape() throws Exception {
         when(images.createPresignedUpload(eq(1L), any())).thenReturn(new ImageService.PresignedUpload(
             "01JIMAGE000000000000000000",
-            List.of(new ImageService.VariantUpload("320w", "images/product/1/id/320w.webp", "https://s3.example/320w")),
+            List.of(new ImageService.VariantUpload("320w", "images/product/1/id/320w.webp",
+                "https://s3.example/320w", "https://img.example/images/product/1/id/320w.webp")),
             300));
 
         mockMvc.perform(post("/api/images/presigned-url").with(user())
@@ -117,7 +130,8 @@ class ImageControllerTest extends RestDocsControllerTest {
     void agentCreatesPresignedUrlWithMemberId() throws Exception {
         when(images.createPresignedUpload(eq(42L), any())).thenReturn(new ImageService.PresignedUpload(
             "01JAGENT00000000000000000",
-            List.of(new ImageService.VariantUpload("320w", "images/product/42/id/320w.webp", "https://s3.example/320w")),
+            List.of(new ImageService.VariantUpload("320w", "images/product/42/id/320w.webp",
+                "https://s3.example/320w", "https://img.example/images/product/42/id/320w.webp")),
             300));
 
         mockMvc.perform(post("/api/images/presigned-url")
@@ -148,7 +162,15 @@ class ImageControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.uploads").type(JsonFieldType.ARRAY).description("각 변형별 업로드 URL"),
                         fieldWithPath("data.uploads[].variant").type(JsonFieldType.STRING).description("변형 이름"),
                         fieldWithPath("data.uploads[].objectKey").type(JsonFieldType.STRING).description("S3 오브젝트 키"),
-                        fieldWithPath("data.uploads[].presignedUrl").type(JsonFieldType.STRING).description("S3 Presigned URL"),
+                        fieldWithPath("data.uploads[].uploadUrl").type(JsonFieldType.STRING).description("S3 PUT 전용 Presigned URL"),
+                        fieldWithPath("data.uploads[].viewUrl").type(JsonFieldType.STRING).description("공개 이미지 조회 URL (RETURN 용도는 null)"),
+                        fieldWithPath("data.uploads[].presignedUrl").type(JsonFieldType.STRING).description("기존 클라이언트 호환용 uploadUrl 별칭"),
+                        fieldWithPath("data.variants").type(JsonFieldType.ARRAY).description("신규 클라이언트용 uploads 별칭"),
+                        fieldWithPath("data.variants[].variant").type(JsonFieldType.STRING).description("변형 이름"),
+                        fieldWithPath("data.variants[].objectKey").type(JsonFieldType.STRING).description("S3 오브젝트 키"),
+                        fieldWithPath("data.variants[].uploadUrl").type(JsonFieldType.STRING).description("S3 PUT 전용 Presigned URL"),
+                        fieldWithPath("data.variants[].viewUrl").type(JsonFieldType.STRING).description("공개 이미지 조회 URL (RETURN 용도는 null)"),
+                        fieldWithPath("data.variants[].presignedUrl").type(JsonFieldType.STRING).description("기존 클라이언트 호환용 uploadUrl 별칭"),
                         fieldWithPath("data.expiresInSeconds").type(JsonFieldType.NUMBER).description("URL 유효 시간 (초)")
                     ))
                     .build()

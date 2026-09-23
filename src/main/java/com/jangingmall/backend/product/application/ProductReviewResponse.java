@@ -3,6 +3,7 @@ package com.jangingmall.backend.product.application;
 import com.jangingmall.backend.product.domain.ProductReview;
 
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.List;
 import tools.jackson.databind.ObjectMapper;
 
@@ -13,7 +14,7 @@ public sealed interface ProductReviewResponse {
         Long productId,
         Long writerId,
         Long orderItemId,
-        short rating,
+        BigDecimal rating,
         String content,
         List<String> images,
         LocalDateTime createdAt
@@ -21,9 +22,19 @@ public sealed interface ProductReviewResponse {
 
         private static final ObjectMapper JSON = new ObjectMapper();
 
+        public ReviewView(Long reviewId, Long productId, Long writerId, Long orderItemId, BigDecimal rating,
+                           String content, LocalDateTime createdAt) {
+            this(reviewId, productId, writerId, orderItemId, rating, content, parseImages("[]"), createdAt);
+        }
+
         public ReviewView(Long reviewId, Long productId, Long writerId, Long orderItemId, short rating,
                           String content, LocalDateTime createdAt) {
-            this(reviewId, productId, writerId, orderItemId, rating, content, parseImages("[]"), createdAt);
+            this(reviewId, productId, writerId, orderItemId, BigDecimal.valueOf(rating), content, createdAt);
+        }
+
+        public ReviewView(Long reviewId, Long productId, Long writerId, Long orderItemId, short rating,
+                          String content, List<String> images, LocalDateTime createdAt) {
+            this(reviewId, productId, writerId, orderItemId, BigDecimal.valueOf(rating), content, images, createdAt);
         }
 
         public static ReviewView from(ProductReview review) {

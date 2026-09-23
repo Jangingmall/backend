@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.List;
+import java.math.BigDecimal;
 import java.util.Optional;
 import tools.jackson.databind.ObjectMapper;
 
@@ -60,7 +61,7 @@ class ProductReviewServiceTest {
         Page<ProductReviewResponse.ReviewView> result = service.findReviews(1L, PageRequest.of(0, 20));
 
         assertThat(result.getContent()).hasSize(1);
-        assertThat(result.getContent().get(0).rating()).isEqualTo((short) 5);
+        assertThat(result.getContent().get(0).rating()).isEqualByComparingTo("5.0");
     }
 
     @Test
@@ -86,7 +87,24 @@ class ProductReviewServiceTest {
         );
 
         assertThat(result.reviewId()).isEqualTo(1L);
-        assertThat(result.rating()).isEqualTo((short) 4);
+        assertThat(result.rating()).isEqualByComparingTo("4.0");
+
+    }
+
+    @Test
+    @DisplayName("후기는 0.5점 단위로 등록할 수 있다")
+    void write_halfPointRating() {
+        ProductReview review = ProductReview.write(1L, 99L, 100L, new BigDecimal("4.5"), "만족합니다");
+        ReflectionTestUtils.setField(review, "id", 1L);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        when(reviewRepository.existsByOrderItemId(100L)).thenReturn(false);
+        when(reviewRepository.save(any())).thenReturn(review);
+
+        ProductReviewResponse.ReviewView result = service.write(
+            new ProductReviewCommand.Write(1L, 99L, 100L, new BigDecimal("4.5"), "만족합니다", List.of())
+        );
+
+        assertThat(result.rating()).isEqualByComparingTo("4.5");
     }
 
     @Test

@@ -184,6 +184,33 @@ public class PaymentController {
         return ApiResponse.ok(payments.cancel(memberId, paymentId, request.reason()));
     }
 
+    /** Cancels only a payment-pending (CREATED) order. Paid orders continue to use the provider-payment cancel API. */
+    @PostMapping("/orders/{orderId}/cancel")
+    public ApiResponse<PaymentService.OrderActionData> cancelOrder(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long orderId
+    ) {
+        return ApiResponse.ok(payments.cancelOrder(memberId, orderId));
+    }
+
+    /** Changes the immutable delivery-address snapshot without changing the member's address-book record. */
+    @PatchMapping("/orders/{orderId}/shipping-address")
+    public ApiResponse<PaymentService.ShippingAddressData> changeShippingAddress(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long orderId,
+        @Valid @RequestBody ChangeShippingAddressRequest request
+    ) {
+        return ApiResponse.ok(payments.changeShippingAddress(memberId, orderId, request.addressId()));
+    }
+
+    @PostMapping("/orders/{orderId}/purchase-confirmation")
+    public ApiResponse<PaymentService.OrderActionData> confirmPurchase(
+        @AuthenticationPrincipal Long memberId,
+        @PathVariable Long orderId
+    ) {
+        return ApiResponse.ok(payments.confirmPurchase(memberId, orderId));
+    }
+
     @GetMapping("/orders/{orderId}/delivery")
     public ApiResponse<DeliveryService.DeliveryData> delivery(@AuthenticationPrincipal Long memberId, @PathVariable Long orderId) {
         return ApiResponse.ok(deliveries.get(memberId, orderId));
@@ -280,6 +307,8 @@ public class PaymentController {
     }
 
     public record CancelPaymentRequest(@NotBlank @Size(max = 200) String reason) {}
+
+    public record ChangeShippingAddressRequest(@NotNull @Positive Long addressId) {}
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record TossWebhookRequest(@NotBlank String eventType, @NotNull @Valid TossPaymentData data) {

@@ -80,6 +80,9 @@ public class PurchaseOrder {
     @Column(name = "canceled_at")
     private Instant canceledAt;
 
+    @Column(name = "purchase_confirmed_at")
+    private Instant purchaseConfirmedAt;
+
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
@@ -144,6 +147,33 @@ public class PurchaseOrder {
         updatedAt = canceledAt;
     }
 
+    /**
+     * Cancels an order before a provider payment has been approved. Inventory was reserved when the order was
+     * created, so the application service releases it in the same transaction.
+     */
+    public void cancelBeforePayment() {
+        if (status != OrderStatus.CREATED) {
+            throw new IllegalStateException("결제 대기 주문만 취소할 수 있습니다.");
+        }
+        status = OrderStatus.CANCELED;
+        canceledAt = Instant.now();
+        updatedAt = canceledAt;
+    }
+
+    /** Replaces only the immutable order-delivery snapshot; the member's address-book record is never modified. */
+    public void changeShippingAddress(ShippingAddress address) {
+        if (status != OrderStatus.CREATED && status != OrderStatus.PAID) {
+            throw new IllegalStateException("결제 대기 또는 상품 준비 중인 주문만 배송지를 변경할 수 있습니다.");
+        }
+        this.addressId = address.addressId();
+        this.recipientName = address.recipientName();
+        this.recipientPhone = address.phone();
+        this.zipCode = address.zipCode();
+        this.address1 = address.address1();
+        this.address2 = address.address2();
+        updatedAt = Instant.now();
+    }
+
     public void markInDelivery() {
         if (status != OrderStatus.PAID) {
             throw new IllegalStateException("결제 완료 주문만 배송 중으로 변경할 수 있습니다.");
@@ -158,6 +188,16 @@ public class PurchaseOrder {
         }
         status = OrderStatus.DELIVERED;
         updatedAt = Instant.now();
+    }
+
+    /** A confirmed purchase is final for the customer-facing return workflow. */
+    public void confirmPurchase() {
+        if (status != OrderStatus.DELIVERED) {
+            throw new IllegalStateException("배송 완료 주문만 구매 확정할 수 있습니다.");
+        }
+        status = OrderStatus.PURCHASE_CONFIRMED;
+        purchaseConfirmedAt = Instant.now();
+        updatedAt = purchaseConfirmedAt;
     }
 
     public void requestReturn() {

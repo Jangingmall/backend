@@ -34,12 +34,14 @@ public class DeliveryService {
         }
         OrderDelivery delivery = deliveries.findByOrderId(orderId)
             .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
-        DeliveryStatus currentStatus = trackingGateway.track(delivery.getCarrierCode(), delivery.getTrackingNumber()).status();
+        DeliveryTrackingGateway.TrackingSnapshot tracking = trackingGateway.track(
+            delivery.getCarrierCode(), delivery.getTrackingNumber());
+        DeliveryStatus currentStatus = tracking.status();
         delivery.updateStatus(currentStatus);
         if (currentStatus == DeliveryStatus.DELIVERED && order.getStatus() == OrderStatus.IN_DELIVERY) {
             order.markDelivered();
         }
-        return DeliveryData.from(delivery);
+        return DeliveryData.from(delivery, tracking.history());
     }
 
     /**
@@ -58,10 +60,17 @@ public class DeliveryService {
         deliveries.save(new OrderDelivery(orderId, carrierCode.trim(), carrierName.trim(), trackingNumber.trim()));
     }
 
-    public record DeliveryData(Long orderId, String carrier, String trackingNumber, DeliveryStatus status) {
-        static DeliveryData from(OrderDelivery delivery) {
-            return new DeliveryData(delivery.getOrderId(), delivery.getCarrierName(), delivery.getTrackingNumber(),
-                delivery.getStatus());
+    public record DeliveryData(Long orderId, String carrierCode, String carrierName, String carrier,
+                               String trackingNumber, DeliveryStatus status,
+                               java.util.List<DeliveryTrackingGateway.TrackingEvent> history) {
+        /** Compatibility constructor for clients of the former carrier-only response. */
+        public DeliveryData(Long orderId, String carrier, String trackingNumber, DeliveryStatus status) {
+            this(orderId, null, carrier, carrier, trackingNumber, status, java.util.List.of());
+        }
+
+        static DeliveryData from(OrderDelivery delivery, java.util.List<DeliveryTrackingGateway.TrackingEvent> history) {
+            return new DeliveryData(delivery.getOrderId(), delivery.getCarrierCode(), delivery.getCarrierName(),
+                delivery.getCarrierName(), delivery.getTrackingNumber(), delivery.getStatus(), history);
         }
     }
 }

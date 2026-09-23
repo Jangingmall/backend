@@ -3,6 +3,7 @@ package com.jangingmall.backend.member.presentation;
 import com.jangingmall.backend.global.common.response.ApiResponse;
 import com.jangingmall.backend.member.application.MemberQueryService;
 import java.util.Map;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,12 +57,13 @@ public class MemberQueryController {
     public ApiResponse<Page<Map<String, Object>>> orders(
         @AuthenticationPrincipal Long memberId,
         @PageableDefault(size = 20) Pageable pageable,
-        @RequestParam(defaultValue = "ALL") String status,
+        @RequestParam(defaultValue = "ALL") List<String> status,
         @RequestParam(required = false) String from,
         @RequestParam(required = false) String to,
         @RequestParam(required = false) String artisanName
     ) {
-        return ApiResponse.ok(queries.orders(memberId, pageable, status, from, to, artisanName));
+        // Supports both ?status=CANCELED,RETURN_REQUESTED and repeated ?status=CANCELED&status=RETURN_REQUESTED.
+        return ApiResponse.ok(queries.orders(memberId, pageable, String.join(",", status), from, to, artisanName));
     }
 
     @GetMapping("/orders/{orderId}")

@@ -7,6 +7,7 @@ import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.image.domain.ImageUpload;
 import com.jangingmall.backend.image.domain.ImageUploadRepository;
 import com.jangingmall.backend.member.application.MemberAccess;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.LinkedHashMap;
@@ -47,6 +48,7 @@ public class ImageService {
         validate(command);
         String imageId = ulids.next();
         Duration validFor = Duration.ofSeconds(properties.getPresignExpirySeconds());
+        String base = normalizedImageBaseUrl();
         Map<String, Map<String, Object>> metadata = new LinkedHashMap<>();
         List<VariantUpload> uploadUrls = command.variants().stream().map(variant -> {
             String objectKey = objectKey(memberId, imageId, command.purpose(), variant.name());
@@ -54,8 +56,12 @@ public class ImageService {
                 "objectKey", objectKey,
                 "contentType", WEBP,
                 "sizeBytes", variant.sizeBytes()));
-            return new VariantUpload(variant.name(), objectKey,
-                storage.presignPut(command.purpose(), objectKey, WEBP, variant.sizeBytes(), validFor));
+            return new VariantUpload(
+                variant.name(),
+                objectKey,
+                storage.presignPut(command.purpose(), objectKey, WEBP, variant.sizeBytes(), validFor),
+                publicViewUrl(command.purpose(), objectKey, base)
+            );
         }).toList();
         uploads.save(new ImageUpload(imageId, memberId, command.purpose(), command.sourceWidth(), command.sourceHeight(),
             json(metadata), Instant.now().plusSeconds(properties.getUnusedRetentionSeconds())));
@@ -156,7 +162,7 @@ public class ImageService {
             throw new DomainException(ErrorCode.CONFLICT);
         }
         Map<String, Object> stored = variants(upload);
-        String base = imageBaseUrl == null ? "" : imageBaseUrl.replaceAll("/+$", "");
+        String base = normalizedImageBaseUrl();
         List<PublicVariant> result = PUBLIC_VARIANTS.stream().map(name -> {
             Object metadata = stored.get(name);
             if (metadata == null) {
@@ -184,7 +190,7 @@ public class ImageService {
             Map<String, Object> stored = variants(upload);
             for (Object metadata : stored.values()) {
                 String key = objectKey(metadata);
-                String url = publicUrl(key, imageBaseUrl == null ? "" : imageBaseUrl.replaceAll("/+$", ""), upload.getPurpose());
+                String url = publicUrl(key, normalizedImageBaseUrl(), upload.getPurpose());
                 if (reference.equals(key) || reference.equals(url) || reference.endsWith("/" + key)) {
                     return Optional.of(upload.getId());
                 }
@@ -202,6 +208,22 @@ public class ImageService {
             return "https://" + bucket + ".s3." + properties.getRegion() + ".amazonaws.com/" + key;
         }
         return key;
+    }
+
+    /**
+     * The return bucket remains private. Public image purposes can be rendered as soon as their WebP variants are
+     * uploaded, while return images must be read through an authenticated endpoint instead of a public URL.
+     */
+    private String publicViewUrl(ImagePurpose purpose, String key, String base) {
+        if (purpose == ImagePurpose.RETURN) {
+            return null;
+        }
+        String url = publicUrl(key, base, purpose);
+        return url.equals(key) ? null : url;
+    }
+
+    private String normalizedImageBaseUrl() {
+        return imageBaseUrl == null ? "" : imageBaseUrl.replaceAll("/+$", "");
     }
 
     @Transactional
@@ -318,9 +340,28 @@ public class ImageService {
     public record CreatePresignedUpload(String fileName, String contentType, ImagePurpose purpose,
                                         int sourceWidth, int sourceHeight, List<UploadVariant> variants) {}
 
-    public record VariantUpload(String variant, String objectKey, String presignedUrl) {}
+    public record VariantUpload(String variant, String objectKey, String presignedUrl, String viewUrl) {
+        public VariantUpload(String variant, String objectKey, String presignedUrl) {
+            this(variant, objectKey, presignedUrl, null);
+        }
 
-    public record PresignedUpload(String imageId, List<VariantUpload> uploads, int expiresInSeconds) {}
+        /** New collaboration-contract name. presignedUrl remains serialized for existing clients. */
+        @JsonProperty("uploadUrl")
+        public String uploadUrl() {
+            return presignedUrl;
+        }
+    }
+
+    public record PresignedUpload(String imageId, List<VariantUpload> uploads, int expiresInSeconds) {
+        /**
+         * Contract name used by new clients. Keep {@code uploads} serialized during the migration so clients that
+         * adopted the original endpoint do not break.
+         */
+        @JsonProperty("variants")
+        public List<VariantUpload> variants() {
+            return uploads;
+        }
+    }
 
     public record Verification(boolean exists, boolean ownerMatched, List<String> variants) {}
 

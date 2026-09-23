@@ -13,8 +13,8 @@ public class MemberWebConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(limiter).addPathPatterns("/api/member/login","/api/member/signup",
-                    "/api/member/email-verifications","/api/member/oauth2/exchange","/api/member/oauth2/complete-profile");
+                registry.addInterceptor(limiter).addPathPatterns("/api/member/login", "/api/member/signup",
+                    "/api/member/oauth2/exchange", "/api/member/oauth2/complete-profile");
             }
         };
     }

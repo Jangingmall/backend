@@ -402,6 +402,57 @@ class PaymentServiceTest {
     }
 
     @Test
+    @DisplayName("결제 대기 주문 취소는 토스 호출 없이 결제 준비·주문·예약 재고를 함께 정리한다")
+    void cancelsCreatedOrderWithoutProviderCall() {
+        PurchaseOrder order = order(100L, 1L, 25_000L);
+        Payment payment = payment(200L, 100L, 25_000L);
+        when(orders.findByIdForUpdate(100L)).thenReturn(Optional.of(order));
+        when(payments.findByOrderIdForUpdate(100L)).thenReturn(Optional.of(payment));
+
+        PaymentService.OrderActionData result = service.cancelOrder(1L, 100L);
+
+        assertThat(result.status()).isEqualTo(OrderStatus.CANCELED);
+        assertThat(order.getStatus()).isEqualTo(OrderStatus.CANCELED);
+        assertThat(payment.getStatus()).isEqualTo(PaymentStatus.CANCELED);
+        verify(paymentGateway, never()).cancel(any(), any());
+        verify(catalog).release(any());
+        verify(memberAccess).requireRole(1L, MemberRole.USER);
+    }
+
+    @Test
+    @DisplayName("결제 대기·상품 준비 주문은 본인 주소록을 사용해 배송 스냅샷만 바꾼다")
+    void changesOrderShippingSnapshot() {
+        PurchaseOrder order = order(100L, 1L, 25_000L);
+        PurchaseOrder.ShippingAddress replacement = new PurchaseOrder.ShippingAddress(
+            22L, "김수령", "01098765432", "06236", "서울 강남구", "202호");
+        when(orders.findByIdForUpdate(100L)).thenReturn(Optional.of(order));
+        when(shippingAddresses.findOwned(1L, 22L)).thenReturn(replacement);
+
+        PaymentService.ShippingAddressData result = service.changeShippingAddress(1L, 100L, 22L);
+
+        assertThat(result.addressId()).isEqualTo(22L);
+        assertThat(result.recipientName()).isEqualTo("김수령");
+        assertThat(order.getAddressId()).isEqualTo(22L);
+        assertThat(order.getAddress1()).isEqualTo("서울 강남구");
+    }
+
+    @Test
+    @DisplayName("배송 완료 주문만 구매 확정되며, 이후 반품 신청 상태로 바꿀 수 없다")
+    void confirmsDeliveredPurchaseAndBlocksReturn() {
+        PurchaseOrder order = order(100L, 1L, 25_000L);
+        order.markPaid();
+        order.markInDelivery();
+        order.markDelivered();
+        when(orders.findByIdForUpdate(100L)).thenReturn(Optional.of(order));
+
+        PaymentService.OrderActionData result = service.confirmPurchase(1L, 100L);
+
+        assertThat(result.status()).isEqualTo(OrderStatus.PURCHASE_CONFIRMED);
+        assertThat(result.purchaseConfirmedAt()).isNotNull();
+        assertThatThrownBy(order::requestReturn).isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
     @DisplayName("브라우저 실패 콜백만 있고 토스 결제가 조회되지 않으면 주문 상태를 바꾸지 않는다")
     void ignoresUnverifiedClientFailure() {
         PurchaseOrder order = order(100L, 1L, 25_000L);

@@ -184,6 +184,56 @@ public class PaymentService {
     }
 
     /**
+     * Customer cancellation before approval. A READY payment is a local preparation only, so it is marked canceled
+     * without calling Toss; the inventory reservation is released in this transaction.
+     */
+    @Transactional
+    public OrderActionData cancelOrder(Long memberId, Long orderId) {
+        memberAccess.requireRole(memberId, MemberRole.USER);
+        PurchaseOrder order = ownedOrderForUpdate(memberId, orderId);
+        if (order.getStatus() != OrderStatus.CREATED) {
+            throw new BusinessRuleViolationException("결제 대기 주문만 취소할 수 있습니다.");
+        }
+        Payment payment = payments.findByOrderIdForUpdate(orderId).orElse(null);
+        if (payment != null) {
+            if (payment.getStatus() != PaymentStatus.READY) {
+                throw new ConcurrentUpdateException("결제 상태가 주문 취소 가능 상태와 일치하지 않습니다.");
+            }
+            payment.cancelBeforeApproval();
+        }
+        order.cancelBeforePayment();
+        catalog.release(inventoryLines(order));
+        return OrderActionData.from(order);
+    }
+
+    /** Replaces the order's delivery snapshot with one of the member's own saved addresses. */
+    @Transactional
+    public ShippingAddressData changeShippingAddress(Long memberId, Long orderId, Long addressId) {
+        memberAccess.requireRole(memberId, MemberRole.USER);
+        PurchaseOrder order = ownedOrderForUpdate(memberId, orderId);
+        PurchaseOrder.ShippingAddress address = shippingAddresses.findOwned(memberId, addressId);
+        try {
+            order.changeShippingAddress(address);
+        } catch (IllegalStateException exception) {
+            throw new BusinessRuleViolationException(exception.getMessage());
+        }
+        return ShippingAddressData.from(order);
+    }
+
+    /** Marks a delivered order as purchase-confirmed. Return requests are intentionally unavailable afterwards. */
+    @Transactional
+    public OrderActionData confirmPurchase(Long memberId, Long orderId) {
+        memberAccess.requireRole(memberId, MemberRole.USER);
+        PurchaseOrder order = ownedOrderForUpdate(memberId, orderId);
+        try {
+            order.confirmPurchase();
+        } catch (IllegalStateException exception) {
+            throw new BusinessRuleViolationException(exception.getMessage());
+        }
+        return OrderActionData.from(order);
+    }
+
+    /**
      * 일반 결제 웹훅에는 신뢰할 수 있는 서명 헤더가 없으므로, 본문을 처리하기 전에 토스 조회 API 결과와 대조한다.
      */
     @Transactional
@@ -369,6 +419,12 @@ public class PaymentService {
             .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
     }
 
+    private PurchaseOrder ownedOrderForUpdate(Long memberId, Long orderId) {
+        return orders.findByIdForUpdate(orderId)
+            .filter(order -> order.getMemberId().equals(memberId))
+            .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
+    }
+
     private PurchaseOrder ownedOrderNumberForUpdate(Long memberId, String orderNumber) {
         return orders.findByOrderNumberForUpdate(orderNumber)
             .filter(order -> order.getMemberId().equals(memberId))
@@ -428,6 +484,20 @@ public class PaymentService {
         static PaymentData from(Payment payment, PurchaseOrder order) {
             return new PaymentData(payment.getId(), order.getId(), order.getOrderNumber(), payment.getAmount(), payment.getMethod(), payment.getStatus(),
                 payment.getApprovedAt(), payment.getCanceledAt());
+        }
+    }
+
+    public record OrderActionData(Long orderId, OrderStatus status, Instant canceledAt, Instant purchaseConfirmedAt) {
+        static OrderActionData from(PurchaseOrder order) {
+            return new OrderActionData(order.getId(), order.getStatus(), order.getCanceledAt(), order.getPurchaseConfirmedAt());
+        }
+    }
+
+    public record ShippingAddressData(Long orderId, Long addressId, String recipientName, String phone,
+                                      String zipCode, String address1, String address2) {
+        static ShippingAddressData from(PurchaseOrder order) {
+            return new ShippingAddressData(order.getId(), order.getAddressId(), order.getRecipientName(),
+                order.getRecipientPhone(), order.getZipCode(), order.getAddress1(), order.getAddress2());
         }
     }
 }

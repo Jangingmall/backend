@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -55,7 +56,11 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
         item.put("productName", "청자 다완");
         item.put("price", 85000);
         item.put("quantity", 1);
-        item.put("thumbnail", List.of(Map.of("url", "https://cdn.midam.store/products/abc.jpg")));
+        item.put("artisan", Map.of("artisanId", 10L, "businessName", "김도공 도예"));
+        item.put("options", Map.of("selectedOptions", List.of(), "textInputs", List.of()));
+        item.put("reviewId", 77L);
+        item.put("thumbnail", Map.of("imageId", "01JIMAGE", "variants", List.of(
+            Map.of("url", "https://cdn.midam.store/products/320.webp", "width", 320, "height", 320, "format", "webp"))));
         return item;
     }
 
@@ -80,6 +85,8 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
         order.put("orderNumber", "ORD20260101001");
         order.put("status", "RETURN_REQUESTED");
         order.put("totalAmount", 85000);
+        order.put("paymentMethod", "CARD");
+        order.put("shippingAmount", 3000);
         order.put("createdAt", "2026-09-01T10:00:00");
         order.put("items", List.of(orderItem()));
         Map<String, Object> returnInfo = new LinkedHashMap<>();
@@ -99,11 +106,10 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
     }
 
     private static final Map<String, Object> REVIEW_ITEM = Map.of(
-        "reviewId", 1L,
-        "productId", 1L,
-        "productName", "청자 다완",
-        "rating", 5,
-        "content", "정말 아름다운 작품입니다."
+        "reviewId", 1L, "orderItemId", 10L, "productId", 1L, "productName", "청자 다완",
+        "rating", 4.5, "content", "정말 아름다운 작품입니다.",
+        "thumbnail", Map.of("imageId", "01JIMAGE", "variants", List.of()),
+        "images", List.of(), "writerNickname", "미담", "createdAt", "2026-09-01T10:00:00"
     );
 
     private static FieldDescriptor[] withPageFields(FieldDescriptor... contentFields) {
@@ -141,8 +147,21 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
             fieldWithPath(prefix + "productName").type(JsonFieldType.STRING).description("상품명"),
             fieldWithPath(prefix + "price").type(JsonFieldType.NUMBER).description("단가"),
             fieldWithPath(prefix + "quantity").type(JsonFieldType.NUMBER).description("수량"),
-            fieldWithPath(prefix + "thumbnail").type(JsonFieldType.ARRAY).description("썸네일 목록. 이미지 없으면 빈 배열"),
-            fieldWithPath(prefix + "thumbnail[].url").type(JsonFieldType.STRING).optional().description("썸네일 URL"),
+            fieldWithPath(prefix + "artisan").type(JsonFieldType.OBJECT).description("판매 장인"),
+            fieldWithPath(prefix + "artisan.artisanId").type(JsonFieldType.NUMBER).description("장인 ID"),
+            fieldWithPath(prefix + "artisan.businessName").type(JsonFieldType.STRING).optional().description("장인 상호"),
+            fieldWithPath(prefix + "options").type(JsonFieldType.OBJECT).description("주문 시 선택한 옵션"),
+            fieldWithPath(prefix + "options.selectedOptions").type(JsonFieldType.ARRAY).description("선택형 옵션"),
+            fieldWithPath(prefix + "options.textInputs").type(JsonFieldType.ARRAY).description("입력형 옵션"),
+            fieldWithPath(prefix + "reviewId").type(JsonFieldType.NUMBER).optional().description("작성한 리뷰 ID. 미작성 시 null"),
+            fieldWithPath(prefix + "thumbnail").type(JsonFieldType.OBJECT).description("이미지 그룹 썸네일. 레거시 상품은 null"),
+            fieldWithPath(prefix + "thumbnail.imageId").type(JsonFieldType.STRING).description("이미지 그룹 ID"),
+            fieldWithPath(prefix + "thumbnail.variants").type(JsonFieldType.ARRAY).description("320w·640w·1280w WebP variant"),
+            fieldWithPath(prefix + "thumbnail.variants[].url").type(JsonFieldType.STRING).description("이미지 URL"),
+            fieldWithPath(prefix + "thumbnail.variants[].width").type(JsonFieldType.NUMBER).description("가로 폭"),
+            fieldWithPath(prefix + "thumbnail.variants[].height").type(JsonFieldType.NUMBER).description("세로 폭"),
+            fieldWithPath(prefix + "thumbnail.variants[].format").type(JsonFieldType.STRING).description("형식(webp)"),
+            fieldWithPath(prefix + "legacyThumbnailUrl").type(JsonFieldType.STRING).optional().description("기존 thumbnail_url 상품의 전환용 URL"),
         };
     }
 
@@ -254,6 +273,7 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                                 "CANCELED",         "취소",
                                 "IN_DELIVERY",      "배송 중",
                                 "DELIVERED",        "배송 완료",
+                                "PURCHASE_CONFIRMED", "구매 확정(반품 불가)",
                                 "RETURN_REQUESTED", "교환/환불 신청"
                             )),
                             enumTable("returnInfo.type", entries(
@@ -280,7 +300,7 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.content[].orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
                         fieldWithPath("data.content[].orderNumber").type(JsonFieldType.STRING).description("주문번호"),
                         fieldWithPath("data.content[].status").type(JsonFieldType.STRING)
-                            .description("주문 상태. CREATED(결제대기) | PAID(결제완료) | PAYMENT_FAILED(결제실패) | CANCELED(취소) | IN_DELIVERY(배송중) | DELIVERED(배송완료) | RETURN_REQUESTED(교환/환불신청)"),
+                            .description("주문 상태. CREATED | PAID | CANCELED | IN_DELIVERY | DELIVERED | PURCHASE_CONFIRMED | RETURN_REQUESTED. PAYMENT_FAILED와 반품 정보 없는 RETURN_REQUESTED는 목록에서 제외"),
                         fieldWithPath("data.content[].totalAmount").type(JsonFieldType.NUMBER).description("총 결제 금액"),
                         fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("주문 생성일시"),
                         fieldWithPath("data.content[].items").type(JsonFieldType.ARRAY).description("주문 상품 목록"),
@@ -289,8 +309,21 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.content[].items[].productName").type(JsonFieldType.STRING).description("상품명"),
                         fieldWithPath("data.content[].items[].price").type(JsonFieldType.NUMBER).description("단가"),
                         fieldWithPath("data.content[].items[].quantity").type(JsonFieldType.NUMBER).description("수량"),
-                        fieldWithPath("data.content[].items[].thumbnail").type(JsonFieldType.ARRAY).description("썸네일 목록. 이미지 없으면 빈 배열"),
-                        fieldWithPath("data.content[].items[].thumbnail[].url").type(JsonFieldType.STRING).optional().description("썸네일 URL"),
+                        fieldWithPath("data.content[].items[].artisan").type(JsonFieldType.OBJECT).description("판매 장인"),
+                        fieldWithPath("data.content[].items[].artisan.artisanId").type(JsonFieldType.NUMBER).description("장인 ID"),
+                        fieldWithPath("data.content[].items[].artisan.businessName").type(JsonFieldType.STRING).optional().description("장인 상호"),
+                        fieldWithPath("data.content[].items[].options").type(JsonFieldType.OBJECT).description("주문 시 선택한 옵션"),
+                        fieldWithPath("data.content[].items[].options.selectedOptions").type(JsonFieldType.ARRAY).description("선택형 옵션"),
+                        fieldWithPath("data.content[].items[].options.textInputs").type(JsonFieldType.ARRAY).description("입력형 옵션"),
+                        fieldWithPath("data.content[].items[].reviewId").type(JsonFieldType.NUMBER).optional().description("작성한 리뷰 ID"),
+                        fieldWithPath("data.content[].items[].thumbnail").type(JsonFieldType.OBJECT).description("이미지 그룹 썸네일"),
+                        fieldWithPath("data.content[].items[].thumbnail.imageId").type(JsonFieldType.STRING).description("이미지 그룹 ID"),
+                        fieldWithPath("data.content[].items[].thumbnail.variants").type(JsonFieldType.ARRAY).description("320w·640w·1280w WebP variant"),
+                        fieldWithPath("data.content[].items[].thumbnail.variants[].url").type(JsonFieldType.STRING).description("이미지 URL"),
+                        fieldWithPath("data.content[].items[].thumbnail.variants[].width").type(JsonFieldType.NUMBER).description("가로 폭"),
+                        fieldWithPath("data.content[].items[].thumbnail.variants[].height").type(JsonFieldType.NUMBER).description("세로 폭"),
+                        fieldWithPath("data.content[].items[].thumbnail.variants[].format").type(JsonFieldType.STRING).description("형식(webp)"),
+                        fieldWithPath("data.content[].items[].legacyThumbnailUrl").type(JsonFieldType.STRING).optional().description("레거시 상품 전환용 URL"),
                         fieldWithPath("data.content[].returnInfo").type(JsonFieldType.OBJECT).optional()
                             .description("교환/환불 정보. RETURN_REQUESTED 상태인 주문에만 포함"),
                         fieldWithPath("data.content[].returnInfo.type").type(JsonFieldType.STRING).optional()
@@ -353,6 +386,7 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                                 "CANCELED",         "취소",
                                 "IN_DELIVERY",      "배송 중",
                                 "DELIVERED",        "배송 완료",
+                                "PURCHASE_CONFIRMED", "구매 확정(반품 불가)",
                                 "RETURN_REQUESTED", "교환/환불 신청"
                             )),
                             enumTable("returnInfo.type", entries(
@@ -373,8 +407,10 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
                         fieldWithPath("data.orderNumber").type(JsonFieldType.STRING).description("주문번호"),
                         fieldWithPath("data.status").type(JsonFieldType.STRING)
-                            .description("주문 상태. CREATED(결제대기) | PAID(결제완료) | PAYMENT_FAILED(결제실패) | CANCELED(취소) | IN_DELIVERY(배송중) | DELIVERED(배송완료) | RETURN_REQUESTED(교환/환불신청)"),
+                            .description("주문 상태. CREATED | PAID | CANCELED | IN_DELIVERY | DELIVERED | PURCHASE_CONFIRMED | RETURN_REQUESTED"),
                         fieldWithPath("data.totalAmount").type(JsonFieldType.NUMBER).description("총 결제 금액"),
+                        fieldWithPath("data.paymentMethod").type(JsonFieldType.STRING).description("결제 수단"),
+                        fieldWithPath("data.shippingAmount").type(JsonFieldType.NUMBER).description("배송비"),
                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("주문 생성일시"),
                         fieldWithPath("data.items").type(JsonFieldType.ARRAY).description("주문 상품 목록"),
                         fieldWithPath("data.items[].orderItemId").type(JsonFieldType.NUMBER).description("주문 항목 ID"),
@@ -382,8 +418,21 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.items[].productName").type(JsonFieldType.STRING).description("상품명"),
                         fieldWithPath("data.items[].price").type(JsonFieldType.NUMBER).description("단가"),
                         fieldWithPath("data.items[].quantity").type(JsonFieldType.NUMBER).description("수량"),
-                        fieldWithPath("data.items[].thumbnail").type(JsonFieldType.ARRAY).description("썸네일 목록. 이미지 없으면 빈 배열"),
-                        fieldWithPath("data.items[].thumbnail[].url").type(JsonFieldType.STRING).optional().description("썸네일 URL"),
+                        fieldWithPath("data.items[].artisan").type(JsonFieldType.OBJECT).description("판매 장인"),
+                        fieldWithPath("data.items[].artisan.artisanId").type(JsonFieldType.NUMBER).description("장인 ID"),
+                        fieldWithPath("data.items[].artisan.businessName").type(JsonFieldType.STRING).optional().description("장인 상호"),
+                        fieldWithPath("data.items[].options").type(JsonFieldType.OBJECT).description("주문 시 선택한 옵션"),
+                        fieldWithPath("data.items[].options.selectedOptions").type(JsonFieldType.ARRAY).description("선택형 옵션"),
+                        fieldWithPath("data.items[].options.textInputs").type(JsonFieldType.ARRAY).description("입력형 옵션"),
+                        fieldWithPath("data.items[].reviewId").type(JsonFieldType.NUMBER).optional().description("작성한 리뷰 ID"),
+                        fieldWithPath("data.items[].thumbnail").type(JsonFieldType.OBJECT).description("이미지 그룹 썸네일"),
+                        fieldWithPath("data.items[].thumbnail.imageId").type(JsonFieldType.STRING).description("이미지 그룹 ID"),
+                        fieldWithPath("data.items[].thumbnail.variants").type(JsonFieldType.ARRAY).description("320w·640w·1280w WebP variant"),
+                        fieldWithPath("data.items[].thumbnail.variants[].url").type(JsonFieldType.STRING).description("이미지 URL"),
+                        fieldWithPath("data.items[].thumbnail.variants[].width").type(JsonFieldType.NUMBER).description("가로 폭"),
+                        fieldWithPath("data.items[].thumbnail.variants[].height").type(JsonFieldType.NUMBER).description("세로 폭"),
+                        fieldWithPath("data.items[].thumbnail.variants[].format").type(JsonFieldType.STRING).description("형식(webp)"),
+                        fieldWithPath("data.items[].legacyThumbnailUrl").type(JsonFieldType.STRING).optional().description("레거시 상품 전환용 URL"),
                         fieldWithPath("data.returnInfo").type(JsonFieldType.OBJECT).optional()
                             .description("교환/환불 정보. RETURN_REQUESTED 상태인 주문에만 포함"),
                         fieldWithPath("data.returnInfo.type").type(JsonFieldType.STRING).optional()
@@ -402,6 +451,21 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                     .build()
                 )
             ));
+    }
+
+    @Test
+    @DisplayName("주문 목록은 쉼표 및 반복 status 파라미터를 하나의 다중 상태 필터로 전달한다")
+    @WithMockUser(roles = "USER")
+    void ordersAcceptMultipleStatuses() throws Exception {
+        when(queries.orders(any(), any(), eq("CANCELED,RETURN_REQUESTED"), any(), any(), any()))
+            .thenReturn(new PageImpl<>(List.of(), PageRequest.of(0, 20), 0L));
+
+        mockMvc.perform(get("/api/member/me/orders")
+                .param("status", "CANCELED")
+                .param("status", "RETURN_REQUESTED"))
+            .andExpect(status().isOk());
+
+        verify(queries).orders(any(), any(), eq("CANCELED,RETURN_REQUESTED"), any(), any(), any());
     }
 
     @Test
@@ -510,10 +574,18 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                     .responseFields(successEnvelopeFields(withPageFields(
                         fieldWithPath("data.content").type(JsonFieldType.ARRAY).description("리뷰 목록"),
                         fieldWithPath("data.content[].reviewId").type(JsonFieldType.NUMBER).description("리뷰 ID"),
+                        fieldWithPath("data.content[].orderItemId").type(JsonFieldType.NUMBER).description("주문 항목 ID"),
                         fieldWithPath("data.content[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
                         fieldWithPath("data.content[].productName").type(JsonFieldType.STRING).description("상품명"),
-                        fieldWithPath("data.content[].rating").type(JsonFieldType.NUMBER).description("평점"),
-                        fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("리뷰 내용")
+                        fieldWithPath("data.content[].rating").type(JsonFieldType.NUMBER).description("평점(0.5점 단위)"),
+                        fieldWithPath("data.content[].content").type(JsonFieldType.STRING).description("리뷰 내용"),
+                        fieldWithPath("data.content[].thumbnail").type(JsonFieldType.OBJECT).description("상품 이미지 그룹"),
+                        fieldWithPath("data.content[].thumbnail.imageId").type(JsonFieldType.STRING).description("이미지 그룹 ID"),
+                        fieldWithPath("data.content[].thumbnail.variants").type(JsonFieldType.ARRAY).description("이미지 variant"),
+                        fieldWithPath("data.content[].legacyThumbnailUrl").type(JsonFieldType.STRING).optional().description("레거시 상품 전환용 URL"),
+                        fieldWithPath("data.content[].images").type(JsonFieldType.ARRAY).description("리뷰 첨부 이미지"),
+                        fieldWithPath("data.content[].writerNickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                        fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("작성 일시")
                     )))
                     .build()
                 )
@@ -528,7 +600,9 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
         writableItem.put("orderItemId", 5L);
         writableItem.put("productId", 2L);
         writableItem.put("productName", "청화백자 찻잔");
-        writableItem.put("thumbnail", List.of());
+        writableItem.put("purchasedAt", "2026-09-01T10:00:00");
+        writableItem.put("options", Map.of("selectedOptions", List.of(), "textInputs", List.of()));
+        writableItem.put("thumbnail", Map.of("imageId", "01JIMAGE", "variants", List.of()));
         Page<Map<String, Object>> page = new PageImpl<>(List.of(writableItem), PageRequest.of(0, 20), 1L);
         when(queries.reviews(any(), any(), eq(true))).thenReturn(page);
 
@@ -552,7 +626,14 @@ class MemberQueryControllerTest extends RestDocsControllerTest {
                         fieldWithPath("data.content[].orderItemId").type(JsonFieldType.NUMBER).description("주문 항목 ID"),
                         fieldWithPath("data.content[].productId").type(JsonFieldType.NUMBER).description("상품 ID"),
                         fieldWithPath("data.content[].productName").type(JsonFieldType.STRING).description("상품명"),
-                        fieldWithPath("data.content[].thumbnail").type(JsonFieldType.ARRAY).description("썸네일 목록")
+                        fieldWithPath("data.content[].purchasedAt").type(JsonFieldType.STRING).description("구매 일시"),
+                        fieldWithPath("data.content[].options").type(JsonFieldType.OBJECT).description("주문 시 선택한 옵션"),
+                        fieldWithPath("data.content[].options.selectedOptions").type(JsonFieldType.ARRAY).description("선택형 옵션"),
+                        fieldWithPath("data.content[].options.textInputs").type(JsonFieldType.ARRAY).description("입력형 옵션"),
+                        fieldWithPath("data.content[].thumbnail").type(JsonFieldType.OBJECT).description("상품 이미지 그룹"),
+                        fieldWithPath("data.content[].thumbnail.imageId").type(JsonFieldType.STRING).description("이미지 그룹 ID"),
+                        fieldWithPath("data.content[].thumbnail.variants").type(JsonFieldType.ARRAY).description("이미지 variant"),
+                        fieldWithPath("data.content[].legacyThumbnailUrl").type(JsonFieldType.STRING).optional().description("레거시 상품 전환용 URL")
                     )))
                     .build()
                 )

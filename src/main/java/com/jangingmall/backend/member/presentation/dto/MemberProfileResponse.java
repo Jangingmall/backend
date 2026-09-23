@@ -10,12 +10,18 @@ public record MemberProfileResponse(
     String nickname,
     MemberRole role,
     String profileImageUrl,
-    String provider
+    String provider,
+    String phone
 ) {
 
     public MemberProfileResponse(Long memberId, String email, String name, String nickname,
                                  MemberRole role, String profileImageUrl) {
-        this(memberId, email, name, nickname, role, profileImageUrl, null);
+        this(memberId, email, name, nickname, role, profileImageUrl, null, null);
+    }
+
+    public MemberProfileResponse(Long memberId, String email, String name, String nickname,
+                                 MemberRole role, String profileImageUrl, String provider) {
+        this(memberId, email, name, nickname, role, profileImageUrl, provider, null);
     }
 
     public static MemberProfileResponse from(MemberProfile profile) {
@@ -26,7 +32,8 @@ public record MemberProfileResponse(
             profile.nickname(),
             profile.role(),
             profile.profileImageUrl(),
-            profile.provider()
+            profile.provider(),
+            profile.phone()
         );
     }
 }

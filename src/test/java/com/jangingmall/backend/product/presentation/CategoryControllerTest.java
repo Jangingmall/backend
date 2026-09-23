@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
@@ -19,9 +20,11 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.options;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CategoryController.class)
@@ -32,11 +35,22 @@ class CategoryControllerTest extends RestDocsControllerTest {
     private CategoryQueryService categoryQueryService;
 
     @Test
+    @DisplayName("staging 프론트 Origin의 쿠키 포함 CORS preflight를 허용한다")
+    void corsAllowsStagingFrontend() throws Exception {
+        mockMvc.perform(options("/api/products/categories")
+                .header(HttpHeaders.ORIGIN, "https://stg.midam.store")
+                .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "GET"))
+            .andExpect(status().isOk())
+            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "https://stg.midam.store"))
+            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true"));
+    }
+
+    @Test
     @DisplayName("카테고리 목록 조회 — 전체 카테고리 목록을 반환한다")
     void categories() throws Exception {
         when(categoryQueryService.findAllCategories()).thenReturn(List.of(
-            new CategoryResponse.CategoryItem(1L, "도자기"),
-            new CategoryResponse.CategoryItem(2L, "목공예")
+            new CategoryResponse.CategoryItem(1L, "키친·다이닝"),
+            new CategoryResponse.CategoryItem(2L, "홈·인테리어")
         ));
 
         mockMvc.perform(get("/api/products/categories"))
@@ -61,7 +75,7 @@ class CategoryControllerTest extends RestDocsControllerTest {
     @DisplayName("메인 카테고리 목록 조회 — 전체 카테고리 목록을 반환한다")
     void mainCategories() throws Exception {
         when(categoryQueryService.findAllCategories()).thenReturn(List.of(
-            new CategoryResponse.CategoryItem(1L, "도자기")
+            new CategoryResponse.CategoryItem(1L, "키친·다이닝")
         ));
 
         mockMvc.perform(get("/api/products/categories/main"))
@@ -86,7 +100,7 @@ class CategoryControllerTest extends RestDocsControllerTest {
     void subcategories() throws Exception {
         when(categoryQueryService.findAllSubcategories()).thenReturn(List.of(
             new CategoryResponse.SubcategoryItem(1L, 1L, "다기·찻잔"),
-            new CategoryResponse.SubcategoryItem(2L, 1L, "화병·항아리")
+            new CategoryResponse.SubcategoryItem(2L, 1L, "그릇·접시")
         ));
 
         mockMvc.perform(get("/api/products/subcategories"))

@@ -41,6 +41,7 @@ class ImageServiceTest {
     void setUp() throws Exception {
         ImageStorageProperties properties = new ImageStorageProperties();
         properties.setKeyPrefix("images");
+        properties.setBucket("public-images");
         properties.setPresignExpirySeconds(300);
         properties.setUnusedRetentionSeconds(86_400);
         service = new ImageService(memberAccess, uploads, storage, properties, new UlidGenerator(),
@@ -68,6 +69,9 @@ class ImageServiceTest {
         assertThat(result.uploads()).allSatisfy(upload -> {
             assertThat(upload.objectKey()).matches("images/product/1/[0-9A-Z]{26}/(320w|640w|1280w)\\.webp");
             assertThat(upload.presignedUrl()).contains(upload.objectKey());
+            assertThat(upload.uploadUrl()).isEqualTo(upload.presignedUrl());
+            assertThat(upload.viewUrl()).isEqualTo(
+                "https://public-images.s3.ap-northeast-2.amazonaws.com/" + upload.objectKey());
         });
         assertThat(result.expiresInSeconds()).isEqualTo(300);
         var saved = org.mockito.ArgumentCaptor.forClass(ImageUpload.class);
@@ -93,6 +97,7 @@ class ImageServiceTest {
             assertThat(upload.variant()).isEqualTo("1280w");
             assertThat(upload.objectKey()).matches("images/return/1/[0-9A-Z]{26}/1280w\\.webp");
             assertThat(upload.presignedUrl()).startsWith("https://returns.s3.example/");
+            assertThat(upload.viewUrl()).isNull();
         });
         verify(storage).presignPut(eq(ImagePurpose.RETURN), any(), eq("image/webp"), eq(4096L),
             any(Duration.class));
