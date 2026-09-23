@@ -24,19 +24,29 @@ public class MemberAuthenticationService {
     private final JwtProperties jwtProperties;
     private final RefreshTokenStore refreshTokenStore;
     private final MemberSocialAccountRepository socialAccounts;
+    private final LoginAttemptService loginAttempts;
 
     @Transactional(readOnly = true)
     public MemberSession login(String email, String password) {
-        Member member = memberRepository.findByEmail(normalizeEmail(email))
-            .orElseThrow(() -> new DomainException(ErrorCode.UNAUTHORIZED));
+        String normalized = normalizeEmail(email);
+        if (loginAttempts.isLocked(normalized)) {
+            throw new DomainException(ErrorCode.FORBIDDEN);
+        }
+        Member member = memberRepository.findByEmail(normalized)
+            .orElseThrow(() -> {
+                loginAttempts.recordFailure(normalized);
+                return new DomainException(ErrorCode.UNAUTHORIZED);
+            });
 
         if (!member.canLogIn()) {
             throw new DomainException(ErrorCode.FORBIDDEN);
         }
         if (member.getPasswordHash() == null || !passwordEncoder.matches(password, member.getPasswordHash())) {
+            loginAttempts.recordFailure(normalized);
             throw new DomainException(ErrorCode.UNAUTHORIZED);
         }
 
+        loginAttempts.clearFailures(normalized);
         return issueSession(member);
     }
 
