@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <title>API 요약 — 장인몰 (미담)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0;background:#f7f8fa;color:#333}
+    nav{background:#3D6CD4;padding:10px 24px;display:flex;gap:16px;flex-wrap:wrap}
+    nav a{color:rgba(255,255,255,.85);text-decoration:none;font-size:13px;padding:4px 0}
+    nav a:hover{color:#fff}
+    .container{max-width:960px;margin:0 auto;padding:32px 24px}
+    h1{color:#3D6CD4;margin:0 0 6px}
+    .meta{color:#888;font-size:13px;margin-bottom:28px}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+    th{background:#3D6CD4;color:#fff;padding:10px 14px;text-align:left;font-size:13px}
+    td{padding:8px 14px;border-bottom:1px solid #eee;font-size:13px;vertical-align:middle}
+    tr.tag-header td{background:#EEF2FD;font-size:13px;padding:8px 14px;color:#3D6CD4;border-bottom:2px solid #d0dafc}
+    .method{display:inline-block;padding:2px 8px;border-radius:3px;color:#fff;font-weight:700;font-size:11px;min-width:54px;text-align:center}
+    .path{font-family:monospace;color:#444}
+    .role{font-size:11px;background:#f0f0f0;border-radius:3px;padding:2px 6px;white-space:nowrap}
+    .search{width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:6px;font-size:13px;margin-bottom:16px}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="./">API 문서</a>
+  <a href="./hub.html">팀별 허브</a>
+  <a href="./summary.html">API 요약</a>
+  <a href="./postman.html">Postman</a>
+  <a href="./types.html">TypeScript</a>
+</nav>
+<div class="container">
+  <h1>API 요약</h1>
+  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 103개 엔드포인트 · 2026-09-23 12:28 UTC</div>
+  <input class="search" type="text" placeholder="경로 또는 설명으로 검색..." oninput="filterTable(this.value)"/>
+  <table id="tbl">
+    <thead><tr><th>Method</th><th>경로</th><th>설명</th><th>권한</th></tr></thead>
+    <tbody>
+      <tr class="tag-header"><td colspan="4"><strong>AI 콘텐츠 생성</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/generations</td><td>AI 상세페이지 생성 요청</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/generations/{generationId}</td><td>AI 생성 상태 조회 (COMPLETED)</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>AI 콜백 (내부)</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/internal/generations/{generationId}/completion</td><td>AI 생성 완료 콜백</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>결제</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments</td><td>결제 준비</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/confirm</td><td>결제 승인</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/fail</td><td>결제 실패 처리</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/webhooks/toss</td><td>토스페이먼츠 웹훅 수신</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/{paymentId}/cancel</td><td>결제 취소</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>결제수단</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/payments/methods</td><td>결제수단 목록 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/methods</td><td>결제수단 등록</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/refund-account</td><td>환불계좌 등록</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/payments/methods/{paymentMethodId}</td><td>결제수단 삭제</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>리뷰</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/reviews</td><td>작성한 리뷰 목록</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/reviews/writable</td><td>작성 가능한 리뷰 목록</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>반품/교환</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/returns</td><td>반품·교환 신청</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>배송</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/payments/orders/{orderId}/delivery</td><td>배송 조회</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>배송지</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/addresses</td><td>배송지 목록 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/me/addresses</td><td>배송지 추가</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/member/me/addresses/{addressId}</td><td>배송지 수정</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/member/me/addresses/{addressId}</td><td>배송지 삭제</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>상품</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products</td><td>상품 목록</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/products</td><td>상품 등록</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/me</td><td>내 상품 목록 (장인)</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/{productId}</td><td>상품 상세</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/products/{productId}</td><td>상품 수정</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/products/{productId}</td><td>상품 삭제</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/products/{productId}/status</td><td>상품 상태 변경</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>상품 문의</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/{productId}/questions</td><td>상품 문의 목록</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/products/{productId}/questions</td><td>상품 문의 등록</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/products/{productId}/questions/{questionId}/answer</td><td>문의 답변 등록</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>상품 후기</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/{productId}/reviews</td><td>상품 후기 목록</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/products/{productId}/reviews</td><td>상품 후기 등록</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>소셜 로그인</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/oauth2/complete-profile</td><td>소셜 회원 추가정보 입력</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/oauth2/exchange</td><td>OAuth 티켓 교환</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/oauth2/kakao</td><td>카카오 로그인 리다이렉트</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>알림</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/notifications</td><td>알림 목록 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/notifications</td><td>알림 생성</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/notifications/read-all</td><td>전체 읽음 처리</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/notifications/stream</td><td>SSE 실시간 알림 구독</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/notifications/unread-count</td><td>읽지 않은 알림 수 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/notifications/{notificationId}</td><td>알림 단건 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/notifications/{notificationId}</td><td>알림 삭제</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/notifications/{notificationId}/read</td><td>알림 읽음 처리</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>이미지</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/images/presigned-url</td><td>Presigned URL 발급 (AGENT)</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/images/{imageId}</td><td>미사용 이미지 삭제</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/internal/images/verify</td><td>이미지 검증 (내부)</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>장바구니</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/payments/cart</td><td>장바구니 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/cart/items</td><td>장바구니 상품 추가</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/payments/cart/items</td><td>장바구니 전체 비우기</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/cart/merge</td><td>게스트 장바구니 병합</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/payments/cart/items/{cartItemId}</td><td>장바구니 수량 변경</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/payments/cart/items/{cartItemId}</td><td>장바구니 항목 삭제</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/payments/cart/items/{cartItemId}/options</td><td>장바구니 옵션 변경</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>장인</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/artisans</td><td>장인 목록 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/artisans/me</td><td>내 장인 프로필 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/member/artisans/me</td><td>장인 프로필 수정</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/artisans/{artisanId}</td><td>장인 상세 조회</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>장인 구독</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/artisans/subscriptions</td><td>구독 장인 목록</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/member/artisans/subscriptions/notifications</td><td>구독 알림 설정</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/artisans/{artisanId}/subscribe</td><td>장인 구독</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/member/artisans/{artisanId}/subscribe</td><td>장인 구독 취소</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>주문</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/orders</td><td>주문 생성</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/orders</td><td>주문 목록 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/orders/summary</td><td>주문 상태별 집계 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/orders/{orderId}</td><td>주문 상세 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/orders/{orderId}/cancel</td><td>결제 대기 주문 취소</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/orders/{orderId}/purchase-confirmation</td><td>구매 확정</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/payments/orders/{orderId}/shipping-address</td><td>주문 배송지 변경</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>찜</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/wishes</td><td>찜 목록 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/products/{productId}/wish</td><td>찜 등록</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/products/{productId}/wish</td><td>찜 취소</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/wishes/{productId}</td><td>찜 여부 조회</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>챗봇</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/chatbot/sessions</td><td>챗봇 세션 생성</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/chatbot/sessions/{sessionId}</td><td>챗봇 세션 종료</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/chatbot/sessions/{sessionId}/messages</td><td>대화 이력 조회</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/chatbot/sessions/{sessionId}/messages</td><td>챗봇 메시지 전송</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>카테고리</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/categories</td><td>카테고리 목록</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/materials</td><td>소재 목록</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/subcategories</td><td>서브카테고리 목록</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/categories/main</td><td>메인 카테고리 목록</td><td><span class="role">인증 불필요</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>콘텐츠</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/contents</td><td>콘텐츠 조회</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/interview</td><td>취재 데이터 조회</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/interview</td><td>취재 데이터 등록</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/content/products/{productId}/interview</td><td>취재 데이터 수정</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/publish</td><td>상품 게시</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/contents/versions</td><td>버전 이력 조회</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}</td><td>문단 일괄 수정</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}/approve</td><td>콘텐츠 승인</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}/reject</td><td>콘텐츠 반려</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}/submit</td><td>검토 요청</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId}</td><td>단건 블록 수정</td><td><span class="role">ARTISAN</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>판매자 신청</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/artisans/applications</td><td>판매자 신청 제출</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/artisans/applications/me</td><td>내 판매자 신청 조회</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>회원</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/login</td><td>로그인</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/logout</td><td>로그아웃</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me</td><td>내 정보 조회</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/signup</td><td>회원가입</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/email/verification-code</td><td>이메일 인증 코드 발송</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/email/verify</td><td>이메일 인증 코드 확인</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/token/refresh</td><td>토큰 갱신</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>회원 계정</strong></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/member/me</td><td>프로필 수정</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/member/me</td><td>회원 탈퇴</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/member/me/password</td><td>비밀번호 변경</td><td><span class="role">USER</span></td></tr>
+    </tbody>
+  </table>
+</div>
+<script>
+function filterTable(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('#tbl tbody tr:not(.tag-header)').forEach(function(r){
+    r.style.display=r.innerText.toLowerCase().includes(q)?'':'none';
+  });
+}
+</script>
+</body>
+</html>

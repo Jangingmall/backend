@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <title>Postman Collection — 장인몰 API</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0;background:#f7f8fa;color:#333}
+    nav{background:#3D6CD4;padding:10px 24px;display:flex;gap:16px;flex-wrap:wrap}
+    nav a{color:rgba(255,255,255,.85);text-decoration:none;font-size:13px;padding:4px 0}
+    nav a:hover{color:#fff}
+    .container{max-width:960px;margin:0 auto;padding:32px 24px}
+    h1{color:#3D6CD4;margin:0 0 6px}
+    .meta{color:#888;font-size:13px;margin-bottom:28px}
+    .btn{display:inline-block;padding:10px 22px;background:#3D6CD4;color:#fff;text-decoration:none;border-radius:6px;font-size:14px;font-weight:600;margin-right:10px;margin-bottom:8px}
+    .btn:hover{background:#2d56bb}
+    .btn.secondary{background:#fff;color:#3D6CD4;border:2px solid #3D6CD4}
+    .btn.secondary:hover{background:#EEF2FD}
+    .steps{counter-reset:step;list-style:none;padding:0;margin:24px 0}
+    .steps li{counter-increment:step;padding:12px 16px 12px 52px;background:#fff;border-radius:8px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);position:relative;font-size:14px;line-height:1.5}
+    .steps li::before{content:counter(step);position:absolute;left:14px;top:50%;transform:translateY(-50%);width:24px;height:24px;background:#3D6CD4;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+    code{background:#f0f2f5;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:13px}
+    .tip{background:#EEF2FD;border-left:3px solid #3D6CD4;padding:12px 16px;border-radius:0 6px 6px 0;font-size:13px;margin:20px 0;color:#555}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="./">API 문서</a>
+  <a href="./hub.html">팀별 허브</a>
+  <a href="./summary.html">API 요약</a>
+  <a href="./postman.html">Postman</a>
+  <a href="./types.html">TypeScript</a>
+</nav>
+<div class="container">
+  <h1>Postman Collection</h1>
+  <div class="meta">QA 팀 · 장인몰 (미담) API v0.0.1-SNAPSHOT · 2026-09-23 12:28 UTC</div>
+
+  <a class="btn" href="./postman.json" download="jangingmall-api.postman_collection.json">⬇ Collection 다운로드</a>
+  <a class="btn secondary" href="https://www.postman.com/downloads/" target="_blank">Postman 설치</a>
+
+  <div class="tip">Postman v10 이상에서 사용하세요. Collection v2.1 형식으로 생성되어 있습니다.</div>
+
+  <h2>Import 방법</h2>
+  <ol class="steps">
+    <li>위 <strong>Collection 다운로드</strong> 버튼으로 <code>jangingmall-api.postman_collection.json</code> 저장</li>
+    <li>Postman 실행 → 좌측 상단 <strong>Import</strong> 버튼 클릭</li>
+    <li>다운로드한 파일을 드래그하거나 <strong>files</strong>로 선택</li>
+    <li>Import 완료 후 Collections 패널에서 <strong>장인몰 (미담) API</strong> 확인</li>
+    <li>인증이 필요한 요청: Collection 루트 → Variables 탭 → <code>accessToken</code> 값 입력</li>
+  </ol>
+
+  <h2>인증 설정</h2>
+  <ol class="steps">
+    <li><code>POST /api/member/login</code> 요청 실행</li>
+    <li>응답의 <code>data.accessToken</code> 값 복사</li>
+    <li>Collection → Variables → <code>accessToken</code> Current Value에 붙여넣기</li>
+    <li>이후 모든 인증 필요 요청에 <code>Authorization: Bearer {{accessToken}}</code> 자동 적용</li>
+  </ol>
+</div>
+</body>
+</html>

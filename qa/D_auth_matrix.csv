@@ -1,0 +1,104 @@
+TestID,Domain,Method,Endpoint,OperationId,RequiredRole,NoToken,UserToken,ArtisanToken,AdminToken
+AUTH-MTX-001,챗봇,POST,/api/chatbot/sessions,chatbot-session-create,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-002,챗봇,DELETE,/api/chatbot/sessions/{sessionId},chatbot-session-end,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-003,챗봇,GET,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-list,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-004,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-005,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-006,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-007,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-008,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-009,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-010,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-011,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-012,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-013,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-014,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-015,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-016,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-017,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-018,이미지,POST,/api/images/presigned-url,image-presigned-url,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-019,이미지,DELETE,/api/images/{imageId},image-delete,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-020,장인,GET,/api/member/artisans,artisan-list,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-021,판매자 신청,POST,/api/member/artisans/applications,seller-application-apply,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-022,판매자 신청,GET,/api/member/artisans/applications/me,seller-application-mine,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-023,장인,GET,/api/member/artisans/me,artisan-mine,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-024,장인,PATCH,/api/member/artisans/me,artisan-update,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-025,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-026,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-027,장인,GET,/api/member/artisans/{artisanId},artisan-detail,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-028,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-029,장인 구독,DELETE,/api/member/artisans/{artisanId}/subscribe,member-unsubscribe,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-030,회원,POST,/api/member/email/verification-code,member-email-send-code,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-031,회원,POST,/api/member/email/verify,member-email-verify,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-032,회원,POST,/api/member/login,member-login,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-033,회원,POST,/api/member/logout,member-logout,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-034,회원,GET,/api/member/me,member-get-me,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-035,회원 계정,DELETE,/api/member/me,member-account-withdraw,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-036,회원 계정,PATCH,/api/member/me,member-account-update,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-037,배송지,GET,/api/member/me/addresses,address-list,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-038,배송지,POST,/api/member/me/addresses,address-create,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-039,배송지,DELETE,/api/member/me/addresses/{addressId},address-delete,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-040,배송지,PATCH,/api/member/me/addresses/{addressId},address-update,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-041,주문,GET,/api/member/me/orders,member-order-list,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-042,주문,GET,/api/member/me/orders/summary,member-order-summary,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-043,주문,GET,/api/member/me/orders/{orderId},member-order-detail,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-044,회원 계정,PATCH,/api/member/me/password,member-account-change-password,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-045,리뷰,GET,/api/member/me/reviews,member-review-list,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-046,리뷰,GET,/api/member/me/reviews/writable,member-review-writable,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-047,찜,GET,/api/member/me/wishes,member-wish-list,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-048,찜,GET,/api/member/me/wishes/{productId},member-wish-check,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-049,소셜 로그인,POST,/api/member/oauth2/complete-profile,oauth-complete-profile,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-050,소셜 로그인,POST,/api/member/oauth2/exchange,oauth-exchange,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-051,소셜 로그인,GET,/api/member/oauth2/kakao,oauth-kakao-redirect,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-052,회원,POST,/api/member/signup,member-signup,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-053,회원,POST,/api/member/token/refresh,member-token-refresh,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-054,알림,GET,/api/notifications,notification-list-200,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-055,알림,POST,/api/notifications,notification-create-200,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-056,알림,PATCH,/api/notifications/read-all,notification-read-all-200,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-057,알림,GET,/api/notifications/stream,notification-stream-200,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-058,알림,GET,/api/notifications/unread-count,notification-unread-count-200,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-059,알림,GET,/api/notifications/{notificationId},notification-get-one-,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-060,알림,DELETE,/api/notifications/{notificationId},notification-delete-,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-061,알림,PATCH,/api/notifications/{notificationId}/read,notification-read-,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-062,결제,POST,/api/payments,payment-prepare,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-063,장바구니,GET,/api/payments/cart,cart-get,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-064,장바구니,POST,/api/payments/cart/items,cart-add-item,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-065,장바구니,DELETE,/api/payments/cart/items,cart-delete-all,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-066,장바구니,DELETE,/api/payments/cart/items/{cartItemId},cart-delete-item,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-067,장바구니,PATCH,/api/payments/cart/items/{cartItemId},cart-change-quantity,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-068,장바구니,PATCH,/api/payments/cart/items/{cartItemId}/options,cart-change-options,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-069,장바구니,POST,/api/payments/cart/merge,cart-merge,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-070,결제,POST,/api/payments/confirm,payment-confirm,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-071,결제,POST,/api/payments/fail,payment-fail,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-072,결제수단,GET,/api/payments/methods,payment-methods-list,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-073,결제수단,POST,/api/payments/methods,payment-methods-register,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-074,결제수단,DELETE,/api/payments/methods/{paymentMethodId},payment-methods-delete,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-075,주문,POST,/api/payments/orders,orders-create,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-076,주문,POST,/api/payments/orders/{orderId}/cancel,order-cancel-before-payment,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-077,배송,GET,/api/payments/orders/{orderId}/delivery,delivery-get,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-078,주문,POST,/api/payments/orders/{orderId}/purchase-confirmation,order-purchase-confirmation,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-079,주문,PATCH,/api/payments/orders/{orderId}/shipping-address,order-change-shipping-address,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-080,결제수단,POST,/api/payments/refund-account,payment-refund-account-register,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-081,반품/교환,POST,/api/payments/returns,returns-request,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-082,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-083,결제,POST,/api/payments/{paymentId}/cancel,payment-cancel,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-084,상품,GET,/api/products,product-list,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-085,상품,POST,/api/products,product-create,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-086,카테고리,GET,/api/products/categories,category-list,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-087,카테고리,GET,/api/products/categories/main,category-main-list,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-088,카테고리,GET,/api/products/materials,material-list,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-089,상품,GET,/api/products/me,product-my-list,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-090,카테고리,GET,/api/products/subcategories,subcategory-list,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-091,상품,GET,/api/products/{productId},product-detail,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-092,상품,DELETE,/api/products/{productId},product-delete,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-093,상품,PATCH,/api/products/{productId},product-update,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-094,상품 문의,GET,/api/products/{productId}/questions,product-qna-list,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-095,상품 문의,POST,/api/products/{productId}/questions,product-qna-ask,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-096,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-097,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,PUBLIC,200 OK,200 OK,200 OK,200 OK
+AUTH-MTX-098,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-099,상품,PATCH,/api/products/{productId}/status,product-change-status,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
+AUTH-MTX-100,찜,POST,/api/products/{productId}/wish,product-wish,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-101,찜,DELETE,/api/products/{productId}/wish,product-unwish,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-102,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-103,이미지,POST,/internal/images/verify,image-internal-verify,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
