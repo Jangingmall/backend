@@ -937,58 +937,78 @@ tasks.register('buildRedoclyPublic') {
 }
 
 // ── Postman Collection 생성 (QA팀) ───────────────────────────────────────────
-tasks.register('buildPostmanCollection') {
-    dependsOn 'processOpenapiPublic'
-    description = 'Convert public openapi.json to Postman Collection v2.1 for QA'
+abstract class BuildPostmanCollectionTask extends DefaultTask {
+    @javax.inject.Inject
+    abstract org.gradle.process.ExecOperations getExecOps()
 
-    def specFile   = file('api-spec/public/openapi.json')
-    def outputFile = file('api-spec/public/postman.json')
+    @org.gradle.api.tasks.InputFile
+    abstract org.gradle.api.provider.Property<File> getSpecFile()
 
-    inputs.file(specFile)
-    outputs.file(outputFile)
+    @org.gradle.api.tasks.OutputFile
+    abstract org.gradle.api.provider.Property<File> getOutputFile()
 
-    doLast {
-        def result = project.exec {
+    @org.gradle.api.tasks.TaskAction
+    void run() {
+        def spec = specFile.get()
+        def out  = outputFile.get()
+        def result = execOps.exec {
             commandLine 'npx', '--yes', 'openapi-to-postmanv2',
-                '-s', specFile.absolutePath,
-                '-o', outputFile.absolutePath,
+                '-s', spec.absolutePath,
+                '-o', out.absolutePath,
                 '-O', 'folderStrategy=Tags,includeAuthInfoInExample=false,requestParametersResolution=Example'
             ignoreExitValue = true
         }
         if (result.exitValue != 0) {
             println "[buildPostmanCollection] 변환 실패 (exitValue=${result.exitValue}) — 파일 생략"
-            if (outputFile.exists()) outputFile.delete()
+            if (out.exists()) out.delete()
         } else {
-            println "[buildPostmanCollection] 생성 완료: ${outputFile.absolutePath}"
+            println "[buildPostmanCollection] 생성 완료: ${out.absolutePath}"
         }
     }
 }
 
-// ── TypeScript 타입 정의 생성 (FE팀) ─────────────────────────────────────────
-tasks.register('buildTypeScriptTypes') {
+tasks.register('buildPostmanCollection', BuildPostmanCollectionTask) {
     dependsOn 'processOpenapiPublic'
-    description = 'Generate TypeScript types from public openapi.json for FE'
+    description = 'Convert public openapi.json to Postman Collection v2.1 for QA'
+    specFile  = file('api-spec/public/openapi.json')
+    outputFile = file('api-spec/public/postman.json')
+}
 
-    def specFile   = file('api-spec/public/openapi.json')
-    def outputFile = file('api-spec/public/types.d.ts')
+// ── TypeScript 타입 정의 생성 (FE팀) ─────────────────────────────────────────
+abstract class BuildTypeScriptTypesTask extends DefaultTask {
+    @javax.inject.Inject
+    abstract org.gradle.process.ExecOperations getExecOps()
 
-    inputs.file(specFile)
-    outputs.file(outputFile)
+    @org.gradle.api.tasks.InputFile
+    abstract org.gradle.api.provider.Property<File> getSpecFile()
 
-    doLast {
-        def result = project.exec {
+    @org.gradle.api.tasks.OutputFile
+    abstract org.gradle.api.provider.Property<File> getOutputFile()
+
+    @org.gradle.api.tasks.TaskAction
+    void run() {
+        def spec = specFile.get()
+        def out  = outputFile.get()
+        def result = execOps.exec {
             commandLine 'npx', '--yes', 'openapi-typescript',
-                specFile.absolutePath,
-                '--output', outputFile.absolutePath
+                spec.absolutePath,
+                '--output', out.absolutePath
             ignoreExitValue = true
         }
         if (result.exitValue != 0) {
             println "[buildTypeScriptTypes] 변환 실패 (exitValue=${result.exitValue}) — 파일 생략"
-            if (outputFile.exists()) outputFile.delete()
+            if (out.exists()) out.delete()
         } else {
-            println "[buildTypeScriptTypes] 생성 완료: ${outputFile.absolutePath}"
+            println "[buildTypeScriptTypes] 생성 완료: ${out.absolutePath}"
         }
     }
+}
+
+tasks.register('buildTypeScriptTypes', BuildTypeScriptTypesTask) {
+    dependsOn 'processOpenapiPublic'
+    description = 'Generate TypeScript types from public openapi.json for FE'
+    specFile  = file('api-spec/public/openapi.json')
+    outputFile = file('api-spec/public/types.d.ts')
 }
 
 // ── 팀별 HTML 페이지 생성 (hub / postman / types / summary) ──────────────────
@@ -1290,6 +1310,505 @@ function filterTable(q){
 """
         new File(publicDir, 'summary.html').text = summaryHtml
         println "[buildApiSummaryHtml] summary.html 생성 완료"
+    }
+}
+
+// ── QA 자동화 패키지 생성 (openapi.json → CSV + Markdown) ──────────────────
+tasks.register('buildQaPackage') {
+    dependsOn 'processOpenapiPublic'
+    description = 'Generate QA automation package (CSV + Markdown) from public openapi.json'
+
+    def specFile = file('api-spec/public/openapi.json')
+    def qaDir    = file('api-spec/public/qa')
+
+    inputs.file(specFile)
+    outputs.dir(qaDir)
+
+    doLast {
+        if (!specFile.exists()) {
+            println "[buildQaPackage] openapi.json 없음 — 건너뜀"
+            return
+        }
+
+        qaDir.mkdirs()
+
+        def slurper = new groovy.json.JsonSlurper()
+        def spec    = slurper.parse(specFile)
+        def paths   = spec.paths ?: [:]
+        def schemas = spec.components?.schemas ?: [:]
+
+        // ── 헬퍼 ────────────────────────────────────────────────────────────
+        def resolveRef = { String ref ->
+            def parts = ref.replaceAll('^#/', '').split('/')
+            def node  = spec
+            parts.each { node = node?."$it" ?: [:] }
+            return node
+        }
+
+        def extractFields = { Map schema ->
+            if (schema?.'$ref') schema = resolveRef(schema.'$ref')
+            def props    = schema?.properties ?: [:]
+            def required = schema?.required ?: []
+            def fields   = []
+            props.each { name, prop ->
+                def p = prop?.'$ref' ? resolveRef(prop.'$ref') : prop
+                def constraints = []
+                if (p?.minimum    != null) constraints << "min=${p.minimum}"
+                if (p?.maximum    != null) constraints << "max=${p.maximum}"
+                if (p?.minLength  != null) constraints << "minLen=${p.minLength}"
+                if (p?.maxLength  != null) constraints << "maxLen=${p.maxLength}"
+                if (p?.pattern    != null) constraints << "pattern=${p.pattern}"
+                if (p?.enum       != null) constraints << "enum=${p.enum}"
+                if (p?.minItems   != null) constraints << "minItems=${p.minItems}"
+                if (p?.maxItems   != null) constraints << "maxItems=${p.maxItems}"
+                fields << [name: name, type: p?.type ?: 'object',
+                           required: required.contains(name),
+                           constraints: constraints]
+            }
+            return fields
+        }
+
+        def esc = { String v ->
+            if (v.contains(',') || v.contains('"') || v.contains('\n'))
+                return '"' + v.replace('"', '""') + '"'
+            return v
+        }
+
+        def domainMap = [
+            '회원': 'AUTH', '회원 계정': 'MEMBER', '소셜 로그인': 'OAUTH',
+            '상품': 'PRODUCT', '장바구니': 'CART', '주문': 'ORDER',
+            '결제': 'PAY', '결제수단': 'PAYMETHOD', '리뷰': 'REVIEW',
+            '장인': 'ARTISAN', '장인 구독': 'SUBSCRIBE', '배송': 'DELIVERY',
+            '배송지': 'ADDRESS', '찜': 'WISH', '알림': 'NOTIFY',
+            '반품/교환': 'RETURN', '카테고리': 'CATEGORY', '상품 문의': 'QNA',
+            '이미지': 'IMAGE', '콘텐츠': 'CONTENT', 'AI 콘텐츠 생성': 'AI',
+            'AI 콜백 (내부)': 'AICB', '챗봇': 'CHAT', '판매자 신청': 'SELLER',
+            '판매자 신청 (관리자)': 'SELLERADM', '인프라': 'INFRA', 'Dev (로컬 전용)': 'DEV'
+        ]
+
+        def HTTP_METHODS = ['get', 'post', 'put', 'patch', 'delete'] as Set
+
+        def getRole = { Map op ->
+            def desc = op.description?.trim() ?: ''
+            def fl   = desc.split('\n')[0]
+            if (fl.contains('ADMIN'))   return 'ADMIN'
+            if (fl.contains('ARTISAN')) return 'ARTISAN'
+            if (fl.contains('USER'))    return 'USER'
+            return 'PUBLIC'
+        }
+
+        def getAuth = { Map op ->
+            def sec = op.security
+            if (sec == null) return (spec.security ? 'YES' : 'NO')
+            return sec.isEmpty() ? 'NO' : 'YES'
+        }
+
+        def getCoreTag = { String tag ->
+            def core   = ['회원','회원 계정','소셜 로그인','상품','장바구니','주문','결제','결제수단'] as Set
+            def low    = ['인프라','Dev (로컬 전용)'] as Set
+            return core.contains(tag) ? 'CORE' : low.contains(tag) ? 'LOW' : 'NORMAL'
+        }
+
+        // ── A. API Inventory ───────────────────────────────────────────────
+        def invRows = [['ID','Domain','Method','Endpoint','OperationId','Auth','Role',
+                        'RequestSchema','SuccessResponse','ErrorResponse','Priority','Summary']]
+
+        paths.sort { a, b -> a.key <=> b.key }.each { path, methods ->
+            methods.findAll { it.key in HTTP_METHODS }.each { method, op ->
+                def opId  = op.operationId ?: ''
+                def tag   = op.tags?.first() ?: 'untagged'
+                def rb    = op.requestBody?.content?.values()?.first()?.schema
+                def reqS  = rb?.'$ref' ? rb.'$ref'.split('/').last() : (rb?.properties ? 'inline' : '-')
+                def resps = op.responses ?: [:]
+                def succs = resps.keySet().findAll { it.toString().startsWith('2') }.join(',')
+                def errs  = resps.keySet().findAll { !it.toString().startsWith('2') }.join(',')
+                invRows << ["${method.toUpperCase()}-${opId}", tag, method.toUpperCase(), path,
+                            opId, getAuth(op), getRole(op), reqS, succs, errs,
+                            getCoreTag(tag), op.summary ?: '']
+            }
+        }
+
+        def writecsv = { File file, List rows ->
+            file.text = rows.collect { row -> row.collect { esc(it.toString()) }.join(',') }.join('\n') + '\n'
+        }
+
+        writecsv(new File(qaDir, 'A_api_inventory.csv'), invRows)
+        println "[buildQaPackage] A_api_inventory.csv — ${invRows.size()-1}행"
+
+        // ── B. Test Case Matrix ────────────────────────────────────────────
+        def tcRows = [['TestID','Domain','Method','Endpoint','OperationId',
+                       'TestType','Scenario','Expected','Notes','Automation']]
+        def counters = [:]
+        def nextId   = { String p ->
+            counters[p] = (counters[p] ?: 0) + 1
+            "${p}-${String.format('%03d', counters[p])}"
+        }
+
+        paths.sort { a, b -> a.key <=> b.key }.each { path, methods ->
+            methods.findAll { it.key in HTTP_METHODS }.each { method, op ->
+                def opId   = op.operationId ?: ''
+                def tag    = op.tags?.first() ?: 'untagged'
+                def prefix = domainMap.get(tag, 'API')
+                def resps  = op.responses ?: [:]
+                def sc     = resps.keySet().find { it.toString().startsWith('2') } ?: '200'
+                def rb     = op.requestBody?.content?.values()?.first()?.schema
+                def fields = rb ? extractFields(rb) : []
+                def params = op.parameters ?: []
+                def needsAuth = getAuth(op) == 'YES'
+
+                // Happy path
+                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                           'HAPPY_PATH', '정상 요청 — 유효한 필수값', "HTTP ${sc}", '', 'AUTO']
+
+                // Required / null / empty
+                fields.findAll { it.required }.each { f ->
+                    tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                               'REQUIRED_MISSING', "${f.name} 누락", 'HTTP 400 INVALID_INPUT', '', 'AUTO']
+                    tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                               'REQUIRED_NULL', "${f.name}=null", 'HTTP 400 INVALID_INPUT', '', 'AUTO']
+                    if (f.type == 'string')
+                        tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                   'REQUIRED_EMPTY', "${f.name}=\"\"", 'HTTP 400 INVALID_INPUT', '', 'AUTO']
+                }
+
+                // Type mismatch
+                fields.each { f ->
+                    if (f.type == 'integer')
+                        tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                   'TYPE_MISMATCH', "${f.name}: integer→string (\"abc\")", 'HTTP 400', '', 'AUTO']
+                    else if (f.type == 'boolean')
+                        tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                   'TYPE_MISMATCH', "${f.name}: boolean→string (\"abc\")", 'HTTP 400', '', 'AUTO']
+                    else if (f.type == 'array')
+                        tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                   'TYPE_MISMATCH', "${f.name}: array→object", 'HTTP 400', '', 'AUTO']
+                }
+
+                // Boundary
+                fields.each { f ->
+                    f.constraints.each { c ->
+                        def kv = c.split('=', 2)
+                        def k  = kv[0]; def v = kv[1]
+                        switch (k) {
+                            case 'min':
+                                def n = v.toInteger()
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}=${n-1} (min-1)", 'HTTP 400', '', 'AUTO']
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}=${n} (min)", "HTTP ${sc}", '', 'AUTO']
+                                break
+                            case 'max':
+                                def n = v.toInteger()
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}=${n} (max)", "HTTP ${sc}", '', 'AUTO']
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}=${n+1} (max+1)", 'HTTP 400', '', 'AUTO']
+                                break
+                            case 'minLen':
+                                def n = v.toInteger()
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}: len=${n-1} (minLen-1)", 'HTTP 400', '', 'AUTO']
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}: len=${n} (minLen)", "HTTP ${sc}", '', 'AUTO']
+                                break
+                            case 'maxLen':
+                                def n = v.toInteger()
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}: len=${n} (maxLen)", "HTTP ${sc}", '', 'AUTO']
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}: len=${n+1} (maxLen+1)", 'HTTP 400', '', 'AUTO']
+                                break
+                            case 'enum':
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'INVALID_ENUM', "${f.name}=\"INVALID_VALUE\"", 'HTTP 400', '', 'AUTO']
+                                break
+                            case 'maxItems':
+                                def n = v.toInteger()
+                                tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                                           'BOUNDARY', "${f.name}: ${n+1}개 (maxItems+1)", 'HTTP 400', '', 'AUTO']
+                                break
+                        }
+                    }
+                }
+
+                // Auth
+                if (needsAuth) {
+                    tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                               'AUTH_NO_TOKEN', 'Authorization 헤더 없음', 'HTTP 401 UNAUTHORIZED', '', 'AUTO']
+                    tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                               'AUTH_INVALID_TOKEN', 'Bearer INVALID_TOKEN', 'HTTP 401 UNAUTHORIZED', '', 'AUTO']
+                    tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                               'AUTH_EXPIRED_TOKEN', '만료된 Access Token', 'HTTP 401 UNAUTHORIZED', '', 'AUTO']
+                }
+
+                // Not found
+                params.findAll { it.in == 'path' && it.name?.toLowerCase().contains('id') }.each { pp ->
+                    tcRows << [nextId(prefix), tag, method.toUpperCase(), path, opId,
+                               'NOT_FOUND', "${pp.name}=999999999 (존재하지 않는 ID)", 'HTTP 404 NOT_FOUND', '', 'AUTO']
+                }
+            }
+        }
+
+        writecsv(new File(qaDir, 'B_test_case_matrix.csv'), tcRows)
+        println "[buildQaPackage] B_test_case_matrix.csv — ${tcRows.size()-1}행"
+
+        // ── C. Negative Test Matrix ────────────────────────────────────────
+        def negRows = [['TestID','Domain','Method','Endpoint','OperationId',
+                        'NegativeType','Input','Expected','Automation']]
+        def negCnt = [:]
+        def nextNeg = { String p ->
+            negCnt[p] = (negCnt[p] ?: 0) + 1
+            "NEG-${p}-${String.format('%03d', negCnt[p])}"
+        }
+
+        paths.sort { a, b -> a.key <=> b.key }.each { path, methods ->
+            methods.findAll { it.key in HTTP_METHODS }.each { method, op ->
+                def opId   = op.operationId ?: ''
+                def tag    = op.tags?.first() ?: 'untagged'
+                def prefix = domainMap.get(tag, 'API')
+                def params = op.parameters ?: []
+
+                if (method in ['post','put','patch'] && op.requestBody) {
+                    negRows << [nextNeg(prefix), tag, method.toUpperCase(), path, opId,
+                                'MALFORMED_JSON', '{ "key": (불완전 JSON)', 'HTTP 400 REQUEST_BODY_MALFORMED', 'AUTO']
+                    negRows << [nextNeg(prefix), tag, method.toUpperCase(), path, opId,
+                                'WRONG_CONTENT_TYPE', 'Content-Type: text/plain', 'HTTP 400 또는 415', 'AUTO']
+                    negRows << [nextNeg(prefix), tag, method.toUpperCase(), path, opId,
+                                'EMPTY_BODY', '{}', 'HTTP 400 INVALID_INPUT', 'AUTO']
+                }
+
+                params.findAll { it.in == 'path' }.each { pp ->
+                    def ptype = pp.schema?.type ?: 'string'
+                    if (ptype in ['integer','number']) {
+                        negRows << [nextNeg(prefix), tag, method.toUpperCase(), path, opId,
+                                    'PATH_PARAM_TYPE', "${pp.name}=\"abc\"", 'HTTP 400', 'AUTO']
+                        negRows << [nextNeg(prefix), tag, method.toUpperCase(), path, opId,
+                                    'PATH_PARAM_NEGATIVE', "${pp.name}=-1", 'HTTP 400 또는 404', 'AUTO']
+                    }
+                    negRows << [nextNeg(prefix), tag, method.toUpperCase(), path, opId,
+                                'PATH_PARAM_NOT_FOUND', "${pp.name}=999999999", 'HTTP 404 NOT_FOUND', 'AUTO']
+                }
+
+                params.findAll { it.in == 'query' }.each { qp ->
+                    def ptype = qp.schema?.type ?: 'string'
+                    if (ptype == 'integer')
+                        negRows << [nextNeg(prefix), tag, method.toUpperCase(), path, opId,
+                                    'QUERY_PARAM_TYPE', "${qp.name}=\"abc\"", 'HTTP 400', 'AUTO']
+                    if (qp.required)
+                        negRows << [nextNeg(prefix), tag, method.toUpperCase(), path, opId,
+                                    'QUERY_PARAM_MISSING', "필수 쿼리 ${qp.name} 누락", 'HTTP 400', 'AUTO']
+                }
+            }
+        }
+
+        writecsv(new File(qaDir, 'C_negative_test_matrix.csv'), negRows)
+        println "[buildQaPackage] C_negative_test_matrix.csv — ${negRows.size()-1}행"
+
+        // ── D. Auth Matrix ─────────────────────────────────────────────────
+        def authRows = [['TestID','Domain','Method','Endpoint','OperationId','RequiredRole',
+                         'NoToken','UserToken','ArtisanToken','AdminToken']]
+        def authCnt = 0
+
+        paths.sort { a, b -> a.key <=> b.key }.each { path, methods ->
+            methods.findAll { it.key in HTTP_METHODS }.each { method, op ->
+                def opId = op.operationId ?: ''
+                def tag  = op.tags?.first() ?: 'untagged'
+                def role = getRole(op)
+                authCnt++
+                def tid = "AUTH-MTX-${String.format('%03d', authCnt)}"
+
+                def pub, user, artisan, admin
+                switch (role) {
+                    case 'PUBLIC':
+                        pub = '200 OK'; user = '200 OK'; artisan = '200 OK'; admin = '200 OK'; break
+                    case 'USER':
+                        pub = '401 UNAUTHORIZED'; user = '200 OK'; artisan = '200 OK'; admin = '200 OK'; break
+                    case 'ARTISAN':
+                        pub = '401 UNAUTHORIZED'; user = '403 FORBIDDEN'; artisan = '200 OK'; admin = '200 OK'; break
+                    case 'ADMIN':
+                        pub = '401 UNAUTHORIZED'; user = '403 FORBIDDEN'; artisan = '403 FORBIDDEN'; admin = '200 OK'; break
+                    default:
+                        pub = 'SPEC_GAP'; user = 'SPEC_GAP'; artisan = 'SPEC_GAP'; admin = 'SPEC_GAP'
+                }
+
+                authRows << [tid, tag, method.toUpperCase(), path, opId, role, pub, user, artisan, admin]
+            }
+        }
+
+        writecsv(new File(qaDir, 'D_auth_matrix.csv'), authRows)
+        println "[buildQaPackage] D_auth_matrix.csv — ${authRows.size()-1}행"
+
+        // ── I. Contract Test Matrix ────────────────────────────────────────
+        def ctRows = [['TestID','Domain','Method','Endpoint','OperationId',
+                       'StatusCode','ResponseSchema','Validation','Automation']]
+        def ctCnt = 0
+
+        paths.sort { a, b -> a.key <=> b.key }.each { path, methods ->
+            methods.findAll { it.key in HTTP_METHODS }.each { method, op ->
+                def opId  = op.operationId ?: ''
+                def tag   = op.tags?.first() ?: 'untagged'
+                ctCnt++
+                op.responses?.each { statusCode, resp ->
+                    def content = resp.content?.values()?.first()
+                    def s = content?.schema
+                    def schemaRef = s?.'$ref' ? s.'$ref'.split('/').last()
+                                   : (s?.properties ? 'inline'
+                                   : (s?.items?.'$ref' ? s.items.'$ref'.split('/').last() + '[]' : 'NO_SCHEMA'))
+                    ctRows << ["CONTRACT-${String.format('%03d', ctCnt)}", tag, method.toUpperCase(), path,
+                               opId, statusCode.toString(), schemaRef,
+                               schemaRef == 'NO_SCHEMA' ? 'status_only' : 'schema_validation',
+                               schemaRef == 'NO_SCHEMA' ? 'PARTIAL' : 'AUTO']
+                }
+            }
+        }
+
+        writecsv(new File(qaDir, 'I_contract_test_matrix.csv'), ctRows)
+        println "[buildQaPackage] I_contract_test_matrix.csv — ${ctRows.size()-1}행"
+
+        // ── README (통계) ──────────────────────────────────────────────────
+        def totalEndpoints = invRows.size() - 1
+        def base    = 'https://jangingmall.github.io/backend'
+        def qaBase  = "${base}/qa"
+        def totalTc = tcRows.size()-1 + negRows.size()-1 + ctRows.size()-1
+
+        def qaIndexHtml = """\
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Automation Package — 장인몰</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+           background: #f6f8fa; color: #24292f; line-height: 1.6; }
+    nav { background: #1a1a2e; padding: 12px 32px; display: flex; align-items: center; gap: 24px; }
+    nav a { color: #cdd; text-decoration: none; font-size: 14px; }
+    nav a:hover { color: #fff; }
+    nav .brand { color: #fff; font-weight: 700; font-size: 16px; margin-right: 8px; }
+    .container { max-width: 960px; margin: 40px auto; padding: 0 24px; }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .subtitle { color: #57606a; font-size: 14px; margin-bottom: 40px; }
+    h2 { font-size: 18px; font-weight: 600; margin: 36px 0 12px;
+         padding-bottom: 6px; border-bottom: 1px solid #d0d7de; }
+    h3 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; color: #0969da; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px; }
+    th { background: #f6f8fa; padding: 8px 12px; text-align: left;
+         border: 1px solid #d0d7de; font-weight: 600; }
+    td { padding: 8px 12px; border: 1px solid #d0d7de; vertical-align: top; }
+    tr:hover td { background: #f6f8fa; }
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px;
+             font-size: 12px; font-weight: 600; }
+    .badge.core   { background: #ddf4ff; color: #0969da; }
+    .badge.normal { background: #e6ffed; color: #1a7f37; }
+    .badge.low    { background: #f6f8fa; color: #57606a; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                 gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: #fff; border: 1px solid #d0d7de; border-radius: 8px;
+                 padding: 20px; text-align: center; }
+    .stat-card .num { font-size: 32px; font-weight: 700; color: #0969da; }
+    .stat-card .label { font-size: 13px; color: #57606a; margin-top: 4px; }
+    .download-btn { display: inline-flex; align-items: center; gap: 6px;
+                    background: #0969da; color: #fff !important; padding: 5px 12px;
+                    border-radius: 6px; font-size: 13px; font-weight: 500; }
+    .download-btn:hover { background: #0550ae; text-decoration: none !important; }
+    ol, ul { padding-left: 20px; font-size: 14px; }
+    ol li, ul li { margin-bottom: 4px; }
+    code { background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 4px;
+           padding: 1px 5px; font-size: 13px; font-family: monospace; }
+    hr { border: none; border-top: 1px solid #d0d7de; margin: 32px 0; }
+  </style>
+</head>
+<body>
+<nav>
+  <span class="brand">장인몰 API</span>
+  <a href="${base}/">📄 Redoc</a>
+  <a href="${base}/hub.html">🏠 허브</a>
+  <a href="${base}/summary.html">📋 요약</a>
+  <a href="${base}/postman.html">📮 Postman</a>
+  <a href="${base}/types.html">🔷 Types</a>
+  <a href="${qaBase}/" style="color:#fff;font-weight:600">🧪 QA</a>
+</nav>
+
+<div class="container">
+  <h1>🧪 QA Automation Package</h1>
+  <p class="subtitle"><code>openapi.json</code> (${totalEndpoints}개 엔드포인트) 기반 자동 생성 — CI 매 배포마다 최신화</p>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="num">${totalEndpoints}</div><div class="label">전체 API</div></div>
+    <div class="stat-card"><div class="num">${tcRows.size()-1}</div><div class="label">테스트 케이스</div></div>
+    <div class="stat-card"><div class="num">${negRows.size()-1}</div><div class="label">Negative 테스트</div></div>
+    <div class="stat-card"><div class="num">${ctRows.size()-1}</div><div class="label">Contract 검증</div></div>
+    <div class="stat-card"><div class="num">${totalTc}</div><div class="label">총 테스트 케이스</div></div>
+  </div>
+
+  <h2>산출물 다운로드</h2>
+  <table>
+    <thead><tr><th>파일</th><th>내용</th><th>건수</th><th>다운로드</th></tr></thead>
+    <tbody>
+      <tr><td>A_api_inventory.csv</td><td>전체 API 목록 (Method / 경로 / 역할 / 우선순위)</td><td>${totalEndpoints}개</td>
+          <td><a class="download-btn" href="A_api_inventory.csv" download>⬇ 다운로드</a></td></tr>
+      <tr><td>B_test_case_matrix.csv</td><td>전체 테스트 케이스 (Happy Path / 필수값 / 타입 / 경계값 / 인증)</td><td>${tcRows.size()-1}건</td>
+          <td><a class="download-btn" href="B_test_case_matrix.csv" download>⬇ 다운로드</a></td></tr>
+      <tr><td>C_negative_test_matrix.csv</td><td>Negative 테스트 (잘못된 타입 / path param / query param)</td><td>${negRows.size()-1}건</td>
+          <td><a class="download-btn" href="C_negative_test_matrix.csv" download>⬇ 다운로드</a></td></tr>
+      <tr><td>D_auth_matrix.csv</td><td>역할별 권한 매트릭스 (PUBLIC / USER / ARTISAN / ADMIN)</td><td>${authRows.size()-1}개</td>
+          <td><a class="download-btn" href="D_auth_matrix.csv" download>⬇ 다운로드</a></td></tr>
+      <tr><td>I_contract_test_matrix.csv</td><td>Response Schema 계약 검증</td><td>${ctRows.size()-1}건</td>
+          <td><a class="download-btn" href="I_contract_test_matrix.csv" download>⬇ 다운로드</a></td></tr>
+    </tbody>
+  </table>
+
+  <h2>사용 방법</h2>
+
+  <h3>Notion import</h3>
+  <ol>
+    <li>Notion 페이지에서 <code>/</code> 입력 → <strong>Import</strong> 선택</li>
+    <li><strong>Text &amp; Markdown</strong> → CSV 파일 업로드</li>
+    <li>각 열이 Notion 속성으로 자동 매핑됨</li>
+  </ol>
+
+  <h3>Postman 연동</h3>
+  <p style="font-size:14px;margin-top:8px">
+    <a href="${base}/postman.html">Postman 안내 페이지</a>에서 Collection 다운로드 후 import
+  </p>
+
+  <h3>TypeScript 타입</h3>
+  <p style="font-size:14px;margin-top:8px">
+    <a href="${base}/types.html">타입 뷰어</a>에서 복사 또는 <code>types.d.ts</code> 직접 다운로드
+  </p>
+
+  <hr>
+
+  <h2>역할 기준</h2>
+  <table>
+    <thead><tr><th>Role</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td><code>PUBLIC</code></td><td>인증 없이 접근 가능</td></tr>
+      <tr><td><code>USER</code></td><td>로그인한 일반 회원</td></tr>
+      <tr><td><code>ARTISAN</code></td><td>장인 역할 (판매자)</td></tr>
+      <tr><td><code>ADMIN</code></td><td>관리자 전용</td></tr>
+    </tbody>
+  </table>
+
+  <h2>우선순위 기준</h2>
+  <table>
+    <thead><tr><th>Priority</th><th>도메인</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge core">CORE</span></td><td>회원 / 상품 / 장바구니 / 주문 / 결제</td></tr>
+      <tr><td><span class="badge normal">NORMAL</span></td><td>리뷰 / 장인 / 배송 / 알림 / 반품 등</td></tr>
+      <tr><td><span class="badge low">LOW</span></td><td>인프라 / Dev 전용</td></tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
+"""
+        new File(qaDir, 'index.html').text = qaIndexHtml
+        println "[buildQaPackage] index.html 생성 완료"
+        println "[buildQaPackage] 완료 → api-spec/public/qa/"
     }
 }
 

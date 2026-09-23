@@ -51,7 +51,7 @@ jobs:
         run: ./gradlew test processOpenapi --no-daemon --build-cache
 
       - name: Build all public artifacts
-        run: ./gradlew processOpenapiPublic buildRedoclyPublic buildPostmanCollection buildTypeScriptTypes buildApiSummaryHtml --no-daemon --continue
+        run: ./gradlew processOpenapiPublic buildRedoclyPublic buildPostmanCollection buildTypeScriptTypes buildApiSummaryHtml buildQaPackage --no-daemon --continue
         continue-on-error: true
 
       - name: Deploy to GitHub Pages
@@ -61,3 +61,4 @@ jobs:
           publish_dir: ./api-spec/public
           publish_branch: gh-pages
           commit_message: "docs: update API docs from ${{ github.sha }}"
+

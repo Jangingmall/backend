@@ -116,7 +116,7 @@ tasks.named('test') {
     useJUnitPlatform {
         excludeTags 'e2e', 'prod-smoke'
     }
-    finalizedBy 'buildRedocly'
+finalizedBy 'buildRedocly'
 }
 
 tasks.register('e2eTest', Test) {
