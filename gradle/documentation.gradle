@@ -948,7 +948,7 @@ tasks.register('buildPostmanCollection') {
     outputs.file(outputFile)
 
     doLast {
-        def result = exec {
+        def result = project.exec {
             commandLine 'npx', '--yes', 'openapi-to-postmanv2',
                 '-s', specFile.absolutePath,
                 '-o', outputFile.absolutePath,
@@ -976,7 +976,7 @@ tasks.register('buildTypeScriptTypes') {
     outputs.file(outputFile)
 
     doLast {
-        def result = exec {
+        def result = project.exec {
             commandLine 'npx', '--yes', 'openapi-typescript',
                 specFile.absolutePath,
                 '--output', outputFile.absolutePath
