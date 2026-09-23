@@ -14,8 +14,6 @@ public final class PermitAllPaths {
         "/api/member/signup",
         "/api/member/login",
         "/api/member/token/refresh",
-        "/api/member/email/verification-code",
-        "/api/member/email/verify",
         "/api/member/oauth2/kakao",
         "/api/member/oauth2/exchange",
         "/api/member/oauth2/complete-profile",

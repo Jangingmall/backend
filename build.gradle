@@ -84,9 +84,6 @@ dependencies {
     // dotenv — 루트 .env 파일을 Spring 환경변수로 로드 (로컬 개발용)
     implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 
-    // Email
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
