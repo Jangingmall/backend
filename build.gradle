@@ -116,8 +116,7 @@ tasks.named('test') {
     useJUnitPlatform {
         excludeTags 'e2e', 'prod-smoke'
     }
-    jvmArgs '-Xmx1g', '-XX:+ExitOnOutOfMemoryError'
-    finalizedBy 'buildRedocly'
+finalizedBy 'buildRedocly'
 }
 
 tasks.register('e2eTest', Test) {
