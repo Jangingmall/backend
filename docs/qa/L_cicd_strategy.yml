@@ -1,0 +1,129 @@
+# L. CI/CD QA Automation Strategy
+# Newman (Postman CLI runner) 기반 GitHub Actions 구조
+
+name: API QA Tests
+
+on:
+  pull_request:
+    branches: [ develop ]
+  push:
+    branches: [ develop ]
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Test suite to run'
+        required: true
+        default: 'smoke'
+        type: choice
+        options: [ smoke, core, full ]
+
+jobs:
+  # ── PR: Smoke + Contract ──────────────────────────────────────────────────
+  smoke-contract:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Smoke + Contract tests
+        env:
+          BASE_URL: ${{ secrets.QA_BASE_URL }}
+          ACCESS_TOKEN: ${{ secrets.QA_ACCESS_TOKEN }}
+          ARTISAN_TOKEN: ${{ secrets.QA_ARTISAN_TOKEN }}
+        run: |
+          newman run docs/qa/postman/smoke.collection.json \
+            --env-var baseUrl=$BASE_URL \
+            --env-var accessToken=$ACCESS_TOKEN \
+            --reporters cli,htmlextra \
+            --reporter-htmlextra-export reports/smoke-report.html \
+            --bail
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-report
+          path: reports/smoke-report.html
+
+  # ── develop push: Smoke + Core + Auth + Negative ──────────────────────────
+  core-regression:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Core Regression
+        env:
+          BASE_URL: ${{ secrets.QA_BASE_URL }}
+          ACCESS_TOKEN: ${{ secrets.QA_ACCESS_TOKEN }}
+          ARTISAN_TOKEN: ${{ secrets.QA_ARTISAN_TOKEN }}
+          ADMIN_TOKEN: ${{ secrets.QA_ADMIN_TOKEN }}
+        run: |
+          newman run docs/qa/postman/core.collection.json \
+            --env-var baseUrl=$BASE_URL \
+            --env-var accessToken=$ACCESS_TOKEN \
+            --env-var artisanToken=$ARTISAN_TOKEN \
+            --env-var adminToken=$ADMIN_TOKEN \
+            --reporters cli,htmlextra \
+            --reporter-htmlextra-export reports/core-report.html
+        continue-on-error: false
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-regression-report
+          path: reports/core-report.html
+
+  # ── Release Gate: 전체 ────────────────────────────────────────────────────
+  full-regression:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.test_suite == 'full'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Run Full Regression
+        env:
+          BASE_URL: ${{ secrets.QA_BASE_URL }}
+          ACCESS_TOKEN: ${{ secrets.QA_ACCESS_TOKEN }}
+          ARTISAN_TOKEN: ${{ secrets.QA_ARTISAN_TOKEN }}
+          ADMIN_TOKEN: ${{ secrets.QA_ADMIN_TOKEN }}
+        run: |
+          newman run docs/qa/postman/full.collection.json \
+            --env-var baseUrl=$BASE_URL \
+            --env-var accessToken=$ACCESS_TOKEN \
+            --env-var artisanToken=$ARTISAN_TOKEN \
+            --env-var adminToken=$ADMIN_TOKEN \
+            --reporters cli,htmlextra,junit \
+            --reporter-htmlextra-export reports/full-report.html \
+            --reporter-junit-export reports/full-junit.xml
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-regression-report
+          path: reports/
+
+# CONFIG_REQUIRED:
+#   QA_BASE_URL:     스테이징 서버 URL (예: https://api.stg.midam.store)
+#   QA_ACCESS_TOKEN: USER 역할 테스트 계정 JWT
+#   QA_ARTISAN_TOKEN: ARTISAN 역할 테스트 계정 JWT
+#   QA_ADMIN_TOKEN:  ADMIN 역할 테스트 계정 JWT
+#
+# RELEASE_POLICY_REQUIRED:
+#   어떤 job 실패가 배포 차단 조건인지 팀 결정 필요
+#
+# Postman Collection 파일 위치: docs/qa/postman/
+#   smoke.collection.json   - SMOKE-001~010
+#   core.collection.json    - CORE 도메인 전체
+#   full.collection.json    - 전체 회귀
