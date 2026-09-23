@@ -18,6 +18,8 @@ import com.jangingmall.backend.payment.domain.PurchaseOrder;
 import com.jangingmall.backend.payment.domain.PurchaseOrderRepository;
 import com.jangingmall.backend.payment.domain.ReturnReason;
 import com.jangingmall.backend.payment.domain.ReturnType;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -137,6 +139,45 @@ class ReturnServiceTest {
         assertThatThrownBy(() -> service.request(1L, new ReturnService.RequestReturn(10L, ReturnType.RETURN,
             List.of(101L), ReturnReason.CHANGE_OF_MIND, null, List.of("1", "1"), null)))
             .isInstanceOf(BusinessRuleViolationException.class);
+    }
+
+    @Test
+    @DisplayName("PAY-P1-097 배송 완료 후 7일 이내 반품 신청은 성공한다")
+    void allowsReturnWithinDeadline() {
+        PurchaseOrder order = deliveredOrder(10L, 1L, Instant.now().minus(3, ChronoUnit.DAYS));
+        when(orders.findByIdForUpdate(10L)).thenReturn(Optional.of(order));
+        when(returns.findByOrderId(10L)).thenReturn(Optional.empty());
+        when(images.consumeOwned(1L, ImagePurpose.RETURN, List.of())).thenReturn(List.of());
+        when(returns.save(any(OrderReturn.class))).thenAnswer(invocation -> {
+            OrderReturn ret = invocation.getArgument(0);
+            ReflectionTestUtils.setField(ret, "id", 30L);
+            return ret;
+        });
+
+        ReturnService.ReturnData result = service.request(1L, new ReturnService.RequestReturn(
+            10L, ReturnType.RETURN, List.of(101L), ReturnReason.CHANGE_OF_MIND, null, List.of(), null));
+
+        assertThat(result.status().name()).isEqualTo("REQUESTED");
+    }
+
+    @Test
+    @DisplayName("PAY-P1-098 배송 완료 후 7일 초과 시 반품 신청을 거부한다")
+    void rejectsReturnAfterDeadline() {
+        PurchaseOrder order = deliveredOrder(10L, 1L, Instant.now().minus(8, ChronoUnit.DAYS));
+        when(orders.findByIdForUpdate(10L)).thenReturn(Optional.of(order));
+
+        assertThatThrownBy(() -> service.request(1L, new ReturnService.RequestReturn(
+            10L, ReturnType.RETURN, List.of(101L), ReturnReason.CHANGE_OF_MIND, null, List.of(), null)))
+            .isInstanceOf(BusinessRuleViolationException.class)
+            .hasMessageContaining("7일");
+    }
+
+    private PurchaseOrder deliveredOrder(Long id, Long memberId, Instant deliveredAt) {
+        PurchaseOrder order = paidOrder(id, memberId);
+        ReflectionTestUtils.setField(order, "status", OrderStatus.IN_DELIVERY);
+        order.markDelivered();
+        ReflectionTestUtils.setField(order, "deliveredAt", deliveredAt);
+        return order;
     }
 
     private PurchaseOrder paidOrder(Long id, Long memberId) {

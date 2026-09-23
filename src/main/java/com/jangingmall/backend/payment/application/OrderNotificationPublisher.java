@@ -6,4 +6,5 @@ import com.jangingmall.backend.payment.domain.PurchaseOrder;
 public interface OrderNotificationPublisher {
     void paymentCompleted(PurchaseOrder order);
     void returnRequested(PurchaseOrder order, OrderReturn orderReturn);
+    void returnStaleAlert(OrderReturn orderReturn);
 }

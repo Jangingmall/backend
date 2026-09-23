@@ -20,6 +20,7 @@ import com.jangingmall.backend.global.docs.RestDocsControllerTest;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.global.exception.GlobalExceptionHandler;
+import com.jangingmall.backend.member.application.EmailVerificationService;
 import com.jangingmall.backend.member.application.MemberAuthenticationService;
 import com.jangingmall.backend.member.application.MemberProfile;
 import com.jangingmall.backend.member.application.MemberService;
@@ -52,6 +53,9 @@ class MemberControllerTest extends RestDocsControllerTest {
 
     @MockitoBean
     private MemberAuthenticationService memberAuthenticationService;
+
+    @MockitoBean
+    private EmailVerificationService emailVerificationService;
 
     @Test
     @DisplayName("정상 회원가입 요청은 201과 회원 정보를 반환한다")
@@ -278,5 +282,54 @@ class MemberControllerTest extends RestDocsControllerTest {
             .andExpect(status().isUnauthorized())
             .andExpect(jsonPath("$.errorCode").value("UNAUTHORIZED"))
             .andDo(documentError("member-get-me-unauthorized", "회원", "내 정보 조회 — 인증 없음", "인증 없이 접근하면 401을 반환합니다."));
+    }
+
+    @Test
+    @DisplayName("이메일 인증 코드 발송 요청은 200을 반환한다")
+    void sendVerificationCode() throws Exception {
+        mockMvc.perform(post("/api/member/email/verification-code")
+                .contentType(APPLICATION_JSON)
+                .content(json(new com.jangingmall.backend.member.presentation.dto.EmailVerificationRequest.Send("user@example.com"))))
+            .andExpect(status().isOk())
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "member-email-send-code",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("회원")
+                    .summary("이메일 인증 코드 발송")
+                    .description("가입 전 이메일 인증 코드를 발송합니다. 코드는 5분간 유효합니다.")
+                    .requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("인증할 이메일 (@NotBlank, @Email, 최대 255자)")
+                    )
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data").type(JsonFieldType.NULL).description("없음")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("올바른 인증 코드 검증은 200을 반환한다")
+    void verifyEmail() throws Exception {
+        mockMvc.perform(post("/api/member/email/verify")
+                .contentType(APPLICATION_JSON)
+                .content(json(new com.jangingmall.backend.member.presentation.dto.EmailVerificationRequest.Verify("user@example.com", "123456"))))
+            .andExpect(status().isOk())
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "member-email-verify",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("회원")
+                    .summary("이메일 인증 코드 확인")
+                    .description("이메일과 인증 코드를 제출하여 이메일 소유권을 확인합니다.")
+                    .requestFields(
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("인증할 이메일"),
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("6자리 숫자 인증 코드")
+                    )
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data").type(JsonFieldType.NULL).description("없음")
+                    ))
+                    .build()
+                )
+            ));
     }
 }
