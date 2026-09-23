@@ -40,7 +40,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class, com.jangingmall.backend.revalidate.application.RevalidateProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;

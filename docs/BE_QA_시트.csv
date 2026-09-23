@@ -1,0 +1,35 @@
+BE _QA 시트,,,,
+,,,,
+우선순위 설정,,,,
+판단 기준,판단 질문,우선순위,,
+이 항목이 실패하면 서비스 자체가 불가능한가?,서비스 불가·데이터 손실·결제 오류,P0,,
+이 항목이 실패하면 핵심 사용자 흐름이 막히는가?,핵심 플로우 저해·주요 기능 오동작,P1,,
+이 항목이 실패해도 우회 방법이 있는가?,부분 오류·대체 경로 존재,P2,,
+,,,,
+QA 결과,,,,
+No.,테스트 항목,테스트 결과,우선순위,비고
+1,결제 API — PG(토스페이먼츠) 승인 요청 성공 및 주문번호 생성,✅ 정상,P0,R5 / Flow1 Step27 / Flow2 Step45 / PaymentService.java:97
+2,결제 성공 후 주문 생성 실패 시 자동 복구(롤백) 동작,⚠️ 부분구현,P0,R5 / @Transactional 롤백만 있음 — 보상 트랜잭션 미구현
+3,주문서 토큰 멱등성 — 동일 요청 중복 처리 방지,✅ 정상,P0,R5 / PaymentService.java:47 normalizeIdempotencyKey()
+4,상품 상세 진입 시 최신 재고 상태 재조회,✅ 정상,P0,R4 / Flow1 Step15 / JdbcCheckoutCatalog.java:38
+5,장바구니 담기 시점 재고 검증,✅ 정상,P0,R4 / Flow2 Step33 / JdbcCheckoutCatalog.java:53
+6,주문서 진입 시 재고·가격 최종 검증,✅ 정상,P0,R4 / Flow1 Step24 / JdbcCheckoutCatalog.java:98
+7,AI 추천 API — 유사도 임계값(0.7) 기준 상품 반환 (최대 3개),⚠️ 부분구현,P0,R6 / Flow2 Step21 / 임계값 0.7은 AI 서버 위임 — BE는 product_ids 그대로 반환
+8,AI 추천 결과 0건 시 후속 질문 3개 생성,✅ 정상,P0,R6 / RestAiChatClient.java:88 suggestions 필드 반환
+9,"AI 추천 API Timeout/Retry 정책 동작 (장애 시 대체 경로 응답)",✅ 정상,P0,R3 / Flow2 Step20 / RestAiChatClient.java:24 MAX_RETRY_COUNT=2 + FALLBACK_REPLY
+10,AI 상세페이지 생성 API — 생성 완료 후 SP-8 응답 정상 반환,✅ 정상,P0,R13 / Flow4 Step8 / GenerationAsyncExecutor.java:44 → DRAFT_READY 전환
+11,"AI 상세페이지 생성 실패 시 Retry (최대 3회) 후 오류 응답",✅ 정상,P0,R13 / Flow4 Step8 / GenerationAsyncExecutor.java:36 MAX_RETRY_COUNT=2 (총 3회)
+12,"AI 입력 필수 항목(이미지·상품명·제작과정·상품설명) 미충족 시 생성 차단",✅ 정상,P1,R11 / Flow4 Step7 / GenerationRequest.java:13 @NotBlank + @Valid
+13,"AI 금지 표현(가격 직접 언급·과장·의학적 효능) 검사 API 동작",❌ 미구현,P1,Flow4 Step9 / BE에 없음 — AI 서버 처리 예정
+14,검색 API — 검색어 입력 시 결과 정상 반환,✅ 정상,P1,R2 / Flow1 Step6 / ProductController.java:79 keyword 파라미터
+15,"필터 API — 소분류·가격대·소재·선물포장·품절제외 조건 적용 결과 정합성",✅ 정상,P1,R2 / Flow1 Step12 / ProductController.java:81 ProductCommand.Search
+16,교환·환불 신청 — 배송 완료 후 7일 이내 조건 검증,❌ 미구현,P1,R8 / Flow3 Step9 / ReturnService.java:45 상태 검증만 있고 날짜(7일) 조건 없음
+17,교환·환불 신청 접수 후 주문 상태 변경 정상 처리,✅ 정상,P1,R10 / Flow3 Step13 / ReturnService.java:65 order.requestReturn()
+18,교환·환불 상태 변경 실패 시 자동 재처리 동작,❌ 미구현,P1,R10 / 재처리 스케줄러 없음
+19,회원가입 — 이메일 중복 검증 API 동작,✅ 정상,P2,R1 / Flow2 Step5 / MemberService.java:27 existsByEmail()
+20,이메일 인증 메일 발송 API 정상 동작,❌ 미구현,P2,R1 / Flow2 Step7 / 회원가입 즉시 저장 — 이메일 인증 없음
+21,로그인 5회 실패 시 계정 잠금 처리,⚠️ 부분구현,P2,R1 / Flow1 Step2 / AuthRateLimiter.java:23 IP rate limit(10회/60초) — 5회 계정 잠금 아님
+22,주문 내역 조회 API — 최신 주문 상태 정상 반환,✅ 정상,P2,R7 / Flow3 Step7 / MemberQueryService.java:27 reads.orders()
+23,교환·환불 신청 사유 미선택 시 등록 차단 API 검증,✅ 정상,P2,R9 / Flow3 Step11 / PaymentController.java:327 @NotNull ReturnReason
+24,"이미지 업로드 API — 형식·용량 검증 (섹션 편집)",⚠️ 부분구현,P2,R12 / Flow4 Step14 / ImageService.java:258 WEBP 형식 검증만 있음 — 용량 검증 미구현
+25,찜 추가/조회 API — 찜 목록 정합성 확인,✅ 정상,P2,Flow2 Step25~29 / ProductController.java:149 + MemberQueryService.java:21
