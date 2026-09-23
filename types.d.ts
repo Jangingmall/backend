@@ -4132,6 +4132,24 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
+        "api-payments-returns-1115423141": {
+            data?: {
+                /** @description 신청 일시 */
+                requestedAt: string;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 반품 ID */
+                returnId: number;
+                /** @description 반품·교환 유형 */
+                type: string;
+                /** @description 처리 상태 */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
         "api-payments-confirm1321390106": {
             data?: {
                 /** @description 결제 금액 */
@@ -4149,24 +4167,6 @@ export interface components {
                 /** @description 승인 일시 */
                 approvedAt?: string | null;
                 /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-payments-returns-1115423141": {
-            data?: {
-                /** @description 신청 일시 */
-                requestedAt: string;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 반품 ID */
-                returnId: number;
-                /** @description 반품·교환 유형 */
-                type: string;
-                /** @description 처리 상태 */
                 status: string;
             };
             /** @description true — 항상 성공 */
