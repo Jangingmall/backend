@@ -44,6 +44,9 @@ class MemberAuthenticationServiceTest {
     @Mock
     private MemberSocialAccountRepository socialAccounts;
 
+    @Mock
+    private LoginAttemptService loginAttempts;
+
     private MemberAuthenticationService memberAuthenticationService;
 
     @BeforeEach
@@ -59,7 +62,8 @@ class MemberAuthenticationServiceTest {
                 false
             ),
             refreshTokenStore,
-            socialAccounts
+            socialAccounts,
+            loginAttempts
         );
     }
 

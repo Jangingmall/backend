@@ -1,12 +1,14 @@
 package com.jangingmall.backend.member.presentation;
 
 import com.jangingmall.backend.global.common.response.ApiResponse;
+import com.jangingmall.backend.member.application.EmailVerificationService;
 import com.jangingmall.backend.member.application.MemberService;
 import com.jangingmall.backend.member.application.MemberAuthenticationService;
 import com.jangingmall.backend.member.application.MemberSession;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.global.security.JwtProperties;
+import com.jangingmall.backend.member.presentation.dto.EmailVerificationRequest;
 import com.jangingmall.backend.member.presentation.dto.MemberLoginRequest;
 import com.jangingmall.backend.member.presentation.dto.MemberLoginResponse;
 import com.jangingmall.backend.member.presentation.dto.MemberProfileResponse;
@@ -32,7 +34,24 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberAuthenticationService memberAuthenticationService;
+    private final EmailVerificationService emailVerificationService;
     private final JwtProperties jwtProperties;
+
+    @PostMapping("/email/verification-code")
+    public ResponseEntity<ApiResponse<Void>> sendVerificationCode(
+        @Valid @RequestBody EmailVerificationRequest.Send request
+    ) {
+        emailVerificationService.sendCode(request.email());
+        return ResponseEntity.ok(ApiResponse.ok(null));
+    }
+
+    @PostMapping("/email/verify")
+    public ResponseEntity<ApiResponse<Void>> verifyEmail(
+        @Valid @RequestBody EmailVerificationRequest.Verify request
+    ) {
+        emailVerificationService.verify(request.email(), request.code());
+        return ResponseEntity.ok(ApiResponse.ok(null));
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<MemberSignupResponse>> signUp(
