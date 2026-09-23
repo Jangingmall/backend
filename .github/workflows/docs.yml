@@ -69,7 +69,7 @@ jobs:
       - name: Verify deployed pages (no 404)
         run: |
           BASE="https://jangingmall.github.io/backend"
-          PAGES="/ /hub.html /summary.html /postman.html /types.html /openapi.json /postman.json /types.d.ts"
+          PAGES="/ /hub.html /summary.html /postman.html /types.html /openapi.json /postman.json /types.d.ts /qa/README.md /qa/A_api_inventory.csv /qa/B_test_case_matrix.csv /qa/C_negative_test_matrix.csv /qa/D_auth_matrix.csv /qa/I_contract_test_matrix.csv"
           FAILED=0
           for page in $PAGES; do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE$page")
