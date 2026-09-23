@@ -1667,17 +1667,81 @@ tasks.register('buildQaPackage') {
 
         // ── README (통계) ──────────────────────────────────────────────────
         def totalEndpoints = invRows.size() - 1
-        def readme = new StringBuilder()
-        readme << "# QA Automation Package\n\n"
-        readme << "Generated from: api-spec/public/openapi.json\n\n"
-        readme << "| 파일 | 내용 | 건수 |\n"
-        readme << "|------|------|------|\n"
-        readme << "| A_api_inventory.csv | 전체 API 목록 | ${totalEndpoints} |\n"
-        readme << "| B_test_case_matrix.csv | 전체 테스트 케이스 | ${tcRows.size()-1} |\n"
-        readme << "| C_negative_test_matrix.csv | Negative 테스트 | ${negRows.size()-1} |\n"
-        readme << "| D_auth_matrix.csv | 역할별 권한 매트릭스 | ${authRows.size()-1} |\n"
-        readme << "| I_contract_test_matrix.csv | Response Schema 검증 | ${ctRows.size()-1} |\n"
-        readme << "\n총 테스트 케이스: **${tcRows.size()-1 + negRows.size()-1 + ctRows.size()-1}건**\n"
+        def base    = 'https://jangingmall.github.io/backend'
+        def qaBase  = "${base}/qa"
+        def totalTc = tcRows.size()-1 + negRows.size()-1 + ctRows.size()-1
+        def readme  = new StringBuilder()
+        readme << """\
+# QA Automation Package
+
+`openapi.json` (${totalEndpoints}개 엔드포인트) 기반 자동 생성 — CI 매 배포마다 최신화
+
+---
+
+## 관련 링크
+
+| 페이지 | URL |
+|--------|-----|
+| Redoc API 문서 | [${base}/](${base}/) |
+| 팀별 허브 | [${base}/hub.html](${base}/hub.html) |
+| 엔드포인트 요약 (PM) | [${base}/summary.html](${base}/summary.html) |
+| Postman 안내 (QA) | [${base}/postman.html](${base}/postman.html) |
+| TypeScript 타입 (FE) | [${base}/types.html](${base}/types.html) |
+| OpenAPI JSON | [${base}/openapi.json](${base}/openapi.json) |
+
+---
+
+## 산출물 목록
+
+| 파일 | 내용 | 건수 | 다운로드 |
+|------|------|------|---------|
+| A_api_inventory.csv | 전체 API 목록 (Method / 경로 / 역할 / 우선순위) | ${totalEndpoints}개 | [다운로드](${qaBase}/A_api_inventory.csv) |
+| B_test_case_matrix.csv | 전체 테스트 케이스 (Happy Path / 필수값 / 타입 / 경계값 / 인증) | ${tcRows.size()-1}건 | [다운로드](${qaBase}/B_test_case_matrix.csv) |
+| C_negative_test_matrix.csv | Negative 테스트 (잘못된 타입 / path param / query param) | ${negRows.size()-1}건 | [다운로드](${qaBase}/C_negative_test_matrix.csv) |
+| D_auth_matrix.csv | 역할별 권한 매트릭스 (PUBLIC / USER / ARTISAN / ADMIN) | ${authRows.size()-1}개 | [다운로드](${qaBase}/D_auth_matrix.csv) |
+| I_contract_test_matrix.csv | Response Schema 계약 검증 | ${ctRows.size()-1}건 | [다운로드](${qaBase}/I_contract_test_matrix.csv) |
+
+**총 테스트 케이스: ${totalTc}건** (자동 생성, Notion import 가능)
+
+---
+
+## 사용 방법
+
+### Notion import
+
+1. Notion 페이지 → `/` 입력 → **Import** 선택
+2. **Text & Markdown** → CSV 파일 업로드
+3. 각 열이 Notion 속성으로 자동 매핑됨
+
+### Postman 연동
+
+[Postman 안내 페이지](${base}/postman.html)에서 Collection 다운로드 후 import
+
+### TypeScript 타입
+
+[타입 뷰어](${base}/types.html)에서 복사 또는 `types.d.ts` 직접 다운로드
+
+---
+
+## 역할 기준
+
+| Role | 설명 |
+|------|------|
+| PUBLIC | 인증 없이 접근 가능 |
+| USER | 로그인한 일반 회원 |
+| ARTISAN | 장인 역할 (판매자) |
+| ADMIN | 관리자 전용 |
+
+---
+
+## 우선순위 기준
+
+| Priority | 도메인 |
+|----------|--------|
+| CORE | 회원 / 상품 / 장바구니 / 주문 / 결제 |
+| NORMAL | 리뷰 / 장인 / 배송 / 알림 / 반품 등 |
+| LOW | 인프라 / Dev 전용 |
+"""
 
         new File(qaDir, 'README.md').text = readme.toString()
         println "[buildQaPackage] README.md 생성 완료"
