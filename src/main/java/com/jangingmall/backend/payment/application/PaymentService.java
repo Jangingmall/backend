@@ -124,7 +124,19 @@ public class PaymentService {
             catalog.release(inventoryLines(order));
             throw exception;
         }
-        completePayment(payment, order, command.paymentKey());
+        try {
+            completePayment(payment, order, command.paymentKey());
+        } catch (RuntimeException exception) {
+            // PG 승인 성공 후 로컬 저장 실패 → PG 측 즉시 취소
+            try {
+                paymentGateway.cancel(command.paymentKey(), "결제 확정 중 시스템 오류로 인한 자동 취소");
+            } catch (RuntimeException cancelException) {
+                // 취소 실패 시 관측 가능하게 로그만 남기고 원 예외를 re-throw
+                // 웹훅/만료 스케줄러가 최종 정합성을 보장한다
+                exception.addSuppressed(cancelException);
+            }
+            throw exception;
+        }
         return PaymentData.from(payment, order);
     }
 
