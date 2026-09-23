@@ -768,6 +768,7 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
 // ── 공개 배포용 OpenAPI 후처리 (이력서/포트폴리오 GitHub Pages) ──────────────
 // 제거 대상: /dev/token, /actuator/**, /healthz, ADMIN 전용 엔드포인트, x-sample-data
 tasks.register('processOpenapiPublic') {
+    dependsOn 'processOpenapi'
     description = 'Generate public openapi.json for GitHub Pages (removes internal/admin paths)'
 
     def inputFile  = file('api-spec/openapi.json')
