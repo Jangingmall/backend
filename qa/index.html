@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Automation Package — 장인몰</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+           background: #f6f8fa; color: #24292f; line-height: 1.6; }
+    nav { background: #1a1a2e; padding: 12px 32px; display: flex; align-items: center; gap: 24px; }
+    nav a { color: #cdd; text-decoration: none; font-size: 14px; }
+    nav a:hover { color: #fff; }
+    nav .brand { color: #fff; font-weight: 700; font-size: 16px; margin-right: 8px; }
+    .container { max-width: 960px; margin: 40px auto; padding: 0 24px; }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .subtitle { color: #57606a; font-size: 14px; margin-bottom: 40px; }
+    h2 { font-size: 18px; font-weight: 600; margin: 36px 0 12px;
+         padding-bottom: 6px; border-bottom: 1px solid #d0d7de; }
+    h3 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; color: #0969da; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px; }
+    th { background: #f6f8fa; padding: 8px 12px; text-align: left;
+         border: 1px solid #d0d7de; font-weight: 600; }
+    td { padding: 8px 12px; border: 1px solid #d0d7de; vertical-align: top; }
+    tr:hover td { background: #f6f8fa; }
+    a { color: #0969da; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px;
+             font-size: 12px; font-weight: 600; }
+    .badge.core   { background: #ddf4ff; color: #0969da; }
+    .badge.normal { background: #e6ffed; color: #1a7f37; }
+    .badge.low    { background: #f6f8fa; color: #57606a; }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                 gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: #fff; border: 1px solid #d0d7de; border-radius: 8px;
+                 padding: 20px; text-align: center; }
+    .stat-card .num { font-size: 32px; font-weight: 700; color: #0969da; }
+    .stat-card .label { font-size: 13px; color: #57606a; margin-top: 4px; }
+    .download-btn { display: inline-flex; align-items: center; gap: 6px;
+                    background: #0969da; color: #fff !important; padding: 5px 12px;
+                    border-radius: 6px; font-size: 13px; font-weight: 500; }
+    .download-btn:hover { background: #0550ae; text-decoration: none !important; }
+    ol, ul { padding-left: 20px; font-size: 14px; }
+    ol li, ul li { margin-bottom: 4px; }
+    code { background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 4px;
+           padding: 1px 5px; font-size: 13px; font-family: monospace; }
+    hr { border: none; border-top: 1px solid #d0d7de; margin: 32px 0; }
+  </style>
+</head>
+<body>
+<nav>
+  <span class="brand">장인몰 API</span>
+  <a href="https://jangingmall.github.io/backend/">📄 Redoc</a>
+  <a href="https://jangingmall.github.io/backend/hub.html">🏠 허브</a>
+  <a href="https://jangingmall.github.io/backend/summary.html">📋 요약</a>
+  <a href="https://jangingmall.github.io/backend/postman.html">📮 Postman</a>
+  <a href="https://jangingmall.github.io/backend/types.html">🔷 Types</a>
+  <a href="https://jangingmall.github.io/backend/qa/" style="color:#fff;font-weight:600">🧪 QA</a>
+</nav>
+
+<div class="container">
+  <h1>🧪 QA Automation Package</h1>
+  <p class="subtitle"><code>openapi.json</code> (103개 엔드포인트) 기반 자동 생성 — CI 매 배포마다 최신화</p>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="num">103</div><div class="label">전체 API</div></div>
+    <div class="stat-card"><div class="num">743</div><div class="label">테스트 케이스</div></div>
+    <div class="stat-card"><div class="num">277</div><div class="label">Negative 테스트</div></div>
+    <div class="stat-card"><div class="num">152</div><div class="label">Contract 검증</div></div>
+    <div class="stat-card"><div class="num">1172</div><div class="label">총 테스트 케이스</div></div>
+  </div>
+
+  <h2>산출물 다운로드</h2>
+  <table>
+    <thead><tr><th>파일</th><th>내용</th><th>건수</th><th>다운로드</th></tr></thead>
+    <tbody>
+      <tr><td>A_api_inventory.csv</td><td>전체 API 목록 (Method / 경로 / 역할 / 우선순위)</td><td>103개</td>
+          <td><a class="download-btn" href="A_api_inventory.csv" download>⬇ 다운로드</a></td></tr>
+      <tr><td>B_test_case_matrix.csv</td><td>전체 테스트 케이스 (Happy Path / 필수값 / 타입 / 경계값 / 인증)</td><td>743건</td>
+          <td><a class="download-btn" href="B_test_case_matrix.csv" download>⬇ 다운로드</a></td></tr>
+      <tr><td>C_negative_test_matrix.csv</td><td>Negative 테스트 (잘못된 타입 / path param / query param)</td><td>277건</td>
+          <td><a class="download-btn" href="C_negative_test_matrix.csv" download>⬇ 다운로드</a></td></tr>
+      <tr><td>D_auth_matrix.csv</td><td>역할별 권한 매트릭스 (PUBLIC / USER / ARTISAN / ADMIN)</td><td>103개</td>
+          <td><a class="download-btn" href="D_auth_matrix.csv" download>⬇ 다운로드</a></td></tr>
+      <tr><td>I_contract_test_matrix.csv</td><td>Response Schema 계약 검증</td><td>152건</td>
+          <td><a class="download-btn" href="I_contract_test_matrix.csv" download>⬇ 다운로드</a></td></tr>
+    </tbody>
+  </table>
+
+  <h2>사용 방법</h2>
+
+  <h3>Notion import</h3>
+  <ol>
+    <li>Notion 페이지에서 <code>/</code> 입력 → <strong>Import</strong> 선택</li>
+    <li><strong>Text &amp; Markdown</strong> → CSV 파일 업로드</li>
+    <li>각 열이 Notion 속성으로 자동 매핑됨</li>
+  </ol>
+
+  <h3>Postman 연동</h3>
+  <p style="font-size:14px;margin-top:8px">
+    <a href="https://jangingmall.github.io/backend/postman.html">Postman 안내 페이지</a>에서 Collection 다운로드 후 import
+  </p>
+
+  <h3>TypeScript 타입</h3>
+  <p style="font-size:14px;margin-top:8px">
+    <a href="https://jangingmall.github.io/backend/types.html">타입 뷰어</a>에서 복사 또는 <code>types.d.ts</code> 직접 다운로드
+  </p>
+
+  <hr>
+
+  <h2>역할 기준</h2>
+  <table>
+    <thead><tr><th>Role</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td><code>PUBLIC</code></td><td>인증 없이 접근 가능</td></tr>
+      <tr><td><code>USER</code></td><td>로그인한 일반 회원</td></tr>
+      <tr><td><code>ARTISAN</code></td><td>장인 역할 (판매자)</td></tr>
+      <tr><td><code>ADMIN</code></td><td>관리자 전용</td></tr>
+    </tbody>
+  </table>
+
+  <h2>우선순위 기준</h2>
+  <table>
+    <thead><tr><th>Priority</th><th>도메인</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge core">CORE</span></td><td>회원 / 상품 / 장바구니 / 주문 / 결제</td></tr>
+      <tr><td><span class="badge normal">NORMAL</span></td><td>리뷰 / 장인 / 배송 / 알림 / 반품 등</td></tr>
+      <tr><td><span class="badge low">LOW</span></td><td>인프라 / Dev 전용</td></tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

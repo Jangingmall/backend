@@ -144,17 +144,15 @@ IMAGE-013,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_
 IMAGE-014,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_MISSING,contentType 누락,HTTP 400 INVALID_INPUT,,AUTO
 IMAGE-015,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_NULL,contentType=null,HTTP 400 INVALID_INPUT,,AUTO
 IMAGE-016,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_EMPTY,"contentType=""""",HTTP 400 INVALID_INPUT,,AUTO
-IMAGE-017,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_MISSING,memberId 누락,HTTP 400 INVALID_INPUT,,AUTO
-IMAGE-018,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_NULL,memberId=null,HTTP 400 INVALID_INPUT,,AUTO
-IMAGE-019,이미지,POST,/api/images/presigned-url,image-presigned-url,TYPE_MISMATCH,variants: array→object,HTTP 400,,AUTO
-IMAGE-020,이미지,POST,/api/images/presigned-url,image-presigned-url,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-IMAGE-021,이미지,POST,/api/images/presigned-url,image-presigned-url,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-IMAGE-022,이미지,POST,/api/images/presigned-url,image-presigned-url,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-IMAGE-023,이미지,DELETE,/api/images/{imageId},image-delete,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-IMAGE-024,이미지,DELETE,/api/images/{imageId},image-delete,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-IMAGE-025,이미지,DELETE,/api/images/{imageId},image-delete,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-IMAGE-026,이미지,DELETE,/api/images/{imageId},image-delete,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-IMAGE-027,이미지,DELETE,/api/images/{imageId},image-delete,NOT_FOUND,imageId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
+IMAGE-017,이미지,POST,/api/images/presigned-url,image-presigned-url,TYPE_MISMATCH,variants: array→object,HTTP 400,,AUTO
+IMAGE-018,이미지,POST,/api/images/presigned-url,image-presigned-url,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-019,이미지,POST,/api/images/presigned-url,image-presigned-url,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-020,이미지,POST,/api/images/presigned-url,image-presigned-url,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-021,이미지,DELETE,/api/images/{imageId},image-delete,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
+IMAGE-022,이미지,DELETE,/api/images/{imageId},image-delete,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-023,이미지,DELETE,/api/images/{imageId},image-delete,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-024,이미지,DELETE,/api/images/{imageId},image-delete,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-025,이미지,DELETE,/api/images/{imageId},image-delete,NOT_FOUND,imageId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
 ARTISAN-001,장인,GET,/api/member/artisans,artisan-list,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
 ARTISAN-002,장인,GET,/api/member/artisans,artisan-list,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
 ARTISAN-003,장인,GET,/api/member/artisans,artisan-list,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
@@ -735,12 +733,12 @@ AICB-002,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion
 AICB-003,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
 AICB-004,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
 AICB-005,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,NOT_FOUND,generationId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-IMAGE-028,이미지,POST,/internal/images/verify,image-internal-verify,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-IMAGE-029,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_MISSING,requesterId 누락,HTTP 400 INVALID_INPUT,,AUTO
-IMAGE-030,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_NULL,requesterId=null,HTTP 400 INVALID_INPUT,,AUTO
-IMAGE-031,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_MISSING,imageId 누락,HTTP 400 INVALID_INPUT,,AUTO
-IMAGE-032,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_NULL,imageId=null,HTTP 400 INVALID_INPUT,,AUTO
-IMAGE-033,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_EMPTY,"imageId=""""",HTTP 400 INVALID_INPUT,,AUTO
-IMAGE-034,이미지,POST,/internal/images/verify,image-internal-verify,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-IMAGE-035,이미지,POST,/internal/images/verify,image-internal-verify,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-IMAGE-036,이미지,POST,/internal/images/verify,image-internal-verify,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-026,이미지,POST,/internal/images/verify,image-internal-verify,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
+IMAGE-027,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_MISSING,requesterId 누락,HTTP 400 INVALID_INPUT,,AUTO
+IMAGE-028,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_NULL,requesterId=null,HTTP 400 INVALID_INPUT,,AUTO
+IMAGE-029,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_MISSING,imageId 누락,HTTP 400 INVALID_INPUT,,AUTO
+IMAGE-030,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_NULL,imageId=null,HTTP 400 INVALID_INPUT,,AUTO
+IMAGE-031,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_EMPTY,"imageId=""""",HTTP 400 INVALID_INPUT,,AUTO
+IMAGE-032,이미지,POST,/internal/images/verify,image-internal-verify,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-033,이미지,POST,/internal/images/verify,image-internal-verify,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+IMAGE-034,이미지,POST,/internal/images/verify,image-internal-verify,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
