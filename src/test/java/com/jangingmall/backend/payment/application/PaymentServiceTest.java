@@ -598,6 +598,42 @@ class PaymentServiceTest {
         return payment;
     }
 
+    @Test
+    @DisplayName("PAY-P0-088 PG 승인 후 로컬 저장 실패 시 PG 취소 보상을 호출한다")
+    void cancelsWithPgOnLocalSaveFailure() {
+        PurchaseOrder order = order(100L, 1L, 25_000L);
+        Payment payment = payment(200L, 100L, 25_000L);
+        when(orders.findByOrderNumberForUpdate(order.getOrderNumber())).thenReturn(Optional.of(order));
+        when(payments.findByOrderIdForUpdate(100L)).thenReturn(Optional.of(payment));
+        doThrow(new RuntimeException("DB 오류")).when(notifications).paymentCompleted(any());
+
+        assertThatThrownBy(() -> service.confirm(1L,
+            new PaymentService.Confirm("pay_approved", order.getOrderNumber(), 25_000L)))
+            .isInstanceOf(RuntimeException.class);
+
+        verify(paymentGateway).confirm("pay_approved", order.getOrderNumber(), 25_000L);
+        verify(paymentGateway).cancel("pay_approved", "결제 확정 중 시스템 오류로 인한 자동 취소");
+    }
+
+    @Test
+    @DisplayName("PAY-P0-089 보상 취소도 실패하면 원 예외에 억제 예외를 첨부하여 throw한다")
+    void suppressesCancelExceptionOnCompensationFailure() {
+        PurchaseOrder order = order(100L, 1L, 25_000L);
+        Payment payment = payment(200L, 100L, 25_000L);
+        when(orders.findByOrderNumberForUpdate(order.getOrderNumber())).thenReturn(Optional.of(order));
+        when(payments.findByOrderIdForUpdate(100L)).thenReturn(Optional.of(payment));
+        doThrow(new RuntimeException("DB 오류")).when(notifications).paymentCompleted(any());
+        doThrow(new RuntimeException("PG 취소 실패")).when(paymentGateway)
+            .cancel("pay_approved", "결제 확정 중 시스템 오류로 인한 자동 취소");
+
+        assertThatThrownBy(() -> service.confirm(1L,
+            new PaymentService.Confirm("pay_approved", order.getOrderNumber(), 25_000L)))
+            .isInstanceOf(RuntimeException.class)
+            .hasMessageContaining("DB 오류")
+            .satisfies(ex -> assertThat(ex.getSuppressed()).hasSize(1)
+                .allMatch(s -> s.getMessage().equals("PG 취소 실패")));
+    }
+
     private void assertNotFound(org.assertj.core.api.ThrowableAssert.ThrowingCallable callable) {
         assertThatThrownBy(callable).isInstanceOf(DomainException.class)
             .extracting(error -> ((DomainException) error).getErrorCode()).isEqualTo(ErrorCode.NOT_FOUND);
