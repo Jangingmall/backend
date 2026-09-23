@@ -825,10 +825,24 @@ tasks.register('processOpenapiPublic') {
         // x-sample-data 제거 (내부 테스트 데이터)
         json.remove('x-sample-data')
 
-        // info.description 문의 이메일 교체
+        // info.description 문의 이메일 교체 + 다른 형식 링크 추가
         if (json.info?.description) {
             json.info.description = json.info.description
                 .replace('기술 문의: dev@midam.store', '기술 문의: GitHub Issues')
+            json.info.description += '''
+
+---
+
+## 다른 형식으로 보기
+
+| 형식 | 대상 | 링크 |
+|------|------|------|
+| Redoc 문서 | 모든 팀 | [jangingmall.github.io/backend/](https://jangingmall.github.io/backend/) |
+| OpenAPI JSON | 개발자 | [openapi.json](./openapi.json) |
+| Postman Collection | QA 팀 | [postman.json](./postman.json) |
+| TypeScript 타입 | FE 팀 | [types.d.ts](./types.d.ts) |
+| API 요약 | PM/기획 | [summary.html](./summary.html) |
+'''
         }
 
         // 태그에서 'Dev (로컬 전용)', '인프라', '관리자' 제거
@@ -919,6 +933,173 @@ tasks.register('buildRedoclyPublic') {
 """
         outputHtml.text = html
         println "[buildRedoclyPublic] HTML 생성 완료: ${outputHtml.absolutePath}"
+    }
+}
+
+// ── Postman Collection 생성 (QA팀) ───────────────────────────────────────────
+tasks.register('buildPostmanCollection') {
+    dependsOn 'processOpenapiPublic'
+    description = 'Convert public openapi.json to Postman Collection v2.1 for QA'
+
+    def specFile   = file('api-spec/public/openapi.json')
+    def outputFile = file('api-spec/public/postman.json')
+
+    inputs.file(specFile)
+    outputs.file(outputFile)
+
+    doLast {
+        def result = exec {
+            commandLine 'npx', '--yes', 'openapi-to-postmanv2',
+                '-s', specFile.absolutePath,
+                '-o', outputFile.absolutePath,
+                '-O', 'folderStrategy=Tags,includeAuthInfoInExample=false,requestParametersResolution=Example'
+            ignoreExitValue = true
+        }
+        if (result.exitValue != 0) {
+            println "[buildPostmanCollection] 변환 실패 (exitValue=${result.exitValue}) — 파일 생략"
+            if (outputFile.exists()) outputFile.delete()
+        } else {
+            println "[buildPostmanCollection] 생성 완료: ${outputFile.absolutePath}"
+        }
+    }
+}
+
+// ── TypeScript 타입 정의 생성 (FE팀) ─────────────────────────────────────────
+tasks.register('buildTypeScriptTypes') {
+    dependsOn 'processOpenapiPublic'
+    description = 'Generate TypeScript types from public openapi.json for FE'
+
+    def specFile   = file('api-spec/public/openapi.json')
+    def outputFile = file('api-spec/public/types.d.ts')
+
+    inputs.file(specFile)
+    outputs.file(outputFile)
+
+    doLast {
+        def result = exec {
+            commandLine 'npx', '--yes', 'openapi-typescript',
+                specFile.absolutePath,
+                '--output', outputFile.absolutePath
+            ignoreExitValue = true
+        }
+        if (result.exitValue != 0) {
+            println "[buildTypeScriptTypes] 변환 실패 (exitValue=${result.exitValue}) — 파일 생략"
+            if (outputFile.exists()) outputFile.delete()
+        } else {
+            println "[buildTypeScriptTypes] 생성 완료: ${outputFile.absolutePath}"
+        }
+    }
+}
+
+// ── API 요약 HTML 생성 (PM/기획팀) ───────────────────────────────────────────
+tasks.register('buildApiSummaryHtml') {
+    dependsOn 'processOpenapiPublic'
+    description = 'Generate HTML summary of public API endpoints for PM/planners'
+
+    def specFile   = file('api-spec/public/openapi.json')
+    def outputFile = file('api-spec/public/summary.html')
+
+    inputs.file(specFile)
+    outputs.file(outputFile)
+
+    doLast {
+        def slurper = new groovy.json.JsonSlurper()
+        def json    = slurper.parse(specFile)
+
+        // 태그별로 엔드포인트 분류
+        def methods = ['get','post','put','patch','delete']
+        def tagMap = [:].withDefault { [] }  // tag → [[method, path, summary, description]]
+        json.paths?.each { String path, pathItem ->
+            methods.each { method ->
+                def op = pathItem[method]
+                if (!op) return
+                def tag = op.tags?.first() ?: '기타'
+                // 역할 배지 추출 (description 첫 줄에서)
+                def desc = op.description ?: ''
+                def roleMatch = desc =~ /\*\*([^*]+)\*\*/
+                def roleBadge = roleMatch ? roleMatch[0][1] : ''
+                tagMap[tag] << [
+                    method     : method.toUpperCase(),
+                    path       : path,
+                    summary    : op.summary ?: '',
+                    role       : roleBadge
+                ]
+            }
+        }
+
+        def methodColor = [
+            GET: '#61affe', POST: '#49cc90', PUT: '#fca130',
+            PATCH: '#50e3c2', DELETE: '#f93e3e'
+        ]
+
+        def rows = new StringBuilder()
+        def tagOrder = json.tags?.collect { it.name } ?: tagMap.keySet().sort()
+        tagOrder.each { tag ->
+            def endpoints = tagMap[tag]
+            if (!endpoints) return
+            rows.append("""
+      <tr class="tag-header"><td colspan="4"><strong>${tag.replace('<','&lt;')}</strong></td></tr>""")
+            endpoints.each { ep ->
+                def color = methodColor[ep.method] ?: '#999'
+                def roleHtml = ep.role ? "<span class=\"role\">${ep.role.replace('<','&lt;')}</span>" : ''
+                rows.append("""
+      <tr>
+        <td><span class="method" style="background:${color}">${ep.method}</span></td>
+        <td class="path">${ep.path.replace('<','&lt;')}</td>
+        <td>${ep.summary.replace('<','&lt;')}</td>
+        <td>${roleHtml}</td>
+      </tr>""")
+            }
+        }
+
+        def totalCount = tagMap.values().sum { it.size() }
+        def version = json.info?.version ?: ''
+        def now = new Date().format("yyyy-MM-dd HH:mm 'UTC'", TimeZone.getTimeZone('UTC'))
+
+        def html = """\
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <title>장인몰 (미담) API 요약 — ${version}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 24px; background: #f7f8fa; color: #333; }
+    h1 { color: #3D6CD4; margin-bottom: 4px; }
+    .meta { color: #888; font-size: 13px; margin-bottom: 20px; }
+    .links { margin-bottom: 24px; }
+    .links a { display: inline-block; margin-right: 12px; padding: 6px 14px; background: #3D6CD4; color: white; text-decoration: none; border-radius: 4px; font-size: 13px; }
+    .links a:hover { background: #2d56bb; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+    th { background: #3D6CD4; color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
+    td { padding: 8px 14px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: middle; }
+    tr.tag-header td { background: #EEF2FD; font-size: 13px; padding: 8px 14px; color: #3D6CD4; border-bottom: 2px solid #d0dafc; }
+    .method { display: inline-block; padding: 2px 8px; border-radius: 3px; color: white; font-weight: 700; font-size: 11px; min-width: 54px; text-align: center; }
+    .path { font-family: monospace; color: #444; }
+    .role { font-size: 11px; background: #f0f0f0; border-radius: 3px; padding: 2px 6px; white-space: nowrap; }
+  </style>
+</head>
+<body>
+  <h1>장인몰 (미담) API 요약</h1>
+  <div class="meta">v${version} · 총 ${totalCount}개 엔드포인트 · 생성: ${now}</div>
+  <div class="links">
+    <a href="./">API 문서 (Redoc)</a>
+    <a href="./openapi.json">OpenAPI JSON</a>
+    <a href="./postman.json">Postman Collection</a>
+    <a href="./types.d.ts">TypeScript 타입</a>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Method</th><th>경로</th><th>설명</th><th>권한</th></tr>
+    </thead>
+    <tbody>${rows}
+    </tbody>
+  </table>
+</body>
+</html>
+"""
+        outputFile.text = html
+        println "[buildApiSummaryHtml] 생성 완료: ${outputFile.absolutePath}"
     }
 }
 

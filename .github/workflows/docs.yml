@@ -40,14 +40,29 @@ jobs:
           path: ~/.gradle/wrapper/dists
           key: gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Run tests & generate OpenAPI spec
         run: ./gradlew test processOpenapi --no-daemon --build-cache
 
-      - name: Build public docs
+      - name: Build public Redoc docs
         run: ./gradlew processOpenapiPublic buildRedoclyPublic --no-daemon
+
+      - name: Build Postman Collection
+        continue-on-error: true
+        run: ./gradlew buildPostmanCollection --no-daemon
+
+      - name: Build TypeScript types
+        continue-on-error: true
+        run: ./gradlew buildTypeScriptTypes --no-daemon
+
+      - name: Build API summary HTML
+        run: ./gradlew buildApiSummaryHtml --no-daemon
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
