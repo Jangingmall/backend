@@ -765,6 +765,163 @@ GET /api/artisans/subscriptions?cursor=eyJpZCI6MTB9&size=20
     }
 }
 
+// ── 공개 배포용 OpenAPI 후처리 (이력서/포트폴리오 GitHub Pages) ──────────────
+// 제거 대상: /dev/token, /actuator/**, /healthz, ADMIN 전용 엔드포인트, x-sample-data
+tasks.register('processOpenapiPublic') {
+    dependsOn 'processOpenapi'
+    description = 'Generate public openapi.json for GitHub Pages (removes internal/admin paths)'
+
+    def inputFile  = file('api-spec/openapi.json')
+    def outputFile = file('api-spec/public/openapi.json')
+
+    inputs.file(inputFile)
+    outputs.file(outputFile)
+
+    doLast {
+        def slurper = new groovy.json.JsonSlurper()
+        def json    = slurper.parse(inputFile)
+
+        // ── 제거할 경로 prefix / exact ────────────────────────────────────────
+        def removePaths = { String path ->
+            path.startsWith('/dev/')       ||
+            path.startsWith('/actuator/')  ||
+            path == '/healthz'
+        }
+
+        // ── ADMIN 전용 operationId prefix ─────────────────────────────────────
+        def adminPrefixes = [
+            'seller-application-admin-',
+            'seller-application-approve',
+            'seller-application-reject',
+            'seller-application-pipeline-update',
+            'image-verify',
+        ]
+        def isAdminOnly = { String oid ->
+            adminPrefixes.any { prefix -> oid == prefix || oid.startsWith(prefix) }
+        }
+
+        // 경로 필터링
+        def filteredPaths = json.paths?.findAll { path, pathItem ->
+            if (removePaths(path)) return false
+            // 해당 경로의 모든 메서드가 ADMIN 전용이면 제거
+            def methods = ['get','post','put','patch','delete','head','options']
+            def nonAdminExists = methods.any { m ->
+                def op = pathItem[m]
+                op && !isAdminOnly(op.operationId ?: '')
+            }
+            nonAdminExists
+        }
+
+        // 각 경로 안에서도 ADMIN 전용 메서드 제거
+        filteredPaths.each { path, pathItem ->
+            ['get','post','put','patch','delete','head','options'].each { m ->
+                def op = pathItem[m]
+                if (op && isAdminOnly(op.operationId ?: '')) pathItem.remove(m)
+            }
+        }
+
+        json.paths = filteredPaths
+
+        // x-sample-data 제거 (내부 테스트 데이터)
+        json.remove('x-sample-data')
+
+        // info.description 문의 이메일 교체
+        if (json.info?.description) {
+            json.info.description = json.info.description
+                .replace('기술 문의: dev@midam.store', '기술 문의: GitHub Issues')
+        }
+
+        // 태그에서 'Dev (로컬 전용)', '인프라', '관리자' 제거
+        def removeTags = ['Dev (로컬 전용)', '인프라', '관리자'] as Set
+        if (json.tags) {
+            json.tags = json.tags.findAll { !(it.name in removeTags) }
+        }
+        if (json['x-tagGroups']) {
+            json['x-tagGroups'] = json['x-tagGroups']
+                .findAll { !(it.name in ['Dev (로컬 전용)', '인프라', '관리자']) }
+                .collect { group ->
+                    group.tags = group.tags?.findAll { !(it in removeTags) }
+                    group
+                }
+                .findAll { group -> group.tags }
+        }
+
+        def outputDir = file('api-spec/public')
+        outputDir.mkdirs()
+        outputFile.text = groovy.json.JsonOutput.prettyPrint(
+            groovy.json.JsonOutput.toJson(json)
+        )
+        println "[processOpenapiPublic] 생성 완료: ${outputFile.absolutePath}"
+    }
+}
+
+// ── 공개 배포용 Redocly HTML ──────────────────────────────────────────────────
+tasks.register('buildRedoclyPublic') {
+    dependsOn 'processOpenapiPublic'
+    description = 'Generate public redoc.html for GitHub Pages deployment'
+
+    def specFile   = file('api-spec/public/openapi.json')
+    def outputHtml = file('api-spec/public/index.html')
+
+    inputs.file(specFile)
+    outputs.file(outputHtml)
+
+    doLast {
+        def specJson = specFile.text.replace('</script>', '<\\/script>')
+
+        def html = """\
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>장인몰 (미담) API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+  <style>
+    body { padding: 0; margin: 0; }
+    li[data-item-id^="group/"] {
+      margin-top: 6px;
+      border-top: 1px solid rgba(61, 108, 212, 0.2);
+    }
+    li[data-item-id^="group/"]:first-of-type { border-top: none; margin-top: 0; }
+    li[data-item-id^="group/"] > label > span {
+      font-size: 1.36em !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+  <div id="redoc-container"></div>
+  <script src="https://cdn.redocly.com/redoc/v2.5.4/bundles/redoc.standalone.js"
+    integrity="sha384-w447zOpYfw/1Tv/5AK9NfHTlQIqE3RVR6KY62jCyy9zNDgO64cMwGGP1Fj0zJVf5"
+    crossorigin="anonymous"></script>
+  <script>
+    Redoc.init(
+      ${specJson},
+      {
+        expandResponses: '200,201,202',
+        requiredPropsFirst: true,
+        theme: {
+          colors: { primary: { main: '#3D6CD4' } },
+          sidebar: {
+            activeTextColor: '#3D6CD4',
+            activeBgColor: '#EEF2FD',
+            groupItems: { textTransform: 'uppercase' }
+          }
+        }
+      },
+      document.getElementById('redoc-container')
+    );
+  </script>
+</body>
+</html>
+"""
+        outputHtml.text = html
+        println "[buildRedoclyPublic] HTML 생성 완료: ${outputHtml.absolutePath}"
+    }
+}
+
 // ── Redocly HTML 생성 (CDN 방식, npx/Node.js 불필요) ────────────────────────
 tasks.register('buildRedocly') {
     dependsOn 'processOpenapi'
