@@ -15,6 +15,7 @@ import com.jangingmall.backend.payment.domain.PurchaseOrderRepository;
 import com.jangingmall.backend.payment.domain.ReturnReason;
 import com.jangingmall.backend.payment.domain.ReturnStatus;
 import com.jangingmall.backend.payment.domain.ReturnType;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ReturnService {
+
+    private static final int RETURN_DEADLINE_DAYS = 7;
 
     private final MemberAccess memberAccess;
     private final ShippingAddressReader shippingAddresses;
@@ -44,6 +47,14 @@ public class ReturnService {
             .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
         if (order.getStatus() != OrderStatus.PAID && order.getStatus() != OrderStatus.DELIVERED) {
             throw new BusinessRuleViolationException("결제 완료 또는 배송 완료 주문만 반품 신청할 수 있습니다.");
+        }
+        if (order.getStatus() == OrderStatus.DELIVERED) {
+            Instant deadline = order.getDeliveredAt() == null
+                ? order.getUpdatedAt()
+                : order.getDeliveredAt();
+            if (Duration.between(deadline, Instant.now()).toDays() >= RETURN_DEADLINE_DAYS) {
+                throw new BusinessRuleViolationException("배송 완료 후 " + RETURN_DEADLINE_DAYS + "일 이내에만 반품 신청할 수 있습니다.");
+            }
         }
         Long returnAddressId = command.returnAddressId() == null ? order.getAddressId()
             : shippingAddresses.findOwned(memberId, command.returnAddressId()).addressId();

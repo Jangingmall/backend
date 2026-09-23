@@ -33,6 +33,16 @@ public class JdbcOrderNotificationPublisher implements OrderNotificationPublishe
             "주문 " + order.getOrderNumber() + "에 " + orderReturn.getType() + " 요청이 접수되었습니다.", true);
     }
 
+    @Override
+    public void returnStaleAlert(OrderReturn orderReturn) {
+        jdbcTemplate.queryForList(
+            "select member_id from member where role = 'ADMIN' and status = 'ACTIVE'",
+            Long.class
+        ).forEach(adminId -> notifications.save(Notification.create(adminId,
+            "미처리 교환·반품 건 알림",
+            "반품 ID " + orderReturn.getId() + "이(가) 24시간 이상 REQUESTED 상태입니다. 처리가 필요합니다.")));
+    }
+
     private void saveForSellers(PurchaseOrder order, String title, String content, boolean includeAdmins) {
         Set<Long> recipients = new LinkedHashSet<>();
         List<Long> productIds = order.getItems().stream().map(item -> item.getProductId()).distinct().toList();

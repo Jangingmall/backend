@@ -80,6 +80,9 @@ public class PurchaseOrder {
     @Column(name = "canceled_at")
     private Instant canceledAt;
 
+    @Column(name = "delivered_at")
+    private Instant deliveredAt;
+
     @Column(name = "purchase_confirmed_at")
     private Instant purchaseConfirmedAt;
 
@@ -187,7 +190,8 @@ public class PurchaseOrder {
             throw new IllegalStateException("배송 중 주문만 배송 완료로 변경할 수 있습니다.");
         }
         status = OrderStatus.DELIVERED;
-        updatedAt = Instant.now();
+        deliveredAt = Instant.now();
+        updatedAt = deliveredAt;
     }
 
     /** A confirmed purchase is final for the customer-facing return workflow. */
