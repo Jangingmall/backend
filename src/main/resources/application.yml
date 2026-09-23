@@ -160,6 +160,11 @@ ai:
 internal-api:
   backend-auth-token: ${BACKEND_AUTH_TOKEN:}
 
+revalidate:
+  webhook-url: ${REVALIDATE_WEBHOOK_URL:http://localhost:3000/api/revalidate}
+  webhook-secret: ${REVALIDATE_WEBHOOK_SECRET:}
+  timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}
+
 ---
 spring:
   config:
@@ -268,6 +273,11 @@ ai:
 internal-api:
   backend-auth-token: ${BACKEND_AUTH_TOKEN:}
 
+revalidate:
+  webhook-url: ${REVALIDATE_WEBHOOK_URL:https://stg.midam.store/api/revalidate}
+  webhook-secret: ${REVALIDATE_WEBHOOK_SECRET:}
+  timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}
+
 ---
 spring:
   config:
@@ -374,6 +384,11 @@ ai:
 
 internal-api:
   backend-auth-token: ${BACKEND_AUTH_TOKEN}
+
+revalidate:
+  webhook-url: ${REVALIDATE_WEBHOOK_URL}
+  webhook-secret: ${REVALIDATE_WEBHOOK_SECRET}
+  timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}
 
 logging:
   structured:
