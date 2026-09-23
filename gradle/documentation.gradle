@@ -937,58 +937,78 @@ tasks.register('buildRedoclyPublic') {
 }
 
 // ── Postman Collection 생성 (QA팀) ───────────────────────────────────────────
-tasks.register('buildPostmanCollection') {
-    dependsOn 'processOpenapiPublic'
-    description = 'Convert public openapi.json to Postman Collection v2.1 for QA'
+abstract class BuildPostmanCollectionTask extends DefaultTask {
+    @javax.inject.Inject
+    abstract org.gradle.process.ExecOperations getExecOps()
 
-    def specFile   = file('api-spec/public/openapi.json')
-    def outputFile = file('api-spec/public/postman.json')
+    @org.gradle.api.tasks.InputFile
+    abstract org.gradle.api.provider.Property<File> getSpecFile()
 
-    inputs.file(specFile)
-    outputs.file(outputFile)
+    @org.gradle.api.tasks.OutputFile
+    abstract org.gradle.api.provider.Property<File> getOutputFile()
 
-    doLast {
-        def result = project.exec {
+    @org.gradle.api.tasks.TaskAction
+    void run() {
+        def spec = specFile.get()
+        def out  = outputFile.get()
+        def result = execOps.exec {
             commandLine 'npx', '--yes', 'openapi-to-postmanv2',
-                '-s', specFile.absolutePath,
-                '-o', outputFile.absolutePath,
+                '-s', spec.absolutePath,
+                '-o', out.absolutePath,
                 '-O', 'folderStrategy=Tags,includeAuthInfoInExample=false,requestParametersResolution=Example'
             ignoreExitValue = true
         }
         if (result.exitValue != 0) {
             println "[buildPostmanCollection] 변환 실패 (exitValue=${result.exitValue}) — 파일 생략"
-            if (outputFile.exists()) outputFile.delete()
+            if (out.exists()) out.delete()
         } else {
-            println "[buildPostmanCollection] 생성 완료: ${outputFile.absolutePath}"
+            println "[buildPostmanCollection] 생성 완료: ${out.absolutePath}"
         }
     }
 }
 
-// ── TypeScript 타입 정의 생성 (FE팀) ─────────────────────────────────────────
-tasks.register('buildTypeScriptTypes') {
+tasks.register('buildPostmanCollection', BuildPostmanCollectionTask) {
     dependsOn 'processOpenapiPublic'
-    description = 'Generate TypeScript types from public openapi.json for FE'
+    description = 'Convert public openapi.json to Postman Collection v2.1 for QA'
+    specFile  = file('api-spec/public/openapi.json')
+    outputFile = file('api-spec/public/postman.json')
+}
 
-    def specFile   = file('api-spec/public/openapi.json')
-    def outputFile = file('api-spec/public/types.d.ts')
+// ── TypeScript 타입 정의 생성 (FE팀) ─────────────────────────────────────────
+abstract class BuildTypeScriptTypesTask extends DefaultTask {
+    @javax.inject.Inject
+    abstract org.gradle.process.ExecOperations getExecOps()
 
-    inputs.file(specFile)
-    outputs.file(outputFile)
+    @org.gradle.api.tasks.InputFile
+    abstract org.gradle.api.provider.Property<File> getSpecFile()
 
-    doLast {
-        def result = project.exec {
+    @org.gradle.api.tasks.OutputFile
+    abstract org.gradle.api.provider.Property<File> getOutputFile()
+
+    @org.gradle.api.tasks.TaskAction
+    void run() {
+        def spec = specFile.get()
+        def out  = outputFile.get()
+        def result = execOps.exec {
             commandLine 'npx', '--yes', 'openapi-typescript',
-                specFile.absolutePath,
-                '--output', outputFile.absolutePath
+                spec.absolutePath,
+                '--output', out.absolutePath
             ignoreExitValue = true
         }
         if (result.exitValue != 0) {
             println "[buildTypeScriptTypes] 변환 실패 (exitValue=${result.exitValue}) — 파일 생략"
-            if (outputFile.exists()) outputFile.delete()
+            if (out.exists()) out.delete()
         } else {
-            println "[buildTypeScriptTypes] 생성 완료: ${outputFile.absolutePath}"
+            println "[buildTypeScriptTypes] 생성 완료: ${out.absolutePath}"
         }
     }
+}
+
+tasks.register('buildTypeScriptTypes', BuildTypeScriptTypesTask) {
+    dependsOn 'processOpenapiPublic'
+    description = 'Generate TypeScript types from public openapi.json for FE'
+    specFile  = file('api-spec/public/openapi.json')
+    outputFile = file('api-spec/public/types.d.ts')
 }
 
 // ── 팀별 HTML 페이지 생성 (hub / postman / types / summary) ──────────────────
