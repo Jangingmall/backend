@@ -281,6 +281,13 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+toss:
+  payments:
+    # Production-like deployments must receive real payment credentials from the secret store.
+    # The root defaults remain available only to local profiles.
+    secret-key: ${TOSS_SECRET_KEY}
+    client-key: ${TOSS_CLIENT_KEY}
+
 jwt:
   secret: ${JWT_SECRET}
   access-token-expiry: 1800000
