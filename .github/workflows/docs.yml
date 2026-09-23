@@ -2,7 +2,7 @@ name: API Docs (GitHub Pages)
 
 on:
   push:
-    branches: [ develop, feat/qa-automation-package ]  # TEMP: 페이지 검증용 — 완료 후 제거
+    branches: [ develop ]
 
 concurrency:
   group: docs-${{ github.ref }}
@@ -62,25 +62,3 @@ jobs:
           publish_branch: gh-pages
           commit_message: "docs: update API docs from ${{ github.sha }}"
 
-      # TEMP: 페이지 정상 여부 검증 — 완료 후 제거
-      - name: Wait for GitHub Pages to propagate
-        run: sleep 30
-
-      - name: Verify deployed pages (no 404)
-        run: |
-          BASE="https://jangingmall.github.io/backend"
-          PAGES="/ /hub.html /summary.html /postman.html /types.html /openapi.json /postman.json /types.d.ts /qa/ /qa/index.html /qa/A_api_inventory.csv /qa/B_test_case_matrix.csv /qa/C_negative_test_matrix.csv /qa/D_auth_matrix.csv /qa/I_contract_test_matrix.csv"
-          FAILED=0
-          for page in $PAGES; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE$page")
-            if [ "$STATUS" = "200" ]; then
-              echo "✅ $BASE$page → $STATUS"
-            else
-              echo "❌ $BASE$page → $STATUS"
-              FAILED=$((FAILED + 1))
-            fi
-          done
-          if [ $FAILED -gt 0 ]; then
-            echo "::error::${FAILED}개 페이지 비정상 응답"
-            exit 1
-          fi
