@@ -64,12 +64,12 @@ public class Product {
     @Column(name = "thumbnail_url", length = 500)
     private String thumbnailUrl;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "product_gift_theme", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "gift_theme")
     private List<String> giftThemes = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "product_purpose_tag", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "purpose_tag")
     private List<String> purposeTags = new ArrayList<>();
@@ -77,7 +77,7 @@ public class Product {
     @Column(name = "production_period_days")
     private Integer productionPeriodDays;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "product_color", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "color")
     private List<String> colors = new ArrayList<>();

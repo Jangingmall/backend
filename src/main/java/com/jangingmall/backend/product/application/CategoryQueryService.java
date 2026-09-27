@@ -4,6 +4,8 @@ import com.jangingmall.backend.product.domain.CategoryRepository;
 import com.jangingmall.backend.product.domain.SubcategoryMaterialRepository;
 import com.jangingmall.backend.product.domain.SubcategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ public class CategoryQueryService {
     private final SubcategoryRepository subcategoryRepository;
     private final SubcategoryMaterialRepository subcategoryMaterialRepository;
 
+    @Cacheable(value = "categories", key = "'all'")
     @Transactional(readOnly = true)
     public List<CategoryResponse.CategoryItem> findAllCategories() {
         return categoryRepository.findAll().stream()
@@ -24,6 +27,7 @@ public class CategoryQueryService {
             .toList();
     }
 
+    @Cacheable(value = "categories", key = "'subcategories'")
     @Transactional(readOnly = true)
     public List<CategoryResponse.SubcategoryItem> findAllSubcategories() {
         return subcategoryRepository.findAll().stream()

@@ -8,6 +8,7 @@ public interface ImageUploadRepository {
     ImageUpload save(ImageUpload imageUpload);
     Optional<ImageUpload> findById(String imageId);
     Optional<ImageUpload> findByIdForUpdate(String imageId);
+    List<ImageUpload> findAllById(Iterable<String> imageIds);
     List<ImageUpload> findAll();
     List<ImageUpload> findTop100ByConsumedFalseAndExpiresAtLessThanEqualOrderByExpiresAtAsc(Instant now);
     void delete(ImageUpload imageUpload);

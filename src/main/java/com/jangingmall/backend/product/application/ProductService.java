@@ -25,6 +25,8 @@ import com.jangingmall.backend.revalidate.domain.RevalidateEvent;
 import com.jangingmall.backend.revalidate.domain.RevalidateEventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +35,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -78,6 +82,7 @@ public class ProductService {
             null, null, null, null, null);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Transactional
     public ProductResponse create(ProductCommand.Create command) {
         Category category = resolveCategory(command.categoryId());
@@ -106,25 +111,56 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Page<ProductResponse> findByArtisan(Long artisanId, Pageable pageable) {
-        return productRepository.findByArtisanId(artisanId, pageable).map(this::response);
+        Page<Product> page = productRepository.findByArtisanId(artisanId, pageable);
+        return applyBatchImages(page);
     }
 
     @Transactional(readOnly = true)
     public Page<ProductResponse> findOnSale(Pageable pageable) {
-        return productRepository.findOnSale(new ProductCommand.Search(null, null, null, null, null,
-            null, null, false, null), pageable).map(this::response);
+        Page<Product> page = productRepository.findOnSale(new ProductCommand.Search(null, null, null, null, null,
+            null, null, false, null), pageable);
+        return applyBatchImages(page);
     }
 
     @Transactional(readOnly = true)
     public Page<ProductResponse> findOnSale(ProductCommand.Search search, Pageable pageable) {
-        return productRepository.findOnSale(search, pageable).map(this::response);
+        Page<Product> page = productRepository.findOnSale(search, pageable);
+        return applyBatchImages(page);
     }
 
+    private Page<ProductResponse> applyBatchImages(Page<Product> page) {
+        if (productImageRepository == null) {
+            return page.map(p -> ProductResponse.from(p));
+        }
+        List<Long> productIds = page.stream().map(Product::getId).toList();
+        Map<Long, List<ProductImage>> imagesByProductId =
+            productImageRepository.findByProductIdInOrderByProductIdAscDisplayOrderAsc(productIds)
+                .stream().collect(Collectors.groupingBy(ProductImage::getProductId));
+        List<String> allImageIds = imagesByProductId.values().stream()
+            .flatMap(List::stream).map(ProductImage::getImageId).distinct().toList();
+        Map<String, List<ImageService.PublicVariant>> variantsByImageId =
+            imageService == null ? Map.of() : imageService.publicVariantsBatch(allImageIds);
+        return page.map(product -> {
+            List<ProductResponse.ProductImageView> imageViews =
+                imagesByProductId.getOrDefault(product.getId(), List.of()).stream()
+                    .map(img -> new ProductResponse.ProductImageView(
+                        img.getImageId(),
+                        img.getAlt() == null || img.getAlt().isBlank() ? product.getTitle() : img.getAlt(),
+                        variantsByImageId.getOrDefault(img.getImageId(), List.of()).stream()
+                            .map(v -> new ProductResponse.ImageVariantView(v.url(), v.width(), v.height(), v.format()))
+                            .toList()))
+                    .toList();
+            return ProductResponse.from(product, imageViews, List.of());
+        });
+    }
+
+    @Cacheable(value = "products", key = "'detail_' + #productId")
     @Transactional(readOnly = true)
     public ProductResponse findById(Long productId) {
         return response(getProduct(productId), true);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Transactional
     public ProductResponse update(ProductCommand.Update command) {
         Product product = getProduct(command.productId());
@@ -153,6 +189,7 @@ public class ProductService {
         return response;
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Transactional
     public void changeStatus(ProductCommand.ChangeStatus command) {
         Product product = getProduct(command.productId());
@@ -163,6 +200,7 @@ public class ProductService {
         }
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     @Transactional
     public void delete(Long productId, Long requesterId) {
         Product product = getProduct(productId);
