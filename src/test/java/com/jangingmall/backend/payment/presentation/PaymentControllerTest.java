@@ -933,9 +933,45 @@ class PaymentControllerTest extends RestDocsControllerTest {
             ));
     }
 
+    @Test
+    @DisplayName("PAY-P3-002 반품 승인은 200 OK를 반환한다")
+    void approvesReturn() throws Exception {
+        when(returns.approve(300L)).thenReturn(
+            new ReturnService.ReturnData(300L, 100L, ReturnType.RETURN, ReturnStatus.APPROVED, Instant.now()));
+        mockMvc.perform(patch("/api/payments/returns/{returnId}/status", 300L).with(admin()).contentType(APPLICATION_JSON)
+                .content("{\"status\":\"APPROVED\"}"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.status").value("APPROVED"))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "returns-approve",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("반품/교환")
+                    .summary("반품·교환 승인 (ADMIN)")
+                    .description("관리자가 반품·교환 신청을 승인합니다. 승인 시 예약된 재고가 복원됩니다.")
+                    .pathParameters(parameterWithName("returnId").description("반품 ID"))
+                    .requestFields(
+                        fieldWithPath("status").type(JsonFieldType.STRING).description("변경할 상태 (APPROVED)")
+                    )
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.returnId").type(JsonFieldType.NUMBER).description("반품 ID"),
+                        fieldWithPath("data.orderId").type(JsonFieldType.NUMBER).description("주문 ID"),
+                        fieldWithPath("data.type").type(JsonFieldType.STRING).description("반품·교환 유형"),
+                        fieldWithPath("data.status").type(JsonFieldType.STRING).description("처리 상태"),
+                        fieldWithPath("data.requestedAt").type(JsonFieldType.STRING).description("신청 일시")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
     private RequestPostProcessor user() {
         return authentication(new UsernamePasswordAuthenticationToken(
             1L, null, List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+    }
+
+    private RequestPostProcessor admin() {
+        return authentication(new UsernamePasswordAuthenticationToken(
+            999L, null, List.of(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"))));
     }
 
     private CartService.CartData emptyCart() {
