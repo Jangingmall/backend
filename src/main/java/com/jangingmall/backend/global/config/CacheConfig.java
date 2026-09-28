@@ -41,6 +41,12 @@ public class CacheConfig {
         return RedisCacheManager.builder(connectionFactory)
             .cacheDefaults(defaults)
             .withInitialCacheConfigurations(configs)
+            .enableStatistics()
             .build();
+    }
+
+    @Bean
+    public RedisCacheMetricsBinder redisCacheMetricsBinder(RedisCacheManager cacheManager) {
+        return new RedisCacheMetricsBinder(cacheManager);
     }
 }

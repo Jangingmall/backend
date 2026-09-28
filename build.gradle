@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' version '4.0.3'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.epages.restdocs-api-spec' version '0.20.1'
-    id 'io.gatling.gradle' version '3.13.5'
+    // id 'io.gatling.gradle' version '3.13.5'  // Gradle 9.x 호환성 문제로 k6로 대체
     id 'jacoco'
 }
 
@@ -95,8 +95,8 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
-    // Gatling load test
-    gatlingImplementation 'io.gatling.highcharts:gatling-charts-highcharts:3.13.5'
+    // Gatling load test (k6로 대체 — Gradle 9.x 호환성)
+    // gatlingImplementation 'io.gatling.highcharts:gatling-charts-highcharts:3.13.5'
 }
 
 def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
