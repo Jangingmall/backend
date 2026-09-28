@@ -121,6 +121,8 @@ tasks.named('test') {
     useJUnitPlatform {
         excludeTags 'e2e', 'prod-smoke'
     }
+    maxParallelForks = Math.max(1, (int)(Runtime.runtime.availableProcessors() / 2))
+    jvmArgs '-Xmx512m', '-XX:+UseG1GC', '-Djunit.jupiter.execution.parallel.enabled=false'
     finalizedBy 'buildRedocly', 'jacocoTestReport'
 }
 

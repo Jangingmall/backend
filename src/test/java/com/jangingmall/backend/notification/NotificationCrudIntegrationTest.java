@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
@@ -28,7 +28,6 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = "management.server.port=-1")
 class NotificationCrudIntegrationTest extends PostgresIntegrationBase {
@@ -39,6 +38,9 @@ class NotificationCrudIntegrationTest extends PostgresIntegrationBase {
     @Autowired
     private JwtProperties jwtProperties;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String userToken;
     private static final Long MEMBER_ID = 1L;
@@ -47,6 +49,7 @@ class NotificationCrudIntegrationTest extends PostgresIntegrationBase {
     void setUp() {
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(jwtProperties);
         userToken = jwtTokenProvider.createAccessToken(MEMBER_ID, MemberRole.USER);
+        jdbcTemplate.update("DELETE FROM notifications WHERE member_id = ?", MEMBER_ID);
     }
 
     private HttpClient newClient() {

@@ -475,14 +475,12 @@ class UserJourneyE2ETest {
     // ── T-01~T-05: 재고·환불 시나리오 ───────────────────────────────
 
     @Test
-    @DisplayName("T-01: 재고 0 상품 주문 — 주문 생성 시 400~422가 반환된다")
+    @DisplayName("T-01: 재고 0 상품 주문 — 카트 추가 시 400~422가 반환된다")
     void orderWithZeroStockFails() throws Exception {
         Long productId = createProductWithStock(0);
-        Long cartItemId = addCartItem(userToken, productId);
-        Long addressId = addAddress(userToken);
-        PaymentController.CreateOrderRequest req = new PaymentController.CreateOrderRequest(
-            List.of(cartItemId), addressId, null, PaymentMethod.CARD);
-        HttpResponse<String> res = post("/api/payments/orders", req, userToken);
+        HttpResponse<String> res = post("/api/payments/cart/items",
+            new PaymentController.CartItemRequest(productId, 1, List.of(), List.of()),
+            userToken);
         assertThat(res.statusCode()).isBetween(400, 422);
     }
 

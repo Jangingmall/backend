@@ -4,23 +4,29 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-@Testcontainers
 public abstract class PostgresIntegrationBase {
 
-    @Container
-    static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:18-alpine")
-        .withDatabaseName("jangingmall")
-        .withUsername("jangingmall")
-        .withPassword("jangingmall");
+    static final PostgreSQLContainer<?> POSTGRES;
+    static final GenericContainer<?> REDIS;
 
-    @SuppressWarnings("resource")
-    @Container
-    static final GenericContainer<?> REDIS = new GenericContainer<>(DockerImageName.parse("redis:8-alpine"))
-        .withExposedPorts(6379);
+    static {
+        POSTGRES = new PostgreSQLContainer<>("postgres:18-alpine")
+            .withDatabaseName("jangingmall")
+            .withUsername("jangingmall")
+            .withPassword("jangingmall")
+            .withReuse(true);
+
+        @SuppressWarnings("resource")
+        GenericContainer<?> redis = new GenericContainer<>(DockerImageName.parse("redis:8-alpine"))
+            .withExposedPorts(6379)
+            .withReuse(true);
+        REDIS = redis;
+
+        POSTGRES.start();
+        REDIS.start();
+    }
 
     @DynamicPropertySource
     static void overrideProperties(DynamicPropertyRegistry registry) {

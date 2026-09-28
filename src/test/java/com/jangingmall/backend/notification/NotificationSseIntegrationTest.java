@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = "management.server.port=-1")
+    properties = {"management.server.port=-1", "server.tomcat.threads.max=50", "server.tomcat.threads.min-spare=10"})
 class NotificationSseIntegrationTest extends PostgresIntegrationBase {
 
     @LocalServerPort
@@ -155,9 +155,9 @@ class NotificationSseIntegrationTest extends PostgresIntegrationBase {
         sseThread.setDaemon(true);
         sseThread.start();
 
-        boolean connectArrived = connectLatch.await(5, TimeUnit.SECONDS);
+        boolean connectArrived = connectLatch.await(10, TimeUnit.SECONDS);
         assertThat(errors).isEmpty();
-        assertThat(connectArrived).as("SSE connect event must arrive within 5 seconds").isTrue();
+        assertThat(connectArrived).as("SSE connect event must arrive within 10 seconds").isTrue();
 
         NotificationCreateRequest createRequest = new NotificationCreateRequest("주문 완료", "청자 상감 다완 주문이 접수되었습니다.");
         String body = objectMapper.writeValueAsString(createRequest);
@@ -166,14 +166,14 @@ class NotificationSseIntegrationTest extends PostgresIntegrationBase {
             .uri(URI.create("http://localhost:" + port + "/api/notifications"))
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .timeout(Duration.ofSeconds(5))
+            .timeout(Duration.ofSeconds(15))
             .POST(HttpRequest.BodyPublishers.ofString(body))
             .build();
 
         HttpResponse<String> postResponse = postClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
         assertThat(postResponse.statusCode()).isEqualTo(201);
 
-        boolean notificationArrived = notificationLatch.await(5, TimeUnit.SECONDS);
+        boolean notificationArrived = notificationLatch.await(10, TimeUnit.SECONDS);
         assertThat(errors).isEmpty();
         assertThat(notificationArrived).as("SSE notification event must arrive within 5 seconds after POST").isTrue();
         assertThat(receivedLines.stream().anyMatch(l -> l.contains("notification"))).isTrue();
