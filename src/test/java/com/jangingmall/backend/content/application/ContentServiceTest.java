@@ -242,7 +242,7 @@ class ContentServiceTest {
         when(artisanProfile.getId()).thenReturn(1L);
         when(artisanProfile.getBusinessName()).thenReturn("도공방");
         when(artisanProfile.getCertificationLevel()).thenReturn("일반");
-        when(artisanProfile.getIntroduction()).thenReturn("3대째 이천에서 청자를 굽습니다");
+        when(artisanProfile.getRegion()).thenReturn("경기 이천");
 
         when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
         when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
