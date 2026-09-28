@@ -80,6 +80,7 @@ POST-order-purchase-confirmation,주문,POST,/api/payments/orders/{orderId}/purc
 PATCH-order-change-shipping-address,주문,PATCH,/api/payments/orders/{orderId}/shipping-address,order-change-shipping-address,YES,USER,api-payments-orders-orderId-shipping-address1663523072,200,,CORE,주문 배송지 변경
 POST-payment-refund-account-register,결제수단,POST,/api/payments/refund-account,payment-refund-account-register,YES,USER,api-payments-refund-account-1562392385,201,,CORE,환불계좌 등록
 POST-returns-request,반품/교환,POST,/api/payments/returns,returns-request,YES,USER,api-payments-returns-1811511568,201,,NORMAL,반품·교환 신청
+PATCH-returns-approve,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,YES,USER,api-payments-returns-returnId-status-448941713,200,,NORMAL,반품·교환 승인 (ADMIN)
 POST-payment-webhook-toss,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,YES,USER,api-payments-webhooks-toss2067222078,200,,CORE,토스페이먼츠 웹훅 수신
 POST-payment-cancel,결제,POST,/api/payments/{paymentId}/cancel,payment-cancel,YES,USER,api-payments-paymentId-cancel813387520,200,,CORE,결제 취소
 GET-product-list,상품,GET,/api/products,product-list,NO,PUBLIC,-,200,,CORE,상품 목록

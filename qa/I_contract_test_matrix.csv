@@ -123,31 +123,32 @@ CONTRACT-078,주문,POST,/api/payments/orders/{orderId}/purchase-confirmation,or
 CONTRACT-079,주문,PATCH,/api/payments/orders/{orderId}/shipping-address,order-change-shipping-address,200,api-payments-orders-orderId-shipping-address-48905676,schema_validation,AUTO
 CONTRACT-080,결제수단,POST,/api/payments/refund-account,payment-refund-account-register,201,api-payments-refund-account-135657900,schema_validation,AUTO
 CONTRACT-081,반품/교환,POST,/api/payments/returns,returns-request,201,api-payments-returns-1115423141,schema_validation,AUTO
-CONTRACT-082,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,200,api-payments-fail-521794704,schema_validation,AUTO
-CONTRACT-083,결제,POST,/api/payments/{paymentId}/cancel,payment-cancel,200,api-payments-paymentId-cancel1498139372,schema_validation,AUTO
-CONTRACT-084,상품,GET,/api/products,product-list,200,api-products-me-2131279592,schema_validation,AUTO
-CONTRACT-085,상품,POST,/api/products,product-create,201,api-products288555837,schema_validation,AUTO
-CONTRACT-085,상품,POST,/api/products,product-create,403,api-content-products-productId-contents16218693,schema_validation,AUTO
-CONTRACT-085,상품,POST,/api/products,product-create,401,api-content-products-productId-contents16218693,schema_validation,AUTO
-CONTRACT-086,카테고리,GET,/api/products/categories,category-list,200,api-products-categories1684097948,schema_validation,AUTO
-CONTRACT-087,카테고리,GET,/api/products/categories/main,category-main-list,200,api-products-categories1684097948,schema_validation,AUTO
-CONTRACT-088,카테고리,GET,/api/products/materials,material-list,200,api-products-materials-415789377,schema_validation,AUTO
-CONTRACT-089,상품,GET,/api/products/me,product-my-list,200,api-products-me-2131279592,schema_validation,AUTO
-CONTRACT-090,카테고리,GET,/api/products/subcategories,subcategory-list,200,api-products-subcategories-1412570228,schema_validation,AUTO
-CONTRACT-091,상품,GET,/api/products/{productId},product-detail,200,api-products288555837,schema_validation,AUTO
-CONTRACT-092,상품,DELETE,/api/products/{productId},product-delete,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-093,상품,PATCH,/api/products/{productId},product-update,200,api-products288555837,schema_validation,AUTO
-CONTRACT-094,상품 문의,GET,/api/products/{productId}/questions,product-qna-list,200,api-products-productId-questions-311681186,schema_validation,AUTO
-CONTRACT-095,상품 문의,POST,/api/products/{productId}/questions,product-qna-ask,201,api-products-productId-questions-148092557,schema_validation,AUTO
-CONTRACT-096,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,201,api-products-productId-questions-questionId-answer-1567978184,schema_validation,AUTO
-CONTRACT-097,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,200,api-products-productId-reviews-1034318822,schema_validation,AUTO
-CONTRACT-098,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,201,api-products-productId-reviews916845673,schema_validation,AUTO
-CONTRACT-099,상품,PATCH,/api/products/{productId}/status,product-change-status,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-099,상품,PATCH,/api/products/{productId}/status,product-change-status,401,api-content-products-productId-contents16218693,schema_validation,AUTO
-CONTRACT-100,찜,POST,/api/products/{productId}/wish,product-wish,403,api-content-products-productId-contents16218693,schema_validation,AUTO
-CONTRACT-100,찜,POST,/api/products/{productId}/wish,product-wish,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-100,찜,POST,/api/products/{productId}/wish,product-wish,401,api-content-products-productId-contents16218693,schema_validation,AUTO
-CONTRACT-101,찜,DELETE,/api/products/{productId}/wish,product-unwish,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-102,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,200,internal-generations-generationId-completion-2011757789,schema_validation,AUTO
-CONTRACT-103,이미지,POST,/internal/images/verify,image-internal-verify,404,api-content-products-productId-contents16218693,schema_validation,AUTO
-CONTRACT-103,이미지,POST,/internal/images/verify,image-internal-verify,200,internal-images-verify1955001579,schema_validation,AUTO
+CONTRACT-082,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,200,api-payments-returns-1115423141,schema_validation,AUTO
+CONTRACT-083,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,200,api-payments-fail-521794704,schema_validation,AUTO
+CONTRACT-084,결제,POST,/api/payments/{paymentId}/cancel,payment-cancel,200,api-payments-paymentId-cancel1498139372,schema_validation,AUTO
+CONTRACT-085,상품,GET,/api/products,product-list,200,api-products-me-2131279592,schema_validation,AUTO
+CONTRACT-086,상품,POST,/api/products,product-create,201,api-products288555837,schema_validation,AUTO
+CONTRACT-086,상품,POST,/api/products,product-create,403,api-content-products-productId-contents16218693,schema_validation,AUTO
+CONTRACT-086,상품,POST,/api/products,product-create,401,api-content-products-productId-contents16218693,schema_validation,AUTO
+CONTRACT-087,카테고리,GET,/api/products/categories,category-list,200,api-products-categories1684097948,schema_validation,AUTO
+CONTRACT-088,카테고리,GET,/api/products/categories/main,category-main-list,200,api-products-categories1684097948,schema_validation,AUTO
+CONTRACT-089,카테고리,GET,/api/products/materials,material-list,200,api-products-materials-415789377,schema_validation,AUTO
+CONTRACT-090,상품,GET,/api/products/me,product-my-list,200,api-products-me-2131279592,schema_validation,AUTO
+CONTRACT-091,카테고리,GET,/api/products/subcategories,subcategory-list,200,api-products-subcategories-1412570228,schema_validation,AUTO
+CONTRACT-092,상품,GET,/api/products/{productId},product-detail,200,api-products288555837,schema_validation,AUTO
+CONTRACT-093,상품,DELETE,/api/products/{productId},product-delete,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
+CONTRACT-094,상품,PATCH,/api/products/{productId},product-update,200,api-products288555837,schema_validation,AUTO
+CONTRACT-095,상품 문의,GET,/api/products/{productId}/questions,product-qna-list,200,api-products-productId-questions-311681186,schema_validation,AUTO
+CONTRACT-096,상품 문의,POST,/api/products/{productId}/questions,product-qna-ask,201,api-products-productId-questions-148092557,schema_validation,AUTO
+CONTRACT-097,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,201,api-products-productId-questions-questionId-answer-1567978184,schema_validation,AUTO
+CONTRACT-098,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,200,api-products-productId-reviews-1034318822,schema_validation,AUTO
+CONTRACT-099,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,201,api-products-productId-reviews916845673,schema_validation,AUTO
+CONTRACT-100,상품,PATCH,/api/products/{productId}/status,product-change-status,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
+CONTRACT-100,상품,PATCH,/api/products/{productId}/status,product-change-status,401,api-content-products-productId-contents16218693,schema_validation,AUTO
+CONTRACT-101,찜,POST,/api/products/{productId}/wish,product-wish,403,api-content-products-productId-contents16218693,schema_validation,AUTO
+CONTRACT-101,찜,POST,/api/products/{productId}/wish,product-wish,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
+CONTRACT-101,찜,POST,/api/products/{productId}/wish,product-wish,401,api-content-products-productId-contents16218693,schema_validation,AUTO
+CONTRACT-102,찜,DELETE,/api/products/{productId}/wish,product-unwish,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
+CONTRACT-103,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,200,internal-generations-generationId-completion-2011757789,schema_validation,AUTO
+CONTRACT-104,이미지,POST,/internal/images/verify,image-internal-verify,404,api-content-products-productId-contents16218693,schema_validation,AUTO
+CONTRACT-104,이미지,POST,/internal/images/verify,image-internal-verify,200,internal-images-verify1955001579,schema_validation,AUTO

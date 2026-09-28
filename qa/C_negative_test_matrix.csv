@@ -207,6 +207,10 @@ NEG-PAYMETHOD-009,결제수단,POST,/api/payments/refund-account,payment-refund-
 NEG-RETURN-001,반품/교환,POST,/api/payments/returns,returns-request,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
 NEG-RETURN-002,반품/교환,POST,/api/payments/returns,returns-request,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
 NEG-RETURN-003,반품/교환,POST,/api/payments/returns,returns-request,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
+NEG-RETURN-004,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
+NEG-RETURN-005,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
+NEG-RETURN-006,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
+NEG-RETURN-007,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,PATH_PARAM_NOT_FOUND,returnId=999999999,HTTP 404 NOT_FOUND,AUTO
 NEG-PAY-010,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
 NEG-PAY-011,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
 NEG-PAY-012,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO

@@ -581,6 +581,14 @@ RETURN-013,반품/교환,POST,/api/payments/returns,returns-request,TYPE_MISMATC
 RETURN-014,반품/교환,POST,/api/payments/returns,returns-request,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
 RETURN-015,반품/교환,POST,/api/payments/returns,returns-request,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
 RETURN-016,반품/교환,POST,/api/payments/returns,returns-request,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+RETURN-017,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
+RETURN-018,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,REQUIRED_MISSING,status 누락,HTTP 400 INVALID_INPUT,,AUTO
+RETURN-019,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,REQUIRED_NULL,status=null,HTTP 400 INVALID_INPUT,,AUTO
+RETURN-020,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,REQUIRED_EMPTY,"status=""""",HTTP 400 INVALID_INPUT,,AUTO
+RETURN-021,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+RETURN-022,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+RETURN-023,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+RETURN-024,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,NOT_FOUND,returnId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
 PAY-034,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
 PAY-035,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,REQUIRED_MISSING,data 누락,HTTP 400 INVALID_INPUT,,AUTO
 PAY-036,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,REQUIRED_NULL,data=null,HTTP 400 INVALID_INPUT,,AUTO

@@ -1964,6 +1964,28 @@ export interface paths {
         patch: operations["order-change-shipping-address"];
         trace?: never;
     };
+    "/api/payments/returns/{returnId}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * 반품·교환 승인 (ADMIN)
+         * @description 🔑 **USER** 이상
+         *
+         *     관리자가 반품·교환 신청을 승인합니다. 승인 시 예약된 재고가 복원됩니다.
+         */
+        patch: operations["returns-approve"];
+        trace?: never;
+    };
     "/api/content/products/{productId}/contents/versions": {
         parameters: {
             query?: never;
@@ -2972,6 +2994,10 @@ export interface components {
             /** @description 변경할 상태 (@NotNull, ProductStatus 값) */
             status: string;
         };
+        "api-payments-returns-returnId-status-448941713": {
+            /** @description 변경할 상태 (APPROVED) */
+            status: string;
+        };
         "api-images-presigned-url-1900015981": {
             data?: {
                 /** @description 이미지 ID (ULID) */
@@ -3516,6 +3542,16 @@ export interface components {
             /** @description 취소 사유 (최대 200자) */
             reason: string;
         };
+        "api-content-products-productId-interview515382983": {
+            /** @description 제작 과정 (선택) */
+            process?: string | null;
+            /** @description 소재 (선택) (최대 255자) */
+            materials?: string | null;
+            /** @description 기법 (선택) (최대 100자) */
+            technique?: string | null;
+            /** @description 스토리 (선택) */
+            story?: string | null;
+        };
         "api-member-artisans-subscriptions1318461673": {
             data?: {
                 /** @description 현재 페이지(0-based) */
@@ -3561,16 +3597,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-content-products-productId-interview515382983": {
-            /** @description 제작 과정 (선택) */
-            process?: string | null;
-            /** @description 소재 (선택) (최대 255자) */
-            materials?: string | null;
-            /** @description 기법 (선택) (최대 100자) */
-            technique?: string | null;
-            /** @description 스토리 (선택) */
-            story?: string | null;
         };
         "api-content-products-productId-contents-contentId-submit-1788085782": {
             data?: {
@@ -4125,6 +4151,24 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
+        "api-payments-returns-1115423141": {
+            data?: {
+                /** @description 신청 일시 */
+                requestedAt: string;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 반품 ID */
+                returnId: number;
+                /** @description 반품·교환 유형 */
+                type: string;
+                /** @description 처리 상태 */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
         "api-payments-confirm1321390106": {
             data?: {
                 /** @description 결제 금액 */
@@ -4142,24 +4186,6 @@ export interface components {
                 /** @description 승인 일시 */
                 approvedAt?: string | null;
                 /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-payments-returns-1115423141": {
-            data?: {
-                /** @description 신청 일시 */
-                requestedAt: string;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 반품 ID */
-                returnId: number;
-                /** @description 반품·교환 유형 */
-                type: string;
-                /** @description 처리 상태 */
                 status: string;
             };
             /** @description true — 항상 성공 */
@@ -7149,6 +7175,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["api-payments-orders-orderId-shipping-address-48905676"];
+                };
+            };
+        };
+    };
+    "returns-approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 반품 ID */
+                returnId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["api-payments-returns-returnId-status-448941713"];
+            };
+        };
+        responses: {
+            /** @description 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
