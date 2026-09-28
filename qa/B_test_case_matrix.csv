@@ -348,6 +348,10 @@ OAUTH-015,소셜 로그인,GET,/api/member/oauth2/kakao,oauth-kakao-redirect,HAP
 OAUTH-016,소셜 로그인,GET,/api/member/oauth2/kakao,oauth-kakao-redirect,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
 OAUTH-017,소셜 로그인,GET,/api/member/oauth2/kakao,oauth-kakao-redirect,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
 OAUTH-018,소셜 로그인,GET,/api/member/oauth2/kakao,oauth-kakao-redirect,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+OAUTH-019,소셜 로그인,GET,/api/member/oauth2/naver,oauth-naver-redirect,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
+OAUTH-020,소셜 로그인,GET,/api/member/oauth2/naver,oauth-naver-redirect,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+OAUTH-021,소셜 로그인,GET,/api/member/oauth2/naver,oauth-naver-redirect,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+OAUTH-022,소셜 로그인,GET,/api/member/oauth2/naver,oauth-naver-redirect,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
 AUTH-036,회원,POST,/api/member/signup,member-signup,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 201,,AUTO
 AUTH-037,회원,POST,/api/member/signup,member-signup,REQUIRED_MISSING,password 누락,HTTP 400 INVALID_INPUT,,AUTO
 AUTH-038,회원,POST,/api/member/signup,member-signup,REQUIRED_NULL,password=null,HTTP 400 INVALID_INPUT,,AUTO

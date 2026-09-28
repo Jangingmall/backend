@@ -50,6 +50,7 @@ GET-member-wish-check,찜,GET,/api/member/me/wishes/{productId},member-wish-chec
 POST-oauth-complete-profile,소셜 로그인,POST,/api/member/oauth2/complete-profile,oauth-complete-profile,YES,USER,api-member-oauth2-complete-profile1234726145,201,,CORE,소셜 회원 추가정보 입력
 POST-oauth-exchange,소셜 로그인,POST,/api/member/oauth2/exchange,oauth-exchange,YES,USER,-,200,,CORE,OAuth 티켓 교환
 GET-oauth-kakao-redirect,소셜 로그인,GET,/api/member/oauth2/kakao,oauth-kakao-redirect,YES,USER,-,,302,CORE,카카오 로그인 리다이렉트
+GET-oauth-naver-redirect,소셜 로그인,GET,/api/member/oauth2/naver,oauth-naver-redirect,YES,USER,-,,302,CORE,네이버 로그인 리다이렉트
 POST-member-signup,회원,POST,/api/member/signup,member-signup,YES,USER,api-member-signup1149432730,201,409,CORE,회원가입
 POST-member-token-refresh,회원,POST,/api/member/token/refresh,member-token-refresh,YES,USER,-,200,,CORE,토큰 갱신
 GET-notification-list-200,알림,GET,/api/notifications,notification-list-200,YES,USER,-,200,,NORMAL,알림 목록 조회

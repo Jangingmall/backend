@@ -1135,6 +1135,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/member/oauth2/naver": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 네이버 로그인 리다이렉트
+         * @description 🔑 **USER** 이상
+         *
+         *     네이버 OAuth2 인증 페이지로 리다이렉트합니다.
+         */
+        get: operations["oauth-naver-redirect"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/member/token/refresh": {
         parameters: {
             query?: never;
@@ -3542,6 +3564,16 @@ export interface components {
             /** @description 취소 사유 (최대 200자) */
             reason: string;
         };
+        "api-content-products-productId-interview515382983": {
+            /** @description 제작 과정 (선택) */
+            process?: string | null;
+            /** @description 소재 (선택) (최대 255자) */
+            materials?: string | null;
+            /** @description 기법 (선택) (최대 100자) */
+            technique?: string | null;
+            /** @description 스토리 (선택) */
+            story?: string | null;
+        };
         "api-member-artisans-subscriptions1318461673": {
             data?: {
                 /** @description 현재 페이지(0-based) */
@@ -3587,16 +3619,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-content-products-productId-interview515382983": {
-            /** @description 제작 과정 (선택) */
-            process?: string | null;
-            /** @description 소재 (선택) (최대 255자) */
-            materials?: string | null;
-            /** @description 기법 (선택) (최대 100자) */
-            technique?: string | null;
-            /** @description 스토리 (선택) */
-            story?: string | null;
         };
         "api-content-products-productId-contents-contentId-submit-1788085782": {
             data?: {
@@ -3678,7 +3700,7 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-member-artisans-me-1004667003": {
+        "api-member-artisans-artisanId-1004667003": {
             data?: {
                 /** @description 경력 연수 */
                 careerYears: number;
@@ -4151,7 +4173,7 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-payments-returns-1115423141": {
+        "api-payments-returns-returnId-status-1115423141": {
             data?: {
                 /** @description 신청 일시 */
                 requestedAt: string;
@@ -5424,7 +5446,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
                 };
             };
         };
@@ -5647,7 +5669,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
                 };
             };
         };
@@ -5671,7 +5693,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
                 };
             };
         };
@@ -5723,7 +5745,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
                 };
             };
         };
@@ -6008,6 +6030,24 @@ export interface operations {
         };
     };
     "oauth-kakao-redirect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 302 */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    "oauth-naver-redirect": {
         parameters: {
             query?: never;
             header?: never;
@@ -7201,7 +7241,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
                 };
             };
         };
