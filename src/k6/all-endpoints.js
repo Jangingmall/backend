@@ -8,8 +8,9 @@ export const options = {
         { duration: '5s',  target: 0  },
     ],
     thresholds: {
-        http_req_duration: ['p(95)<5000'],
-        http_req_failed: ['rate<0.05'],
+        http_req_duration: ['p(95)<2000'],
+        // 인증 불필요 엔드포인트만 실패율 측정 (401은 의도적 요청이므로 제외)
+        'http_req_failed{expected_response:true}': ['rate<0.01'],
     },
 };
 
@@ -27,10 +28,10 @@ export default function () {
         check(http.get(`${BASE}/api/products/${id}`),            { '2xx': r => r.status < 300 });
     } else if (r < 0.65) {
         // 카테고리
-        check(http.get(`${BASE}/categories`),                    { '2xx': r => r.status < 300 });
+        check(http.get(`${BASE}/api/products/categories`),       { '2xx': r => r.status < 300 });
     } else if (r < 0.72) {
         // 카테고리 메인
-        check(http.get(`${BASE}/categories/main`),               { '2xx': r => r.status < 300 });
+        check(http.get(`${BASE}/api/products/categories/main`),  { '2xx': r => r.status < 300 });
     } else if (r < 0.79) {
         // 알림 (인증 없음 → 401 의도적)
         check(http.get(`${BASE}/api/notifications`),             { 'got response': r => r.status > 0 });
