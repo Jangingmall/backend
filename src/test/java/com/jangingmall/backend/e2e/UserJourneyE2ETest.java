@@ -520,7 +520,7 @@ class UserJourneyE2ETest {
         assertThat((s1 == 201 ? 1 : 0) + (s2 == 201 ? 1 : 0)).isEqualTo(1);
 
         Integer stock = jdbcTemplate.queryForObject(
-            "SELECT stock FROM product WHERE id = ?", Integer.class, productId);
+            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
         assertThat(stock).isGreaterThanOrEqualTo(0);
     }
 
@@ -529,7 +529,7 @@ class UserJourneyE2ETest {
     void returnApprovalRestoresStock() throws Exception {
         Long productId = createProductWithStock(5);
         Integer stockBefore = jdbcTemplate.queryForObject(
-            "SELECT stock FROM product WHERE id = ?", Integer.class, productId);
+            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
 
         Long cartItemId = addCartItem(userToken, productId);
         Long addressId = addAddress(userToken);
@@ -551,7 +551,7 @@ class UserJourneyE2ETest {
         assertThat(approveRes.statusCode()).isBetween(200, 204);
 
         Integer stockAfter = jdbcTemplate.queryForObject(
-            "SELECT stock FROM product WHERE id = ?", Integer.class, productId);
+            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
         assertThat(stockAfter).isEqualTo(stockBefore);
     }
 
@@ -583,7 +583,7 @@ class UserJourneyE2ETest {
         OrderResult order = createOrder(userToken, List.of(cartItemId), addressId);
 
         jdbcTemplate.update(
-            "UPDATE orders SET created_at = NOW() - INTERVAL '31 minutes' WHERE id = ?",
+            "UPDATE orders SET created_at = NOW() - INTERVAL '31 minutes' WHERE order_id = ?",
             order.orderId());
 
         expirationScheduler.expireAbandonedOrders();

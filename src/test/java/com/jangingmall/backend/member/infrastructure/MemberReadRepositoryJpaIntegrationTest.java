@@ -3,6 +3,7 @@ package com.jangingmall.backend.member.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jangingmall.backend.member.application.MemberReadRepository;
+import com.jangingmall.backend.support.PostgresIntegrationBase;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.jangingmall.backend.member.domain.Address;
@@ -32,10 +33,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.util.ReflectionTestUtils;
 
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Transactional
-class MemberReadRepositoryJpaIntegrationTest {
+class MemberReadRepositoryJpaIntegrationTest extends PostgresIntegrationBase {
 
     @Autowired
     private MemberReadRepository reads;

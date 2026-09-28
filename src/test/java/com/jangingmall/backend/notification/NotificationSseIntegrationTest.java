@@ -8,6 +8,7 @@ import com.jangingmall.backend.notification.application.NotificationCreateReques
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import com.jangingmall.backend.support.PostgresIntegrationBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -30,10 +31,10 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = "management.server.port=-1")
-class NotificationSseIntegrationTest {
+class NotificationSseIntegrationTest extends PostgresIntegrationBase {
 
     @LocalServerPort
     private int port;
