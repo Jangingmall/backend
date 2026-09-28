@@ -78,6 +78,8 @@ public class SecurityConfig {
                     .requestMatchers("/internal/**").hasRole("AGENT")
                     .requestMatchers(HttpMethod.POST, "/api/images/presigned-url").hasAnyRole("USER", "ARTISAN", "AGENT")
                     .requestMatchers(PermitAllPaths.PATHS.toArray(String[]::new)).permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/products/categories", "/api/products/categories/**",
+                        "/api/products/subcategories", "/api/products/materials").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/member/artisans", "/api/member/artisans/{artisanId:[0-9]+}",
                         "/api/member/artisans/{artisanId:[0-9]+}/products", "/api/member/artisans/{artisanId:[0-9]+}/reviews").permitAll()
