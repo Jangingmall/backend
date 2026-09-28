@@ -36,6 +36,7 @@ public class ReturnService {
     private final OrderReturnRepository returns;
     private final ImageService images;
     private final OrderNotificationPublisher notifications;
+    private final CheckoutCatalog catalog;
 
     @Transactional
     public ReturnData request(Long memberId, RequestReturn command) {
@@ -114,6 +115,21 @@ public class ReturnService {
             return null;
         }
         return value.trim();
+    }
+
+    @Transactional
+    public ReturnData approve(Long returnId) {
+        OrderReturn orderReturn = returns.findByIdForUpdate(returnId)
+            .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
+        PurchaseOrder order = orders.findByIdForUpdate(orderReturn.getOrderId())
+            .orElseThrow(() -> new DomainException(ErrorCode.NOT_FOUND));
+        orderReturn.approve();
+        List<CheckoutCatalog.InventoryLine> lines = order.getItems().stream()
+            .map(item -> new CheckoutCatalog.InventoryLine(item.getProductId(), item.getQuantity(),
+                CheckoutSnapshot.choiceIds(item.getSelectedOptionsSnapshot())))
+            .toList();
+        catalog.release(lines);
+        return ReturnData.from(orderReturn);
     }
 
     public record RequestReturn(Long orderId, ReturnType type, List<Long> orderItemIds, ReturnReason reason,

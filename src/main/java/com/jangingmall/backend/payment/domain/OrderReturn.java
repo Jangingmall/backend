@@ -85,4 +85,12 @@ public class OrderReturn {
                        Long returnAddressId, String imageIds) {
         this(orderId, type, reason, reasonDetail, returnAddressId, "[]", imageIds);
     }
+
+    public void approve() {
+        if (status != ReturnStatus.REQUESTED) {
+            throw new IllegalStateException("신청 상태의 반품만 승인할 수 있습니다.");
+        }
+        this.status = ReturnStatus.APPROVED;
+        this.updatedAt = Instant.now();
+    }
 }

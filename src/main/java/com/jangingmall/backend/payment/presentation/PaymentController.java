@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -224,6 +225,15 @@ public class PaymentController {
         return ResponseEntity.status(201).body(ApiResponse.created(returns.request(memberId, request.toCommand())));
     }
 
+    @PatchMapping("/returns/{returnId}/status")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ApiResponse<ReturnService.ReturnData> approveReturn(
+        @PathVariable Long returnId,
+        @Valid @RequestBody UpdateReturnStatusRequest request
+    ) {
+        return ApiResponse.ok(returns.approve(returnId));
+    }
+
     private ResponseEntity<ApiResponse<CartService.CartData>> cartResponse(CartService.CartMutation result, boolean created) {
         ResponseEntity.BodyBuilder response = created ? ResponseEntity.status(201) : ResponseEntity.ok();
         if (result.guestCartId() != null) {
@@ -322,6 +332,8 @@ public class PaymentController {
                                   @NotBlank @Size(min = 6, max = 64) String orderId,
                                   @Positive long totalAmount,
                                   @NotBlank @Size(max = 30) String status) {}
+
+    public record UpdateReturnStatusRequest(@NotBlank String status) {}
 
     public record ReturnRequest(@NotNull Long orderId, @NotNull ReturnType type,
                                 @NotEmpty List<@NotNull Long> orderItemIds, @NotNull ReturnReason reason,

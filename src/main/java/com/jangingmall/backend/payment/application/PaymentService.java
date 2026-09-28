@@ -299,7 +299,13 @@ public class PaymentService {
             if (payment != null && (payment.getStatus() == PaymentStatus.DONE || payment.getStatus() == PaymentStatus.CANCELED)) {
                 continue;
             }
-            if (payment != null && payment.getStatus() == PaymentStatus.READY) {
+            if (payment == null) {
+                order.markExpired();
+                catalog.release(inventoryLines(order));
+                processed++;
+                continue;
+            }
+            if (payment.getStatus() == PaymentStatus.READY) {
                 Optional<PaymentGateway.PaymentSnapshot> verified = paymentGateway.findByOrderNumber(order.getOrderNumber());
                 if (verified.isPresent()) {
                     PaymentGateway.PaymentSnapshot snapshot = verified.get();
