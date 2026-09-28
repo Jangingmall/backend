@@ -1,0 +1,159 @@
+{
+  "annotations": { "list": [{ "builtIn": 1, "datasource": { "type": "grafana", "uid": "-- Grafana --" }, "enable": true, "hide": true, "iconColor": "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts", "type": "dashboard" }] },
+  "editable": true, "fiscalYearStartMonth": 0, "graphTooltip": 0, "links": [],
+  "schemaVersion": 39, "refresh": "15s",
+  "time": { "from": "now-30m", "to": "now" }, "timepicker": {}, "timezone": "", "weekStart": "",
+  "title": "Silent Failures & Async Health", "uid": "silent-failures", "version": 1, "tags": ["senior"],
+  "description": "조용한 실패 방어 — HTTP 5xx 없이 숨는 오류들: 로그 스파이크, @Async 포화, SSE 채널, 스케줄러, JPA 레포지토리",
+  "templating": { "list": [
+    { "current": { "selected": true, "text": "local", "value": "local" }, "hide": 0, "includeAll": false, "label": "Environment", "multi": false, "name": "env", "options": [{ "selected": true, "text": "local", "value": "local" }, { "selected": false, "text": "prod", "value": "prod" }], "query": "local,prod", "skipUrlSync": false, "type": "custom" },
+    { "current": { "selected": true, "text": "1m", "value": "1m" }, "hide": 0, "includeAll": false, "label": "Rate window", "multi": false, "name": "rate", "options": [{ "selected": true, "text": "1m", "value": "1m" }, { "selected": false, "text": "5m", "value": "5m" }, { "selected": false, "text": "10m", "value": "10m" }], "query": "1m,5m,10m", "skipUrlSync": false, "type": "custom" }
+  ] },
+  "panels": [
+    {
+      "id": 1, "title": "ERROR 로그 rate (HTTP 5xx 없이 숨는 실패)",
+      "description": "HTTP 5xx 없이도 ERROR 로그가 증가하면 비동기·캐치된 예외가 조용히 실패 중. 5xx와 독립적으로 모니터링해야 하는 이유.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "rate(logback_events_total{env=\"$env\", level=\"error\"}[$rate])", "legendFormat": "ERROR/s", "refId": "A" },
+        { "expr": "rate(logback_events_total{env=\"$env\", level=\"warn\"}[$rate])", "legendFormat": "WARN/s", "refId": "B" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "reqps", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 0.1 }] } },
+        "overrides": [{ "matcher": { "id": "byName", "options": "ERROR/s" }, "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }] }, { "matcher": { "id": "byName", "options": "WARN/s" }, "properties": [{ "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } }] }]
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 2, "title": "@Async 스레드 풀 — 큐 적체 (백프레셔)",
+      "description": "queued_tasks가 지속 증가 = @Async 처리속도 < 요청속도. remaining이 0에 접근하면 RejectedExecutionException 발생 직전.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "executor_active_threads{env=\"$env\"}", "legendFormat": "Active {{name}}", "refId": "A" },
+        { "expr": "executor_queued_tasks{env=\"$env\"}", "legendFormat": "Queued {{name}}", "refId": "B" },
+        { "expr": "executor_pool_max_threads{env=\"$env\"}", "legendFormat": "Max {{name}}", "refId": "C" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } },
+        "overrides": []
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 3, "title": "SSE 커넥션 상태 (실시간 푸시 채널)",
+      "description": "active_connections 급감 + failed_total 증가 = 클라이언트 단절 또는 서버 SSE 스트림 오류.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "sse_active_connections{env=\"$env\"}", "legendFormat": "Active Connections", "refId": "A" },
+        { "expr": "rate(sse_sent_total{env=\"$env\"}[$rate])", "legendFormat": "Sent/s", "refId": "B" },
+        { "expr": "rate(sse_failed_total{env=\"$env\"}[$rate])", "legendFormat": "Failed/s", "refId": "C" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } },
+        "overrides": [{ "matcher": { "id": "byName", "options": "Failed/s" }, "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }] }]
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 4, "title": "스케줄러 실행 시간 (OrderExpiry / ReturnAlert 등)",
+      "description": "실행 시간이 주기보다 길어지면 다음 스케줄이 밀린다. max가 크게 튀면 DB 락 또는 외부 API 지연.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "rate(tasks_scheduled_execution_seconds_sum{env=\"$env\"}[$rate]) / rate(tasks_scheduled_execution_seconds_count{env=\"$env\"}[$rate]) * 1000", "legendFormat": "Avg (ms) {{name}}", "refId": "A" },
+        { "expr": "tasks_scheduled_execution_seconds_max{env=\"$env\"} * 1000", "legendFormat": "Max (ms) {{name}}", "refId": "B" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "ms", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line+area" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 5000 }, { "color": "red", "value": 30000 }] } },
+        "overrides": []
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 5, "title": "JPA 레포지토리 호출 — 평균 레이턴시 (숨겨진 N+1)",
+      "description": "특정 repo만 튀는 경우 N+1 또는 인덱스 누락. HTTP 레이턴시가 정상이어도 여기서 잡힌다.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "rate(spring_data_repository_invocations_seconds_sum{env=\"$env\"}[$rate]) / rate(spring_data_repository_invocations_seconds_count{env=\"$env\"}[$rate]) * 1000", "legendFormat": "{{repository}}.{{method}}", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "ms", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 50 }, { "color": "red", "value": 200 }] } },
+        "overrides": []
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 6, "title": "JPA 레포지토리 — RPS (호출 빈도)",
+      "description": "트래픽 대비 레포지토리 호출 비율. API 1건당 호출수가 많으면 N+1 신호.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "sum(rate(spring_data_repository_invocations_seconds_count{env=\"$env\"}[$rate])) by (repository)", "legendFormat": "{{repository}}", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "reqps", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } },
+        "overrides": []
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 7, "title": "ERROR 로그 누적 (레벨별)",
+      "description": "재시작 후 누적값. 급격히 증가하는 레벨 확인용.",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "logback_events_total{env=\"$env\", level=\"error\"}", "legendFormat": "ERROR", "refId": "A" },
+        { "expr": "logback_events_total{env=\"$env\", level=\"warn\"}", "legendFormat": "WARN", "refId": "B" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "short", "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 10 }, { "color": "red", "value": 100 }] } },
+        "overrides": [{ "matcher": { "id": "byName", "options": "ERROR" }, "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }] }]
+      },
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "auto", "orientation": "horizontal", "percentChangeColorMode": "standard", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "pluginVersion": "11.1.0"
+    },
+    {
+      "id": 8, "title": "@Async 큐 잔여 용량 (0 접근 = 거부 직전)",
+      "description": "queue_remaining_tasks가 0이면 다음 @Async 호출은 RejectedExecutionException. 이 패널은 장애 예방용.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "executor_queue_remaining_tasks{env=\"$env\"}", "legendFormat": "Remaining {{name}}", "refId": "A" },
+        { "expr": "executor_queued_tasks{env=\"$env\"}", "legendFormat": "Queued {{name}}", "refId": "B" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 20, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line+area" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 10 }, { "color": "red", "value": 0 }] } },
+        "overrides": []
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "min"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 9, "title": "스케줄러 실행 횟수 / 에러율",
+      "description": "스케줄러가 아예 실행되지 않으면 count rate가 0. 예외 발생 시 error label로 분리됨.",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "increase(tasks_scheduled_execution_seconds_count{env=\"$env\"}[5m])", "legendFormat": "5m 실행횟수 {{name}}", "refId": "A" }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "short", "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] } },
+        "overrides": []
+      },
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "horizontal", "percentChangeColorMode": "standard", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "pluginVersion": "11.1.0"
+    }
+  ]
+}

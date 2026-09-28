@@ -1,0 +1,154 @@
+{
+  "annotations": { "list": [{ "builtIn": 1, "datasource": { "type": "grafana", "uid": "-- Grafana --" }, "enable": true, "hide": true, "iconColor": "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts", "type": "dashboard" }] },
+  "editable": true, "fiscalYearStartMonth": 0, "graphTooltip": 0, "links": [],
+  "schemaVersion": 39, "refresh": "15s",
+  "time": { "from": "now-30m", "to": "now" }, "timepicker": {}, "timezone": "", "weekStart": "",
+  "title": "JVM Runtime", "uid": "jvm-runtime", "version": 3, "tags": [],
+  "templating": { "list": [{ "current": { "selected": true, "text": "local", "value": "local" }, "hide": 0, "includeAll": false, "label": "Environment", "multi": false, "name": "env", "options": [{ "selected": true, "text": "local", "value": "local" }, { "selected": false, "text": "prod", "value": "prod" }], "query": "local,prod", "skipUrlSync": false, "type": "custom" }] },
+  "panels": [
+    {
+      "id": 1, "title": "Heap Used / Max (MB)", "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "sum(jvm_memory_used_bytes{env=\"$env\", area=\"heap\"}) / 1024 / 1024", "legendFormat": "Used", "refId": "A" },
+        { "expr": "sum(jvm_memory_committed_bytes{env=\"$env\", area=\"heap\"}) / 1024 / 1024", "legendFormat": "Committed", "refId": "B" },
+        { "expr": "sum(jvm_memory_max_bytes{env=\"$env\", area=\"heap\"}) / 1024 / 1024", "legendFormat": "Max", "refId": "C" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "megbytes", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
+      "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 2, "title": "GC 이후 Heap — Old Gen 압력 (★ 놓치기 쉬운 지표)",
+      "description": "jvm_gc_live_data_size_bytes = GC 직후 살아남은 Old Gen 크기. 이 값이 지속 증가하면 메모리 누수. 원시 Used는 GC 전후 톱니 때문에 누수를 숨긴다.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "jvm_gc_live_data_size_bytes{env=\"$env\"} / 1024 / 1024", "legendFormat": "Live (After GC)", "refId": "A" },
+        { "expr": "jvm_gc_max_data_size_bytes{env=\"$env\"} / 1024 / 1024", "legendFormat": "Max Old Gen", "refId": "B" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "megbytes", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 3, "title": "GC Overhead % (★ 놓치기 쉬운 지표)",
+      "description": "전체 시간 중 GC에 소비된 비율. 10% 이상 지속 = GC 압박. 25% 이상 = OutOfMemoryError 위험. 원시 pause time보다 실제 영향을 직접 보여준다.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "jvm_gc_overhead{env=\"$env\"} * 100", "legendFormat": "GC Overhead %", "refId": "A" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 20, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line+area" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 10 }, { "color": "red", "value": 25 }] } }, "overrides": [] },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 4, "title": "GC Pause Time (ms/s)", "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [{ "expr": "sum(rate(jvm_gc_pause_seconds_sum{env=\"$env\"}[1m])) by (action, cause) * 1000", "legendFormat": "{{action}} / {{cause}}", "refId": "A" }],
+      "fieldConfig": { "defaults": { "unit": "ms", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
+      "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 5, "title": "Non-Heap / Direct Buffer (★ 힙 외 메모리)",
+      "description": "jvm_buffer_memory_used_bytes = NIO Direct/Mapped ByteBuffer. 힙 메모리로 안 잡히는 off-heap 메모리. Netty·파일 IO가 많으면 여기서 OOM이 난다.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "sum(jvm_memory_used_bytes{env=\"$env\", area=\"nonheap\"}) / 1024 / 1024", "legendFormat": "Non-Heap Used (MB)", "refId": "A" },
+        { "expr": "sum(jvm_buffer_memory_used_bytes{env=\"$env\"}) / 1024 / 1024", "legendFormat": "Direct Buffer (MB)", "refId": "B" },
+        { "expr": "sum(jvm_buffer_total_capacity_bytes{env=\"$env\"}) / 1024 / 1024", "legendFormat": "Buffer Capacity (MB)", "refId": "C" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "megbytes", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 6, "title": "스레드 상태별 분포 (★ BLOCKED = 데드락 신호)",
+      "description": "BLOCKED 스레드가 증가하면 lock contention 또는 데드락 전조. WAITING 급증은 외부 IO 대기. 총 스레드수만 보는 것은 부족하다.",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "jvm_threads_states_threads{env=\"$env\", state=\"blocked\"}", "legendFormat": "BLOCKED", "refId": "A" },
+        { "expr": "jvm_threads_states_threads{env=\"$env\", state=\"runnable\"}", "legendFormat": "RUNNABLE", "refId": "B" },
+        { "expr": "jvm_threads_states_threads{env=\"$env\", state=\"waiting\"}", "legendFormat": "WAITING", "refId": "C" },
+        { "expr": "jvm_threads_states_threads{env=\"$env\", state=\"timed-waiting\"}", "legendFormat": "TIMED_WAITING", "refId": "D" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } },
+        "overrides": [{ "matcher": { "id": "byName", "options": "BLOCKED" }, "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }, { "id": "custom.lineWidth", "value": 3 }] }]
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 7, "title": "CPU 사용률 %", "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "process_cpu_usage{env=\"$env\"} * 100", "legendFormat": "Process CPU %", "refId": "A" },
+        { "expr": "system_cpu_usage{env=\"$env\"} * 100", "legendFormat": "System CPU %", "refId": "B" },
+        { "expr": "system_load_average_1m{env=\"$env\"}", "legendFormat": "Load Avg 1m", "refId": "C" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } },
+        "overrides": [{ "matcher": { "id": "byName", "options": "Load Avg 1m" }, "properties": [{ "id": "unit", "value": "short" }, { "id": "custom.axisPlacement", "value": "right" }] }]
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "none" } }
+    },
+    {
+      "id": 8, "title": "디스크 여유 공간 (로그 디스크 소진 감지)", "type": "timeseries",
+      "description": "로그가 디스크를 가득 채우면 앱이 조용히 죽는다. prod 환경에서 특히 중요.",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "disk_free_bytes{env=\"$env\"} / 1024 / 1024 / 1024", "legendFormat": "Free (GB)", "refId": "A" },
+        { "expr": "disk_total_bytes{env=\"$env\"} / 1024 / 1024 / 1024", "legendFormat": "Total (GB)", "refId": "B" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "decgbytes", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 5 }, { "color": "green", "value": 20 }] } },
+        "overrides": []
+      },
+      "options": { "legend": { "calcs": ["lastNotNull", "min"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 9, "title": "JIT 컴파일 시간 (웜업 감지)", "type": "timeseries",
+      "description": "재시작 직후 JIT 컴파일 시간이 급증한 후 안정화되어야 정상. 안정화 후에도 지속 증가하면 클래스 동적 로딩/신규 코드 경로 문제.",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "rate(jvm_compilation_time_ms_total{env=\"$env\"}[1m])", "legendFormat": "JIT Compile ms/s", "refId": "A" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "ms", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
+      "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 10, "title": "GC 횟수/s", "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 24 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [{ "expr": "sum(rate(jvm_gc_pause_seconds_count{env=\"$env\"}[1m])) by (action)", "legendFormat": "{{action}}", "refId": "A" }],
+      "fieldConfig": { "defaults": { "unit": "ops", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
+      "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 11, "title": "JVM 스레드 (총계)", "type": "timeseries",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 24 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [
+        { "expr": "jvm_threads_live_threads{env=\"$env\"}",   "legendFormat": "Live",   "refId": "A" },
+        { "expr": "jvm_threads_daemon_threads{env=\"$env\"}", "legendFormat": "Daemon", "refId": "B" },
+        { "expr": "jvm_threads_peak_threads{env=\"$env\"}",  "legendFormat": "Peak",   "refId": "C" }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
+      "options": { "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+    },
+    {
+      "id": 12, "title": "Heap 사용률 % (gauge)", "type": "gauge",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 24 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "targets": [{ "expr": "sum(jvm_memory_used_bytes{env=\"$env\", area=\"heap\"}) / sum(jvm_memory_max_bytes{env=\"$env\", area=\"heap\"}) * 100", "legendFormat": "Heap %", "refId": "A" }],
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 60 }, { "color": "red", "value": 80 }] } }, "overrides": [] },
+      "options": { "minVizHeight": 75, "minVizWidth": 75, "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "pluginVersion": "11.1.0"
+    }
+  ]
+}
