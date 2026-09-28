@@ -33,6 +33,13 @@ management:
   metrics:
     tags:
       application: ${spring.application.name:backend}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.5, 0.95, 0.99
+      slo:
+        http.server.requests: 100ms, 300ms, 500ms, 1000ms, 3000ms
 
 toss:
   payments:
@@ -176,7 +183,8 @@ spring:
     show-sql: true
   sql:
     init:
-      mode: never
+      mode: always
+      data-locations: classpath:data.sql,classpath:data-sequence-reset.sql
   h2:
     console:
       enabled: true
