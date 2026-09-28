@@ -38,10 +38,22 @@ public class ProviderUserService implements OAuth2UserService<OAuth2UserRequest,
     }
 
     public OAuthIdentity identity(String provider,Map<String,Object> attributes) {
-        var kakao=(Map<String,Object>)attributes.getOrDefault("kakao_account",Map.of());
-        if ("kakao".equals(provider) && Boolean.TRUE.equals(kakao.get("is_email_verified")) && Boolean.TRUE.equals(kakao.get("is_email_valid"))) {
-            return new OAuthIdentity(provider,Objects.toString(attributes.get("id"),""),Objects.toString(kakao.get("email"),""));
+        if ("kakao".equals(provider)) {
+            var kakao=(Map<String,Object>)attributes.getOrDefault("kakao_account",Map.of());
+            if (Boolean.TRUE.equals(kakao.get("is_email_verified")) && Boolean.TRUE.equals(kakao.get("is_email_valid"))) {
+                return new OAuthIdentity(provider,Objects.toString(attributes.get("id"),""),Objects.toString(kakao.get("email"),""));
+            }
+            throw new OAuth2AuthenticationException(new OAuth2Error("unverified_email"));
         }
-        throw new OAuth2AuthenticationException(new OAuth2Error("unverified_email"));
+        if ("naver".equals(provider)) {
+            var response=(Map<String,Object>)attributes.getOrDefault("response",Map.of());
+            String id=Objects.toString(response.get("id"),"");
+            String email=Objects.toString(response.get("email"),"");
+            if (id.isBlank() || email.isBlank()) {
+                throw new OAuth2AuthenticationException(new OAuth2Error("unverified_email"));
+            }
+            return new OAuthIdentity(provider,id,email);
+        }
+        throw new OAuth2AuthenticationException(new OAuth2Error("unsupported_provider"));
     }
 }

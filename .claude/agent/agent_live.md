@@ -235,13 +235,24 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 
 ### Claude-현재세션 (csv-seed-migration)
 - 브랜치: `feat/csv-seed-migration`
-- 상태: 진행 중
+- 상태: 완료
 - 접근 파일:
   - `src/main/resources/db/migration/V9__csv_seed_data.sql` (신규)
   - `docs/장인몰_샘플_artisan.csv`
   - `docs/장인몰_샘플_category.csv`
   - `docs/장인몰_샘플_product.csv`
 - 작업 요약: CSV 원본 기반 Flyway V9 seed migration (장인 81명, 상품 729개)
+- 시작일: 2026-09-28
+
+### Claude-현재세션 (oauth2-kakao-naver)
+- 브랜치: `feat/oauth2-kakao-naver`
+- 상태: 진행 중
+- 접근 파일:
+  - `src/main/java/com/jangingmall/backend/global/config/PermitAllPaths.java`
+  - `src/main/java/com/jangingmall/backend/global/config/SecurityConfig.java`
+  - `src/main/java/com/jangingmall/backend/member/**` (OAuth2 관련)
+  - `src/main/resources/application.yml`
+- 작업 요약: 카카오·네이버 OAuth2 소셜 로그인 연동
 - 시작일: 2026-09-28
 
 ## 완료된 작업 (참고용)
