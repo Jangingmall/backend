@@ -137,7 +137,7 @@ class PaymentServiceTest {
     @DisplayName("결제 준비는 서버가 산정한 주문 금액과 다른 요청을 거부한다")
     void rejectsTamperedPrepareAmount() {
         PurchaseOrder order = order(100L, 1L, 25_000L);
-        when(orders.findById(100L)).thenReturn(Optional.of(order));
+        when(orders.findByIdForUpdate(100L)).thenReturn(Optional.of(order));
 
         assertThatThrownBy(() -> service.prepare(1L, new PaymentService.Prepare(100L, 1L, PaymentMethod.CARD)))
             .isInstanceOf(BusinessRuleViolationException.class);
@@ -149,7 +149,7 @@ class PaymentServiceTest {
     @DisplayName("PAY-P0-039 정상 결제 준비는 201용 신규 결제를 반환한다")
     void preparesNewPayment() {
         PurchaseOrder order = order(100L, 1L, 25_000L);
-        when(orders.findById(100L)).thenReturn(Optional.of(order));
+        when(orders.findByIdForUpdate(100L)).thenReturn(Optional.of(order));
         when(payments.findByOrderId(100L)).thenReturn(Optional.empty());
         when(payments.save(any(Payment.class))).thenAnswer(invocation -> {
             Payment payment = invocation.getArgument(0);
@@ -167,9 +167,9 @@ class PaymentServiceTest {
     @Test
     @DisplayName("PAY-P0-040/041 없는 주문과 다른 회원 주문의 결제 준비는 404다")
     void hidesUnknownOrForeignOrderOnPrepare() {
-        when(orders.findById(100L)).thenReturn(Optional.empty());
+        when(orders.findByIdForUpdate(100L)).thenReturn(Optional.empty());
         assertNotFound(() -> service.prepare(1L, new PaymentService.Prepare(100L, 1L, PaymentMethod.CARD)));
-        when(orders.findById(101L)).thenReturn(Optional.of(order(101L, 2L, 25_000L)));
+        when(orders.findByIdForUpdate(101L)).thenReturn(Optional.of(order(101L, 2L, 25_000L)));
         assertNotFound(() -> service.prepare(1L, new PaymentService.Prepare(101L, 25_000L, PaymentMethod.CARD)));
     }
 
@@ -178,7 +178,7 @@ class PaymentServiceTest {
     void rejectsPaidOrderOnPrepare() {
         PurchaseOrder order = order(100L, 1L, 25_000L);
         order.markPaid();
-        when(orders.findById(100L)).thenReturn(Optional.of(order));
+        when(orders.findByIdForUpdate(100L)).thenReturn(Optional.of(order));
         assertThatThrownBy(() -> service.prepare(1L,
             new PaymentService.Prepare(100L, 25_000L, PaymentMethod.CARD)))
             .isInstanceOf(BusinessRuleViolationException.class);
@@ -481,10 +481,11 @@ class PaymentServiceTest {
         when(payments.findByOrderIdForUpdate(100L)).thenReturn(Optional.of(payment));
 
         service.handleWebhook(webhook);
+        order.markInDelivery();
         service.handleWebhook(webhook);
 
         assertThat(payment.getStatus()).isEqualTo(PaymentStatus.DONE);
-        assertThat(order.getStatus()).isEqualTo(com.jangingmall.backend.payment.domain.OrderStatus.PAID);
+        assertThat(order.getStatus()).isEqualTo(com.jangingmall.backend.payment.domain.OrderStatus.IN_DELIVERY);
         verify(catalog).changeSalesCount(any(), org.mockito.ArgumentMatchers.eq(1));
         verify(notifications).paymentCompleted(order);
     }

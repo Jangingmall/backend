@@ -74,7 +74,9 @@ public class PaymentService {
         if (properties.getClientKey() == null || properties.getClientKey().isBlank()) {
             throw new BusinessRuleViolationException("토스페이먼츠 클라이언트 키가 설정되지 않았습니다.");
         }
-        PurchaseOrder order = ownedOrder(memberId, command.orderId());
+        // Preparation and approval both lock the order row. This prevents two browser tabs from
+        // creating separate READY payments for the same order.
+        PurchaseOrder order = ownedOrderForUpdate(memberId, command.orderId());
         if (order.getStatus() != OrderStatus.CREATED || order.getTotalAmount() != command.amount()) {
             throw new BusinessRuleViolationException("결제 가능한 주문 또는 금액이 아닙니다.");
         }
@@ -269,7 +271,7 @@ public class PaymentService {
 
         switch (verified.status()) {
             case "DONE" -> {
-                if (payment.isSameConfirmation(verified.paymentKey()) && order.getStatus() == OrderStatus.PAID) {
+                if (payment.isSameConfirmation(verified.paymentKey())) {
                     return;
                 }
                 if (payment.getStatus() != PaymentStatus.READY || order.getStatus() != OrderStatus.CREATED) {
@@ -383,6 +385,9 @@ public class PaymentService {
 
     private void cancelFromWebhook(Payment payment, PurchaseOrder order) {
         if (payment.getStatus() == PaymentStatus.CANCELED && order.getStatus() == OrderStatus.CANCELED) {
+            return;
+        }
+        if (payment.getStatus() == PaymentStatus.FAILED && order.getStatus() == OrderStatus.PAYMENT_FAILED) {
             return;
         }
         if (payment.getStatus() == PaymentStatus.READY && order.getStatus() == OrderStatus.CREATED) {
