@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +52,29 @@ public class MemberController {
     ) {
         emailVerificationService.verify(request.email(), request.code());
         return ResponseEntity.ok(ApiResponse.ok(null));
+    }
+
+    @PostMapping("/email-verifications")
+    public ResponseEntity<ApiResponse<Long>> sendVerification(
+        @Valid @RequestBody EmailVerificationRequest.Send request
+    ) {
+        return ResponseEntity.ok(ApiResponse.ok(emailVerificationService.sendVerification(request.email())));
+    }
+
+    @GetMapping("/email-verifications/verify")
+    public ResponseEntity<Void> verifyEmailLink(@RequestParam(required = false) String token) {
+        boolean verified = true;
+        try {
+            emailVerificationService.verifyToken(token);
+        } catch (DomainException ignored) {
+            // Browser link contracts always return the frontend redirect. The result header lets
+            // the frontend distinguish an expired link without exposing token details in the URL.
+            verified = false;
+        }
+        return ResponseEntity.status(302)
+            .header(HttpHeaders.LOCATION, "/")
+            .header("X-Email-Verification-Result", verified ? "success" : "failure")
+            .build();
     }
 
     @PostMapping("/signup")

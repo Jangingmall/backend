@@ -30,8 +30,11 @@ public class MemberAccountService {
     @Transactional
     public void changePassword(Long memberId, String currentPassword, String newPassword) {
         var member = access.lock(memberId);
-        if (!passwords.matches(currentPassword, member.getPasswordHash())) {
+        if (member.getPasswordHash() == null || !passwords.matches(currentPassword, member.getPasswordHash())) {
             throw new DomainException(ErrorCode.UNAUTHORIZED);
+        }
+        if (passwords.matches(newPassword, member.getPasswordHash())) {
+            throw new DomainException(ErrorCode.BUSINESS_RULE_VIOLATION);
         }
         member.changePassword(passwords.encode(newPassword));
         refreshTokens.delete(memberId);

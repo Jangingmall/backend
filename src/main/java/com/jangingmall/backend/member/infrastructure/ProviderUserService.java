@@ -5,6 +5,7 @@ import java.net.http.HttpClient;
 import java.time.Duration;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.*;
@@ -24,11 +25,11 @@ public class ProviderUserService implements OAuth2UserService<OAuth2UserRequest,
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public OAuth2User loadUser(OAuth2UserRequest request) {
         try {
             Map<String,Object> attributes=client.get().uri(request.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUri())
-                .headers(headers->headers.setBearerAuth(request.getAccessToken().getTokenValue())).retrieve().body(Map.class);
+                .headers(headers->headers.setBearerAuth(request.getAccessToken().getTokenValue())).retrieve()
+                .body(new ParameterizedTypeReference<>() {});
             OAuthIdentity identity=identity(request.getClientRegistration().getRegistrationId(),Objects.requireNonNull(attributes));
             return new DefaultOAuth2User(Set.of(new SimpleGrantedAuthority("OAUTH2_USER")),
                 Map.of("provider",identity.provider(),"subject",identity.subject(),"email",identity.email()),"subject");
@@ -38,9 +39,19 @@ public class ProviderUserService implements OAuth2UserService<OAuth2UserRequest,
     }
 
     public OAuthIdentity identity(String provider,Map<String,Object> attributes) {
-        var kakao=(Map<String,Object>)attributes.getOrDefault("kakao_account",Map.of());
-        if ("kakao".equals(provider) && Boolean.TRUE.equals(kakao.get("is_email_verified")) && Boolean.TRUE.equals(kakao.get("is_email_valid"))) {
-            return new OAuthIdentity(provider,Objects.toString(attributes.get("id"),""),Objects.toString(kakao.get("email"),""));
+        if ("kakao".equals(provider)) {
+            Object account=attributes.get("kakao_account");
+            if (account instanceof Map<?,?> kakao
+                && Boolean.TRUE.equals(kakao.get("is_email_verified")) && Boolean.TRUE.equals(kakao.get("is_email_valid"))) {
+                return new OAuthIdentity(provider,Objects.toString(attributes.get("id"),""),Objects.toString(kakao.get("email"),""));
+            }
+        }
+        if ("naver".equals(provider)) {
+            Object profile=attributes.get("response");
+            if (profile instanceof Map<?,?> response && "00".equals(attributes.get("resultcode"))
+                && response.get("id") != null && response.get("email") != null) {
+                return new OAuthIdentity(provider,Objects.toString(response.get("id"),""),Objects.toString(response.get("email"),""));
+            }
         }
         throw new OAuth2AuthenticationException(new OAuth2Error("unverified_email"));
     }

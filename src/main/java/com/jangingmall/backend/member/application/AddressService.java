@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AddressService {
+    private static final int MAX_ADDRESSES = 10;
     private final MemberAccess access;
     private final AddressRepository addresses;
 
@@ -25,6 +26,9 @@ public class AddressService {
     public AddressData create(Long memberId, AddressData data) {
         access.lockRole(memberId, MemberRole.USER);
         List<Address> existing = addresses.findByMemberIdOrderByIdAsc(memberId);
+        if (existing.size() >= MAX_ADDRESSES) {
+            throw new DomainException(ErrorCode.BUSINESS_RULE_VIOLATION);
+        }
         Address address = new Address(memberId, data.recipientName(), data.phone(), data.zipCode(), data.address1(), data.address2());
         if (data.isDefault() || existing.isEmpty()) {
             replaceDefault(existing, address);
@@ -45,12 +49,11 @@ public class AddressService {
     public void delete(Long memberId, Long addressId) {
         access.lockRole(memberId, MemberRole.USER);
         Address address = owned(addressId, memberId);
+        if (address.isDefaultAddress()) {
+            throw new DomainException(ErrorCode.BUSINESS_RULE_VIOLATION);
+        }
         addresses.delete(address);
         addresses.flush();
-        if (address.isDefaultAddress()) {
-            addresses.findByMemberIdOrderByIdAsc(memberId).stream().findFirst()
-                .ifPresent(next -> next.chooseDefault(true));
-        }
     }
 
     private Address owned(Long addressId, Long memberId) {
@@ -67,10 +70,7 @@ public class AddressService {
             return;
         }
         if (address.isDefaultAddress()) {
-            var replacement = addresses.findByMemberIdOrderByIdAsc(memberId).stream()
-                .filter(candidate -> !candidate.getId().equals(address.getId())).findFirst()
-                .orElseThrow(() -> new DomainException(ErrorCode.BUSINESS_RULE_VIOLATION));
-            replaceDefault(List.of(address), replacement);
+            throw new DomainException(ErrorCode.BUSINESS_RULE_VIOLATION);
         }
     }
 

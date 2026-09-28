@@ -5,18 +5,31 @@ import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.domain.MemberRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Locale;
 
 @Service
-@RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder,
+        ApplicationEventPublisher eventPublisher) {
+        this.memberRepository = memberRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.eventPublisher = eventPublisher;
+    }
+
+    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
+        this(memberRepository, passwordEncoder, event -> { });
+    }
 
     @Transactional
     public MemberSignupResult signUp(MemberSignupCommand command) {
@@ -41,6 +54,7 @@ public class MemberService {
         );
 
         Member savedMember = memberRepository.save(member);
+        eventPublisher.publishEvent(new MemberRegisteredEvent(savedMember.getId(), savedMember.getEmail()));
         return MemberSignupResult.from(savedMember);
     }
 

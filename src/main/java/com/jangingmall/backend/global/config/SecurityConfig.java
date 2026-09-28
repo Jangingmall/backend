@@ -5,6 +5,7 @@ import com.jangingmall.backend.global.common.response.ApiErrorResponse;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.global.security.JwtAuthenticationFilter;
 import com.jangingmall.backend.global.security.JwtProperties;
+import com.jangingmall.backend.member.application.EmailVerificationProperties;
 import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.global.security.AiCallbackFilter;
 import com.jangingmall.backend.content.application.GenerationProperties;
@@ -40,7 +41,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class, com.jangingmall.backend.revalidate.application.RevalidateProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, AiProperties.class, InternalApiProperties.class, GenerationProperties.class, com.jangingmall.backend.revalidate.application.RevalidateProperties.class, EmailVerificationProperties.class})
 public class SecurityConfig {
 
     private final ObjectMapper objectMapper;

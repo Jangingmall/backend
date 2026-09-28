@@ -79,18 +79,25 @@ class AddressServiceTest {
     }
 
     @Test
-    @DisplayName("기본 배송지를 삭제하면 남은 배송지 하나가 기본 배송지가 된다")
-    void choosesReplacementAfterDeletingDefault() {
+    @DisplayName("기본 배송지는 먼저 다른 배송지를 기본으로 지정해야 삭제할 수 있다")
+    void rejectsDeletingDefaultAddress() {
         Address deleted = address(10L, 1L, true);
         Address replacement = address(11L, 1L, false);
         when(addresses.findById(10L)).thenReturn(Optional.of(deleted));
-        when(addresses.findByMemberIdOrderByIdAsc(1L)).thenReturn(List.of(replacement));
+        assertThatThrownBy(() -> service.delete(1L, 10L))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.BUSINESS_RULE_VIOLATION));
+    }
 
-        service.delete(1L, 10L);
+    @Test
+    @DisplayName("배송지는 회원당 10개까지만 등록할 수 있다")
+    void rejectsEleventhAddress() {
+        when(addresses.findByMemberIdOrderByIdAsc(1L)).thenReturn(java.util.stream.IntStream.range(0, 10)
+            .mapToObj(index -> address((long) index, 1L, index == 0)).toList());
 
-        assertThat(replacement.isDefaultAddress()).isTrue();
-        verify(addresses).delete(deleted);
-        verify(addresses).flush();
+        assertThatThrownBy(() -> service.create(1L, data(false)))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.BUSINESS_RULE_VIOLATION));
     }
 
     private AddressData data(boolean isDefault) {

@@ -42,7 +42,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("정상 회원가입 시 비밀번호를 해시 처리하고 즉시 활성 회원을 저장한다")
+    @DisplayName("정상 회원가입 시 비밀번호를 해시 처리하고 인증 대기 회원을 저장한다")
     void signUp() {
         MemberSignupCommand command = validCommand();
         when(memberRepository.existsByEmail(command.email())).thenReturn(false);
@@ -58,13 +58,13 @@ class MemberServiceTest {
         verify(memberRepository).save(memberCaptor.capture());
         Member savedMember = memberCaptor.getValue();
         assertThat(savedMember.getPasswordHash()).isEqualTo("hashed-password");
-        assertThat(savedMember.getStatus().name()).isEqualTo("ACTIVE");
+        assertThat(savedMember.getStatus().name()).isEqualTo("PENDING_VERIFICATION");
         assertThat(savedMember.isMarketingAgreed()).isTrue();
         assertThat(result.memberId()).isEqualTo(1L);
         assertThat(result.email()).isEqualTo(command.email());
         assertThat(result.name()).isEqualTo(command.name());
         assertThat(result.role()).isEqualTo(MemberRole.USER);
-        assertThat(result.status().name()).isEqualTo("ACTIVE");
+        assertThat(result.status().name()).isEqualTo("PENDING_VERIFICATION");
     }
 
     @Test

@@ -14,7 +14,8 @@ public class MemberWebConfiguration {
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(limiter).addPathPatterns("/api/member/login", "/api/member/signup",
-                    "/api/member/oauth2/exchange", "/api/member/oauth2/complete-profile");
+                    "/api/member/email-verifications", "/api/member/oauth2/exchange",
+                    "/api/member/oauth2/complete-profile");
             }
         };
     }

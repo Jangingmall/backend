@@ -18,4 +18,21 @@ class ProviderUserServiceTest {
         assertThat(identity.provider()).isEqualTo("kakao");
         assertThat(identity.subject()).isEqualTo("12345");
     }
+
+    @Test
+    void acceptsNaverProfileEnvelope() {
+        OAuthIdentity identity = users.identity("naver", Map.of("resultcode", "00", "response",
+            Map.of("id", "naver-subject", "email", "naver@example.com")));
+
+        assertThat(identity.provider()).isEqualTo("naver");
+        assertThat(identity.subject()).isEqualTo("naver-subject");
+        assertThat(identity.email()).isEqualTo("naver@example.com");
+    }
+
+    @Test
+    void rejectsNaverProfileWithoutEmail() {
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> users.identity("naver",
+                Map.of("resultcode", "00", "response", Map.of("id", "naver-subject"))))
+            .isInstanceOf(OAuth2AuthenticationException.class);
+    }
 }

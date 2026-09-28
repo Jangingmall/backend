@@ -1,6 +1,7 @@
 package com.jangingmall.backend.member.presentation;
 
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,6 +38,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.JsonFieldType;
+import com.epages.restdocs.apispec.SimpleType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithAnonymousUser;
@@ -331,5 +333,42 @@ class MemberControllerTest extends RestDocsControllerTest {
                     .build()
                 )
             ));
+    }
+
+    @Test
+    @DisplayName("이메일 인증 링크 재전송은 만료 시간을 반환한다")
+    void resendVerificationLink() throws Exception {
+        when(emailVerificationService.sendVerification("user@example.com")).thenReturn(1800L);
+
+        mockMvc.perform(post("/api/member/email-verifications")
+                .contentType(APPLICATION_JSON)
+                .content(json(new com.jangingmall.backend.member.presentation.dto.EmailVerificationRequest.Send("user@example.com"))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data").value(1800))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "member-email-resend-link",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("회원")
+                    .summary("이메일 인증 링크 재전송")
+                    .requestFields(fieldWithPath("email").type(JsonFieldType.STRING).description("가입 이메일"))
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data").type(JsonFieldType.NUMBER).description("링크 유효 시간(초)")))
+                    .build())));
+    }
+
+    @Test
+    @DisplayName("이메일 인증 링크는 성공·실패 모두 프론트 홈으로 리다이렉트한다")
+    void verifyEmailLinkRedirects() throws Exception {
+        mockMvc.perform(get("/api/member/email-verifications/verify").param("token", "opaque-token"))
+            .andExpect(status().isFound())
+            .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header().string("Location", "/"))
+            .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.header().string("X-Email-Verification-Result", "success"))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "member-email-verify-link",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("회원")
+                    .summary("이메일 인증 링크 확인")
+                    .queryParameters(parameterWithName("token").description("일회성 인증 토큰"))
+                    .build())));
     }
 }
