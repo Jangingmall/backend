@@ -149,7 +149,7 @@ class RestAiContentClient implements AiContentClient {
     public void syncProduct(AiProductSyncPayload payload) {
         try {
             syncClient.post()
-                .uri("/ai/products/sync")
+                .uri("/ai/products")
                 .body(payload)
                 .retrieve()
                 .toBodilessEntity();

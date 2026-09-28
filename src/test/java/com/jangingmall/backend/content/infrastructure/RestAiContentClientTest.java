@@ -98,13 +98,13 @@ class RestAiContentClientTest {
     @Test
     @DisplayName("상품 동기화 — syncProduct가 챗봇 서버 /ai/products/sync로 전송된다")
     void syncProduct_routesToChatBotServer() throws Exception {
-        syncMockServer.expect(requestTo("http://ai-chat-server/ai/products/sync"))
+        syncMockServer.expect(requestTo("http://ai-chat-server/ai/products"))
             .andExpect(method(HttpMethod.POST))
             .andRespond(withNoContent());
 
-        ArtisanInfo artisanInfo = new ArtisanInfo(1L, "김장인", "ARTISAN", "소개글");
+        ArtisanInfo artisanInfo = new ArtisanInfo(1L, "김장인공방", "ARTISAN", "경북 문경");
         ProductInfo productInfo = new ProductInfo(
-            42L, "청자 다완", "도자기", "청자", 85000, List.of(), List.of(), "손으로 빚음", "물 닦기", 30, List.of()
+            42L, "청자 다완", "KITCHEN", "TEAWARE", "청자", 85000, List.of(), List.of(), "손으로 빚음", "물 닦기", "청색", "ON_SALE"
         );
         contentClient.syncProduct(new AiProductSyncPayload(artisanInfo, productInfo));
 
@@ -119,7 +119,7 @@ class RestAiContentClientTest {
             .andRespond(withNoContent());
 
         AiProductUpdatePayload.ProductPatch patch = new AiProductUpdatePayload.ProductPatch(
-            "청자 다완 (수정)", "도자기", "청자", 90000, List.of(), List.of(), "손으로 빚음", "물 닦기", 30, List.of()
+            "청자 다완 (수정)", "KITCHEN", "TEAWARE", "청자", 90000, List.of(), List.of(), "손으로 빚음", "물 닦기", "청색", "ON_SALE"
         );
         contentClient.updateProduct(42L, new AiProductUpdatePayload(patch));
 

@@ -1,6 +1,6 @@
 # AI 챗봇 연동 가이드
 
-> 브랜치: `feat/generation-deadline-scheduler` · 커밋: `c14f48f` · 기준일: 2026-09-18
+> 기준일: 2026-09-28
 
 백엔드와 AI 챗봇 서버 간 연동 방식을 설명합니다.
 
@@ -93,39 +93,42 @@
 
 | 이벤트 | BE API | AI 엔드포인트 |
 |--------|--------|--------------|
-| 상품 게시 | `POST /api/content/products/{productId}/publish` | `POST /ai/products/sync` |
+| 상품 게시 | `POST /api/content/products/{productId}/publish` | `POST /ai/products` |
 | 상품 수정 | `PATCH /api/products/{productId}` | `PUT /ai/products/{id}` |
+| 상품 상태 변경 | `PATCH /api/products/{productId}/status` | `PUT /ai/products/{id}` |
 | 상품 삭제 | `DELETE /api/products/{productId}` | `DELETE /ai/products/{id}` |
 
 동기화 실패 시 오류 로그만 기록하고 상품 처리는 계속 진행됩니다.
 
-### POST /ai/products/sync Request
+### POST /ai/products Request
 
 ```json
 {
   "artisan": {
     "artisan_id": 10,
-    "name": "김도공방",
-    "certification_level": "보유자",
-    "introduction": "3대째 이천에서 청자를 굽습니다..."
+    "business_name": "김도공방",
+    "certification_level": "NATIONAL_INTANGIBLE_HERITAGE",
+    "region": "경기 이천"
   },
   "product": {
     "product_id": 1,
-    "title": "청자 상감 다완",
-    "category": "POTTERY",
+    "name": "청자 상감 다완",
+    "category_code": "KITCHEN",
+    "subcategory_code": "TEAWARE",
     "material": "청자토",
     "price": 85000,
     "gift_theme": ["BIRTHDAY_60TH"],
     "purpose_tags": ["다도"],
     "making_story": "물레로 형태를 잡은 뒤...",
     "usage_care": "차를 우린 뒤 미지근한 물로...",
-    "production_period_days": 14,
-    "color": ["BLUE"]
+    "color": "BLUE",
+    "status": "ON_SALE"
   }
 }
 ```
 
 > `making_story`·`usage_care`는 AI 추천 품질을 직접 좌우하는 핵심 서사 데이터입니다.
+> `status`는 AI 검색 필터링 기준 — `ON_SALE`만 검색에 노출됩니다.
 
 ---
 
