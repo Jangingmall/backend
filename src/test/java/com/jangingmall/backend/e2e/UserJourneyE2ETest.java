@@ -153,7 +153,11 @@ class UserJourneyE2ETest {
         // 응답 구조: ApiResponse<MemberSignupResponse> → data.member.memberId
         @SuppressWarnings("unchecked")
         Map<String, Object> member = (Map<String, Object>) data(res).get("member");
-        return longVal(member, "memberId");
+        Long memberId = longVal(member, "memberId");
+        // E2E flows below exercise authenticated commerce APIs, not email delivery.
+        // Complete the verification fixture before issuing its test JWT.
+        jdbcTemplate.update("UPDATE member SET status = 'ACTIVE' WHERE member_id = ?", memberId);
+        return memberId;
     }
 
     private Long createProduct() throws Exception {
