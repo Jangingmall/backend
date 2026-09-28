@@ -6,6 +6,7 @@ import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.global.exception.NotFoundException;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class GenerationAsyncExecutorTest {
 
     @BeforeEach
     void setUp() {
-        executor = new GenerationAsyncExecutor(generationRepository, aiContentClient);
+        executor = new GenerationAsyncExecutor(generationRepository, aiContentClient, new SimpleMeterRegistry());
     }
 
     private GenerationCommand.Request sampleCommand() {

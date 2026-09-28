@@ -214,6 +214,25 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 
 ---
 
+### Claude-현재세션 (phase4-performance-after)
+- 브랜치: `feat/phase4-performance`
+- 상태: 진행 중
+- 접근 파일:
+  - `src/test/java/com/jangingmall/backend/e2e/UserJourneyE2ETest.java`
+  - `src/main/java/com/jangingmall/backend/product/application/ProductService.java`
+  - `src/main/java/com/jangingmall/backend/product/domain/Product.java`
+  - `src/main/java/com/jangingmall/backend/image/application/ImageService.java`
+  - `src/main/java/com/jangingmall/backend/image/domain/ImageUploadRepository.java`
+  - `src/main/java/com/jangingmall/backend/content/application/ContentService.java`
+  - `src/main/resources/db/migration/V6__performance_indexes.sql` (신규)
+  - `src/main/resources/application.yml`
+  - `build.gradle`
+  - `src/gatling/java/**` (신규)
+  - `docker/monitoring/**` (신규)
+  - `docs/load-test/**` (신규)
+- 작업 요약: Phase 4 — 통합 테스트 추가, N+1 배치 최적화, DB 인덱스, Redis 캐시, Prometheus+Grafana 모니터링, JaCoCo 95% 커버리지 설정
+- 시작일: 2026-09-27
+
 ## 완료된 작업 (참고용)
 
 (없음)

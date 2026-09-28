@@ -1,4 +1,4 @@
-package com.jangingmall.backend.content.infrastructure;
+테package com.jangingmall.backend.content.infrastructure;
 
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
@@ -16,6 +16,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import java.net.http.HttpClient;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -51,7 +52,7 @@ class RestAiContentClientTest {
         RestClient generationClient = RestClient.builder(generationTemplate).baseUrl("http://ai-content-server").build();
         RestClient syncClient = RestClient.builder(syncTemplate).baseUrl("http://ai-chat-server").build();
         HttpClient httpClient = HttpClient.newBuilder().build();
-        contentClient = new RestAiContentClient(generationClient, syncClient, AI_INTERNAL_TOKEN, OBJECT_MAPPER, httpClient);
+        contentClient = new RestAiContentClient(generationClient, syncClient, AI_INTERNAL_TOKEN, OBJECT_MAPPER, httpClient, new SimpleMeterRegistry());
     }
 
     @Test
