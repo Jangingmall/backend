@@ -1,336 +1,2598 @@
 {
-  "annotations": { "list": [{ "builtIn": 1, "datasource": { "type": "grafana", "uid": "-- Grafana --" }, "enable": true, "hide": true, "iconColor": "rgba(0, 211, 255, 1)", "name": "Annotations & Alerts", "type": "dashboard" }] },
-  "editable": true, "fiscalYearStartMonth": 0, "graphTooltip": 0, "links": [],
-  "schemaVersion": 39, "refresh": "15s",
-  "time": { "from": "now-1h", "to": "now" }, "timepicker": {}, "timezone": "", "weekStart": "",
-  "title": "Performance Before/After", "uid": "perf-before-after", "version": 2, "tags": [],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "schemaVersion": 39,
+  "refresh": "15s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "weekStart": "",
+  "title": "Performance Before/After",
+  "uid": "perf-before-after",
+  "version": 2,
+  "tags": [],
   "templating": {
     "list": [
       {
-        "current": { "selected": true, "text": "local", "value": "local" },
-        "hide": 0, "includeAll": false, "label": "Environment", "multi": false,
+        "current": {
+          "selected": true,
+          "text": "local",
+          "value": "local"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
         "name": "env",
-        "options": [{ "selected": true, "text": "local", "value": "local" }, { "selected": false, "text": "prod", "value": "prod" }],
-        "query": "local,prod", "skipUrlSync": false, "type": "custom"
+        "options": [
+          {
+            "selected": true,
+            "text": "local",
+            "value": "local"
+          },
+          {
+            "selected": false,
+            "text": "prod",
+            "value": "prod"
+          }
+        ],
+        "query": "local,prod",
+        "skipUrlSync": false,
+        "type": "custom"
       },
       {
-        "current": { "selected": true, "text": "5m", "value": "5m" },
-        "hide": 0, "includeAll": false, "label": "Rate Window", "multi": false,
+        "current": {
+          "selected": true,
+          "text": "5m",
+          "value": "5m"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Rate Window",
+        "multi": false,
         "name": "rate",
         "options": [
-          { "selected": false, "text": "1m", "value": "1m" },
-          { "selected": true,  "text": "5m", "value": "5m" },
-          { "selected": false, "text": "10m", "value": "10m" }
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": true,
+            "text": "5m",
+            "value": "5m"
+          },
+          {
+            "selected": false,
+            "text": "10m",
+            "value": "10m"
+          }
         ],
-        "query": "1m,5m,10m", "skipUrlSync": false, "type": "custom"
+        "query": "1m,5m,10m",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
   "panels": [
     {
-      "id": 100, "title": "── 섹션 1: 상품 목록 API (GET /api/products) — Phase 4 최적화 V0→V4 ──", "type": "text",
-      "gridPos": { "h": 2, "w": 24, "x": 0, "y": 0 },
-      "options": { "content": "**V0 AS-IS**: ~142 쿼리/요청 &nbsp;&nbsp;|&nbsp;&nbsp; **V1 배치 로딩**: ~5 쿼리 &nbsp;&nbsp;|&nbsp;&nbsp; **V2 LAZY+batch_fetch**: ~5 쿼리 &nbsp;&nbsp;|&nbsp;&nbsp; **V3 DB 인덱스**: ~5 쿼리 &nbsp;&nbsp;|&nbsp;&nbsp; **V4 Redis 캐시 히트**: 0 쿼리\n\n부하 테스트 실행: `k6 run src/k6/all-endpoints.js` 또는 `k6 run src/k6/product-list.js`", "mode": "markdown" },
-      "datasource": { "type": "datasource", "uid": "-- Mixed --" }
+      "id": 100,
+      "title": "── 섹션 1: 상품 목록 API (GET /api/products) — Phase 4 최적화 V0→V4 ──",
+      "type": "text",
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "options": {
+        "content": "**V0 AS-IS**: ~142 쿼리/요청 &nbsp;&nbsp;|&nbsp;&nbsp; **V1 배치 로딩**: ~5 쿼리 &nbsp;&nbsp;|&nbsp;&nbsp; **V2 LAZY+batch_fetch**: ~5 쿼리 &nbsp;&nbsp;|&nbsp;&nbsp; **V3 DB 인덱스**: ~5 쿼리 &nbsp;&nbsp;|&nbsp;&nbsp; **V4 Redis 캐시 히트**: 0 쿼리\n\n부하 테스트 실행: `k6 run src/k6/all-endpoints.js` 또는 `k6 run src/k6/product-list.js`",
+        "mode": "markdown"
+      },
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      }
     },
     {
-      "id": 1, "title": "p50 레이턴시 — GET /api/products", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 2 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 1,
+      "title": "p50 레이턴시 — GET /api/products",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 2
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)) * 1000", "legendFormat": "p50 (ms)", "refId": "A" }
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p50 (ms)",
+          "refId": "A"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "ms", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 100 }, { "color": "red", "value": 300 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "min", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 300
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 2, "title": "p95 레이턴시 — GET /api/products", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 2 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 2,
+      "title": "p95 레이턴시 — GET /api/products",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 2
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)) * 1000", "legendFormat": "p95 (ms)", "refId": "A" }
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p95 (ms)",
+          "refId": "A"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "ms", "color": { "fixedColor": "orange", "mode": "fixed" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line+area" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 300 }, { "color": "red", "value": 1000 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "min", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "fixedColor": "orange",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 300
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 3, "title": "p99 레이턴시 — GET /api/products", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 2 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 3,
+      "title": "p99 레이턴시 — GET /api/products",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 2
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)) * 1000", "legendFormat": "p99 (ms)", "refId": "A" }
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p99 (ms)",
+          "refId": "A"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "ms", "color": { "fixedColor": "red", "mode": "fixed" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line+area" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 500 }, { "color": "red", "value": 2000 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "min", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 4, "title": "RPS — GET /api/products", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 10 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 4,
+      "title": "RPS — GET /api/products",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 10
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\", status=\"200\"}[$rate]))", "legendFormat": "RPS (200)", "refId": "A" },
-        { "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\", status=~\"5..\"}[$rate]))", "legendFormat": "RPS (5xx)", "refId": "B" }
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\", status=\"200\"}[$rate]))",
+          "legendFormat": "RPS (200)",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\", status=~\"5..\"}[$rate]))",
+          "legendFormat": "RPS (5xx)",
+          "refId": "B"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "reqps", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 5, "title": "SLO 달성률 — p95 < 300ms 목표", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 10 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 5,
+      "title": "SLO 달성률 — p95 < 300ms 목표",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 10
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\", le=\"0.3\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\"}[$rate])) * 100", "legendFormat": "300ms 이내 %", "refId": "A" },
-        { "expr": "sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\", le=\"0.1\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\"}[$rate])) * 100", "legendFormat": "100ms 이내 %", "refId": "B" },
-        { "expr": "sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\", le=\"0.5\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\"}[$rate])) * 100", "legendFormat": "500ms 이내 %", "refId": "C" }
+        {
+          "expr": "sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\", le=\"0.3\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\"}[$rate])) * 100",
+          "legendFormat": "300ms 이내 %",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\", le=\"0.1\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\"}[$rate])) * 100",
+          "legendFormat": "100ms 이내 %",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\", le=\"0.5\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\"}[$rate])) * 100",
+          "legendFormat": "500ms 이내 %",
+          "refId": "C"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 90 }, { "color": "green", "value": 95 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 90
+              },
+              {
+                "color": "green",
+                "value": 95
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 6, "title": "에러율 % (5xx / 전체)", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 10 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 6,
+      "title": "에러율 % (5xx / 전체)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 10
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", status=~\"5..\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\"}[$rate])) * 100", "legendFormat": "5xx 에러율 %", "refId": "A" }
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", status=~\"5..\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\"}[$rate])) * 100",
+          "legendFormat": "5xx 에러율 %",
+          "refId": "A"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "color": { "fixedColor": "red", "mode": "fixed" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 20, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line+area" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 5 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 7, "title": "레이턴시 히트맵 — /api/products", "type": "heatmap",
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 7,
+      "title": "레이턴시 히트맵 — /api/products",
+      "type": "heatmap",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "sum(increase(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)", "legendFormat": "{{le}}", "refId": "A", "format": "heatmap" }
+        {
+          "expr": "sum(increase(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)",
+          "legendFormat": "{{le}}",
+          "refId": "A",
+          "format": "heatmap"
+        }
       ],
-      "fieldConfig": { "defaults": { "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "scaleDistribution": { "type": "linear" } } }, "overrides": [] },
-      "options": { "calculate": false, "cellGap": 1, "color": { "exponent": 0.5, "fill": "dark-orange", "mode": "scheme", "reverse": false, "scale": "exponential", "scheme": "Oranges", "steps": 64 }, "exemplars": { "color": "rgba(255,0,255,0.7)" }, "filterValues": { "le": 1e-9 }, "legend": { "show": true }, "rowsFrame": { "layout": "auto" }, "tooltip": { "mode": "single", "showColorScale": false, "yHistogram": false }, "yAxis": { "axisPlacement": "left", "decimals": 1, "reverse": false, "unit": "s" } }
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "calculate": false,
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-orange",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Oranges",
+          "steps": 64
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-09
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "mode": "single",
+          "showColorScale": false,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "decimals": 1,
+          "reverse": false,
+          "unit": "s"
+        }
+      }
     },
     {
-      "id": 8, "title": "HikariCP 커넥션 — before/after 부하 확인", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 8,
+      "title": "HikariCP 커넥션 — before/after 부하 확인",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "hikaricp_connections_active{env=\"$env\"}",  "legendFormat": "Active",  "refId": "A" },
-        { "expr": "hikaricp_connections_idle{env=\"$env\"}",    "legendFormat": "Idle",    "refId": "B" },
-        { "expr": "hikaricp_connections_pending{env=\"$env\"}", "legendFormat": "Pending", "refId": "C" },
-        { "expr": "hikaricp_connections_max{env=\"$env\"}",    "legendFormat": "Max(20)", "refId": "D" }
+        {
+          "expr": "hikaricp_connections_active{env=\"$env\"}",
+          "legendFormat": "Active",
+          "refId": "A"
+        },
+        {
+          "expr": "hikaricp_connections_idle{env=\"$env\"}",
+          "legendFormat": "Idle",
+          "refId": "B"
+        },
+        {
+          "expr": "hikaricp_connections_pending{env=\"$env\"}",
+          "legendFormat": "Pending",
+          "refId": "C"
+        },
+        {
+          "expr": "hikaricp_connections_max{env=\"$env\"}",
+          "legendFormat": "Max(20)",
+          "refId": "D"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 9, "title": "JVM Heap — 부하 테스트 중 메모리 증가 확인", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 26 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 9,
+      "title": "JVM Heap — 부하 테스트 중 메모리 증가 확인",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 26
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "sum(jvm_memory_used_bytes{env=\"$env\", area=\"heap\"}) / 1024 / 1024", "legendFormat": "Heap Used (MB)", "refId": "A" },
-        { "expr": "sum(jvm_memory_max_bytes{env=\"$env\", area=\"heap\"}) / 1024 / 1024 * 0.75", "legendFormat": "75% 한계선 (MB)", "refId": "B" }
+        {
+          "expr": "sum(jvm_memory_used_bytes{env=\"$env\", area=\"heap\"}) / 1024 / 1024",
+          "legendFormat": "Heap Used (MB)",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(jvm_memory_max_bytes{env=\"$env\", area=\"heap\"}) / 1024 / 1024 * 0.75",
+          "legendFormat": "75% 한계선 (MB)",
+          "refId": "B"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "megbytes", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "megbytes",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 10, "title": "GC Pause — 부하 중 GC 압력", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 26 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 10,
+      "title": "GC Pause — 부하 중 GC 압력",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 26
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "sum(rate(jvm_gc_pause_seconds_sum{env=\"$env\"}[$rate])) * 1000", "legendFormat": "GC Pause (ms/s)", "refId": "A" }
+        {
+          "expr": "sum(rate(jvm_gc_pause_seconds_sum{env=\"$env\"}[$rate])) * 1000",
+          "legendFormat": "GC Pause (ms/s)",
+          "refId": "A"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "ms", "color": { "fixedColor": "purple", "mode": "fixed" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "fixedColor": "purple",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 11, "title": "CPU 사용률 — 부하 테스트 중", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 26 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 11,
+      "title": "CPU 사용률 — 부하 테스트 중",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 26
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "process_cpu_usage{env=\"$env\"} * 100", "legendFormat": "Process CPU %", "refId": "A" },
-        { "expr": "system_cpu_usage{env=\"$env\"} * 100",  "legendFormat": "System CPU %",  "refId": "B" }
+        {
+          "expr": "process_cpu_usage{env=\"$env\"} * 100",
+          "legendFormat": "Process CPU %",
+          "refId": "A"
+        },
+        {
+          "expr": "system_cpu_usage{env=\"$env\"} * 100",
+          "legendFormat": "System CPU %",
+          "refId": "B"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 70 }, { "color": "red", "value": 90 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
     },
     {
-      "id": 12, "title": "현재 p95 (ms)", "type": "stat",
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 34 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [{ "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)) * 1000", "legendFormat": "p95", "refId": "A" }],
-      "fieldConfig": { "defaults": { "unit": "ms", "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 100 }, { "color": "red", "value": 500 }] } }, "overrides": [] },
-      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "percentChangeColorMode": "standard", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "id": 12,
+      "title": "현재 p95 (ms)",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 34
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p95",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 500
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
       "pluginVersion": "11.1.0"
     },
     {
-      "id": 13, "title": "현재 RPS", "type": "stat",
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 34 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [{ "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\", status=\"200\"}[$rate]))", "legendFormat": "RPS", "refId": "A" }],
-      "fieldConfig": { "defaults": { "unit": "reqps", "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 100 }, { "color": "green", "value": 500 }] } }, "overrides": [] },
-      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "percentChangeColorMode": "standard", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "id": 13,
+      "title": "현재 RPS",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 34
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=\"/api/products\", status=\"200\"}[$rate]))",
+          "legendFormat": "RPS",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 100
+              },
+              {
+                "color": "green",
+                "value": 500
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
       "pluginVersion": "11.1.0"
     },
     {
-      "id": 14, "title": "5xx 에러율 %", "type": "stat",
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 34 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [{ "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", status=~\"5..\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\"}[$rate])) * 100", "legendFormat": "Error %", "refId": "A" }],
-      "fieldConfig": { "defaults": { "unit": "percent", "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 5 }] } }, "overrides": [] },
-      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "percentChangeColorMode": "standard", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "id": 14,
+      "title": "5xx 에러율 %",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 34
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", status=~\"5..\"}[$rate])) / sum(rate(http_server_requests_seconds_count{env=\"$env\"}[$rate])) * 100",
+          "legendFormat": "Error %",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
       "pluginVersion": "11.1.0"
     },
     {
-      "id": 15, "title": "Heap 사용률 %", "type": "gauge",
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 34 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [{ "expr": "sum(jvm_memory_used_bytes{env=\"$env\", area=\"heap\"}) / sum(jvm_memory_max_bytes{env=\"$env\", area=\"heap\"}) * 100", "legendFormat": "Heap %", "refId": "A" }],
-      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 60 }, { "color": "red", "value": 80 }] } }, "overrides": [] },
-      "options": { "minVizHeight": 75, "minVizWidth": 75, "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showThresholdLabels": false, "showThresholdMarkers": true },
-      "pluginVersion": "11.1.0"
-    },
-
-    {
-      "id": 200, "title": "── 섹션 2: 상품 단건 조회 API (GET /api/products/{id}) ──", "type": "text",
-      "gridPos": { "h": 2, "w": 24, "x": 0, "y": 38 },
-      "options": { "content": "**Before (V0)**: 상품 + 이미지 + 카테고리 + 장인 개별 쿼리 4회 &nbsp;&nbsp;|&nbsp;&nbsp; **After (V4)**: Redis 캐시 히트 시 0 DB 쿼리\n\n단건 집중 부하: `k6 run src/k6/product-detail.js` &nbsp;&nbsp;|&nbsp;&nbsp; 혼합 부하: `k6 run src/k6/all-endpoints.js`", "mode": "markdown" },
-      "datasource": { "type": "datasource", "uid": "-- Mixed --" }
-    },
-    {
-      "id": 201, "title": "p50/p95/p99 — GET /api/products/{id}", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 40 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "id": 15,
+      "title": "Heap 사용률 %",
+      "type": "gauge",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 34
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
       "targets": [
-        { "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products/{productId}\"}[$rate])) by (le)) * 1000", "legendFormat": "p50 (ms)", "refId": "A" },
-        { "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products/{productId}\"}[$rate])) by (le)) * 1000", "legendFormat": "p95 (ms)", "refId": "B" },
-        { "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products/{productId}\"}[$rate])) by (le)) * 1000", "legendFormat": "p99 (ms)", "refId": "C" }
+        {
+          "expr": "sum(jvm_memory_used_bytes{env=\"$env\", area=\"heap\"}) / sum(jvm_memory_max_bytes{env=\"$env\", area=\"heap\"}) * 100",
+          "legendFormat": "Heap %",
+          "refId": "A"
+        }
       ],
-      "fieldConfig": { "defaults": { "unit": "ms", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 200 }, { "color": "red", "value": 500 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "min", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
-    },
-    {
-      "id": 202, "title": "캐시 히트율 — products 캐시", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 40 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [
-        { "expr": "rate(cache_gets_total{cache=\"products\", result=\"hit\"}[$rate]) / (rate(cache_gets_total{cache=\"products\"}[$rate]) + 0.001) * 100", "legendFormat": "products 캐시 히트율 %", "refId": "A" },
-        { "expr": "rate(cache_gets_total{cache=\"categories\", result=\"hit\"}[$rate]) / (rate(cache_gets_total{cache=\"categories\"}[$rate]) + 0.001) * 100", "legendFormat": "categories 캐시 히트율 %", "refId": "B" }
-      ],
-      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 70 }, { "color": "green", "value": 90 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
-    },
-
-    {
-      "id": 300, "title": "── 섹션 3: AI 연동 Before/After ──", "type": "text",
-      "gridPos": { "h": 3, "w": 24, "x": 0, "y": 48 },
-      "options": { "content": "**문제 (Before)**: `pollQueuedGenerations()` — `@Transactional` 내부에서 QUEUED 상태 N건을 개별 HTTP 호출 → DB 커넥션 N×300s 점유, 즉시 3회 재시도 → AI 서버 과부하\n\n**목표 (After)**: 트랜잭션 분리(조회 → HTTP 병렬 → 상태업데이트), Exponential Backoff+Jitter, 오퍼레이션별 타임아웃\n\n측정 지표: `http_server_requests_seconds_*` (`/internal/generations/**`), `ai_sync_failure_total`, `executor_pool_size{name=\"aiGenerationExecutor\"}`", "mode": "markdown" },
-      "datasource": { "type": "datasource", "uid": "-- Mixed --" }
-    },
-    {
-      "id": 301, "title": "AI Callback 레이턴시 — POST /internal/generations/{id}/completion", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 51 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [
-        { "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=~\"/internal/generations/.*/completion\"}[$rate])) by (le)) * 1000", "legendFormat": "p50 (ms)", "refId": "A" },
-        { "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=~\"/internal/generations/.*/completion\"}[$rate])) by (le)) * 1000", "legendFormat": "p95 (ms)", "refId": "B" },
-        { "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=~\"/internal/generations/.*/completion\"}[$rate])) by (le)) * 1000", "legendFormat": "p99 (ms)", "refId": "C" }
-      ],
-      "fieldConfig": { "defaults": { "unit": "ms", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 500 }, { "color": "red", "value": 2000 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "min", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
-    },
-    {
-      "id": 302, "title": "AI Submit RPS & 에러율", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 51 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [
-        { "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=~\"/api/content/products/.*/contents/.*/submit\", status=\"200\"}[$rate]))", "legendFormat": "Submit RPS (200)", "refId": "A" },
-        { "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=~\"/api/content/products/.*/contents/.*/submit\", status=~\"5..\"}[$rate]))", "legendFormat": "Submit RPS (5xx)", "refId": "B" },
-        { "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=~\"/internal/generations/.*/completion\", status=\"200\"}[$rate]))", "legendFormat": "Callback RPS (200)", "refId": "C" }
-      ],
-      "fieldConfig": { "defaults": { "unit": "reqps", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
-    },
-    {
-      "id": 303, "title": "AI Sync 실패 카운터 (silent failure 탐지)", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 51 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [
-        { "expr": "rate(ai_sync_failure_total{env=\"$env\", operation=\"syncProduct\"}[$rate])", "legendFormat": "syncProduct 실패/s", "refId": "A" },
-        { "expr": "rate(ai_sync_failure_total{env=\"$env\", operation=\"updateProduct\"}[$rate])", "legendFormat": "updateProduct 실패/s", "refId": "B" },
-        { "expr": "rate(ai_sync_failure_total{env=\"$env\", operation=\"deleteProduct\"}[$rate])", "legendFormat": "deleteProduct 실패/s", "refId": "C" }
-      ],
-      "fieldConfig": { "defaults": { "unit": "ops", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 20, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line+area" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 0.01 }, { "color": "red", "value": 0.1 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
-    },
-    {
-      "id": 304, "title": "@Async aiGenerationExecutor — 풀 사용률 (Bulkhead Before/After)", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 59 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [
-        { "expr": "executor_pool_size{env=\"$env\", name=\"aiGenerationExecutor\"}", "legendFormat": "Pool Size", "refId": "A" },
-        { "expr": "executor_active_threads{env=\"$env\", name=\"aiGenerationExecutor\"}", "legendFormat": "Active Threads", "refId": "B" },
-        { "expr": "executor_queued_tasks{env=\"$env\", name=\"aiGenerationExecutor\"}", "legendFormat": "Queued Tasks", "refId": "C" },
-        { "expr": "executor_pool_max{env=\"$env\", name=\"aiGenerationExecutor\"}", "legendFormat": "Max Pool(10)", "refId": "D" }
-      ],
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 0, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
-    },
-    {
-      "id": 305, "title": "HikariCP 커넥션 — AI 폴링 스케줄러 영향 (Before: 트랜잭션 내 N HTTP)", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 59 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [
-        { "expr": "hikaricp_connections_active{env=\"$env\"}", "legendFormat": "Active", "refId": "A" },
-        { "expr": "hikaricp_connections_pending{env=\"$env\"}", "legendFormat": "Pending (대기)", "refId": "B" },
-        { "expr": "hikaricp_connections_max{env=\"$env\"}", "legendFormat": "Max", "refId": "C" }
-      ],
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "line" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 15 }, { "color": "red", "value": 18 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
-    },
-    {
-      "id": 306, "title": "AI 이미지 Fetch 실패 / 재시도 카운터", "type": "timeseries",
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 59 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [
-        { "expr": "rate(ai_image_fetch_failure_total{env=\"$env\"}[$rate])", "legendFormat": "이미지 Fetch 실패/s", "refId": "A" },
-        { "expr": "rate(ai_generation_retry_total{env=\"$env\"}[$rate])", "legendFormat": "AI 재시도/s", "refId": "B" },
-        { "expr": "rate(ai_generation_failed_total{env=\"$env\"}[$rate])", "legendFormat": "최종 실패/s (재시도 소진)", "refId": "C" }
-      ],
-      "fieldConfig": { "defaults": { "unit": "ops", "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "", "axisPlacement": "auto", "barAlignment": 0, "drawStyle": "line", "fillOpacity": 10, "gradientMode": "none", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "insertNulls": false, "lineInterpolation": "linear", "lineWidth": 2, "pointSize": 5, "scaleDistribution": { "type": "linear" }, "showPoints": "auto", "spanNulls": false, "stacking": { "group": "A", "mode": "none" }, "thresholdsStyle": { "mode": "off" } }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 80 }] } }, "overrides": [] },
-      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "single", "sort": "none" } }
-    },
-    {
-      "id": 307, "title": "AI Callback p95 (ms)", "type": "stat",
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 67 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [{ "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=~\"/internal/generations/.*/completion\"}[$rate])) by (le)) * 1000", "legendFormat": "p95", "refId": "A" }],
-      "fieldConfig": { "defaults": { "unit": "ms", "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 500 }, { "color": "red", "value": 2000 }] } }, "overrides": [] },
-      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "percentChangeColorMode": "standard", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
       "pluginVersion": "11.1.0"
     },
     {
-      "id": 308, "title": "AI Sync 실패 누적", "type": "stat",
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 67 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [{ "expr": "sum(ai_sync_failure_total{env=\"$env\"})", "legendFormat": "누적 실패", "refId": "A" }],
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 }] } }, "overrides": [] },
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "percentChangeColorMode": "standard", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "id": 200,
+      "title": "── 섹션 2: 상품 단건 조회 API (GET /api/products/{id}) ──",
+      "type": "text",
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "options": {
+        "content": "**Before (V0)**: 상품 + 이미지 + 카테고리 + 장인 개별 쿼리 4회 &nbsp;&nbsp;|&nbsp;&nbsp; **After (V4)**: Redis 캐시 히트 시 0 DB 쿼리\n\n단건 집중 부하: `k6 run src/k6/product-detail.js` &nbsp;&nbsp;|&nbsp;&nbsp; 혼합 부하: `k6 run src/k6/all-endpoints.js`",
+        "mode": "markdown"
+      },
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      }
+    },
+    {
+      "id": 201,
+      "title": "p50/p95/p99 — GET /api/products/{id}",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products/{productId}\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p50 (ms)",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products/{productId}\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p95 (ms)",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=\"/api/products/{productId}\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p99 (ms)",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 200
+              },
+              {
+                "color": "red",
+                "value": 500
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 202,
+      "title": "캐시 히트율 — products 캐시",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "cache_gets{env=\"$env\", cache=\"products\", result=\"hit\"} / (cache_gets{env=\"$env\", cache=\"products\", result=\"hit\"} + cache_gets{env=\"$env\", cache=\"products\", result=\"miss\"} + 0.001) * 100",
+          "legendFormat": "products 캐시 히트율 %",
+          "refId": "A"
+        },
+        {
+          "expr": "cache_gets{env=\"$env\", cache=\"categories\", result=\"hit\"} / (cache_gets{env=\"$env\", cache=\"categories\", result=\"hit\"} + cache_gets{env=\"$env\", cache=\"categories\", result=\"miss\"} + 0.001) * 100",
+          "legendFormat": "categories 캐시 히트율 %",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "green",
+                "value": 90
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 300,
+      "title": "── 섹션 3: AI 연동 Before/After ──",
+      "type": "text",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "options": {
+        "content": "**문제 (Before)**: `pollQueuedGenerations()` — `@Transactional` 내부에서 QUEUED 상태 N건을 개별 HTTP 호출 → DB 커넥션 N×300s 점유, 즉시 3회 재시도 → AI 서버 과부하\n\n**목표 (After)**: 트랜잭션 분리(조회 → HTTP 병렬 → 상태업데이트), Exponential Backoff+Jitter, 오퍼레이션별 타임아웃\n\n측정 지표: `http_server_requests_seconds_*` (`/internal/generations/**`), `ai_sync_failure_total`, `executor_pool_size{name=\"aiGenerationExecutor\"}`",
+        "mode": "markdown"
+      },
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      }
+    },
+    {
+      "id": 301,
+      "title": "AI Callback 레이턴시 — POST /internal/generations/{id}/completion",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 51
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=~\"/internal/generations/.*/completion\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p50 (ms)",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=~\"/internal/generations/.*/completion\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p95 (ms)",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=~\"/internal/generations/.*/completion\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p99 (ms)",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "min",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 302,
+      "title": "AI Submit RPS & 에러율",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 51
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=~\"/api/content/products/.*/contents/.*/submit\", status=\"200\"}[$rate]))",
+          "legendFormat": "Submit RPS (200)",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=~\"/api/content/products/.*/contents/.*/submit\", status=~\"5..\"}[$rate]))",
+          "legendFormat": "Submit RPS (5xx)",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{env=\"$env\", uri=~\"/internal/generations/.*/completion\", status=\"200\"}[$rate]))",
+          "legendFormat": "Callback RPS (200)",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 303,
+      "title": "AI Sync 실패 카운터 (silent failure 탐지)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 51
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "rate(ai_sync_failure_total{env=\"$env\", operation=\"syncProduct\"}[$rate])",
+          "legendFormat": "syncProduct 실패/s",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(ai_sync_failure_total{env=\"$env\", operation=\"updateProduct\"}[$rate])",
+          "legendFormat": "updateProduct 실패/s",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(ai_sync_failure_total{env=\"$env\", operation=\"deleteProduct\"}[$rate])",
+          "legendFormat": "deleteProduct 실패/s",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0.01
+              },
+              {
+                "color": "red",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 304,
+      "title": "@Async aiGenerationExecutor — 풀 사용률 (Bulkhead Before/After)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 59
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "executor_pool_size_threads{env=\"$env\", name=\"aiGenerationExecutor\"}",
+          "legendFormat": "Pool Size",
+          "refId": "A"
+        },
+        {
+          "expr": "executor_active_threads{env=\"$env\", name=\"aiGenerationExecutor\"}",
+          "legendFormat": "Active Threads",
+          "refId": "B"
+        },
+        {
+          "expr": "executor_queued_tasks{env=\"$env\", name=\"aiGenerationExecutor\"}",
+          "legendFormat": "Queued Tasks",
+          "refId": "C"
+        },
+        {
+          "expr": "executor_pool_max_threads{env=\"$env\", name=\"aiGenerationExecutor\"}",
+          "legendFormat": "Max Pool(10)",
+          "refId": "D"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 305,
+      "title": "HikariCP 커넥션 — AI 폴링 스케줄러 영향 (Before: 트랜잭션 내 N HTTP)",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 59
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "hikaricp_connections_active{env=\"$env\"}",
+          "legendFormat": "Active",
+          "refId": "A"
+        },
+        {
+          "expr": "hikaricp_connections_pending{env=\"$env\"}",
+          "legendFormat": "Pending (대기)",
+          "refId": "B"
+        },
+        {
+          "expr": "hikaricp_connections_max{env=\"$env\"}",
+          "legendFormat": "Max",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 15
+              },
+              {
+                "color": "red",
+                "value": 18
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 306,
+      "title": "AI 이미지 Fetch 실패 / 재시도 카운터",
+      "type": "timeseries",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 59
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "rate(ai_image_fetch_failure_total{env=\"$env\"}[$rate])",
+          "legendFormat": "이미지 Fetch 실패/s",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(ai_generation_retry_total{env=\"$env\"}[$rate])",
+          "legendFormat": "AI 재시도/s",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(ai_generation_failed_total{env=\"$env\"}[$rate])",
+          "legendFormat": "최종 실패/s (재시도 소진)",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 307,
+      "title": "AI Callback p95 (ms)",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 67
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{env=\"$env\", uri=~\"/internal/generations/.*/completion\"}[$rate])) by (le)) * 1000",
+          "legendFormat": "p95",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 500
+              },
+              {
+                "color": "red",
+                "value": 2000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
       "pluginVersion": "11.1.0"
     },
     {
-      "id": 309, "title": "AI 재시도 소진 실패 누적", "type": "stat",
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 67 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [{ "expr": "sum(ai_generation_failed_total{env=\"$env\"})", "legendFormat": "최종 실패", "refId": "A" }],
-      "fieldConfig": { "defaults": { "unit": "short", "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 5 }] } }, "overrides": [] },
-      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "percentChangeColorMode": "standard", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "id": 308,
+      "title": "AI Sync 실패 누적",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 67
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "sum(ai_sync_failure_total{env=\"$env\"})",
+          "legendFormat": "누적 실패",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 10
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
       "pluginVersion": "11.1.0"
     },
     {
-      "id": 310, "title": "AI Executor 큐 잔량", "type": "gauge",
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 67 },
-      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
-      "targets": [{ "expr": "executor_queued_tasks{env=\"$env\", name=\"aiGenerationExecutor\"}", "legendFormat": "큐 잔량", "refId": "A" }],
-      "fieldConfig": { "defaults": { "unit": "short", "min": 0, "max": 50, "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 30 }, { "color": "red", "value": 45 }] } }, "overrides": [] },
-      "options": { "minVizHeight": 75, "minVizWidth": 75, "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "id": 309,
+      "title": "AI 재시도 소진 실패 누적",
+      "type": "stat",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 67
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "sum(ai_generation_failed_total{env=\"$env\"})",
+          "legendFormat": "최종 실패",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.1.0"
+    },
+    {
+      "id": 310,
+      "title": "AI Executor 큐 잔량",
+      "type": "gauge",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 67
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "targets": [
+        {
+          "expr": "executor_queued_tasks{env=\"$env\", name=\"aiGenerationExecutor\"}",
+          "legendFormat": "큐 잔량",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "max": 50,
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 30
+              },
+              {
+                "color": "red",
+                "value": 45
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
       "pluginVersion": "11.1.0"
     }
   ]
