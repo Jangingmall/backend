@@ -195,6 +195,7 @@ public class ProductService {
         Product product = getProduct(command.productId());
         ProductStatus next = ProductStatus.valueOf(command.status());
         product.changeStatus(next, command.requesterId());
+        notifyAiProductUpdated(command.productId(), product);
         if (eventPublisher != null) {
             eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_STATUS_CHANGED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
         }
@@ -220,12 +221,14 @@ public class ProductService {
             Optional<Interview> interview = interviewRepository.findByProductId(productId);
             String makingStory = interview.map(Interview::getProcess).orElse("");
             String usageCare = interview.map(Interview::getMaterials).orElse("");
-            String categoryName = product.getCategory() != null ? product.getCategory().getName() : null;
+            String categoryCode = product.getCategory() != null ? product.getCategory().getName() : null;
+            String subcategoryCode = product.getSubcategory() != null ? product.getSubcategory().getName() : null;
+            String color = product.getColors() != null && !product.getColors().isEmpty() ? product.getColors().getFirst() : null;
             AiProductUpdatePayload payload = new AiProductUpdatePayload(
                 new AiProductUpdatePayload.ProductPatch(
-                    product.getTitle(), categoryName, product.getMaterial(), product.getPrice(),
+                    product.getTitle(), categoryCode, subcategoryCode, product.getMaterial(), product.getPrice(),
                     product.getGiftThemes(), product.getPurposeTags(),
-                    makingStory, usageCare, product.getProductionPeriodDays(), product.getColors()
+                    makingStory, usageCare, color, product.getStatus().name()
                 )
             );
             aiContentClient.updateProduct(productId, payload);

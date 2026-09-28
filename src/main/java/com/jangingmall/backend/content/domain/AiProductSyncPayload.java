@@ -8,22 +8,23 @@ public record AiProductSyncPayload(
 ) {
     public record ArtisanInfo(
         Long artisan_id,
-        String name,
+        String business_name,
         String certification_level,
-        String introduction
+        String region
     ) {}
 
     public record ProductInfo(
         Long product_id,
-        String title,
-        String category,
+        String name,
+        String category_code,
+        String subcategory_code,
         String material,
         int price,
         List<String> gift_theme,
         List<String> purpose_tags,
         String making_story,
         String usage_care,
-        Integer production_period_days,
-        List<String> color
+        String color,
+        String status
     ) {}
 }
