@@ -48,28 +48,67 @@ public class GenerationDeadlineScheduler {
     }
 
     @Scheduled(fixedDelayString = "${ai.generation.scan-millis:60000}")
-    @Transactional
     public void pollQueuedGenerations() {
-        List<ContentGeneration> queued = generationRepository.findAllByStatus(GenerationStatus.QUEUED);
+        List<Long> queuedIds = loadQueuedIds();
 
-        for (ContentGeneration generation : queued) {
-            if (generation.getJobId() == null) {
+        for (Long generationId : queuedIds) {
+            String jobId = loadJobId(generationId);
+            if (jobId == null) {
                 continue;
             }
-            try {
-                String aiStatus = aiContentClient.getJobStatus(generation.getJobId());
-                if (AI_STATUS_DRAFT_READY.equals(aiStatus)) {
-                    generation.markDraftReady();
-                    generationRepository.save(generation);
-                    log.info("AI DRAFT_READY 전이 generationId={} jobId={}", generation.getId(), generation.getJobId());
-                } else if (AI_STATUS_FAILED.equals(aiStatus)) {
-                    generation.fail();
-                    generationRepository.save(generation);
-                    log.warn("AI 작업 실패 확인 generationId={} jobId={}", generation.getId(), generation.getJobId());
-                }
-            } catch (Exception e) {
-                log.error("AI 상태 조회 실패 generationId={} jobId={} reason={}", generation.getId(), generation.getJobId(), e.getMessage());
+
+            String aiStatus = fetchAiStatus(generationId, jobId);
+            if (aiStatus == null) {
+                continue;
             }
+
+            if (AI_STATUS_DRAFT_READY.equals(aiStatus)) {
+                applyDraftReady(generationId, jobId);
+            } else if (AI_STATUS_FAILED.equals(aiStatus)) {
+                applyFailed(generationId, jobId);
+            }
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> loadQueuedIds() {
+        return generationRepository.findAllByStatus(GenerationStatus.QUEUED)
+            .stream()
+            .map(ContentGeneration::getId)
+            .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public String loadJobId(Long generationId) {
+        return generationRepository.findById(generationId)
+            .map(ContentGeneration::getJobId)
+            .orElse(null);
+    }
+
+    @Transactional
+    public void applyDraftReady(Long generationId, String jobId) {
+        generationRepository.findById(generationId).ifPresent(gen -> {
+            gen.markDraftReady();
+            generationRepository.save(gen);
+            log.info("AI DRAFT_READY 전이 generationId={} jobId={}", generationId, jobId);
+        });
+    }
+
+    @Transactional
+    public void applyFailed(Long generationId, String jobId) {
+        generationRepository.findById(generationId).ifPresent(gen -> {
+            gen.fail();
+            generationRepository.save(gen);
+            log.warn("AI 작업 실패 확인 generationId={} jobId={}", generationId, jobId);
+        });
+    }
+
+    private String fetchAiStatus(Long generationId, String jobId) {
+        try {
+            return aiContentClient.getJobStatus(jobId);
+        } catch (Exception e) {
+            log.error("AI 상태 조회 실패 generationId={} jobId={} reason={}", generationId, jobId, e.getMessage());
+            return null;
         }
     }
 }

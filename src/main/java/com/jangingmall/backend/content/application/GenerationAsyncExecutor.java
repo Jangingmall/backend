@@ -6,24 +6,43 @@ import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
 import com.jangingmall.backend.global.exception.NotFoundException;
-import lombok.RequiredArgsConstructor;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.event.TransactionPhase;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class GenerationAsyncExecutor {
 
     private static final int MAX_RETRY_COUNT = 2;
+    private static final long BASE_DELAY_MS = 1_000L;
+    private static final long MAX_DELAY_MS = 8_000L;
 
     private final ContentGenerationRepository generationRepository;
     private final AiContentClient aiContentClient;
+    private final Counter retryCounter;
+    private final Counter failedCounter;
 
-    @Async
+    public GenerationAsyncExecutor(ContentGenerationRepository generationRepository,
+                                   AiContentClient aiContentClient,
+                                   MeterRegistry meterRegistry) {
+        this.generationRepository = generationRepository;
+        this.aiContentClient = aiContentClient;
+        this.retryCounter = Counter.builder("ai_generation_retry")
+            .description("AI job 제출 재시도 횟수")
+            .register(meterRegistry);
+        this.failedCounter = Counter.builder("ai_generation_failed")
+            .description("AI job 제출 최종 실패 횟수")
+            .register(meterRegistry);
+    }
+
+    @Async("aiGenerationExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onGenerationRequested(GenerationRequestedEvent event) {
         Long generationId = event.generationId();
@@ -34,6 +53,10 @@ public class GenerationAsyncExecutor {
 
         Exception lastException = null;
         for (int attempt = 0; attempt <= MAX_RETRY_COUNT; attempt++) {
+            if (attempt > 0) {
+                retryCounter.increment();
+                sleepWithBackoff(attempt);
+            }
             try {
                 AiJobAccepted accepted = aiContentClient.submitJob(
                     generationId,
@@ -58,8 +81,19 @@ public class GenerationAsyncExecutor {
             }
         }
 
+        failedCounter.increment();
         generation.fail();
         generationRepository.save(generation);
         log.error("AI job 제출 최종 실패 generationId={} reason={}", generationId, lastException.getMessage());
+    }
+
+    private void sleepWithBackoff(int attempt) {
+        long delay = Math.min(BASE_DELAY_MS * (1L << attempt), MAX_DELAY_MS);
+        long jitter = ThreadLocalRandom.current().nextLong(0, delay / 2 + 1);
+        try {
+            Thread.sleep(delay + jitter);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

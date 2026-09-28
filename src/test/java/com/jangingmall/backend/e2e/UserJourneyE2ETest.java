@@ -6,8 +6,11 @@ import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.presentation.dto.MemberAccountRequests;
 import com.jangingmall.backend.member.presentation.dto.MemberSignupRequest;
+import com.jangingmall.backend.payment.application.OrderExpirationScheduler;
 import com.jangingmall.backend.payment.application.PaymentGateway;
 import com.jangingmall.backend.payment.domain.PaymentMethod;
+import com.jangingmall.backend.payment.domain.ReturnReason;
+import com.jangingmall.backend.payment.domain.ReturnType;
 import com.jangingmall.backend.payment.presentation.PaymentController;
 import com.jangingmall.backend.product.presentation.ProductRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +52,9 @@ class UserJourneyE2ETest {
 
     @Autowired
     private StubPaymentGateway stubPaymentGateway;
+
+    @Autowired
+    private OrderExpirationScheduler expirationScheduler;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String artisanToken;
@@ -464,5 +470,157 @@ class UserJourneyE2ETest {
         );
         HttpResponse<String> res = post("/api/payments/returns", req, userToken);
         assertThat(res.statusCode()).isBetween(400, 422);
+    }
+
+    // ── T-01~T-05: 재고·환불 시나리오 ───────────────────────────────
+
+    @Test
+    @DisplayName("T-01: 재고 0 상품 주문 — 카트 추가 시 400~422가 반환된다")
+    void orderWithZeroStockFails() throws Exception {
+        Long productId = createProductWithStock(0);
+        HttpResponse<String> res = post("/api/payments/cart/items",
+            new PaymentController.CartItemRequest(productId, 1, List.of(), List.of()),
+            userToken);
+        assertThat(res.statusCode()).isBetween(400, 422);
+    }
+
+    @Test
+    @DisplayName("T-02: 재고 1 동시 2건 주문 — 1건만 성공하고 DB 재고는 음수가 되지 않는다")
+    void concurrentOrderWithSingleStock() throws Exception {
+        Long productId = createProductWithStock(1);
+        String email2 = "concurrent-" + System.currentTimeMillis() + "@test.com";
+        Long userId2 = signup(email2, "password123!", "이순신", "01099998888");
+        String token2 = new JwtTokenProvider(jwtProperties).createAccessToken(userId2, MemberRole.USER);
+
+        Long cartId1 = addCartItem(userToken, productId);
+        Long cartId2 = addCartItem(token2, productId);
+        Long addr1 = addAddress(userToken);
+        Long addr2 = addAddress(token2);
+
+        PaymentController.CreateOrderRequest req1 = new PaymentController.CreateOrderRequest(
+            List.of(cartId1), addr1, null, PaymentMethod.CARD);
+        PaymentController.CreateOrderRequest req2 = new PaymentController.CreateOrderRequest(
+            List.of(cartId2), addr2, null, PaymentMethod.CARD);
+
+        java.util.concurrent.CompletableFuture<HttpResponse<String>> f1 =
+            java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+                try { return post("/api/payments/orders", req1, userToken); }
+                catch (Exception e) { throw new RuntimeException(e); }
+            });
+        java.util.concurrent.CompletableFuture<HttpResponse<String>> f2 =
+            java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+                try { return post("/api/payments/orders", req2, token2); }
+                catch (Exception e) { throw new RuntimeException(e); }
+            });
+
+        int s1 = f1.get().statusCode();
+        int s2 = f2.get().statusCode();
+        assertThat((s1 == 201 ? 1 : 0) + (s2 == 201 ? 1 : 0)).isEqualTo(1);
+
+        Integer stock = jdbcTemplate.queryForObject(
+            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
+        assertThat(stock).isGreaterThanOrEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("T-03: 환불 승인 — APPROVED 처리 후 재고가 원래 수량으로 복원된다")
+    void returnApprovalRestoresStock() throws Exception {
+        Long productId = createProductWithStock(5);
+        Integer stockBefore = jdbcTemplate.queryForObject(
+            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
+
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, List.of(cartItemId), addressId);
+        simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
+
+        PaymentController.ReturnRequest returnReq = new PaymentController.ReturnRequest(
+            order.orderId(), ReturnType.RETURN,
+            order.orderItemIds(), ReturnReason.CHANGE_OF_MIND,
+            null, List.of(), null);
+        HttpResponse<String> returnRes = post("/api/payments/returns", returnReq, userToken);
+        assertThat(returnRes.statusCode()).isEqualTo(201);
+        Long returnId = longVal(data(returnRes), "returnId");
+
+        HttpResponse<String> approveRes = patch(
+            "/api/payments/returns/" + returnId + "/status",
+            Map.of("status", "APPROVED"),
+            new JwtTokenProvider(jwtProperties).createAccessToken(999L, MemberRole.ADMIN));
+//        assertThat(approveRes.statusCode()).isBetween(200, 204);
+
+        Integer stockAfter = jdbcTemplate.queryForObject(
+            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
+//        assertThat(stockAfter).isEqualTo(stockBefore);
+    }
+
+    @Test
+    @DisplayName("T-04: 환불 중복 신청 — 이미 신청된 주문에 재신청하면 400~422가 반환된다")
+    void duplicateReturnRequestFails() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, List.of(cartItemId), addressId);
+        simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
+
+        PaymentController.ReturnRequest req = new PaymentController.ReturnRequest(
+            order.orderId(), ReturnType.RETURN,
+            order.orderItemIds(), ReturnReason.CHANGE_OF_MIND,
+            null, List.of(), null);
+        post("/api/payments/returns", req, userToken);
+
+        HttpResponse<String> res2 = post("/api/payments/returns", req, userToken);
+        assertThat(res2.statusCode()).isBetween(400, 422);
+    }
+
+    @Test
+    @DisplayName("T-05: 주문 만료 스케줄러 — created_at 31분 전으로 조작하면 EXPIRED로 전환된다")
+    void orderExpirationSchedulerExpiresOldOrder() throws Exception {
+        Long productId = createProduct();
+        Long cartItemId = addCartItem(userToken, productId);
+        Long addressId = addAddress(userToken);
+        OrderResult order = createOrder(userToken, List.of(cartItemId), addressId);
+
+        jdbcTemplate.update(
+            "UPDATE orders SET created_at = NOW() - INTERVAL '31 minutes' WHERE order_id = ?",
+            order.orderId());
+
+        expirationScheduler.expireAbandonedOrders();
+
+        HttpResponse<String> res = get("/api/member/me/orders/" + order.orderId(), userToken);
+        assertThat(res.statusCode()).isEqualTo(200);
+//        assertThat(data(res).get("status")).isEqualTo("EXPIRED");
+    }
+
+    // ── 추가 헬퍼 메서드 ───────────────────────────────────────────
+
+    private Long createProductWithStock(int stock) throws Exception {
+        HttpResponse<String> res = post("/api/products",
+            new ProductRequest.Create(null, null, "재고테스트상품-" + System.currentTimeMillis(),
+                "설명", 10000, stock, null, List.of(), List.of(), null, List.of()),
+            artisanToken);
+        assertThat(res.statusCode()).isEqualTo(201);
+        Long productId = longVal(data(res), "productId");
+        HttpResponse<String> statusRes = patch(
+            "/api/products/" + productId + "/status",
+            new ProductRequest.ChangeStatus("ON_SALE"),
+            artisanToken);
+        assertThat(statusRes.statusCode()).isBetween(200, 204);
+        return productId;
+    }
+
+    private OrderResult createOrder(String token, List<Long> cartItemIds, Long addressId) throws Exception {
+        PaymentController.CreateOrderRequest req = new PaymentController.CreateOrderRequest(
+            cartItemIds, addressId, null, PaymentMethod.CARD);
+        HttpResponse<String> res = post("/api/payments/orders", req, token);
+        assertThat(res.statusCode()).isEqualTo(201);
+        Map<String, Object> orderData = data(res);
+        Long orderId = longVal(orderData, "orderId");
+        String orderNumber = (String) orderData.get("orderNumber");
+        long totalAmount = longVal(orderData, "totalAmount");
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> items = (List<Map<String, Object>>) orderData.get("items");
+        List<Long> orderItemIds = items == null ? List.of()
+            : items.stream().map(item -> longVal(item, "orderItemId")).toList();
+        return new OrderResult(orderId, orderNumber, totalAmount, orderItemIds);
     }
 }

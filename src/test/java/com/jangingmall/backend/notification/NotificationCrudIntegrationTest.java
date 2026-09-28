@@ -8,12 +8,13 @@ import com.jangingmall.backend.notification.application.NotificationCreateReques
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import com.jangingmall.backend.support.PostgresIntegrationBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.net.URI;
@@ -26,17 +27,19 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("local")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = "management.server.port=-1")
-class NotificationCrudIntegrationTest {
+class NotificationCrudIntegrationTest extends PostgresIntegrationBase {
 
     @LocalServerPort
     private int port;
 
     @Autowired
     private JwtProperties jwtProperties;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private String userToken;
@@ -46,6 +49,7 @@ class NotificationCrudIntegrationTest {
     void setUp() {
         JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(jwtProperties);
         userToken = jwtTokenProvider.createAccessToken(MEMBER_ID, MemberRole.USER);
+        jdbcTemplate.update("DELETE FROM notifications WHERE member_id = ?", MEMBER_ID);
     }
 
     private HttpClient newClient() {

@@ -512,6 +512,7 @@ public class ContentService {
     }
 
     @Async
+    @Transactional(readOnly = true)
     public void syncPublishedProductToAi(Long productId) {
         try {
             Product product = productRepository.findById(productId)

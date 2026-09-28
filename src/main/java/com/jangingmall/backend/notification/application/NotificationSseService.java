@@ -49,7 +49,7 @@ public class NotificationSseService {
         return emitter;
     }
 
-    @Async
+    @Async("sseNotificationExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void onNotificationCreated(NotificationCreatedEvent event) {
         emit(event.memberId(), event.notification());

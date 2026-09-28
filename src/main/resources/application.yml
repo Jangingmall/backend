@@ -33,6 +33,13 @@ management:
   metrics:
     tags:
       application: ${spring.application.name:backend}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.5, 0.95, 0.99
+      slo:
+        http.server.requests: 100ms, 300ms, 500ms, 1000ms, 3000ms
 
 toss:
   payments:
@@ -78,6 +85,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        generate_statistics: true
+        default_batch_fetch_size: 100
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 50
     show-sql: true
   sql:
     init:
@@ -153,28 +166,22 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:h2:mem:jangingmall;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/jangingmall
+    driver-class-name: org.postgresql.Driver
+    username: jangingmall
+    password: jangingmall
   flyway:
-    enabled: false
+    enabled: true
+    locations: classpath:db/migration
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    defer-datasource-initialization: true
+      ddl-auto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+        default_batch_fetch_size: 100
     show-sql: true
-  sql:
-    init:
-      mode: never
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   data:
     redis:
       host: localhost
@@ -243,18 +250,111 @@ revalidate:
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: test
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/jangingmall
     driver-class-name: org.postgresql.Driver
+    username: jangingmall
+    password: jangingmall
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
   jpa:
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_batch_fetch_size: 100
+    show-sql: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: test-kakao-client-id
+            client-secret: test-kakao-client-secret
+            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, account_email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  secret: test-secret-key-minimum-256-bits-for-hs256-algorithm-padding
+  access-token-expiry: 1800000
+  refresh-token-expiry: 604800000
+  refresh-cookie-secure: false
+
+member:
+  oauth:
+    frontend-redirect-url: http://localhost:3000/oauth/callback
+    http-timeout-millis: 5000
+  rate-limit:
+    attempts: 10
+    window-seconds: 60
+
+image:
+  base-url: ${IMAGE_BASE_URL:}
+  storage:
+    bucket: ${IMAGE_UPLOAD_BUCKET:}
+    return-bucket: ${IMAGE_RETURN_BUCKET:}
+    region: ${AWS_REGION:ap-northeast-2}
+    key-prefix: ${IMAGE_STORAGE_KEY_PREFIX:images}
+    presign-expiry-seconds: ${IMAGE_PRESIGN_EXPIRY_SECONDS:300}
+    unused-retention-seconds: ${IMAGE_UNUSED_RETENTION_SECONDS:86400}
+    max-file-size-bytes: ${IMAGE_MAX_FILE_SIZE_BYTES:10485760}
+    cleanup-scan-millis: ${IMAGE_CLEANUP_SCAN_MILLIS:60000}
+
+ai:
+  chat-bot-url: ${AI_CHAT_BOT_URL:http://localhost:8001}
+  content-url: ${AI_CONTENT_URL:http://localhost:8002}
+  timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
+  internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN:}
+  generation:
+    deadline-seconds: ${GENERATION_DEADLINE_SECONDS:1861}
+    scan-millis: ${GENERATION_POLL_SCAN_MILLIS:60000}
+
+internal-api:
+  backend-auth-token: ${BACKEND_AUTH_TOKEN:}
+
+revalidate:
+  webhook-url: ${REVALIDATE_WEBHOOK_URL:https://stg.midam.store/api/revalidate}
+  webhook-secret: ${REVALIDATE_WEBHOOK_SECRET:}
+  timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 3000
+      idle-timeout: 300000
+      max-lifetime: 900000
+      leak-detection-threshold: 5000
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_batch_fetch_size: 100
     show-sql: false
   flyway:
     enabled: true

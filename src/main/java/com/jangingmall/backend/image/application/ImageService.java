@@ -177,6 +177,30 @@ public class ImageService {
         return List.copyOf(result);
     }
 
+    public Map<String, List<PublicVariant>> publicVariantsBatch(List<String> imageIds) {
+        if (imageIds.isEmpty()) {
+            return Map.of();
+        }
+        String base = normalizedImageBaseUrl();
+        Map<String, List<PublicVariant>> result = new java.util.HashMap<>();
+        for (ImageUpload upload : uploads.findAllById(imageIds)) {
+            Map<String, Object> stored = variants(upload);
+            List<PublicVariant> variants = PUBLIC_VARIANTS.stream().map(name -> {
+                Object metadata = stored.get(name);
+                if (metadata == null) {
+                    return null;
+                }
+                String key = objectKey(metadata);
+                int width = Integer.parseInt(name.substring(0, name.length() - 1));
+                int height = (int) Math.round((double) width / upload.getSourceWidth() * upload.getSourceHeight());
+                String url = publicUrl(key, base, upload.getPurpose());
+                return new PublicVariant(url, width, height, "webp");
+            }).filter(java.util.Objects::nonNull).toList();
+            result.put(upload.getId(), variants);
+        }
+        return result;
+    }
+
     /** Resolves an AI/editor imageUrl back to the owning imageId. */
     public Optional<String> findImageIdByReference(String reference) {
         if (reference == null || reference.isBlank()) {

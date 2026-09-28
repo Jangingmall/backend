@@ -6,6 +6,8 @@ import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.AiProductUpdatePayload;
 import com.jangingmall.backend.global.config.AiProperties;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -41,18 +43,29 @@ class RestAiContentClient implements AiContentClient {
     private final String aiInternalAuthToken;
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient;
+    private final Counter syncProductFailureCounter;
+    private final Counter updateProductFailureCounter;
+    private final Counter deleteProductFailureCounter;
+    private final Counter imageFetchFailureCounter;
 
     RestAiContentClient(RestClient generationClient, RestClient syncClient,
-        String aiInternalAuthToken, ObjectMapper objectMapper, HttpClient httpClient) {
+        String aiInternalAuthToken, ObjectMapper objectMapper, HttpClient httpClient,
+        MeterRegistry meterRegistry) {
         this.generationClient = generationClient;
         this.syncClient = syncClient;
         this.aiInternalAuthToken = aiInternalAuthToken;
         this.objectMapper = objectMapper;
         this.httpClient = httpClient;
+        this.syncProductFailureCounter = buildSyncFailureCounter(meterRegistry, "syncProduct");
+        this.updateProductFailureCounter = buildSyncFailureCounter(meterRegistry, "updateProduct");
+        this.deleteProductFailureCounter = buildSyncFailureCounter(meterRegistry, "deleteProduct");
+        this.imageFetchFailureCounter = Counter.builder("ai_image_fetch_failure")
+            .description("AI 이미지 fetch 실패 횟수")
+            .register(meterRegistry);
     }
 
     @Autowired
-    RestAiContentClient(AiProperties aiProperties, ObjectMapper objectMapper) {
+    RestAiContentClient(AiProperties aiProperties, ObjectMapper objectMapper, MeterRegistry meterRegistry) {
         Duration timeout = Duration.ofSeconds(aiProperties.timeoutSeconds());
         this.httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_1_1)
@@ -71,6 +84,19 @@ class RestAiContentClient implements AiContentClient {
             .build();
         this.aiInternalAuthToken = aiProperties.internalAuthToken();
         this.objectMapper = objectMapper;
+        this.syncProductFailureCounter = buildSyncFailureCounter(meterRegistry, "syncProduct");
+        this.updateProductFailureCounter = buildSyncFailureCounter(meterRegistry, "updateProduct");
+        this.deleteProductFailureCounter = buildSyncFailureCounter(meterRegistry, "deleteProduct");
+        this.imageFetchFailureCounter = Counter.builder("ai_image_fetch_failure")
+            .description("AI 이미지 fetch 실패 횟수")
+            .register(meterRegistry);
+    }
+
+    private static Counter buildSyncFailureCounter(MeterRegistry registry, String operation) {
+        return Counter.builder("ai_sync_failure")
+            .tag("operation", operation)
+            .description("AI 상품 동기화 실패 횟수")
+            .register(registry);
     }
 
     @Override
@@ -129,6 +155,7 @@ class RestAiContentClient implements AiContentClient {
                 .toBodilessEntity();
             log.info("AI 상품 동기화 완료 productId={}", payload.product().product_id());
         } catch (RestClientException e) {
+            syncProductFailureCounter.increment();
             log.error("AI 상품 동기화 실패 productId={} reason={}", payload.product().product_id(), e.getMessage());
         }
     }
@@ -143,6 +170,7 @@ class RestAiContentClient implements AiContentClient {
                 .toBodilessEntity();
             log.info("AI 상품 수정 동기화 완료 productId={}", productId);
         } catch (RestClientException e) {
+            updateProductFailureCounter.increment();
             log.error("AI 상품 수정 동기화 실패 productId={} reason={}", productId, e.getMessage());
         }
     }
@@ -156,6 +184,7 @@ class RestAiContentClient implements AiContentClient {
                 .toBodilessEntity();
             log.info("AI 상품 삭제 동기화 완료 productId={}", productId);
         } catch (RestClientException e) {
+            deleteProductFailureCounter.increment();
             log.error("AI 상품 삭제 동기화 실패 productId={} reason={}", productId, e.getMessage());
         }
     }
@@ -189,6 +218,7 @@ class RestAiContentClient implements AiContentClient {
                 .build();
             return httpClient.send(req, HttpResponse.BodyHandlers.ofByteArray()).body();
         } catch (Exception e) {
+            imageFetchFailureCounter.increment();
             log.warn("이미지 fetch 실패 generationId={} url={} reason={}", generationId, images.getFirst(), e.getMessage());
             return new byte[0];
         }
