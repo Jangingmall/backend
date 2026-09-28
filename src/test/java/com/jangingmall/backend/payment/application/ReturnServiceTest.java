@@ -39,11 +39,12 @@ class ReturnServiceTest {
     @Mock private OrderReturnRepository returns;
     @Mock private ImageService images;
     @Mock private OrderNotificationPublisher notifications;
+    @Mock private CheckoutCatalog catalog;
     private ReturnService service;
 
     @BeforeEach
     void setUp() {
-        service = new ReturnService(memberAccess, shippingAddresses, orders, returns, images, notifications);
+        service = new ReturnService(memberAccess, shippingAddresses, orders, returns, images, notifications, catalog);
     }
 
     @Test

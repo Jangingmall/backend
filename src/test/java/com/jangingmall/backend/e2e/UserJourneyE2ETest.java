@@ -546,11 +546,11 @@ class UserJourneyE2ETest {
             "/api/payments/returns/" + returnId + "/status",
             Map.of("status", "APPROVED"),
             new JwtTokenProvider(jwtProperties).createAccessToken(999L, MemberRole.ADMIN));
-//        assertThat(approveRes.statusCode()).isBetween(200, 204);
+        assertThat(approveRes.statusCode()).isBetween(200, 204);
 
         Integer stockAfter = jdbcTemplate.queryForObject(
             "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
-//        assertThat(stockAfter).isEqualTo(stockBefore);
+        assertThat(stockAfter).isEqualTo(stockBefore);
     }
 
     @Test
@@ -581,14 +581,14 @@ class UserJourneyE2ETest {
         OrderResult order = createOrder(userToken, List.of(cartItemId), addressId);
 
         jdbcTemplate.update(
-            "UPDATE orders SET created_at = NOW() - INTERVAL '31 minutes' WHERE order_id = ?",
+            "UPDATE orders SET created_at = NOW() - INTERVAL '31 minutes', updated_at = NOW() - INTERVAL '31 minutes' WHERE order_id = ?",
             order.orderId());
 
         expirationScheduler.expireAbandonedOrders();
 
         HttpResponse<String> res = get("/api/member/me/orders/" + order.orderId(), userToken);
         assertThat(res.statusCode()).isEqualTo(200);
-//        assertThat(data(res).get("status")).isEqualTo("EXPIRED");
+        assertThat(data(res).get("status")).isEqualTo("EXPIRED");
     }
 
     // ── 추가 헬퍼 메서드 ───────────────────────────────────────────

@@ -233,6 +233,17 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 - 작업 요약: Phase 4 — 통합 테스트 추가, N+1 배치 최적화, DB 인덱스, Redis 캐시, Prometheus+Grafana 모니터링, JaCoCo 95% 커버리지 설정
 - 시작일: 2026-09-27
 
+### Claude-현재세션 (csv-seed-migration)
+- 브랜치: `feat/csv-seed-migration`
+- 상태: 진행 중
+- 접근 파일:
+  - `src/main/resources/db/migration/V9__csv_seed_data.sql` (신규)
+  - `docs/장인몰_샘플_artisan.csv`
+  - `docs/장인몰_샘플_category.csv`
+  - `docs/장인몰_샘플_product.csv`
+- 작업 요약: CSV 원본 기반 Flyway V9 seed migration (장인 81명, 상품 729개)
+- 시작일: 2026-09-28
+
 ## 완료된 작업 (참고용)
 
 (없음)

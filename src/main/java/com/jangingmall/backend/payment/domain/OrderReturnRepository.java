@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface OrderReturnRepository {
     OrderReturn save(OrderReturn orderReturn);
+    Optional<OrderReturn> findById(Long id);
+    Optional<OrderReturn> findByIdForUpdate(Long id);
     Optional<OrderReturn> findByOrderId(Long orderId);
     List<OrderReturn> findTop50ByStatusAndUpdatedAtBeforeOrderByUpdatedAtAsc(ReturnStatus status, Instant before);
 }

@@ -212,6 +212,14 @@ public class PurchaseOrder {
         updatedAt = Instant.now();
     }
 
+    public void markExpired() {
+        if (status != OrderStatus.CREATED) {
+            throw new IllegalStateException("결제 대기 상태의 주문만 만료 처리할 수 있습니다.");
+        }
+        status = OrderStatus.EXPIRED;
+        updatedAt = Instant.now();
+    }
+
     public record ShippingAddress(Long addressId, String recipientName, String phone, String zipCode,
                                   String address1, String address2) {}
 

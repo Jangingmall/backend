@@ -121,8 +121,8 @@ tasks.named('test') {
     useJUnitPlatform {
         excludeTags 'e2e', 'prod-smoke'
     }
-    maxParallelForks = Math.max(1, (int)(Runtime.runtime.availableProcessors() / 2))
-    jvmArgs '-Xmx512m', '-XX:+UseG1GC', '-Djunit.jupiter.execution.parallel.enabled=false'
+    jvmArgs '-Xmx768m', '-XX:+UseG1GC'
+    outputs.upToDateWhen { false }
     finalizedBy 'buildRedocly', 'jacocoTestReport'
 }
 
@@ -139,13 +139,13 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                '**/global/config/**',
-                '**/global/common/**',
-                '**/*Request.*',
-                '**/*Response.*',
-                '**/*Command.*',
-                '**/dto/**',
-                '**/domain/**',
+                    '**/global/config/**',
+                    '**/global/common/**',
+                    '**/*Request.*',
+                    '**/*Response.*',
+                    '**/*Command.*',
+                    '**/dto/**',
+                    '**/domain/**',
             ])
         }))
     }
