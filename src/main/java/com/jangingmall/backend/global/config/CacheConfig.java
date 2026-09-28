@@ -7,10 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.GenericJacksonJsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Duration;
 import java.util.Map;
@@ -20,18 +22,40 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CacheConfig {
 
-    private final ObjectMapper objectMapper;
+    // {"@class":"full.class.Name","payload":{...}} 형태로 래핑해 타입 정보 보존
+    private record CacheWrapper(String type, Object payload) {}
 
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
+        ObjectMapper cacheMapper = JsonMapper.builder().build();
+
+        RedisSerializer<Object> serializer = new RedisSerializer<>() {
+            @Override
+            public byte[] serialize(Object value) throws SerializationException {
+                if (value == null) return new byte[0];
+                try {
+                    CacheWrapper wrapper = new CacheWrapper(value.getClass().getName(), value);
+                    return cacheMapper.writeValueAsBytes(wrapper);
+                } catch (Exception e) { throw new SerializationException("직렬화 실패", e); }
+            }
+            @Override
+            public Object deserialize(byte[] bytes) throws SerializationException {
+                if (bytes == null || bytes.length == 0) return null;
+                try {
+                    CacheWrapper wrapper = cacheMapper.readValue(bytes, CacheWrapper.class);
+                    Class<?> type = Class.forName(wrapper.type());
+                    return cacheMapper.convertValue(wrapper.payload(), type);
+                } catch (Exception e) { throw new SerializationException("역직렬화 실패", e); }
+            }
+        };
+
         RedisCacheConfiguration defaults = RedisCacheConfiguration.defaultCacheConfig()
             .entryTtl(Duration.ofSeconds(60))
             .disableCachingNullValues()
             .serializeKeysWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
             .serializeValuesWith(
-                RedisSerializationContext.SerializationPair.fromSerializer(
-                    new GenericJacksonJsonRedisSerializer(objectMapper)));
+                RedisSerializationContext.SerializationPair.fromSerializer(serializer));
 
         Map<String, RedisCacheConfiguration> configs = Map.of(
             "products", defaults.entryTtl(Duration.ofSeconds(60)),
