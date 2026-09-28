@@ -1,4 +1,4 @@
-테package com.jangingmall.backend.content.infrastructure;
+package com.jangingmall.backend.content.infrastructure;
 
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;

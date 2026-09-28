@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.jangingmall.backend.member.application.MemberReadRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import com.jangingmall.backend.member.domain.Address;
 import com.jangingmall.backend.member.domain.ArtisanProfile;
 import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberActivityRepository;
@@ -67,23 +68,35 @@ class MemberReadRepositoryJpaIntegrationTest {
 
     @Test
     void activityWritesUseJpaRepositories() {
+        Member member = activeMember("activity-writes@example.com");
+        Member artisan = activeMember("activity-artisan@example.com");
+        Category category = Category.of("활동 카테고리");
+        entityManager.persist(category);
+        Product product = Product.create(artisan.getId(), category, null, "활동 상품", "설명", 10000, 3, "thumb.webp");
+        entityManager.persist(product);
+        entityManager.flush();
+
+        Long memberId = member.getId();
+        Long productId = product.getId();
+        Long artisanId = artisan.getId();
+
         LocalDateTime first = LocalDateTime.now().minusMinutes(1);
         LocalDateTime latest = LocalDateTime.now();
 
-        activities.recordView(999L, 777L, first);
-        activities.recordView(999L, 777L, latest);
-        activities.wish(999L, 777L);
-        activities.wish(999L, 777L);
-        activities.subscribe(999L, 555L);
-        activities.subscribe(999L, 555L);
-        activities.notifications(999L, false);
+        activities.recordView(memberId, productId, first);
+        activities.recordView(memberId, productId, latest);
+        activities.wish(memberId, productId);
+        activities.wish(memberId, productId);
+        activities.subscribe(memberId, artisanId);
+        activities.subscribe(memberId, artisanId);
+        activities.notifications(memberId, false);
 
-        assertThat(activities.isWished(999L, 777L)).isTrue();
+        assertThat(activities.isWished(memberId, productId)).isTrue();
 
-        activities.unwish(999L, 777L);
-        activities.unsubscribe(999L, 555L);
-        activities.clearViews(999L);
-        assertThat(activities.isWished(999L, 777L)).isFalse();
+        activities.unwish(memberId, productId);
+        activities.unsubscribe(memberId, artisanId);
+        activities.clearViews(memberId);
+        assertThat(activities.isWished(memberId, productId)).isFalse();
     }
 
     @Test
@@ -154,8 +167,11 @@ class MemberReadRepositoryJpaIntegrationTest {
         entityManager.persist(returned);
         entityManager.persist(canceled);
         entityManager.flush();
+        Address address = new Address(customer.getId(), "홍길동", "01012345678", "03187", "서울시 중구", "101호");
+        entityManager.persist(address);
+        entityManager.flush();
         entityManager.persist(new OrderReturn(returned.getId(), ReturnType.RETURN, ReturnReason.CHANGE_OF_MIND,
-            null, 1L, "[]", "[]"));
+            null, address.getId(), "[]", "[]"));
         entityManager.flush();
         entityManager.clear();
 

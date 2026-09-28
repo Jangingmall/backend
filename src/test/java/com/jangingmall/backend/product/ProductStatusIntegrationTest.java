@@ -22,6 +22,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -90,8 +91,9 @@ class ProductStatusIntegrationTest {
     }
 
     private Long createProduct() throws Exception {
+        String uniqueTitle = "청자 다완 " + UUID.randomUUID().toString().substring(0, 8);
         HttpResponse<String> res = post("/api/products",
-            new ProductRequest.Create(null, null, "청자 다완", "설명", 85000, 10, null, List.of(), List.of(), null, List.of()),
+            new ProductRequest.Create(null, null, uniqueTitle, "설명", 85000, 10, null, List.of(), List.of(), null, List.of()),
             artisanToken);
         assertThat(res.statusCode()).isEqualTo(201);
         Map<?, ?> data = (Map<?, ?>) objectMapper.readValue(res.body(), Map.class).get("data");

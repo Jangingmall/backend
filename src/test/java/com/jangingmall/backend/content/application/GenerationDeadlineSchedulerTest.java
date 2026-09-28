@@ -188,6 +188,7 @@ class GenerationDeadlineSchedulerTest {
     void pollDraftReady() {
         ContentGeneration gen = queuedGeneration(1L, LocalDateTime.now().minusSeconds(60));
         when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of(gen));
+        when(generationRepository.findById(1L)).thenReturn(java.util.Optional.of(gen));
         when(aiContentClient.getJobStatus("job-1")).thenReturn("DRAFT_READY");
         when(generationRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
@@ -202,6 +203,7 @@ class GenerationDeadlineSchedulerTest {
     void pollFailed() {
         ContentGeneration gen = queuedGeneration(2L, LocalDateTime.now().minusSeconds(60));
         when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of(gen));
+        when(generationRepository.findById(2L)).thenReturn(java.util.Optional.of(gen));
         when(aiContentClient.getJobStatus("job-2")).thenReturn("FAILED");
         when(generationRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
@@ -217,6 +219,8 @@ class GenerationDeadlineSchedulerTest {
         ContentGeneration gen1 = queuedGeneration(1L, LocalDateTime.now().minusSeconds(60));
         ContentGeneration gen2 = queuedGeneration(2L, LocalDateTime.now().minusSeconds(60));
         when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of(gen1, gen2));
+        when(generationRepository.findById(1L)).thenReturn(java.util.Optional.of(gen1));
+        when(generationRepository.findById(2L)).thenReturn(java.util.Optional.of(gen2));
         when(aiContentClient.getJobStatus("job-1")).thenThrow(new RuntimeException("AI 연결 실패"));
         when(aiContentClient.getJobStatus("job-2")).thenReturn("DRAFT_READY");
         when(generationRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
