@@ -60,10 +60,19 @@ class OAuthControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("비활성화한 네이버 OAuth 리다이렉트는 존재하지 않는다")
-    void rejectNaverRedirect() throws Exception {
+    @DisplayName("네이버 OAuth 로그인 리다이렉트는 302를 반환한다")
+    void naverRedirect() throws Exception {
         mockMvc.perform(get("/api/member/oauth2/naver"))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isFound())
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "oauth-naver-redirect",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("소셜 로그인")
+                    .summary("네이버 로그인 리다이렉트")
+                    .description("네이버 OAuth2 인증 페이지로 리다이렉트합니다.")
+                    .build()
+                )
+            ));
     }
 
     @Test
