@@ -110,7 +110,7 @@ spring:
             client-secret: local-kakao-client-secret
             redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             authorization-grant-type: authorization_code
-            # Kakao uses consent items configured in its console; do not force unsupported scope values.
+            scope: account_email
           naver:
             client-id: local-naver-client-id
             client-secret: local-naver-client-secret
@@ -209,7 +209,7 @@ spring:
             client-secret: local-kakao-client-secret
             redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             authorization-grant-type: authorization_code
-            scope: profile_nickname, account_email
+            scope: account_email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -299,7 +299,7 @@ spring:
             client-secret: test-kakao-client-secret
             redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             authorization-grant-type: authorization_code
-            scope: profile_nickname, account_email
+            scope: account_email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -405,7 +405,7 @@ spring:
             client-secret: ${KAKAO_CLIENT_SECRET}
             redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
             authorization-grant-type: authorization_code
-            # Kakao uses consent items configured in its console; do not force unsupported scope values.
+            scope: account_email
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
