@@ -1,6 +1,9 @@
 // AI 서버 헬스체크
 // 클러스터 내부에서만 도달 가능한 AI_BASE_URL을 검증한다.
 // 사용: ./gradlew aiHealthCheck -Pai.base-url=http://ai.internal:8001
+//
+// 실패 시 Discord 알림: DISCORD_NOTIFICATION_WEBHOOK 환경변수 설정 시 자동 전송
+// 로컬·CI/CD 에서는 환경변수 미설정으로 자동 제외됨
 tasks.register('aiHealthCheck', Test) {
     group = 'verification'
     description = 'AI 서버 /ai/health 엔드포인트에 HTTP GET을 보내 200 OK와 status:ok를 검증합니다.'
@@ -11,5 +14,31 @@ tasks.register('aiHealthCheck', Test) {
     }
     if (project.hasProperty('ai.base-url')) {
         systemProperty 'ai.base-url', project.property('ai.base-url')
+    }
+
+    afterSuite { desc, result ->
+        if (desc.parent != null) return
+        if (result.resultType.name() == 'FAILURE') {
+            def webhookUrl = System.getenv('DISCORD_NOTIFICATION_WEBHOOK')
+            if (!webhookUrl) return
+
+            def aiBaseUrl = project.hasProperty('ai.base-url')
+                ? project.property('ai.base-url')
+                : System.getenv().getOrDefault('AI_BASE_URL', 'http://localhost:8001')
+
+            def payload = """{"embeds":[{"title":"❌ AI 서버 헬스체크 실패","color":15158332,"fields":[{"name":"대상","value":"${aiBaseUrl}/ai/health","inline":false},{"name":"실패 수","value":"${result.failedTestCount}","inline":true},{"name":"총 테스트","value":"${result.testCount}","inline":true}],"footer":{"text":"aiHealthCheck · ${new Date().format('yyyy-MM-dd HH:mm:ss z')}"}}]}"""
+
+            try {
+                def url = new URL(webhookUrl)
+                def conn = url.openConnection()
+                conn.requestMethod = 'POST'
+                conn.doOutput = true
+                conn.setRequestProperty('Content-Type', 'application/json')
+                conn.outputStream.withWriter('UTF-8') { it.write(payload) }
+                conn.responseCode
+            } catch (Exception e) {
+                logger.warn("Discord 알림 전송 실패: ${e.message}")
+            }
+        }
     }
 }
