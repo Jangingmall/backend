@@ -119,7 +119,7 @@ def snippetsDir = layout.buildDirectory.dir('generated-snippets')
 tasks.named('test') {
     outputs.dir(snippetsDir)
     useJUnitPlatform {
-        excludeTags 'e2e', 'prod-smoke'
+        excludeTags 'e2e', 'prod-smoke', 'ai-health'
     }
     jvmArgs '-Xmx768m', '-XX:+UseG1GC'
     outputs.upToDateWhen { false }

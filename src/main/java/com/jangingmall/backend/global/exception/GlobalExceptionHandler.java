@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.stream.Collectors;
@@ -85,6 +86,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleNoResource(NoResourceFoundException ex) {
         return error(ErrorCode.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AsyncRequestTimeoutException.class)
+    public ResponseEntity<Void> handleAsyncTimeout(AsyncRequestTimeoutException ex) {
+        // SSE 연결이 타임아웃될 때 발생 — text/event-stream에는 JSON 응답을 쓸 수 없으므로 무시
+        return ResponseEntity.noContent().build();
     }
 
     @ExceptionHandler(Exception.class)
