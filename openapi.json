@@ -925,12 +925,12 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "careerYears": 15,
                                                         "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                         "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
                                                         "artisanId": 10,
                                                         "category": "\ub3c4\uc608",
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "careerYears": 15
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                                     }
                                                 ],
                                                 "empty": false,
@@ -1705,8 +1705,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "DONE",
-                                                "approvedAt": "2026-09-29T05:04:57.425274749Z",
-                                                "canceledAt": "2026-09-29T05:04:57.425274900Z"
+                                                "approvedAt": "2026-09-29T05:50:32.099597129Z",
+                                                "canceledAt": "2026-09-29T05:50:32.099597229Z"
                                             }
                                         }
                                     }
@@ -1929,7 +1929,7 @@
                                                 "orderNumber": "ORD-000001",
                                                 "totalAmount": 25000,
                                                 "status": "CREATED",
-                                                "createdAt": "2026-09-29T05:04:57.063797325Z",
+                                                "createdAt": "2026-09-29T05:50:31.788560269Z",
                                                 "items": [
                                                     
                                                 ]
@@ -2034,7 +2034,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-payments-returns-returnId-status-1115423141"
+                                    "$ref": "#/components/schemas/api-payments-returns-1115423141"
                                 },
                                 "examples": {
                                     "returns-request": {
@@ -2046,7 +2046,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "REQUESTED",
-                                                "requestedAt": "2026-09-29T05:04:56.905321050Z"
+                                                "requestedAt": "2026-09-29T05:50:31.572366123Z"
                                             }
                                         }
                                     }
@@ -2613,7 +2613,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-artisans-me-1004667003"
+                                    "$ref": "#/components/schemas/api-member-artisans-artisanId-1004667003"
                                 },
                                 "examples": {
                                     "artisan-mine": {
@@ -2621,12 +2621,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "careerYears": 15,
                                                 "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                 "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
                                                 "artisanId": 10,
                                                 "category": "\ub3c4\uc608",
-                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                "careerYears": 15
+                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                             }
                                         }
                                     }
@@ -2677,7 +2677,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-artisans-me-1004667003"
+                                    "$ref": "#/components/schemas/api-member-artisans-artisanId-1004667003"
                                 },
                                 "examples": {
                                     "artisan-update": {
@@ -2685,12 +2685,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "careerYears": 15,
                                                 "introduction": "\uc0c8\ub85c\uc6b4 \uc18c\uac1c\uc785\ub2c8\ub2e4.",
                                                 "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
                                                 "artisanId": 10,
                                                 "category": "\ub3c4\uc608",
-                                                "businessName": "\uc0c8\uacf5\ubc29\uba85",
-                                                "careerYears": 15
+                                                "businessName": "\uc0c8\uacf5\ubc29\uba85"
                                             }
                                         }
                                     }
@@ -2726,10 +2726,10 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "newProductCount": 2,
                                                         "notificationsEnabled": true,
                                                         "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "artisanId": 10,
-                                                        "newProductCount": 2
+                                                        "artisanId": 10
                                                     }
                                                 ],
                                                 "empty": false,
@@ -2803,7 +2803,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-artisans-me-1004667003"
+                                    "$ref": "#/components/schemas/api-member-artisans-artisanId-1004667003"
                                 },
                                 "examples": {
                                     "artisan-detail": {
@@ -2811,12 +2811,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "careerYears": 15,
                                                 "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                 "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
                                                 "artisanId": 10,
                                                 "category": "\ub3c4\uc608",
-                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                "careerYears": 15
+                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                             }
                                         }
                                     }
@@ -3175,10 +3175,10 @@
                                                                     "imageId": "01JIMAGE",
                                                                     "variants": [
                                                                         {
-                                                                            "format": "webp",
-                                                                            "width": 320,
                                                                             "url": "https://cdn.midam.store/products/320.webp",
-                                                                            "height": 320
+                                                                            "height": 320,
+                                                                            "format": "webp",
+                                                                            "width": 320
                                                                         }
                                                                     ]
                                                                 }
@@ -3339,6 +3339,10 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "orderItemId": 10,
+                                                        "content": "\uc815\ub9d0 \uc544\ub984\ub2e4\uc6b4 \uc791\ud488\uc785\ub2c8\ub2e4.",
+                                                        "reviewId": 1,
+                                                        "productId": 1,
                                                         "createdAt": "2026-09-01T10:00:00",
                                                         "images": [
                                                             
@@ -3351,11 +3355,7 @@
                                                             ]
                                                         },
                                                         "rating": 4.5,
-                                                        "productName": "\uccad\uc790 \ub2e4\uc644",
-                                                        "orderItemId": 10,
-                                                        "content": "\uc815\ub9d0 \uc544\ub984\ub2e4\uc6b4 \uc791\ud488\uc785\ub2c8\ub2e4.",
-                                                        "reviewId": 1,
-                                                        "productId": 1
+                                                        "productName": "\uccad\uc790 \ub2e4\uc644"
                                                     }
                                                 ],
                                                 "empty": false,
@@ -4048,8 +4048,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "CANCELED",
-                                                "approvedAt": "2026-09-29T05:04:57.568185439Z",
-                                                "canceledAt": "2026-09-29T05:04:57.568185559Z"
+                                                "approvedAt": "2026-09-29T05:50:32.250617747Z",
+                                                "canceledAt": "2026-09-29T05:50:32.250617847Z"
                                             }
                                         }
                                     }
@@ -6152,10 +6152,10 @@
                                                             "imageId": "01JIMAGE",
                                                             "variants": [
                                                                 {
-                                                                    "format": "webp",
-                                                                    "width": 320,
                                                                     "url": "https://cdn.midam.store/products/320.webp",
-                                                                    "height": 320
+                                                                    "height": 320,
+                                                                    "format": "webp",
+                                                                    "width": 320
                                                                 }
                                                             ]
                                                         }
@@ -6458,7 +6458,7 @@
                                             "data": {
                                                 "orderId": 100,
                                                 "status": "CANCELED",
-                                                "canceledAt": "2026-09-29T05:04:57.228198618Z",
+                                                "canceledAt": "2026-09-29T05:50:31.932668091Z",
                                                 "purchaseConfirmedAt": null
                                             }
                                         }
@@ -6567,7 +6567,7 @@
                                                 "orderId": 100,
                                                 "status": "PURCHASE_CONFIRMED",
                                                 "canceledAt": null,
-                                                "purchaseConfirmedAt": "2026-09-29T05:04:57.228417318Z"
+                                                "purchaseConfirmedAt": "2026-09-29T05:50:31.932866950Z"
                                             }
                                         }
                                     }
@@ -6688,7 +6688,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-payments-returns-returnId-status-1115423141"
+                                    "$ref": "#/components/schemas/api-payments-returns-1115423141"
                                 },
                                 "examples": {
                                     "returns-approve": {
@@ -6700,7 +6700,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "APPROVED",
-                                                "requestedAt": "2026-09-29T05:04:57.470922422Z"
+                                                "requestedAt": "2026-09-29T05:50:32.139149794Z"
                                             }
                                         }
                                     }
@@ -10083,52 +10083,6 @@
                     }
                 }
             },
-            "api-products-productId-reviews-994178327": {
-                "required": [
-                    "content",
-                    "orderItemId",
-                    "rating"
-                ],
-                "type": "object",
-                "properties": {
-                    "images": {
-                        "type": "array",
-                        "description": "\ucca8\ubd80 \uc774\ubbf8\uc9c0 ID \ubaa9\ub85d (\ucd5c\ub300 5\uac1c)",
-                        "nullable": true,
-                        "items": {
-                            "oneOf": [
-                                {
-                                    "type": "object"
-                                },
-                                {
-                                    "type": "boolean"
-                                },
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "number"
-                                }
-                            ]
-                        }
-                    },
-                    "orderItemId": {
-                        "type": "number",
-                        "description": "\uc8fc\ubb38 \ud56d\ubaa9 ID"
-                    },
-                    "rating": {
-                        "type": "number",
-                        "description": "\ud3c9\uc810 (1~5)",
-                        "minimum": 1,
-                        "maximum": 5
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "\ud6c4\uae30 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)",
-                        "maxLength": 2000
-                    }
-                }
-            },
             "api-member-me-reviews-576450061": {
                 "required": [
                     "status",
@@ -10375,6 +10329,52 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
+            "api-products-productId-reviews-994178327": {
+                "required": [
+                    "content",
+                    "orderItemId",
+                    "rating"
+                ],
+                "type": "object",
+                "properties": {
+                    "images": {
+                        "type": "array",
+                        "description": "\ucca8\ubd80 \uc774\ubbf8\uc9c0 ID \ubaa9\ub85d (\ucd5c\ub300 5\uac1c)",
+                        "nullable": true,
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    "orderItemId": {
+                        "type": "number",
+                        "description": "\uc8fc\ubb38 \ud56d\ubaa9 ID"
+                    },
+                    "rating": {
+                        "type": "number",
+                        "description": "\ud3c9\uc810 (1~5)",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "\ud6c4\uae30 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)",
+                        "maxLength": 2000
                     }
                 }
             },
@@ -11871,7 +11871,7 @@
                     }
                 }
             },
-            "api-member-artisans-me-1004667003": {
+            "api-member-artisans-artisanId-1004667003": {
                 "required": [
                     "status",
                     "success"
@@ -13272,7 +13272,7 @@
                     }
                 }
             },
-            "api-payments-returns-returnId-status-1115423141": {
+            "api-payments-returns-1115423141": {
                 "required": [
                     "status",
                     "success"
