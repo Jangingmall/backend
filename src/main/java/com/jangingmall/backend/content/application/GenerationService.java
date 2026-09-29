@@ -4,6 +4,7 @@ import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
 import com.jangingmall.backend.content.domain.GenerationStatus;
+import com.jangingmall.backend.global.exception.ExternalServiceException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.image.application.ImageStorage;
@@ -122,6 +123,7 @@ public class GenerationService {
             imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
         } catch (IOException exception) {
             log.error("상세페이지 이미지 업로드 실패 generationId={}", generationId, exception);
+            throw new ExternalServiceException("상세페이지 이미지 업로드 실패 generationId=" + generationId);
         }
     }
 
@@ -134,6 +136,7 @@ public class GenerationService {
                 imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
             } catch (IOException exception) {
                 log.error("파일 업로드 실패 generationId={} prefix={} filename={}", generationId, keyPrefix, file.getOriginalFilename(), exception);
+                throw new ExternalServiceException("파일 업로드 실패 generationId=" + generationId + " prefix=" + keyPrefix);
             }
         }
     }
