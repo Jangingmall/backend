@@ -101,7 +101,3 @@ revalidate:
   webhook-url: ${REVALIDATE_WEBHOOK_URL:http://localhost:3000/api/revalidate}
   webhook-secret: ${REVALIDATE_WEBHOOK_SECRET:}
   timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}
-
-logging:
-  level:
-    com.jangingmall.backend.member.infrastructure.RedisOAuth2AuthorizationRequestRepository: DEBUG
