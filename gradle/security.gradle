@@ -1,0 +1,44 @@
+// 사이버보안팀 전용 빌드
+//
+// AWS Parameter Store에서 값을 읽어 DAST 계정 적재 여부를 검증한다.
+//
+// 사전 조건:
+//   - aws cli 설치 및 인증 완료 (aws sts get-caller-identity)
+//   - init-dast-accounts.sh 실행 완료 (계정 생성)
+//
+// 사용법:
+//   ./gradlew securityVerify
+
+def fetchParam(String name) {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'aws', 'ssm', 'get-parameter',
+            '--name', name,
+            '--with-decryption',
+            '--query', 'Parameter.Value',
+            '--output', 'text'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+tasks.register('securityVerify', Test) {
+    group = 'security'
+    description = 'Parameter Store에서 값을 읽어 DAST 계정 DB 적재 여부를 검증합니다. (./gradlew securityVerify)'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'dast-infra'
+    }
+
+    doFirst {
+        def prefix = '/staging/backend'
+        environment 'DAST_BASE_URL',        System.getenv('DAST_BASE_URL') ?: 'https://api.midam.store'
+        environment 'DAST_USER_EMAIL',       fetchParam("$prefix/dast-user-email")
+        environment 'DAST_USER_PASSWORD',    fetchParam("$prefix/dast-user-password")
+        environment 'DAST_ARTISAN_EMAIL',    fetchParam("$prefix/dast-artisan-email")
+        environment 'DAST_ARTISAN_PASSWORD', fetchParam("$prefix/dast-artisan-password")
+        environment 'DAST_ADMIN_EMAIL',      fetchParam("$prefix/dast-admin-email")
+        environment 'DAST_ADMIN_PASSWORD',   fetchParam("$prefix/dast-admin-password")
+    }
+}

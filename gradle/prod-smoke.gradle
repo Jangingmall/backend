@@ -11,3 +11,21 @@ tasks.register('prodSmokeTest', Test) {
     }
     shouldRunAfter 'test'
 }
+
+// DAST 테스트 계정 적재 검증
+// Parameter Store에서 주입된 환경변수로 로그인 API를 호출해 계정 DB 적재 여부를 확인한다.
+// 사용:
+//   DAST_BASE_URL=https://api.midam.store \
+//   DAST_USER_EMAIL=... DAST_USER_PASSWORD=... \
+//   DAST_ARTISAN_EMAIL=... DAST_ARTISAN_PASSWORD=... \
+//   DAST_ADMIN_EMAIL=... DAST_ADMIN_PASSWORD=... \
+//   ./gradlew dastInfraTest
+tasks.register('dastInfraTest', Test) {
+    group = 'verification'
+    description = 'DAST 테스트 계정이 prod DB에 정상 적재되었는지 로그인 API로 검증합니다.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'dast-infra'
+    }
+}
