@@ -11,123 +11,6 @@ CHAT-009,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-
 CHAT-010,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,BOUNDARY,content: len=2000 (maxLen),HTTP 201,,AUTO
 CHAT-011,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,BOUNDARY,content: len=2001 (maxLen+1),HTTP 400,,AUTO
 CHAT-012,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,NOT_FOUND,sessionId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-001,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-002,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-003,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-004,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-005,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-006,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-007,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-008,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-009,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-010,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-011,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-012,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,TYPE_MISMATCH,patches: array→object,HTTP 400,,AUTO
-CONTENT-013,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-014,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-015,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-016,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-017,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,NOT_FOUND,contentId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-018,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-019,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,REQUIRED_MISSING,factCheckConfirmed 누락,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-020,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,REQUIRED_NULL,factCheckConfirmed=null,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-021,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,REQUIRED_MISSING,photoMatchConfirmed 누락,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-022,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,REQUIRED_NULL,photoMatchConfirmed=null,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-023,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,REQUIRED_MISSING,displayApprovalBadge 누락,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-024,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,REQUIRED_NULL,displayApprovalBadge=null,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-025,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,TYPE_MISMATCH,"factCheckConfirmed: boolean→string (""abc"")",HTTP 400,,AUTO
-CONTENT-026,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,TYPE_MISMATCH,"photoMatchConfirmed: boolean→string (""abc"")",HTTP 400,,AUTO
-CONTENT-027,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,TYPE_MISMATCH,"displayApprovalBadge: boolean→string (""abc"")",HTTP 400,,AUTO
-CONTENT-028,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-029,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-030,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-031,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-032,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,NOT_FOUND,contentId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-033,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-034,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-035,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-036,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-037,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-038,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,NOT_FOUND,contentId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-039,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,NOT_FOUND,nodeId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-040,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-041,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-042,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-043,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-044,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-045,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,NOT_FOUND,contentId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-046,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-047,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-048,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-049,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-050,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-051,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,NOT_FOUND,contentId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-AI-001,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 202,,AUTO
-AI-002,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_MISSING,images 누락,HTTP 400 INVALID_INPUT,,AUTO
-AI-003,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_NULL,images=null,HTTP 400 INVALID_INPUT,,AUTO
-AI-004,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_MISSING,howMade 누락,HTTP 400 INVALID_INPUT,,AUTO
-AI-005,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_NULL,howMade=null,HTTP 400 INVALID_INPUT,,AUTO
-AI-006,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_EMPTY,"howMade=""""",HTTP 400 INVALID_INPUT,,AUTO
-AI-007,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_MISSING,careTips 누락,HTTP 400 INVALID_INPUT,,AUTO
-AI-008,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_NULL,careTips=null,HTTP 400 INVALID_INPUT,,AUTO
-AI-009,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_EMPTY,"careTips=""""",HTTP 400 INVALID_INPUT,,AUTO
-AI-010,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_MISSING,productName 누락,HTTP 400 INVALID_INPUT,,AUTO
-AI-011,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_NULL,productName=null,HTTP 400 INVALID_INPUT,,AUTO
-AI-012,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,REQUIRED_EMPTY,"productName=""""",HTTP 400 INVALID_INPUT,,AUTO
-AI-013,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,TYPE_MISMATCH,images: array→object,HTTP 400,,AUTO
-AI-014,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,BOUNDARY,images: 9개 (maxItems+1),HTTP 400,,AUTO
-AI-015,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,BOUNDARY,productName: len=15 (maxLen),HTTP 202,,AUTO
-AI-016,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,BOUNDARY,productName: len=16 (maxLen+1),HTTP 400,,AUTO
-AI-017,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-AI-018,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-AI-019,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-AI-020,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-AI-021,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-AI-022,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-AI-023,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-AI-024,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-AI-025,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-AI-026,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,NOT_FOUND,generationId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-052,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-053,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-054,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-055,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-056,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-057,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 201,,AUTO
-CONTENT-058,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_MISSING,process 누락,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-059,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_NULL,process=null,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-060,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_EMPTY,"process=""""",HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-061,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_MISSING,materials 누락,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-062,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_NULL,materials=null,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-063,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_EMPTY,"materials=""""",HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-064,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_MISSING,technique 누락,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-065,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_NULL,technique=null,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-066,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_EMPTY,"technique=""""",HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-067,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_MISSING,story 누락,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-068,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_NULL,story=null,HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-069,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,REQUIRED_EMPTY,"story=""""",HTTP 400 INVALID_INPUT,,AUTO
-CONTENT-070,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,BOUNDARY,materials: len=255 (maxLen),HTTP 201,,AUTO
-CONTENT-071,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,BOUNDARY,materials: len=256 (maxLen+1),HTTP 400,,AUTO
-CONTENT-072,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,BOUNDARY,technique: len=100 (maxLen),HTTP 201,,AUTO
-CONTENT-073,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,BOUNDARY,technique: len=101 (maxLen+1),HTTP 400,,AUTO
-CONTENT-074,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-075,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-076,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-077,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-078,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-079,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,BOUNDARY,materials: len=255 (maxLen),HTTP 200,,AUTO
-CONTENT-080,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,BOUNDARY,materials: len=256 (maxLen+1),HTTP 400,,AUTO
-CONTENT-081,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,BOUNDARY,technique: len=100 (maxLen),HTTP 200,,AUTO
-CONTENT-082,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,BOUNDARY,technique: len=101 (maxLen+1),HTTP 400,,AUTO
-CONTENT-083,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-084,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-085,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-086,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-CONTENT-087,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-CONTENT-088,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-089,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-090,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-CONTENT-091,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
 IMAGE-001,이미지,POST,/api/images/presigned-url,image-presigned-url,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
 IMAGE-002,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_MISSING,fileName 누락,HTTP 400 INVALID_INPUT,,AUTO
 IMAGE-003,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_NULL,fileName=null,HTTP 400 INVALID_INPUT,,AUTO
@@ -742,15 +625,6 @@ WISH-016,찜,DELETE,/api/products/{productId}/wish,product-unwish,AUTH_NO_TOKEN,
 WISH-017,찜,DELETE,/api/products/{productId}/wish,product-unwish,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
 WISH-018,찜,DELETE,/api/products/{productId}/wish,product-unwish,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
 WISH-019,찜,DELETE,/api/products/{productId}/wish,product-unwish,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-API-022,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-API-023,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-API-024,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-API-025,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-AICB-001,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-AICB-002,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-AICB-003,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-AICB-004,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-AICB-005,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,NOT_FOUND,generationId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
 IMAGE-028,이미지,POST,/internal/images/verify,image-internal-verify,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
 IMAGE-029,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_MISSING,requesterId 누락,HTTP 400 INVALID_INPUT,,AUTO
 IMAGE-030,이미지,POST,/internal/images/verify,image-internal-verify,REQUIRED_NULL,requesterId=null,HTTP 400 INVALID_INPUT,,AUTO

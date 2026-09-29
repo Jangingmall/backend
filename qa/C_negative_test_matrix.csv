@@ -5,82 +5,6 @@ NEG-CHAT-003,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-mess
 NEG-CHAT-004,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
 NEG-CHAT-005,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
 NEG-CHAT-006,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,PATH_PARAM_NOT_FOUND,sessionId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-001,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-002,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-003,콘텐츠,GET,/api/content/products/{productId}/contents,content-get,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-004,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-005,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-006,콘텐츠,GET,/api/content/products/{productId}/contents/versions,content-version-history,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-007,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
-NEG-CONTENT-008,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
-NEG-CONTENT-009,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
-NEG-CONTENT-010,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-011,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-012,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-013,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,PATH_PARAM_TYPE,"contentId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-014,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,PATH_PARAM_NEGATIVE,contentId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-015,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId},content-bulk-update,PATH_PARAM_NOT_FOUND,contentId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-016,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
-NEG-CONTENT-017,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
-NEG-CONTENT-018,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
-NEG-CONTENT-019,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-020,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-021,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-022,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,PATH_PARAM_TYPE,"contentId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-023,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,PATH_PARAM_NEGATIVE,contentId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-024,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/approve,content-approve,PATH_PARAM_NOT_FOUND,contentId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-025,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
-NEG-CONTENT-026,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
-NEG-CONTENT-027,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
-NEG-CONTENT-028,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-029,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-030,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-031,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,PATH_PARAM_TYPE,"contentId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-032,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,PATH_PARAM_NEGATIVE,contentId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-033,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,PATH_PARAM_NOT_FOUND,contentId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-034,콘텐츠,PATCH,/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId},content-block-update,PATH_PARAM_NOT_FOUND,nodeId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-035,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-036,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-037,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-038,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,PATH_PARAM_TYPE,"contentId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-039,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,PATH_PARAM_NEGATIVE,contentId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-040,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/reject,content-reject,PATH_PARAM_NOT_FOUND,contentId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-041,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-042,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-043,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-044,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,PATH_PARAM_TYPE,"contentId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-045,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,PATH_PARAM_NEGATIVE,contentId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-046,콘텐츠,POST,/api/content/products/{productId}/contents/{contentId}/submit,content-submit,PATH_PARAM_NOT_FOUND,contentId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-AI-001,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
-NEG-AI-002,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
-NEG-AI-003,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
-NEG-AI-004,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-AI-005,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-AI-006,AI 콘텐츠 생성,POST,/api/content/products/{productId}/generations,generation-request,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-AI-007,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-AI-008,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-AI-009,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-AI-010,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,PATH_PARAM_TYPE,"generationId=""abc""",HTTP 400,AUTO
-NEG-AI-011,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,PATH_PARAM_NEGATIVE,generationId=-1,HTTP 400 또는 404,AUTO
-NEG-AI-012,AI 콘텐츠 생성,GET,/api/content/products/{productId}/generations/{generationId},generation-poll-,PATH_PARAM_NOT_FOUND,generationId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-047,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-048,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-049,콘텐츠,GET,/api/content/products/{productId}/interview,interview-find,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-050,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
-NEG-CONTENT-051,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
-NEG-CONTENT-052,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
-NEG-CONTENT-053,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-054,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-055,콘텐츠,POST,/api/content/products/{productId}/interview,interview-create,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-056,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
-NEG-CONTENT-057,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
-NEG-CONTENT-058,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
-NEG-CONTENT-059,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-060,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-061,콘텐츠,PATCH,/api/content/products/{productId}/interview,interview-update,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-CONTENT-062,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-CONTENT-063,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-CONTENT-064,콘텐츠,POST,/api/content/products/{productId}/publish,content-publish,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
 NEG-IMAGE-001,이미지,POST,/api/images/presigned-url,image-presigned-url,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
 NEG-IMAGE-002,이미지,POST,/api/images/presigned-url,image-presigned-url,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
 NEG-IMAGE-003,이미지,POST,/api/images/presigned-url,image-presigned-url,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
@@ -274,9 +198,6 @@ NEG-WISH-006,찜,POST,/api/products/{productId}/wish,product-wish,PATH_PARAM_NOT
 NEG-WISH-007,찜,DELETE,/api/products/{productId}/wish,product-unwish,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
 NEG-WISH-008,찜,DELETE,/api/products/{productId}/wish,product-unwish,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
 NEG-WISH-009,찜,DELETE,/api/products/{productId}/wish,product-unwish,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-AICB-001,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,PATH_PARAM_TYPE,"generationId=""abc""",HTTP 400,AUTO
-NEG-AICB-002,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,PATH_PARAM_NEGATIVE,generationId=-1,HTTP 400 또는 404,AUTO
-NEG-AICB-003,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,PATH_PARAM_NOT_FOUND,generationId=999999999,HTTP 404 NOT_FOUND,AUTO
 NEG-IMAGE-005,이미지,POST,/internal/images/verify,image-internal-verify,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
 NEG-IMAGE-006,이미지,POST,/internal/images/verify,image-internal-verify,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
 NEG-IMAGE-007,이미지,POST,/internal/images/verify,image-internal-verify,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO

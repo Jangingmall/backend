@@ -33,18 +33,11 @@
 </nav>
 <div class="container">
   <h1>API 요약</h1>
-  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 106개 엔드포인트 · 2026-09-29 07:38 UTC</div>
+  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 91개 엔드포인트 · 2026-09-29 09:03 UTC</div>
   <input class="search" type="text" placeholder="경로 또는 설명으로 검색..." oninput="filterTable(this.value)"/>
   <table id="tbl">
     <thead><tr><th>Method</th><th>경로</th><th>설명</th><th>권한</th></tr></thead>
     <tbody>
-      <tr class="tag-header"><td colspan="4"><strong>AI 콘텐츠 생성</strong></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/generations</td><td>AI 상세페이지 생성 요청</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/generations/{generationId}</td><td>AI 생성 상태 조회 (PROCESSING)</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr class="tag-header"><td colspan="4"><strong>AI 콜백 (내부)</strong></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/internal/generations/{generationId}/completion</td><td>AI 생성 완료 콜백</td><td><span class="role">USER</span></td></tr>
-      <tr class="tag-header"><td colspan="4"><strong>internal</strong></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/internal/ai/products/bulk-sync</td><td>AI 상품 일괄 동기화</td><td><span class="role">USER</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>결제</strong></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments</td><td>결제 준비</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/confirm</td><td>결제 승인</td><td><span class="role">USER</span></td></tr>
@@ -143,18 +136,6 @@
       <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/materials</td><td>소재 목록</td><td><span class="role">인증 불필요</span></td></tr>
       <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/subcategories</td><td>서브카테고리 목록</td><td><span class="role">인증 불필요</span></td></tr>
       <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/products/categories/main</td><td>메인 카테고리 목록</td><td><span class="role">인증 불필요</span></td></tr>
-      <tr class="tag-header"><td colspan="4"><strong>콘텐츠</strong></td></tr>
-      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/contents</td><td>콘텐츠 조회</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/interview</td><td>취재 데이터 조회</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/interview</td><td>취재 데이터 등록</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/content/products/{productId}/interview</td><td>취재 데이터 수정</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/publish</td><td>상품 게시</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/contents/versions</td><td>버전 이력 조회</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}</td><td>문단 일괄 수정</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}/approve</td><td>콘텐츠 승인</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}/reject</td><td>콘텐츠 반려</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}/submit</td><td>검토 요청</td><td><span class="role">ARTISAN</span></td></tr>
-      <tr><td><span class="method" style="background:#50e3c2">PATCH</span></td><td class="path">/api/content/products/{productId}/contents/{contentId}/blocks/{nodeId}</td><td>단건 블록 수정</td><td><span class="role">ARTISAN</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>판매자 신청</strong></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/member/artisans/applications</td><td>판매자 신청 제출</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/artisans/applications/me</td><td>내 판매자 신청 조회</td><td><span class="role">USER</span></td></tr>
