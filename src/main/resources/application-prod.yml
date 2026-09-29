@@ -122,6 +122,7 @@ dast:
     password: ${DAST_ARTISAN_PASSWORD:}
   admin:
     email: ${DAST_ADMIN_EMAIL:}
+    password: ${DAST_ADMIN_PASSWORD:}
 
 logging:
   structured:

@@ -44,6 +44,9 @@ public class DastAccountInitializer implements ApplicationRunner {
     @Value("${dast.admin.email:}")
     private String adminEmail;
 
+    @Value("${dast.admin.password:}")
+    private String adminPassword;
+
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
