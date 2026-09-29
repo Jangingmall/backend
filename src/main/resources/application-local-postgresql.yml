@@ -5,26 +5,20 @@ spring:
     password: jangingmall
     driver-class-name: org.postgresql.Driver
   flyway:
-    enabled: false
+    enabled: true
+    locations: classpath:db/migration
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    defer-datasource-initialization: true
+      ddl-auto: none
+    defer-datasource-initialization: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-        generate_statistics: true
         default_batch_fetch_size: 100
-        session:
-          events:
-            log:
-              LOG_QUERIES_SLOWER_THAN_MS: 50
-    show-sql: true
+    show-sql: false
   sql:
     init:
-      mode: always
-      data-locations: classpath:data.sql,classpath:data-sequence-reset.sql
+      mode: never
   data:
     redis:
       host: localhost
@@ -98,6 +92,16 @@ internal-api:
   backend-auth-token: ${BACKEND_AUTH_TOKEN:}
 
 revalidate:
-  webhook-url: ${REVALIDATE_WEBHOOK_URL:http://localhost:3000/api/revalidate}
-  webhook-secret: ${REVALIDATE_WEBHOOK_SECRET:}
+  timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}
+
+dast:
+  user:
+    email: stguser@midam.store
+    password: OS57IY5ebV1K1LHU
+  artisan:
+    email: stgartisan@midam.store
+    password: P0UL6RhKQ07AcYsR
+  admin:
+    email: stgadmin@midam.store
+    password: QBRGe8pbOcJcy9fa
   timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}

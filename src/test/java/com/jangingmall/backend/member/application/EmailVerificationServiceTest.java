@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import java.util.Optional;
+
+import com.jangingmall.backend.member.domain.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,12 +22,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class EmailVerificationServiceTest {
 
     @Mock private EmailVerificationStore verificationStore;
+    @Mock private MemberRepository memberRepository;
     @Mock private EmailSender emailSender;
     private EmailVerificationService service;
 
     @BeforeEach
     void setUp() {
-        service = new EmailVerificationService(verificationStore, emailSender);
+        service = new EmailVerificationService(verificationStore, emailSender,  memberRepository);
     }
 
     @Test

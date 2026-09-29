@@ -2,11 +2,14 @@ package com.jangingmall.backend.member.application;
 
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
+import com.jangingmall.backend.member.domain.Member;
+import com.jangingmall.backend.member.domain.MemberRepository;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,6 +19,7 @@ public class EmailVerificationService {
 
     private final EmailVerificationStore verificationStore;
     private final EmailSender emailSender;
+    private final MemberRepository memberRepository;
 
     public void sendCode(String email) {
         String normalized = email.trim().toLowerCase(Locale.ROOT);
@@ -24,6 +28,7 @@ public class EmailVerificationService {
         emailSender.sendVerificationCode(normalized, code);
     }
 
+    @Transactional
     public void verify(String email, String code) {
         String normalized = email.trim().toLowerCase(Locale.ROOT);
         String stored = verificationStore.consumeCode(normalized)
@@ -31,5 +36,6 @@ public class EmailVerificationService {
         if (!stored.equals(code.trim())) {
             throw new DomainException(ErrorCode.INVALID_INPUT);
         }
+        memberRepository.findByEmail(normalized).ifPresent(Member::activate);
     }
 }
