@@ -4,6 +4,8 @@ import com.jangingmall.backend.member.application.OAuthIdentity;
 import java.net.http.HttpClient;
 import java.time.Duration;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +17,7 @@ import org.springframework.web.client.*;
 
 @Service
 public class ProviderUserService implements OAuth2UserService<OAuth2UserRequest,OAuth2User> {
+    private static final Logger log = LoggerFactory.getLogger(ProviderUserService.class);
     private final RestClient client;
 
     public ProviderUserService(@Value("${member.oauth.http-timeout-millis:5000}") long timeoutMillis) {
@@ -32,7 +35,11 @@ public class ProviderUserService implements OAuth2UserService<OAuth2UserRequest,
             OAuthIdentity identity=identity(request.getClientRegistration().getRegistrationId(),Objects.requireNonNull(attributes));
             return new DefaultOAuth2User(Set.of(new SimpleGrantedAuthority("OAUTH2_USER")),
                 Map.of("provider",identity.provider(),"subject",identity.subject(),"email",identity.email()),"subject");
+        } catch (OAuth2AuthenticationException exception) {
+            log.warn("OAuth2 user info mapping failed provider={} error={}", request.getClientRegistration().getRegistrationId(), exception.getError().getErrorCode());
+            throw exception;
         } catch (RuntimeException exception) {
+            log.error("OAuth2 user info fetch failed provider={} reason={}", request.getClientRegistration().getRegistrationId(), exception.getMessage(), exception);
             throw new OAuth2AuthenticationException(new OAuth2Error("invalid_user_info"));
         }
     }
