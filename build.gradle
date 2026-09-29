@@ -121,9 +121,24 @@ tasks.named('test') {
     useJUnitPlatform {
         excludeTags 'e2e', 'prod-smoke', 'ai-health', 'dast-infra'
     }
+    exclude '**/content/**'
     jvmArgs '-Xmx768m', '-XX:+UseG1GC'
     outputs.upToDateWhen { false }
     finalizedBy 'buildRedocly', 'jacocoTestReport'
+}
+
+tasks.register('aiContentTest', Test) {
+    description = 'Runs AI content generation tests only.'
+    group = 'verification'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        excludeTags 'e2e', 'prod-smoke', 'ai-health', 'dast-infra'
+    }
+    include '**/content/**'
+    outputs.dir(snippetsDir)
+    outputs.upToDateWhen { false }
+    jvmArgs '-Xmx768m', '-XX:+UseG1GC'
 }
 
 jacoco {

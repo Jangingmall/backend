@@ -5,6 +5,7 @@ import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
+import com.jangingmall.backend.content.infrastructure.DiscordNotificationService;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -26,14 +27,17 @@ public class GenerationAsyncExecutor {
 
     private final ContentGenerationRepository generationRepository;
     private final AiContentClient aiContentClient;
+    private final DiscordNotificationService discordNotificationService;
     private final Counter retryCounter;
     private final Counter failedCounter;
 
     public GenerationAsyncExecutor(ContentGenerationRepository generationRepository,
                                    AiContentClient aiContentClient,
+                                   DiscordNotificationService discordNotificationService,
                                    MeterRegistry meterRegistry) {
         this.generationRepository = generationRepository;
         this.aiContentClient = aiContentClient;
+        this.discordNotificationService = discordNotificationService;
         this.retryCounter = Counter.builder("ai_generation_retry")
             .description("AI job 제출 재시도 횟수")
             .register(meterRegistry);
@@ -50,6 +54,10 @@ public class GenerationAsyncExecutor {
 
         ContentGeneration generation = generationRepository.findByIdAndProductId(generationId, command.productId())
             .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
+
+        discordNotificationService.notifyGenerationRequested(
+            generationId, command.productId(), command.productName(), command.images().size()
+        );
 
         Exception lastException = null;
         for (int attempt = 0; attempt <= MAX_RETRY_COUNT; attempt++) {
@@ -74,6 +82,7 @@ public class GenerationAsyncExecutor {
                 );
                 generationRepository.save(generation);
                 log.info("AI job 제출 완료 generationId={} jobId={}", generationId, accepted.jobId());
+                discordNotificationService.notifyGenerationSucceeded(generationId, command.productId(), accepted.jobId());
                 return;
             } catch (Exception e) {
                 lastException = e;
@@ -84,7 +93,9 @@ public class GenerationAsyncExecutor {
         failedCounter.increment();
         generation.fail();
         generationRepository.save(generation);
-        log.error("AI job 제출 최종 실패 generationId={} reason={}", generationId, lastException.getMessage());
+        String failReason = lastException != null ? lastException.getMessage() : "unknown";
+        log.error("AI job 제출 최종 실패 generationId={} reason={}", generationId, failReason);
+        discordNotificationService.notifyGenerationFailed(generationId, command.productId(), failReason);
     }
 
     private void sleepWithBackoff(int attempt) {
