@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class NotificationSseService {
 
-    private static final long SSE_TIMEOUT_MILLIS = 30 * 60 * 1000L;
+    private static final long SSE_TIMEOUT_MILLIS = -1L;
 
     private final NotificationSseEmitterRepository emitterRepository;
     private final Counter sseSentCounter;
