@@ -1,0 +1,35 @@
+// 사이버보안팀 전용 빌드
+//
+// DAST 테스트 계정 적재 검증 — 로그인 API로 3개 계정(USER/ARTISAN/ADMIN) DB 적재 여부를 확인한다.
+//
+// 사전 조건:
+//   - init-dast-accounts.sh 실행 완료 (계정 생성)
+//
+// 사용법:
+//   DAST_BASE_URL=https://api.midam.store \
+//   DAST_USER_EMAIL=dast-user@midam.store     DAST_USER_PASSWORD=<pw> \
+//   DAST_ARTISAN_EMAIL=dast-artisan@midam.store DAST_ARTISAN_PASSWORD=<pw> \
+//   DAST_ADMIN_EMAIL=dast-admin@midam.store   DAST_ADMIN_PASSWORD=<pw> \
+//   ./gradlew securityVerify
+
+tasks.register('securityVerify', Test) {
+    group = 'security'
+    description = 'DAST 테스트 계정이 DB에 정상 적재되었는지 로그인 API로 검증합니다.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'dast-infra'
+    }
+
+    def required = ['DAST_BASE_URL', 'DAST_USER_EMAIL', 'DAST_USER_PASSWORD',
+                    'DAST_ARTISAN_EMAIL', 'DAST_ARTISAN_PASSWORD',
+                    'DAST_ADMIN_EMAIL', 'DAST_ADMIN_PASSWORD']
+
+    doFirst {
+        def missing = required.findAll { System.getenv(it) == null || System.getenv(it).isBlank() }
+        if (!missing.isEmpty()) {
+            throw new GradleException("누락된 환경변수: ${missing.join(', ')}\n" +
+                "docs/dast-test-accounts.md 를 참고해 환경변수를 설정하세요.")
+        }
+    }
+}
