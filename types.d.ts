@@ -2456,12 +2456,6 @@ export interface components {
             /** @description 이메일 */
             email: string;
         };
-        "api-member-email-verify1884513398": {
-            /** @description 6자리 숫자 인증 코드 */
-            code: string;
-            /** @description 인증할 이메일 */
-            email: string;
-        };
         "api-payments-orders-438073018": {
             data?: {
                 /** @description 주문 생성 일시 */
@@ -2482,29 +2476,11 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-payments-paymentId-cancel1498139372": {
-            data?: {
-                /** @description 결제 금액 */
-                amount: number;
-                /** @description 주문번호 */
-                orderNumber: string;
-                /** @description 결제수단 */
-                method: string;
-                /** @description 취소 일시 */
-                canceledAt?: string | null;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 결제 ID */
-                paymentId: number;
-                /** @description 승인 일시 */
-                approvedAt?: string | null;
-                /** @description 결제 상태 (CANCELED) */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
+        "api-member-email-verify1884513398": {
+            /** @description 6자리 숫자 인증 코드 */
+            code: string;
+            /** @description 인증할 이메일 */
+            email: string;
         };
         "api-payments-orders-orderId-delivery716694160": {
             data?: {
@@ -2540,6 +2516,30 @@ export interface components {
         "api-payments-orders-orderId-shipping-address1663523072": {
             /** @description 본인 주소록의 배송지 ID */
             addressId: number;
+        };
+        "api-payments-paymentId-cancel1498139372": {
+            data?: {
+                /** @description 결제 금액 */
+                amount: number;
+                /** @description 주문번호 */
+                orderNumber: string;
+                /** @description 결제수단 */
+                method: string;
+                /** @description 취소 일시 */
+                canceledAt?: string | null;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 결제 ID */
+                paymentId: number;
+                /** @description 승인 일시 */
+                approvedAt?: string | null;
+                /** @description 결제 상태 (CANCELED) */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
         };
         "api-member-me-addresses-1394498104": {
             data?: {
@@ -2589,7 +2589,7 @@ export interface components {
             /** @description 수령인 */
             recipientName?: string | null;
         };
-        "api-member-me-wishes16218693": {
+        "api-member-signup16218693": {
             /** @description false — 항상 실패 */
             success: boolean;
             /** @description ErrorCode 식별자 */
@@ -3306,24 +3306,6 @@ export interface components {
             /** @description 후기 내용 (최대 2000자) */
             content: string;
         };
-        "api-payments-returns-returnId-status-1115423141": {
-            data?: {
-                /** @description 신청 일시 */
-                requestedAt: string;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 반품 ID */
-                returnId: number;
-                /** @description 반품·교환 유형 */
-                type: string;
-                /** @description 처리 상태 */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-payments-confirm1321390106": {
             data?: {
                 /** @description 결제 금액 */
@@ -3341,6 +3323,24 @@ export interface components {
                 /** @description 승인 일시 */
                 approvedAt?: string | null;
                 /** @description 결제 상태 */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-returns-1115423141": {
+            data?: {
+                /** @description 신청 일시 */
+                requestedAt: string;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 반품 ID */
+                returnId: number;
+                /** @description 반품·교환 유형 */
+                type: string;
+                /** @description 처리 상태 */
                 status: string;
             };
             /** @description true — 항상 성공 */
@@ -3669,12 +3669,6 @@ export interface components {
             /** @description 알림 내용 (@NotBlank, 최대 255자) */
             content: string;
         };
-        "api-chatbot-sessions-sessionId-1487972696": {
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-payments-confirm-12221918": {
             /** @description 결제 금액 */
             amount: number;
@@ -3682,6 +3676,12 @@ export interface components {
             orderId: string;
             /** @description 토스페이먼츠 결제 키 (최대 200자) */
             paymentKey: string;
+        };
+        "api-chatbot-sessions-sessionId-1487972696": {
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
         };
         "api-admin-seller-applications-applicationId-approve1698846120": {
             data?: {
@@ -3941,6 +3941,14 @@ export interface components {
             /** @description 첨부 이미지 ID 목록 (최대 5개) */
             imageIds?: (Record<string, never> | boolean | string | number)[] | null;
         };
+        "api-payments999605347": {
+            /** @description 결제 금액 */
+            amount: number;
+            /** @description 주문 ID */
+            orderId: number;
+            /** @description 결제수단 */
+            paymentMethod?: string | null;
+        };
         "api-member-me-orders-941884244": {
             data?: {
                 /** @description 현재 페이지 */
@@ -4059,14 +4067,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-payments999605347": {
-            /** @description 결제 금액 */
-            amount: number;
-            /** @description 주문 ID */
-            orderId: number;
-            /** @description 결제수단 */
-            paymentMethod?: string | null;
         };
         "api-admin-artisans-applications-applicationId-pipeline-277586035": {
             /** @description 자격 등급 (선택) */
@@ -4331,7 +4331,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 403 */
@@ -4340,7 +4340,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4393,7 +4393,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 401 */
@@ -4402,7 +4402,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4433,7 +4433,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 409 */
@@ -4442,7 +4442,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4495,7 +4495,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4544,7 +4544,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4601,7 +4601,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4634,7 +4634,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4727,7 +4727,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 404 */
@@ -4736,7 +4736,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4768,7 +4768,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4865,7 +4865,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -4961,7 +4961,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
@@ -5237,7 +5237,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -5337,7 +5337,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -5403,7 +5403,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 403 */
@@ -5412,7 +5412,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -5495,7 +5495,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -5627,7 +5627,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 422 */
@@ -5636,7 +5636,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -5709,7 +5709,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -5939,7 +5939,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -5971,7 +5971,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 403 */
@@ -5980,7 +5980,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -6106,7 +6106,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 401 */
@@ -6115,7 +6115,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -6147,7 +6147,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
             /** @description 404 */
@@ -6156,7 +6156,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -6188,7 +6188,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json;charset=UTF-8": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json;charset=UTF-8": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -6265,7 +6265,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -6297,7 +6297,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
@@ -6516,7 +6516,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
@@ -6605,7 +6605,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-me-wishes16218693"];
+                    "application/json": components["schemas"]["api-member-signup16218693"];
                 };
             };
         };
