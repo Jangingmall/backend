@@ -47,10 +47,12 @@ public class ProviderUserService implements OAuth2UserService<OAuth2UserRequest,
     public OAuthIdentity identity(String provider,Map<String,Object> attributes) {
         if ("kakao".equals(provider)) {
             var kakao=(Map<String,Object>)attributes.getOrDefault("kakao_account",Map.of());
-            if (Boolean.TRUE.equals(kakao.get("is_email_verified")) && Boolean.TRUE.equals(kakao.get("is_email_valid"))) {
-                return new OAuthIdentity(provider,Objects.toString(attributes.get("id"),""),Objects.toString(kakao.get("email"),""));
+            String id=Objects.toString(attributes.get("id"),"");
+            String email=Objects.toString(kakao.get("email"),"");
+            if (id.isBlank() || email.isBlank()) {
+                throw new OAuth2AuthenticationException(new OAuth2Error("missing_email"));
             }
-            throw new OAuth2AuthenticationException(new OAuth2Error("unverified_email"));
+            return new OAuthIdentity(provider,id,email);
         }
         if ("naver".equals(provider)) {
             var response=(Map<String,Object>)attributes.getOrDefault("response",Map.of());
