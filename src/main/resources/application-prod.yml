@@ -1,4 +1,12 @@
 spring:
+  mail:
+    port: ${MAIL_PORT:587}
+    properties:
+      "[mail.smtp.auth]": true
+      "[mail.smtp.starttls.enable]": true
+      "[mail.smtp.connectiontimeout]": 5000
+      "[mail.smtp.timeout]": 3000
+      "[mail.smtp.writetimeout]": 5000
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
