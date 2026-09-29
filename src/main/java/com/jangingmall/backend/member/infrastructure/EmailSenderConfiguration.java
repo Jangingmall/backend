@@ -18,7 +18,7 @@ public class EmailSenderConfiguration {
     private static final Logger log = LoggerFactory.getLogger(EmailSenderConfiguration.class);
 
     @Bean
-    @Profile("prod")
+    @Profile({"prod", "local-postgresql"})
     @ConditionalOnMissingBean(EmailSender.class)
     public EmailSender productionEmailSender(ObjectProvider<JavaMailSender> mailSenderProvider,
         @Value("${member.email-verification.from:${spring.mail.username:noreply@midam.store}}") String from) {
@@ -33,9 +33,14 @@ public class EmailSenderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(EmailSender.class)
-    @Profile({"local", "test", "local-postgresql"})
-    public EmailSender noOpEmailSender() {
-        return (toEmail, code) -> log.warn("[메일 미설정] 인증 코드 발송 생략");
+    @Profile({"local", "test"})
+    public EmailSender localEmailSender(ObjectProvider<JavaMailSender> mailSenderProvider,
+        @Value("${spring.mail.username:}") String from) {
+        JavaMailSender mailSender = mailSenderProvider.getIfAvailable();
+        if (mailSender != null && !from.isBlank()) {
+            return smtpEmailSender(mailSender, from);
+        }
+        return (toEmail, code) -> log.warn("[메일 미설정] 인증 코드: {} (수신: {})", code, toEmail);
     }
 
     private EmailSender smtpEmailSender(JavaMailSender mailSender, String from) {
@@ -46,6 +51,7 @@ public class EmailSenderConfiguration {
             message.setSubject("[미담] 이메일 인증 코드");
             message.setText("인증 코드: " + code + "\n\n코드는 5분간 유효합니다.");
             mailSender.send(message);
+            log.info("[메일 발송] 인증 코드 전송 완료 (수신: {})", toEmail);
         };
     }
 }
