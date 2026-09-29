@@ -1,0 +1,15 @@
+// AI 서버 헬스체크
+// 클러스터 내부에서만 도달 가능한 AI_BASE_URL을 검증한다.
+// 사용: ./gradlew aiHealthCheck -Pai.base-url=http://ai.internal:8001
+tasks.register('aiHealthCheck', Test) {
+    group = 'verification'
+    description = 'AI 서버 /ai/health 엔드포인트에 HTTP GET을 보내 200 OK와 status:ok를 검증합니다.'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'ai-health'
+    }
+    if (project.hasProperty('ai.base-url')) {
+        systemProperty 'ai.base-url', project.property('ai.base-url')
+    }
+}
