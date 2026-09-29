@@ -4,8 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "ai")
 public record AiProperties(
-    String chatBotUrl,
-    String contentUrl,
+    String baseUrl,
     int timeoutSeconds,
     String internalAuthToken
 ) {}

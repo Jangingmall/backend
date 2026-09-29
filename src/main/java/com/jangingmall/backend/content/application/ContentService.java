@@ -511,21 +511,41 @@ public class ContentService {
         return result;
     }
 
+    @Transactional(readOnly = true)
+    public int bulkSyncPublishedProductsToAi() {
+        List<Long> productIds = productRepository.findAllOnSaleIds();
+        log.info("AI 상품 일괄 동기화 시작 count={}", productIds.size());
+        int success = 0;
+        for (Long productId : productIds) {
+            try {
+                doSyncProductToAi(productId);
+                success++;
+            } catch (Exception e) {
+                log.error("AI 상품 일괄 동기화 실패 productId={} reason={}", productId, e.getMessage());
+            }
+        }
+        log.info("AI 상품 일괄 동기화 완료 success={} total={}", success, productIds.size());
+        return success;
+    }
+
     @Async
     @Transactional(readOnly = true)
     public void syncPublishedProductToAi(Long productId) {
         try {
-            Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new NotFoundException(ProductErrorMessage.NOT_FOUND.message()));
-            ArtisanProfile artisan = artisanProfileRepository.findById(product.getArtisanId())
-                .orElseThrow(() -> new NotFoundException("장인 프로필을 찾을 수 없습니다"));
-            Optional<Interview> interview = interviewRepository.findByProductId(productId);
-
-            AiProductSyncPayload payload = buildSyncPayload(product, artisan, interview);
-            aiContentClient.syncProduct(payload);
+            doSyncProductToAi(productId);
         } catch (Exception e) {
             log.error("AI 상품 동기화 트리거 실패 productId={} reason={}", productId, e.getMessage());
         }
+    }
+
+    private void doSyncProductToAi(Long productId) {
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new NotFoundException(ProductErrorMessage.NOT_FOUND.message()));
+        ArtisanProfile artisan = artisanProfileRepository.findById(product.getArtisanId())
+            .orElseThrow(() -> new NotFoundException("장인 프로필을 찾을 수 없습니다"));
+        Optional<Interview> interview = interviewRepository.findByProductId(productId);
+        AiProductSyncPayload payload = buildSyncPayload(product, artisan, interview);
+        aiContentClient.syncProduct(payload);
     }
 
     private AiProductSyncPayload buildSyncPayload(Product product, ArtisanProfile artisan, Optional<Interview> interview) {

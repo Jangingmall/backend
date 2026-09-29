@@ -344,4 +344,46 @@ class ContentServiceTest {
         assertThatThrownBy(() -> contentService.updateBlock(command))
             .isInstanceOf(NotFoundException.class);
     }
+
+    @Test
+    @DisplayName("AI 상품 일괄 동기화 — ON_SALE 상품 ID를 전부 조회해 각각 syncPublishedProductToAi를 호출한다")
+    void bulkSyncPublishedProductsToAi_callsSyncForEachOnSaleProduct() {
+        ArtisanProfile artisanProfile = org.mockito.Mockito.mock(ArtisanProfile.class);
+        when(artisanProfile.getId()).thenReturn(1L);
+        when(artisanProfile.getBusinessName()).thenReturn("도공방");
+        when(artisanProfile.getCertificationLevel()).thenReturn("일반");
+        when(artisanProfile.getRegion()).thenReturn("경기 이천");
+
+        when(productRepository.findAllOnSaleIds()).thenReturn(List.of(10L, 20L));
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(productRepository.findById(20L)).thenReturn(Optional.of(artisanProduct));
+        when(artisanProfileRepository.findById(any())).thenReturn(Optional.of(artisanProfile));
+        when(interviewRepository.findByProductId(any())).thenReturn(Optional.empty());
+
+        int synced = contentService.bulkSyncPublishedProductsToAi();
+
+        assertThat(synced).isEqualTo(2);
+        verify(aiContentClient, org.mockito.Mockito.times(2)).syncProduct(any());
+    }
+
+    @Test
+    @DisplayName("AI 상품 일괄 동기화 — 개별 상품 동기화 실패 시 나머지 상품은 계속 처리된다")
+    void bulkSyncPublishedProductsToAi_continuesOnPartialFailure() {
+        ArtisanProfile artisanProfile = org.mockito.Mockito.mock(ArtisanProfile.class);
+        when(artisanProfile.getId()).thenReturn(1L);
+        when(artisanProfile.getBusinessName()).thenReturn("도공방");
+        when(artisanProfile.getCertificationLevel()).thenReturn("일반");
+        when(artisanProfile.getRegion()).thenReturn("경기 이천");
+
+        when(productRepository.findAllOnSaleIds()).thenReturn(List.of(10L, 99L));
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(productRepository.findById(99L)).thenThrow(new NotFoundException("상품 없음"));
+        when(artisanProfileRepository.findById(any())).thenReturn(Optional.of(artisanProfile));
+        when(interviewRepository.findByProductId(any())).thenReturn(Optional.empty());
+
+        int synced = contentService.bulkSyncPublishedProductsToAi();
+
+        assertThat(synced).isEqualTo(1);
+        verify(aiContentClient, org.mockito.Mockito.times(1)).syncProduct(any());
+    }
 }
