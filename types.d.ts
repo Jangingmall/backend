@@ -3124,6 +3124,16 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
+        "api-products-productId-reviews-994178327": {
+            /** @description 첨부 이미지 ID 목록 (최대 5개) */
+            images?: (Record<string, never> | boolean | string | number)[] | null;
+            /** @description 주문 항목 ID */
+            orderItemId: number;
+            /** @description 평점 (1~5) */
+            rating: number;
+            /** @description 후기 내용 (최대 2000자) */
+            content: string;
+        };
         "api-member-me-reviews-576450061": {
             data?: {
                 /** @description 현재 페이지 */
@@ -3205,16 +3215,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-products-productId-reviews-994178327": {
-            /** @description 첨부 이미지 ID 목록 (최대 5개) */
-            images?: (Record<string, never> | boolean | string | number)[] | null;
-            /** @description 주문 항목 ID */
-            orderItemId: number;
-            /** @description 평점 (1~5) */
-            rating: number;
-            /** @description 후기 내용 (최대 2000자) */
-            content: string;
         };
         "api-member-me-orders-orderId-637732955": {
             data?: {
@@ -4207,6 +4207,24 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
+        "api-payments-returns-returnId-status-1115423141": {
+            data?: {
+                /** @description 신청 일시 */
+                requestedAt: string;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 반품 ID */
+                returnId: number;
+                /** @description 반품·교환 유형 */
+                type: string;
+                /** @description 처리 상태 */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
         "api-payments-confirm1321390106": {
             data?: {
                 /** @description 결제 금액 */
@@ -4224,24 +4242,6 @@ export interface components {
                 /** @description 승인 일시 */
                 approvedAt?: string | null;
                 /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-payments-returns-returnId-status-1115423141": {
-            data?: {
-                /** @description 신청 일시 */
-                requestedAt: string;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 반품 ID */
-                returnId: number;
-                /** @description 반품·교환 유형 */
-                type: string;
-                /** @description 처리 상태 */
                 status: string;
             };
             /** @description true — 항상 성공 */
