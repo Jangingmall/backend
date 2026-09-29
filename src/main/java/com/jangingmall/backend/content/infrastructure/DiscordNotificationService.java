@@ -26,7 +26,7 @@ public class DiscordNotificationService {
     private final String webhookUrl;
     private final boolean enabled;
 
-    DiscordNotificationService(
+    public DiscordNotificationService(
         @Value("${discord.notification.webhook-url:}") String webhookUrl
     ) {
         this.webhookUrl = webhookUrl;
@@ -39,12 +39,6 @@ public class DiscordNotificationService {
         );
         factory.setReadTimeout(Duration.ofSeconds(5));
         this.restClient = RestClient.builder().requestFactory(factory).build();
-    }
-
-    DiscordNotificationService(RestClient restClient, String webhookUrl) {
-        this.restClient = restClient;
-        this.webhookUrl = webhookUrl;
-        this.enabled = webhookUrl != null && !webhookUrl.isBlank();
     }
 
     public void notifyGenerationRequested(Long generationId, Long productId, String productName, int imageCount) {
