@@ -469,23 +469,18 @@ public class ContentService {
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
         content.approve(command.factCheckConfirmed(), command.photoMatchConfirmed(), command.displayApprovalBadge());
         ContentResponse.StatusChanged result = ContentResponse.StatusChanged.from(contentRepository.save(content));
-        triggerAiRenderIfDraftReady(command.productId());
+        publishRenderApprovalIfDraftReady(command.productId());
         return result;
     }
 
-    private void triggerAiRenderIfDraftReady(Long productId) {
-        if (generationRepository == null) {
+    private void publishRenderApprovalIfDraftReady(Long productId) {
+        if (generationRepository == null || eventPublisher == null) {
             return;
         }
         generationRepository.findFirstByProductIdAndStatusOrderByRequestedAtDesc(productId, GenerationStatus.DRAFT_READY)
-            .ifPresent(generation -> {
-                try {
-                    aiContentClient.approveRender(generation.getJobId(), generation.getId());
-                } catch (Exception e) {
-                    log.error("AI 렌더 승인 요청 실패 generationId={} jobId={} reason={}",
-                        generation.getId(), generation.getJobId(), e.getMessage());
-                }
-            });
+            .ifPresent(generation -> eventPublisher.publishEvent(
+                new AiRenderApprovalRequestedEvent(generation.getJobId(), generation.getId())
+            ));
     }
 
     @Transactional
