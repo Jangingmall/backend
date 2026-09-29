@@ -12,24 +12,23 @@
 set -euo pipefail
 
 BASE_URL="${BASE_URL:-https://api.midam.store}"
-PARAM_PREFIX="/midam/dast"
+PARAM_PREFIX="/staging/backend"
 
 echo "=== DAST 테스트 계정 생성 ==="
 echo "대상 서버: $BASE_URL"
 
-# Parameter Store에서 값 읽기
 fetch_param() {
     aws ssm get-parameter --name "$1" --with-decryption --query "Parameter.Value" --output text
 }
 
-DAST_USER_EMAIL=$(fetch_param "$PARAM_PREFIX/user/email")
-DAST_USER_PASSWORD=$(fetch_param "$PARAM_PREFIX/user/password")
+DAST_USER_EMAIL=$(fetch_param "$PARAM_PREFIX/dast-user-email")
+DAST_USER_PASSWORD=$(fetch_param "$PARAM_PREFIX/dast-user-password")
 
-DAST_ARTISAN_EMAIL=$(fetch_param "$PARAM_PREFIX/artisan/email")
-DAST_ARTISAN_PASSWORD=$(fetch_param "$PARAM_PREFIX/artisan/password")
+DAST_ARTISAN_EMAIL=$(fetch_param "$PARAM_PREFIX/dast-artisan-email")
+DAST_ARTISAN_PASSWORD=$(fetch_param "$PARAM_PREFIX/dast-artisan-password")
 
-DAST_ADMIN_EMAIL=$(fetch_param "$PARAM_PREFIX/admin/email")
-DAST_ADMIN_PASSWORD=$(fetch_param "$PARAM_PREFIX/admin/password")
+DAST_ADMIN_EMAIL=$(fetch_param "$PARAM_PREFIX/dast-admin-email")
+DAST_ADMIN_PASSWORD=$(fetch_param "$PARAM_PREFIX/dast-admin-password")
 
 signup() {
     local email="$1"
@@ -58,9 +57,12 @@ signup() {
 
     if [ "$http_code" = "201" ] || [ "$http_code" = "200" ]; then
         echo "✓ $role ($email) 생성 완료"
+    elif [ "$http_code" = "409" ]; then
+        echo "- $role ($email) 이미 존재 — 건너뜀"
     else
         echo "✗ $role ($email) 실패 (HTTP $http_code)"
         cat /tmp/dast_resp.json
+        exit 1
     fi
 }
 
@@ -69,11 +71,5 @@ signup "$DAST_ARTISAN_EMAIL" "$DAST_ARTISAN_PASSWORD" "DAST장인"   "ARTISAN" "
 signup "$DAST_ADMIN_EMAIL"   "$DAST_ADMIN_PASSWORD"   "DAST어드민" "USER"    "01000000003"
 
 echo ""
-echo "=== ADMIN 역할 부여 ==="
 echo "주의: ADMIN 계정($DAST_ADMIN_EMAIL)은 가입 후 DB에서 role을 'ADMIN'으로 수동 변경해야 합니다."
 echo "  UPDATE member SET role = 'ADMIN' WHERE email = '$DAST_ADMIN_EMAIL';"
-echo ""
-echo "완료. Parameter Store 경로:"
-echo "  $PARAM_PREFIX/user/email|password"
-echo "  $PARAM_PREFIX/artisan/email|password"
-echo "  $PARAM_PREFIX/admin/email|password"
