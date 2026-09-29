@@ -925,12 +925,12 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                         "careerYears": 15,
                                                         "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                         "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
                                                         "artisanId": 10,
-                                                        "category": "\ub3c4\uc608",
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
+                                                        "category": "\ub3c4\uc608"
                                                     }
                                                 ],
                                                 "empty": false,
@@ -1705,8 +1705,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "DONE",
-                                                "approvedAt": "2026-09-29T05:50:32.099597129Z",
-                                                "canceledAt": "2026-09-29T05:50:32.099597229Z"
+                                                "approvedAt": "2026-09-29T06:24:02.941801619Z",
+                                                "canceledAt": "2026-09-29T06:24:02.941801749Z"
                                             }
                                         }
                                     }
@@ -1929,7 +1929,7 @@
                                                 "orderNumber": "ORD-000001",
                                                 "totalAmount": 25000,
                                                 "status": "CREATED",
-                                                "createdAt": "2026-09-29T05:50:31.788560269Z",
+                                                "createdAt": "2026-09-29T06:24:02.626032249Z",
                                                 "items": [
                                                     
                                                 ]
@@ -2034,7 +2034,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-payments-returns-1115423141"
+                                    "$ref": "#/components/schemas/api-payments-returns-returnId-status-1115423141"
                                 },
                                 "examples": {
                                     "returns-request": {
@@ -2046,7 +2046,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "REQUESTED",
-                                                "requestedAt": "2026-09-29T05:50:31.572366123Z"
+                                                "requestedAt": "2026-09-29T06:24:02.429299741Z"
                                             }
                                         }
                                     }
@@ -2613,7 +2613,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-artisans-artisanId-1004667003"
+                                    "$ref": "#/components/schemas/api-member-artisans-me-1004667003"
                                 },
                                 "examples": {
                                     "artisan-mine": {
@@ -2621,12 +2621,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                 "careerYears": 15,
                                                 "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                 "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
                                                 "artisanId": 10,
-                                                "category": "\ub3c4\uc608",
-                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
+                                                "category": "\ub3c4\uc608"
                                             }
                                         }
                                     }
@@ -2677,7 +2677,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-artisans-artisanId-1004667003"
+                                    "$ref": "#/components/schemas/api-member-artisans-me-1004667003"
                                 },
                                 "examples": {
                                     "artisan-update": {
@@ -2685,12 +2685,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "businessName": "\uc0c8\uacf5\ubc29\uba85",
                                                 "careerYears": 15,
                                                 "introduction": "\uc0c8\ub85c\uc6b4 \uc18c\uac1c\uc785\ub2c8\ub2e4.",
                                                 "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
                                                 "artisanId": 10,
-                                                "category": "\ub3c4\uc608",
-                                                "businessName": "\uc0c8\uacf5\ubc29\uba85"
+                                                "category": "\ub3c4\uc608"
                                             }
                                         }
                                     }
@@ -2726,10 +2726,10 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "artisanId": 10,
                                                         "newProductCount": 2,
                                                         "notificationsEnabled": true,
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "artisanId": 10
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                                     }
                                                 ],
                                                 "empty": false,
@@ -2803,7 +2803,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-artisans-artisanId-1004667003"
+                                    "$ref": "#/components/schemas/api-member-artisans-me-1004667003"
                                 },
                                 "examples": {
                                     "artisan-detail": {
@@ -2811,12 +2811,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                 "careerYears": 15,
                                                 "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                 "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
                                                 "artisanId": 10,
-                                                "category": "\ub3c4\uc608",
-                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
+                                                "category": "\ub3c4\uc608"
                                             }
                                         }
                                     }
@@ -3159,28 +3159,28 @@
                                                                 "price": 85000,
                                                                 "quantity": 1,
                                                                 "artisan": {
-                                                                    "artisanId": 10,
-                                                                    "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
+                                                                    "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                                    "artisanId": 10
                                                                 },
                                                                 "options": {
-                                                                    "textInputs": [
+                                                                    "selectedOptions": [
                                                                         
                                                                     ],
-                                                                    "selectedOptions": [
+                                                                    "textInputs": [
                                                                         
                                                                     ]
                                                                 },
                                                                 "reviewId": 77,
                                                                 "thumbnail": {
-                                                                    "imageId": "01JIMAGE",
                                                                     "variants": [
                                                                         {
+                                                                            "width": 320,
                                                                             "url": "https://cdn.midam.store/products/320.webp",
                                                                             "height": 320,
-                                                                            "format": "webp",
-                                                                            "width": 320
+                                                                            "format": "webp"
                                                                         }
-                                                                    ]
+                                                                    ],
+                                                                    "imageId": "01JIMAGE"
                                                                 }
                                                             }
                                                         ],
@@ -3339,6 +3339,7 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "productName": "\uccad\uc790 \ub2e4\uc644",
                                                         "orderItemId": 10,
                                                         "content": "\uc815\ub9d0 \uc544\ub984\ub2e4\uc6b4 \uc791\ud488\uc785\ub2c8\ub2e4.",
                                                         "reviewId": 1,
@@ -3349,13 +3350,12 @@
                                                         ],
                                                         "writerNickname": "\ubbf8\ub2f4",
                                                         "thumbnail": {
-                                                            "imageId": "01JIMAGE",
                                                             "variants": [
                                                                 
-                                                            ]
+                                                            ],
+                                                            "imageId": "01JIMAGE"
                                                         },
-                                                        "rating": 4.5,
-                                                        "productName": "\uccad\uc790 \ub2e4\uc644"
+                                                        "rating": 4.5
                                                     }
                                                 ],
                                                 "empty": false,
@@ -3438,12 +3438,12 @@
                                             "data": {
                                                 "content": [
                                                     {
-                                                        "name": "\uccad\uc790 \ub2e4\uc644",
-                                                        "artisanId": 10,
-                                                        "productId": 1,
                                                         "status": "ON_SALE",
                                                         "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "price": 85000
+                                                        "price": 85000,
+                                                        "name": "\uccad\uc790 \ub2e4\uc644",
+                                                        "artisanId": 10,
+                                                        "productId": 1
                                                     }
                                                 ],
                                                 "empty": false,
@@ -4048,8 +4048,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "CANCELED",
-                                                "approvedAt": "2026-09-29T05:50:32.250617747Z",
-                                                "canceledAt": "2026-09-29T05:50:32.250617847Z"
+                                                "approvedAt": "2026-09-29T06:24:03.081884369Z",
+                                                "canceledAt": "2026-09-29T06:24:03.081884469Z"
                                             }
                                         }
                                     }
@@ -6136,28 +6136,28 @@
                                                         "price": 85000,
                                                         "quantity": 1,
                                                         "artisan": {
-                                                            "artisanId": 10,
-                                                            "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
+                                                            "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                            "artisanId": 10
                                                         },
                                                         "options": {
-                                                            "textInputs": [
+                                                            "selectedOptions": [
                                                                 
                                                             ],
-                                                            "selectedOptions": [
+                                                            "textInputs": [
                                                                 
                                                             ]
                                                         },
                                                         "reviewId": 77,
                                                         "thumbnail": {
-                                                            "imageId": "01JIMAGE",
                                                             "variants": [
                                                                 {
+                                                                    "width": 320,
                                                                     "url": "https://cdn.midam.store/products/320.webp",
                                                                     "height": 320,
-                                                                    "format": "webp",
-                                                                    "width": 320
+                                                                    "format": "webp"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "imageId": "01JIMAGE"
                                                         }
                                                     }
                                                 ],
@@ -6234,18 +6234,18 @@
                                                         "productName": "\uccad\ud654\ubc31\uc790 \ucc3b\uc794",
                                                         "purchasedAt": "2026-09-01T10:00:00",
                                                         "options": {
-                                                            "textInputs": [
+                                                            "selectedOptions": [
                                                                 
                                                             ],
-                                                            "selectedOptions": [
+                                                            "textInputs": [
                                                                 
                                                             ]
                                                         },
                                                         "thumbnail": {
-                                                            "imageId": "01JIMAGE",
                                                             "variants": [
                                                                 
-                                                            ]
+                                                            ],
+                                                            "imageId": "01JIMAGE"
                                                         }
                                                     }
                                                 ],
@@ -6458,7 +6458,7 @@
                                             "data": {
                                                 "orderId": 100,
                                                 "status": "CANCELED",
-                                                "canceledAt": "2026-09-29T05:50:31.932668091Z",
+                                                "canceledAt": "2026-09-29T06:24:02.780502119Z",
                                                 "purchaseConfirmedAt": null
                                             }
                                         }
@@ -6567,7 +6567,7 @@
                                                 "orderId": 100,
                                                 "status": "PURCHASE_CONFIRMED",
                                                 "canceledAt": null,
-                                                "purchaseConfirmedAt": "2026-09-29T05:50:31.932866950Z"
+                                                "purchaseConfirmedAt": "2026-09-29T06:24:02.780688905Z"
                                             }
                                         }
                                     }
@@ -6688,7 +6688,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-payments-returns-1115423141"
+                                    "$ref": "#/components/schemas/api-payments-returns-returnId-status-1115423141"
                                 },
                                 "examples": {
                                     "returns-approve": {
@@ -6700,7 +6700,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "APPROVED",
-                                                "requestedAt": "2026-09-29T05:50:32.139149794Z"
+                                                "requestedAt": "2026-09-29T06:24:02.982972265Z"
                                             }
                                         }
                                     }
@@ -11464,33 +11464,6 @@
                     }
                 }
             },
-            "api-content-products-productId-interview515382983": {
-                "type": "object",
-                "properties": {
-                    "process": {
-                        "type": "string",
-                        "description": "\uc81c\uc791 \uacfc\uc815 (\uc120\ud0dd)",
-                        "nullable": true
-                    },
-                    "materials": {
-                        "type": "string",
-                        "description": "\uc18c\uc7ac (\uc120\ud0dd) (\ucd5c\ub300 255\uc790)",
-                        "nullable": true,
-                        "maxLength": 255
-                    },
-                    "technique": {
-                        "type": "string",
-                        "description": "\uae30\ubc95 (\uc120\ud0dd) (\ucd5c\ub300 100\uc790)",
-                        "nullable": true,
-                        "maxLength": 100
-                    },
-                    "story": {
-                        "type": "string",
-                        "description": "\uc2a4\ud1a0\ub9ac (\uc120\ud0dd)",
-                        "nullable": true
-                    }
-                }
-            },
             "api-member-artisans-subscriptions1318461673": {
                 "required": [
                     "status",
@@ -11613,6 +11586,33 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
+            "api-content-products-productId-interview515382983": {
+                "type": "object",
+                "properties": {
+                    "process": {
+                        "type": "string",
+                        "description": "\uc81c\uc791 \uacfc\uc815 (\uc120\ud0dd)",
+                        "nullable": true
+                    },
+                    "materials": {
+                        "type": "string",
+                        "description": "\uc18c\uc7ac (\uc120\ud0dd) (\ucd5c\ub300 255\uc790)",
+                        "nullable": true,
+                        "maxLength": 255
+                    },
+                    "technique": {
+                        "type": "string",
+                        "description": "\uae30\ubc95 (\uc120\ud0dd) (\ucd5c\ub300 100\uc790)",
+                        "nullable": true,
+                        "maxLength": 100
+                    },
+                    "story": {
+                        "type": "string",
+                        "description": "\uc2a4\ud1a0\ub9ac (\uc120\ud0dd)",
+                        "nullable": true
                     }
                 }
             },
@@ -11871,7 +11871,7 @@
                     }
                 }
             },
-            "api-member-artisans-artisanId-1004667003": {
+            "api-member-artisans-me-1004667003": {
                 "required": [
                     "status",
                     "success"
@@ -13272,7 +13272,7 @@
                     }
                 }
             },
-            "api-payments-returns-1115423141": {
+            "api-payments-returns-returnId-status-1115423141": {
                 "required": [
                     "status",
                     "success"

@@ -3586,16 +3586,6 @@ export interface components {
             /** @description 취소 사유 (최대 200자) */
             reason: string;
         };
-        "api-content-products-productId-interview515382983": {
-            /** @description 제작 과정 (선택) */
-            process?: string | null;
-            /** @description 소재 (선택) (최대 255자) */
-            materials?: string | null;
-            /** @description 기법 (선택) (최대 100자) */
-            technique?: string | null;
-            /** @description 스토리 (선택) */
-            story?: string | null;
-        };
         "api-member-artisans-subscriptions1318461673": {
             data?: {
                 /** @description 현재 페이지(0-based) */
@@ -3641,6 +3631,16 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
+        };
+        "api-content-products-productId-interview515382983": {
+            /** @description 제작 과정 (선택) */
+            process?: string | null;
+            /** @description 소재 (선택) (최대 255자) */
+            materials?: string | null;
+            /** @description 기법 (선택) (최대 100자) */
+            technique?: string | null;
+            /** @description 스토리 (선택) */
+            story?: string | null;
         };
         "api-content-products-productId-contents-contentId-submit-1788085782": {
             data?: {
@@ -3722,7 +3722,7 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-member-artisans-artisanId-1004667003": {
+        "api-member-artisans-me-1004667003": {
             data?: {
                 /** @description 경력 연수 */
                 careerYears: number;
@@ -4207,7 +4207,7 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-payments-returns-1115423141": {
+        "api-payments-returns-returnId-status-1115423141": {
             data?: {
                 /** @description 신청 일시 */
                 requestedAt: string;
@@ -5480,7 +5480,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
                 };
             };
         };
@@ -5703,7 +5703,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -5727,7 +5727,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -5779,7 +5779,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -7275,7 +7275,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
                 };
             };
         };
