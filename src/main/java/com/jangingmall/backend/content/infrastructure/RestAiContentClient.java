@@ -76,8 +76,11 @@ class RestAiContentClient implements AiContentClient {
             .build();
         JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(httpClient);
         factory.setReadTimeout(timeout);
+        String generationBase = aiProperties.contentBaseUrl() != null
+            ? aiProperties.contentBaseUrl()
+            : aiProperties.baseUrl();
         this.generationClient = RestClient.builder()
-            .baseUrl(aiProperties.baseUrl())
+            .baseUrl(generationBase)
             .requestFactory(factory)
             .build();
         this.syncClient = RestClient.builder()
