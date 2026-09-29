@@ -38,8 +38,7 @@ DB_PASSWORD=$(fetch_param "$PARAM_PREFIX/db-password")
 signup() {
     local email="$1"
     local password="$2"
-    local name="$3"
-    local phone="$4"
+    local role="$3"
 
     http_code=$(curl -s -o /tmp/dast_resp.json -w "%{http_code}" \
         -X POST "$BASE_URL/api/member/signup" \
@@ -48,8 +47,8 @@ signup() {
             \"email\": \"$email\",
             \"password\": \"$password\",
             \"passwordConfirm\": \"$password\",
-            \"name\": \"$name\",
-            \"phone\": \"$phone\",
+            \"name\": \"DAST-$role\",
+            \"phone\": \"01000000000\",
             \"role\": \"USER\",
             \"agreements\": {
                 \"age14OrOlder\": true,
@@ -78,11 +77,11 @@ set_role() {
 }
 
 # USER
-result=$(signup "$DAST_USER_EMAIL" "$DAST_USER_PASSWORD" "DAST유저" "01000000001")
+result=$(signup "$DAST_USER_EMAIL" "$DAST_USER_PASSWORD" "USER")
 [ "$result" = "created" ] && echo "✓ USER ($DAST_USER_EMAIL) 생성 완료" || echo "- USER ($DAST_USER_EMAIL) 이미 존재 — 건너뜀"
 
 # ARTISAN
-result=$(signup "$DAST_ARTISAN_EMAIL" "$DAST_ARTISAN_PASSWORD" "DAST장인" "01000000002")
+result=$(signup "$DAST_ARTISAN_EMAIL" "$DAST_ARTISAN_PASSWORD" "ARTISAN")
 if [ "$result" = "created" ]; then
     set_role "$DAST_ARTISAN_EMAIL" "ARTISAN"
     echo "✓ ARTISAN ($DAST_ARTISAN_EMAIL) 생성 및 role 적용 완료"
@@ -91,7 +90,7 @@ else
 fi
 
 # ADMIN — USER로 가입 후 즉시 ADMIN으로 role 변경
-result=$(signup "$DAST_ADMIN_EMAIL" "$DAST_ADMIN_PASSWORD" "DAST어드민" "01000000003")
+result=$(signup "$DAST_ADMIN_EMAIL" "$DAST_ADMIN_PASSWORD" "ADMIN")
 if [ "$result" = "created" ]; then
     set_role "$DAST_ADMIN_EMAIL" "ADMIN"
     echo "✓ ADMIN ($DAST_ADMIN_EMAIL) 생성 및 role 적용 완료"
