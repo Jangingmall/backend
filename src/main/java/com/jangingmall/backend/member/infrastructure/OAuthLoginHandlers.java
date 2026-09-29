@@ -35,7 +35,11 @@ public class OAuthLoginHandlers implements AuthenticationSuccessHandler,Authenti
     public void onAuthenticationSuccess(HttpServletRequest request,HttpServletResponse response,Authentication authentication) throws IOException {
         try {
             var principal=((OAuth2AuthenticationToken)authentication).getPrincipal();
-            String ticket=oauth.createTicket(new OAuthIdentity(principal.getAttribute("provider"),principal.getAttribute("subject"),principal.getAttribute("email")));
+            String provider=principal.getAttribute("provider");
+            String subject=principal.getAttribute("subject");
+            String email=principal.getAttribute("email");
+            log.info("OAuth2 login success: provider={} subject={} email={}", provider, subject, email);
+            String ticket=oauth.createTicket(new OAuthIdentity(provider, subject, email));
             response.addHeader(HttpHeaders.SET_COOKIE,MemberCookies.ticket(ticket,Duration.ofMinutes(1),jwt).toString());
             finish(request,response,redirectUrl);
         } catch (RuntimeException exception) {
@@ -46,7 +50,12 @@ public class OAuthLoginHandlers implements AuthenticationSuccessHandler,Authenti
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,HttpServletResponse response,AuthenticationException exception) throws IOException {
-        log.warn("OAuth provider authentication failed: {}",exception.getClass().getSimpleName());
+        if (exception instanceof org.springframework.security.oauth2.core.OAuth2AuthenticationException oauthEx) {
+            log.warn("OAuth provider authentication failed: errorCode={} description={}",
+                oauthEx.getError().getErrorCode(), oauthEx.getError().getDescription());
+        } else {
+            log.warn("OAuth provider authentication failed: {}", exception.getMessage(), exception);
+        }
         finish(request,response,redirectUrl+"?error=OAUTH_LOGIN_FAILED");
     }
 
