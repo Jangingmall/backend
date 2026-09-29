@@ -102,5 +102,6 @@ AUTH-MTX-100,상품 후기,POST,/api/products/{productId}/reviews,product-review
 AUTH-MTX-101,상품,PATCH,/api/products/{productId}/status,product-change-status,ARTISAN,401 UNAUTHORIZED,403 FORBIDDEN,200 OK,200 OK
 AUTH-MTX-102,찜,POST,/api/products/{productId}/wish,product-wish,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
 AUTH-MTX-103,찜,DELETE,/api/products/{productId}/wish,product-unwish,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
-AUTH-MTX-104,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
-AUTH-MTX-105,이미지,POST,/internal/images/verify,image-internal-verify,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-104,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-105,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK
+AUTH-MTX-106,이미지,POST,/internal/images/verify,image-internal-verify,USER,401 UNAUTHORIZED,200 OK,200 OK,200 OK

@@ -41,14 +41,14 @@ CONTRACT-019,이미지,DELETE,/api/images/{imageId},image-delete,200,api-payment
 CONTRACT-020,장인,GET,/api/member/artisans,artisan-list,200,api-member-artisans-1902721574,schema_validation,AUTO
 CONTRACT-021,판매자 신청,POST,/api/member/artisans/applications,seller-application-apply,201,api-member-artisans-applications1698846120,schema_validation,AUTO
 CONTRACT-022,판매자 신청,GET,/api/member/artisans/applications/me,seller-application-mine,200,api-member-artisans-applications1698846120,schema_validation,AUTO
-CONTRACT-023,장인,GET,/api/member/artisans/me,artisan-mine,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
-CONTRACT-024,장인,PATCH,/api/member/artisans/me,artisan-update,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
+CONTRACT-023,장인,GET,/api/member/artisans/me,artisan-mine,200,api-member-artisans-me-1004667003,schema_validation,AUTO
+CONTRACT-024,장인,PATCH,/api/member/artisans/me,artisan-update,200,api-member-artisans-me-1004667003,schema_validation,AUTO
 CONTRACT-025,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,200,api-member-artisans-subscriptions1318461673,schema_validation,AUTO
 CONTRACT-025,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,401,api-content-products-productId-contents16218693,schema_validation,AUTO
 CONTRACT-026,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,401,api-content-products-productId-contents16218693,schema_validation,AUTO
 CONTRACT-026,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,400,api-content-products-productId-contents16218693,schema_validation,AUTO
 CONTRACT-026,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-027,장인,GET,/api/member/artisans/{artisanId},artisan-detail,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
+CONTRACT-027,장인,GET,/api/member/artisans/{artisanId},artisan-detail,200,api-member-artisans-me-1004667003,schema_validation,AUTO
 CONTRACT-028,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,404,api-content-products-productId-contents16218693,schema_validation,AUTO
 CONTRACT-028,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-028,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,401,api-content-products-productId-contents16218693,schema_validation,AUTO
@@ -150,6 +150,7 @@ CONTRACT-102,찜,POST,/api/products/{productId}/wish,product-wish,403,api-conten
 CONTRACT-102,찜,POST,/api/products/{productId}/wish,product-wish,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-102,찜,POST,/api/products/{productId}/wish,product-wish,401,api-content-products-productId-contents16218693,schema_validation,AUTO
 CONTRACT-103,찜,DELETE,/api/products/{productId}/wish,product-unwish,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-104,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,200,internal-generations-generationId-completion-2011757789,schema_validation,AUTO
-CONTRACT-105,이미지,POST,/internal/images/verify,image-internal-verify,404,api-content-products-productId-contents16218693,schema_validation,AUTO
-CONTRACT-105,이미지,POST,/internal/images/verify,image-internal-verify,200,internal-images-verify1955001579,schema_validation,AUTO
+CONTRACT-104,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,200,internal-ai-products-bulk-sync-458843892,schema_validation,AUTO
+CONTRACT-105,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,200,internal-generations-generationId-completion-2011757789,schema_validation,AUTO
+CONTRACT-106,이미지,POST,/internal/images/verify,image-internal-verify,404,api-content-products-productId-contents16218693,schema_validation,AUTO
+CONTRACT-106,이미지,POST,/internal/images/verify,image-internal-verify,200,internal-images-verify1955001579,schema_validation,AUTO

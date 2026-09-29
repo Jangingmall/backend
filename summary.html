@@ -33,7 +33,7 @@
 </nav>
 <div class="container">
   <h1>API 요약</h1>
-  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 105개 엔드포인트 · 2026-09-28 13:10 UTC</div>
+  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 106개 엔드포인트 · 2026-09-29 01:13 UTC</div>
   <input class="search" type="text" placeholder="경로 또는 설명으로 검색..." oninput="filterTable(this.value)"/>
   <table id="tbl">
     <thead><tr><th>Method</th><th>경로</th><th>설명</th><th>권한</th></tr></thead>
@@ -43,6 +43,8 @@
       <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/content/products/{productId}/generations/{generationId}</td><td>AI 생성 상태 조회 (PROCESSING)</td><td><span class="role">ARTISAN</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>AI 콜백 (내부)</strong></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/internal/generations/{generationId}/completion</td><td>AI 생성 완료 콜백</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>internal</strong></td></tr>
+      <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/internal/ai/products/bulk-sync</td><td>AI 상품 일괄 동기화</td><td><span class="role">USER</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>결제</strong></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments</td><td>결제 준비</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/confirm</td><td>결제 승인</td><td><span class="role">USER</span></td></tr>

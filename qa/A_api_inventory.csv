@@ -102,5 +102,6 @@ POST-product-review-write,상품 후기,POST,/api/products/{productId}/reviews,p
 PATCH-product-change-status,상품,PATCH,/api/products/{productId}/status,product-change-status,YES,ARTISAN,api-products-productId-status-2050486651,200,401,CORE,상품 상태 변경
 POST-product-wish,찜,POST,/api/products/{productId}/wish,product-wish,YES,USER,-,200,"403,401",NORMAL,찜 등록
 DELETE-product-unwish,찜,DELETE,/api/products/{productId}/wish,product-unwish,YES,USER,-,200,,NORMAL,찜 취소
+POST-ai-bulk-sync,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,YES,USER,-,200,,NORMAL,AI 상품 일괄 동기화
 POST-ai-callback-complete-multipart,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,YES,USER,-,200,,NORMAL,AI 생성 완료 콜백
 POST-image-internal-verify,이미지,POST,/internal/images/verify,image-internal-verify,YES,USER,internal-images-verify-211043086,200,404,NORMAL,이미지 검증 (내부)

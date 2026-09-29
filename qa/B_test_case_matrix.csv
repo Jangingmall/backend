@@ -742,6 +742,10 @@ WISH-016,찜,DELETE,/api/products/{productId}/wish,product-unwish,AUTH_NO_TOKEN,
 WISH-017,찜,DELETE,/api/products/{productId}/wish,product-unwish,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
 WISH-018,찜,DELETE,/api/products/{productId}/wish,product-unwish,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
 WISH-019,찜,DELETE,/api/products/{productId}/wish,product-unwish,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
+API-022,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
+API-023,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+API-024,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+API-025,internal,POST,/internal/ai/products/bulk-sync,ai-bulk-sync,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
 AICB-001,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
 AICB-002,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
 AICB-003,AI 콜백 (내부),POST,/internal/generations/{generationId}/completion,ai-callback-complete-multipart,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO

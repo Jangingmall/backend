@@ -2228,6 +2228,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/internal/ai/products/bulk-sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * AI 상품 일괄 동기화
+         * @description 🔑 **USER** 이상
+         *
+         *     ON_SALE 상태인 전체 상품을 AI 서버에 일괄 동기화합니다. AGENT 권한 필요.
+         */
+        post: operations["ai-bulk-sync"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/internal/generations/{generationId}/completion": {
         parameters: {
             query?: never;
@@ -3564,16 +3586,6 @@ export interface components {
             /** @description 취소 사유 (최대 200자) */
             reason: string;
         };
-        "api-content-products-productId-interview515382983": {
-            /** @description 제작 과정 (선택) */
-            process?: string | null;
-            /** @description 소재 (선택) (최대 255자) */
-            materials?: string | null;
-            /** @description 기법 (선택) (최대 100자) */
-            technique?: string | null;
-            /** @description 스토리 (선택) */
-            story?: string | null;
-        };
         "api-member-artisans-subscriptions1318461673": {
             data?: {
                 /** @description 현재 페이지(0-based) */
@@ -3619,6 +3631,16 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
+        };
+        "api-content-products-productId-interview515382983": {
+            /** @description 제작 과정 (선택) */
+            process?: string | null;
+            /** @description 소재 (선택) (최대 255자) */
+            materials?: string | null;
+            /** @description 기법 (선택) (최대 100자) */
+            technique?: string | null;
+            /** @description 스토리 (선택) */
+            story?: string | null;
         };
         "api-content-products-productId-contents-contentId-submit-1788085782": {
             data?: {
@@ -3700,7 +3722,7 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-member-artisans-artisanId-1004667003": {
+        "api-member-artisans-me-1004667003": {
             data?: {
                 /** @description 경력 연수 */
                 careerYears: number;
@@ -3819,6 +3841,18 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
+        };
+        "internal-ai-products-bulk-sync-458843892": {
+            data?: {
+                /** @description 동기화 성공한 상품 수 */
+                synced: number;
+            };
+            /** @description 성공 여부 */
+            success: boolean;
+            /** @description 응답 메시지 */
+            message?: string | null;
+            /** @description HTTP 상태 코드 */
+            status?: number | null;
         };
         "api-content-products-productId-contents16218693": {
             /** @description false — 항상 실패 */
@@ -5669,7 +5703,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -5693,7 +5727,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -5745,7 +5779,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -7572,6 +7606,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["api-content-products-productId-contents16218693"];
+                };
+            };
+        };
+    };
+    "ai-bulk-sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["internal-ai-products-bulk-sync-458843892"];
                 };
             };
         };
