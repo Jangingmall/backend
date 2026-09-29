@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.context.NullSecurityContextRepository;
 import org.springframework.security.oauth2.client.endpoint.RestClientAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.security.oauth2.client.http.OAuth2ErrorResponseErrorHandler;
-import org.springframework.security.web.context.NullSecurityContextRepository;
 import org.springframework.web.client.RestClient;
 
 @Configuration
@@ -26,11 +26,17 @@ public class MemberOAuthSecurity {
     }
 
     public void configure(HttpSecurity http) throws Exception {
-        http.securityContext(context->context.securityContextRepository(new NullSecurityContextRepository()))
-            .oauth2Login(oauth->oauth.userInfoEndpoint(info->info.userService(users))
-                .tokenEndpoint(token->token.accessTokenResponseClient(tokenClient()))
+        http.securityContext(context -> context.securityContextRepository(new NullSecurityContextRepository()))
+            .oauth2Login(oauth -> oauth
+                .authorizationEndpoint(auth -> auth
+                    .authorizationRequestRepository(new CookieOAuth2AuthorizationRequestRepository()))
+                .redirectionEndpoint(redir -> redir
+                    .baseUri("/login/oauth2/code/*"))
+                .userInfoEndpoint(info -> info.userService(users))
+                .tokenEndpoint(token -> token.accessTokenResponseClient(tokenClient()))
                 .authorizedClientRepository(new TransientOAuthClientRepository())
-                .successHandler(handlers).failureHandler(handlers));
+                .successHandler(handlers)
+                .failureHandler(handlers));
     }
 
     private RestClientAuthorizationCodeTokenResponseClient tokenClient() {
