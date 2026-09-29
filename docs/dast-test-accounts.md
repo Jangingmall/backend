@@ -12,6 +12,9 @@
 | `/staging/backend/dast-artisan-password` | ARTISAN 테스트 계정 비밀번호 | SecureString |
 | `/staging/backend/dast-admin-email` | ADMIN 테스트 계정 이메일 | String |
 | `/staging/backend/dast-admin-password` | ADMIN 테스트 계정 비밀번호 | SecureString |
+| `/staging/backend/db-cluster-arn` | RDS 클러스터 ARN (role UPDATE용) | String |
+| `/staging/backend/db-secret-arn` | RDS Secrets Manager ARN | String |
+| `/staging/backend/db-name` | DB 이름 | String |
 
 ## AWS CLI로 파라미터 등록 (최초 1회)
 
@@ -50,6 +53,22 @@ aws ssm put-parameter \
   --name "/staging/backend/dast-admin-password" \
   --value "<비밀번호>" \
   --type SecureString
+
+# RDS Data API (ADMIN role 자동 적용용)
+aws ssm put-parameter \
+  --name "/staging/backend/db-cluster-arn" \
+  --value "arn:aws:rds:ap-northeast-2:<account>:cluster:<cluster-id>" \
+  --type String
+
+aws ssm put-parameter \
+  --name "/staging/backend/db-secret-arn" \
+  --value "arn:aws:secretsmanager:ap-northeast-2:<account>:secret:<secret-id>" \
+  --type String
+
+aws ssm put-parameter \
+  --name "/staging/backend/db-name" \
+  --value "jangingmall" \
+  --type String
 ```
 
 비밀번호 규칙: 8자 이상, 영문+숫자+특수문자 조합
@@ -76,4 +95,6 @@ UPDATE member SET role = 'ADMIN' WHERE email = 'dast-admin@midam.store';
 
 - 비밀번호는 SecureString 타입으로 저장 (KMS 암호화)
 - `put-parameter`에 `--overwrite` 플래그를 사용하지 않아 1회만 저장 가능
+- ARTISAN/ADMIN role은 회원가입 API 제한으로 USER로 가입 후 RDS Data API로 즉시 변경
+- RDS Data API를 사용하려면 Aurora Serverless 또는 RDS Data API 활성화 필요
 - DAST 완료 후 테스트 계정 비활성화 또는 삭제 권장
