@@ -113,6 +113,16 @@ revalidate:
   webhook-secret: ${REVALIDATE_WEBHOOK_SECRET}
   timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}
 
+dast:
+  user:
+    email: ${DAST_USER_EMAIL:}
+    password: ${DAST_USER_PASSWORD:}
+  artisan:
+    email: ${DAST_ARTISAN_EMAIL:}
+    password: ${DAST_ARTISAN_PASSWORD:}
+  admin:
+    email: ${DAST_ADMIN_EMAIL:}
+
 logging:
   structured:
     format:
