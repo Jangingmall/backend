@@ -4,9 +4,12 @@ import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.Content;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
+import com.jangingmall.backend.content.domain.ContentGenerationRepository;
+import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
+import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.content.domain.InterviewRepository;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
@@ -23,6 +26,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.util.ReflectionTestUtils;
 import tools.jackson.databind.ObjectMapper;
 
@@ -33,6 +37,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -216,6 +222,62 @@ class ContentServiceTest {
 
         assertThatThrownBy(() -> contentService.approve(command))
             .isInstanceOf(BusinessRuleViolationException.class);
+    }
+
+    @Test
+    @DisplayName("콘텐츠 승인 — DRAFT_READY generation이 있으면 AiRenderApprovalRequestedEvent를 발행한다")
+    void approvePublishesRenderApprovalEvent() {
+        sampleContent.submitForReview();
+        ContentGenerationRepository generationRepository = mock(ContentGenerationRepository.class);
+        ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
+
+        ContentService serviceWithGeneration = new ContentService(
+            contentRepository, historyRepository, productRepository, aiContentClient,
+            artisanProfileRepository, interviewRepository, null, null, null,
+            new ObjectMapper(), generationRepository, eventPublisher
+        );
+
+        ContentGeneration draftReady = mock(ContentGeneration.class);
+        when(draftReady.getJobId()).thenReturn("job-xyz");
+        when(draftReady.getId()).thenReturn(42L);
+
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+        when(generationRepository.findFirstByProductIdAndStatusOrderByRequestedAtDesc(10L, GenerationStatus.DRAFT_READY))
+            .thenReturn(Optional.of(draftReady));
+
+        serviceWithGeneration.approve(new ContentCommand.Approve(10L, 1L, 1L, true, true, false));
+
+        ArgumentCaptor<AiRenderApprovalRequestedEvent> captor =
+            ArgumentCaptor.forClass(AiRenderApprovalRequestedEvent.class);
+        verify(eventPublisher).publishEvent(captor.capture());
+        assertThat(captor.getValue().jobId()).isEqualTo("job-xyz");
+        assertThat(captor.getValue().generationId()).isEqualTo(42L);
+    }
+
+    @Test
+    @DisplayName("콘텐츠 승인 — DRAFT_READY generation이 없으면 이벤트를 발행하지 않는다")
+    void approveDoesNotPublishEventWhenNoDraftReady() {
+        sampleContent.submitForReview();
+        ContentGenerationRepository generationRepository = mock(ContentGenerationRepository.class);
+        ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
+
+        ContentService serviceWithGeneration = new ContentService(
+            contentRepository, historyRepository, productRepository, aiContentClient,
+            artisanProfileRepository, interviewRepository, null, null, null,
+            new ObjectMapper(), generationRepository, eventPublisher
+        );
+
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+        when(generationRepository.findFirstByProductIdAndStatusOrderByRequestedAtDesc(10L, GenerationStatus.DRAFT_READY))
+            .thenReturn(Optional.empty());
+
+        serviceWithGeneration.approve(new ContentCommand.Approve(10L, 1L, 1L, true, true, false));
+
+        verify(eventPublisher, never()).publishEvent(any(AiRenderApprovalRequestedEvent.class));
     }
 
     @Test

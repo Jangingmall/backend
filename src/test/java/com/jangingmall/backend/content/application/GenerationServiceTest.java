@@ -4,6 +4,7 @@ import tools.jackson.databind.ObjectMapper;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
+import com.jangingmall.backend.global.exception.ExternalServiceException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.image.application.ImageStorage;
@@ -19,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mock.web.MockMultipartFile;
+import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -180,6 +182,47 @@ class GenerationServiceTest {
         assertThat(ack.status()).isEqualTo("SAVED");
         assertThat(ack.generationId()).isEqualTo("1");
         verify(contentService).storeReactDocument(any());
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — 상세페이지 이미지 업로드 실패 시 ExternalServiceException이 발생한다")
+    void completeWithImagesDetailUploadFails() throws Exception {
+        ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
+        when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
+
+        MultipartFile detailImage = Mockito.mock(MultipartFile.class);
+        when(detailImage.isEmpty()).thenReturn(false);
+        when(detailImage.getContentType()).thenReturn("image/jpeg");
+        when(detailImage.getBytes()).thenThrow(new java.io.IOException("S3 연결 실패"));
+
+        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
+
+        assertThatThrownBy(() -> generationService.completeWithImages(command, detailImage, Map.of(), Map.of(), "10"))
+            .isInstanceOf(ExternalServiceException.class);
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — 섹션 파일 업로드 실패 시 ExternalServiceException이 발생한다")
+    void completeWithImagesSectionUploadFails() throws Exception {
+        ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
+        when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
+
+        MultipartFile sectionFile = Mockito.mock(MultipartFile.class);
+        when(sectionFile.getContentType()).thenReturn("image/jpeg");
+        when(sectionFile.getOriginalFilename()).thenReturn("section-1.jpg");
+        when(sectionFile.getBytes()).thenThrow(new java.io.IOException("S3 연결 실패"));
+
+        MultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", "image/jpeg", new byte[]{1});
+
+        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
+
+        assertThatThrownBy(() -> generationService.completeWithImages(
+                command, detailImage, Map.of("detail_page_section_1", sectionFile), Map.of(), "10"))
+            .isInstanceOf(ExternalServiceException.class);
     }
 
     @Test
