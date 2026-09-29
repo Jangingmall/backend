@@ -6,11 +6,13 @@ import com.jangingmall.backend.member.domain.Member;
 import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Locale;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -23,6 +25,9 @@ public class MemberService {
         validate(command);
 
         String normalizedEmail = command.email().trim().toLowerCase(Locale.ROOT);
+        log.info("[회원가입] email={} password={}",
+            maskEmail(normalizedEmail),
+            maskPassword(command.password()));
 
         if (memberRepository.existsByEmail(normalizedEmail)) {
             throw new DomainException(ErrorCode.CONFLICT);
@@ -42,6 +47,17 @@ public class MemberService {
 
         Member savedMember = memberRepository.save(member);
         return MemberSignupResult.from(savedMember);
+    }
+
+    private static String maskEmail(String email) {
+        int at = email.indexOf('@');
+        if (at <= 1) return "***";
+        return email.charAt(0) + "***" + email.substring(at);
+    }
+
+    private static String maskPassword(String password) {
+        if (password.length() <= 1) return "***";
+        return password.charAt(0) + "***";
     }
 
     private void validate(MemberSignupCommand command) {

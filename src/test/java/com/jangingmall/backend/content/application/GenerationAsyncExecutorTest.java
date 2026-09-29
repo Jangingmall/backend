@@ -5,6 +5,7 @@ import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
+import com.jangingmall.backend.content.infrastructure.DiscordNotificationService;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,7 +48,8 @@ class GenerationAsyncExecutorTest {
 
     @BeforeEach
     void setUp() {
-        executor = new GenerationAsyncExecutor(generationRepository, aiContentClient, new SimpleMeterRegistry());
+        executor = new GenerationAsyncExecutor(generationRepository, aiContentClient,
+            mock(DiscordNotificationService.class), new SimpleMeterRegistry());
     }
 
     private GenerationCommand.Request sampleCommand() {

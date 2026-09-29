@@ -1,0 +1,16 @@
+### 이메일 인증코드 발송
+POST http://localhost:8080/api/member/email/verification-code
+Content-Type: application/json
+
+{
+  "email": "kgh22522252@gmail.com"
+}
+
+### 이메일 인증코드 검증
+POST http://localhost:8080/api/member/email/verify
+Content-Type: application/json
+
+{
+  "email": "kgh22522252@gmail.com",
+  "code": "123456"
+}

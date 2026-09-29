@@ -58,6 +58,10 @@ delivery:
     api-key: ${SWEET_TRACKER_API_KEY:}
     base-url: ${SWEET_TRACKER_API_BASE_URL:https://info.sweettracker.co.kr}
 
+discord:
+  notification:
+    webhook-url: ${DISCORD_NOTIFICATION_WEBHOOK:}
+
 image:
   base-url: ${IMAGE_BASE_URL:}
   storage:
