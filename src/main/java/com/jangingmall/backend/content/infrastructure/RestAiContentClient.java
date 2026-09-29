@@ -10,6 +10,7 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
@@ -30,6 +31,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@ConditionalOnProperty(name = "ai.base-url", matchIfMissing = false)
 class RestAiContentClient implements AiContentClient {
 
     private static final String DETAIL_PAGE_JOBS_PATH = "/internal/v1/ai/detail-page-jobs";
@@ -75,11 +77,11 @@ class RestAiContentClient implements AiContentClient {
         JdkClientHttpRequestFactory factory = new JdkClientHttpRequestFactory(httpClient);
         factory.setReadTimeout(timeout);
         this.generationClient = RestClient.builder()
-            .baseUrl(aiProperties.contentUrl())
+            .baseUrl(aiProperties.baseUrl())
             .requestFactory(factory)
             .build();
         this.syncClient = RestClient.builder()
-            .baseUrl(aiProperties.chatBotUrl())
+            .baseUrl(aiProperties.baseUrl())
             .requestFactory(factory)
             .build();
         this.aiInternalAuthToken = aiProperties.internalAuthToken();

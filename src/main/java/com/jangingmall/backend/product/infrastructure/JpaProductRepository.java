@@ -10,6 +10,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -71,6 +72,14 @@ class JpaProductRepository implements ProductRepository {
         query.setMaxResults(pageable.getPageSize());
 
         return new PageImpl<>(query.getResultList(), pageable, countQuery.getSingleResult());
+    }
+
+    @Override
+    public List<Long> findAllOnSaleIds() {
+        return entityManager.createQuery(
+            "SELECT p.id FROM Product p WHERE p.status IN :statuses", Long.class)
+            .setParameter("statuses", ON_SALE_STATUSES)
+            .getResultList();
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.jangingmall.backend.chatbot.domain.ChatMessage;
 import lombok.extern.slf4j.Slf4j;
 import com.jangingmall.backend.global.config.AiProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 @Slf4j
 @Component
+@ConditionalOnProperty(name = "ai.base-url", matchIfMissing = false)
 class RestAiChatClient implements AiChatClient {
 
     private static final int MAX_HISTORY_TURNS = 6;
@@ -34,7 +36,7 @@ class RestAiChatClient implements AiChatClient {
         );
         factory.setReadTimeout(timeout);
         this.restClient = RestClient.builder()
-            .baseUrl(aiProperties.chatBotUrl())
+            .baseUrl(aiProperties.baseUrl())
             .requestFactory(factory)
             .build();
     }
