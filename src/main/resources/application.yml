@@ -157,6 +157,7 @@ image:
 
 ai:
   base-url: ${AI_BASE_URL:http://localhost:8001}
+  content-base-url: ${AI_CONTENT_BASE_URL:}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
   internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN:}
   generation:
@@ -254,6 +255,7 @@ image:
 
 ai:
   base-url: ${AI_BASE_URL:http://localhost:8001}
+  content-base-url: ${AI_CONTENT_BASE_URL:}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
   internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN:}
   generation:
@@ -350,6 +352,7 @@ image:
 
 ai:
   base-url: ${AI_BASE_URL:http://localhost:8001}
+  content-base-url: ${AI_CONTENT_BASE_URL:}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
   internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN:}
   generation:
@@ -449,6 +452,7 @@ image:
 
 ai:
   base-url: ${AI_BASE_URL}
+  content-base-url: ${AI_CONTENT_BASE_URL}
   timeout-seconds: 300
   internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN}
   generation:
