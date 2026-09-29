@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # DAST 테스트 계정 생성 스크립트
-# AWS Parameter Store에서 값을 읽어 회원가입 API를 호출한다.
+# AWS Parameter Store에서 값을 읽어 회원가입 API를 호출하고
+# ARTISAN/ADMIN role을 psql로 즉시 적용한다.
 #
 # 사전 조건:
 #   - aws cli 설치 및 인증 완료 (aws sts get-caller-identity)
-#   - curl 설치
-#   - RDS Data API 활성화된 Aurora 클러스터 또는 DB_CLUSTER_ARN/DB_SECRET_ARN 설정
+#   - curl, psql 설치
 #
 # 사용법:
 #   BASE_URL=https://api.midam.store ./scripts/init-dast-accounts.sh
@@ -31,9 +31,9 @@ DAST_ARTISAN_PASSWORD=$(fetch_param "$PARAM_PREFIX/dast-artisan-password")
 DAST_ADMIN_EMAIL=$(fetch_param "$PARAM_PREFIX/dast-admin-email")
 DAST_ADMIN_PASSWORD=$(fetch_param "$PARAM_PREFIX/dast-admin-password")
 
-DB_CLUSTER_ARN=$(fetch_param "$PARAM_PREFIX/db-cluster-arn")
-DB_SECRET_ARN=$(fetch_param "$PARAM_PREFIX/db-secret-arn")
-DB_NAME=$(fetch_param "$PARAM_PREFIX/db-name")
+DB_URL=$(fetch_param "$PARAM_PREFIX/db-url")
+DB_USERNAME=$(fetch_param "$PARAM_PREFIX/db-username")
+DB_PASSWORD=$(fetch_param "$PARAM_PREFIX/db-password")
 
 signup() {
     local email="$1"
@@ -73,13 +73,8 @@ signup() {
 set_role() {
     local email="$1"
     local role="$2"
-    aws rds-data execute-statement \
-        --resource-arn "$DB_CLUSTER_ARN" \
-        --secret-arn "$DB_SECRET_ARN" \
-        --database "$DB_NAME" \
-        --sql "UPDATE member SET role = '$role' WHERE email = '$email'" \
-        --query "numberOfRecordsUpdated" \
-        --output text
+    PGPASSWORD="$DB_PASSWORD" psql "$DB_URL" -U "$DB_USERNAME" \
+        -c "UPDATE member SET role = '$role' WHERE email = '$email';" -q
 }
 
 # USER

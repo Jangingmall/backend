@@ -12,9 +12,9 @@
 | `/staging/backend/dast-artisan-password` | ARTISAN 테스트 계정 비밀번호 | SecureString |
 | `/staging/backend/dast-admin-email` | ADMIN 테스트 계정 이메일 | String |
 | `/staging/backend/dast-admin-password` | ADMIN 테스트 계정 비밀번호 | SecureString |
-| `/staging/backend/db-cluster-arn` | RDS 클러스터 ARN (role UPDATE용) | String |
-| `/staging/backend/db-secret-arn` | RDS Secrets Manager ARN | String |
-| `/staging/backend/db-name` | DB 이름 | String |
+| `/staging/backend/db-url` | DB 접속 URL (기존) | SecureString |
+| `/staging/backend/db-username` | DB 사용자명 (기존) | SecureString |
+| `/staging/backend/db-password` | DB 비밀번호 (기존) | SecureString |
 
 ## AWS CLI로 파라미터 등록 (최초 1회)
 
@@ -22,53 +22,16 @@
 
 ```bash
 # USER
-aws ssm put-parameter \
-  --name "/staging/backend/dast-user-email" \
-  --value "dast-user@midam.store" \
-  --type String
-
-aws ssm put-parameter \
-  --name "/staging/backend/dast-user-password" \
-  --value "<비밀번호>" \
-  --type SecureString
+aws ssm put-parameter --name "/staging/backend/dast-user-email"    --value "dast-user@midam.store"    --type String
+aws ssm put-parameter --name "/staging/backend/dast-user-password" --value "<비밀번호>"                --type SecureString
 
 # ARTISAN
-aws ssm put-parameter \
-  --name "/staging/backend/dast-artisan-email" \
-  --value "dast-artisan@midam.store" \
-  --type String
-
-aws ssm put-parameter \
-  --name "/staging/backend/dast-artisan-password" \
-  --value "<비밀번호>" \
-  --type SecureString
+aws ssm put-parameter --name "/staging/backend/dast-artisan-email"    --value "dast-artisan@midam.store"    --type String
+aws ssm put-parameter --name "/staging/backend/dast-artisan-password" --value "<비밀번호>"                   --type SecureString
 
 # ADMIN
-aws ssm put-parameter \
-  --name "/staging/backend/dast-admin-email" \
-  --value "dast-admin@midam.store" \
-  --type String
-
-aws ssm put-parameter \
-  --name "/staging/backend/dast-admin-password" \
-  --value "<비밀번호>" \
-  --type SecureString
-
-# RDS Data API (ADMIN role 자동 적용용)
-aws ssm put-parameter \
-  --name "/staging/backend/db-cluster-arn" \
-  --value "arn:aws:rds:ap-northeast-2:<account>:cluster:<cluster-id>" \
-  --type String
-
-aws ssm put-parameter \
-  --name "/staging/backend/db-secret-arn" \
-  --value "arn:aws:secretsmanager:ap-northeast-2:<account>:secret:<secret-id>" \
-  --type String
-
-aws ssm put-parameter \
-  --name "/staging/backend/db-name" \
-  --value "jangingmall" \
-  --type String
+aws ssm put-parameter --name "/staging/backend/dast-admin-email"    --value "dast-admin@midam.store"    --type String
+aws ssm put-parameter --name "/staging/backend/dast-admin-password" --value "<비밀번호>"                 --type SecureString
 ```
 
 비밀번호 규칙: 8자 이상, 영문+숫자+특수문자 조합
@@ -76,12 +39,15 @@ aws ssm put-parameter \
 ## 계정 생성 절차
 
 ```bash
-# 1. prod 서버 대상으로 실행 (이미 존재하는 계정은 건너뜀)
+# db-url/db-username/db-password는 기존 Parameter Store 값을 그대로 사용
 BASE_URL=https://api.midam.store ./scripts/init-dast-accounts.sh
-
-# 2. ADMIN 계정 role 수동 변경 (RDS 접속 후)
-UPDATE member SET role = 'ADMIN' WHERE email = 'dast-admin@midam.store';
 ```
+
+스크립트가 자동으로 처리:
+1. USER/ARTISAN/ADMIN 모두 `role: USER`로 회원가입 API 호출
+2. ARTISAN → psql로 role `ARTISAN` UPDATE
+3. ADMIN → psql로 role `ADMIN` UPDATE
+4. 이미 존재하는 계정은 건너뜀
 
 ## 계정 역할 정리
 
@@ -91,10 +57,19 @@ UPDATE member SET role = 'ADMIN' WHERE email = 'dast-admin@midam.store';
 | `dast-artisan@midam.store` | ARTISAN | 장인 전용 API 테스트 |
 | `dast-admin@midam.store` | ADMIN | 관리자 API 테스트 |
 
+## 적재 검증
+
+```bash
+DAST_BASE_URL=https://api.midam.store \
+DAST_USER_EMAIL=dast-user@midam.store     DAST_USER_PASSWORD=<pw> \
+DAST_ARTISAN_EMAIL=dast-artisan@midam.store DAST_ARTISAN_PASSWORD=<pw> \
+DAST_ADMIN_EMAIL=dast-admin@midam.store   DAST_ADMIN_PASSWORD=<pw> \
+./gradlew dastInfraTest
+```
+
 ## 주의사항
 
 - 비밀번호는 SecureString 타입으로 저장 (KMS 암호화)
-- `put-parameter`에 `--overwrite` 플래그를 사용하지 않아 1회만 저장 가능
-- ARTISAN/ADMIN role은 회원가입 API 제한으로 USER로 가입 후 RDS Data API로 즉시 변경
-- RDS Data API를 사용하려면 Aurora Serverless 또는 RDS Data API 활성화 필요
+- `--overwrite` 없이 등록해 1회만 저장 가능
+- 회원가입 API가 USER 외 role 직접 지정을 막으므로, ARTISAN/ADMIN role은 psql로 즉시 변경
 - DAST 완료 후 테스트 계정 비활성화 또는 삭제 권장
