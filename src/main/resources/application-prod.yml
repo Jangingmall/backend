@@ -120,6 +120,8 @@ revalidate:
 dast:
   # DAST 계정 로그인 잠금 면제 만료일(포함). 이 날짜 이후 자동 해제, 비우면 면제 없음
   lock-exempt-until: ${DAST_LOCK_EXEMPT_UNTIL:2026-10-05}
+  # DAST IP 목록(공백 구분, SSM → DART_IP_LIST 환경변수 주입). 위 만료일까지 로그인 잠금 면제
+  ip-list: ${DART_IP_LIST:}
   user:
     email: ${DAST_USER_EMAIL:}
     password: ${DAST_USER_PASSWORD:}

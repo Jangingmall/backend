@@ -308,7 +308,7 @@ AI 에이전트가 작업 중인 범위를 등록한다.
   - `src/test/java/com/jangingmall/backend/member/application/MemberAuthenticationServiceTest.java`
   - `src/test/java/com/jangingmall/backend/member/presentation/MemberControllerTest.java`
   - `src/test/java/com/jangingmall/backend/global/exception/GlobalExceptionHandlerTest.java` (신규)
-- 작업 요약: 로그인 잠금 응답 403→429, 임계치/잠금시간 설정화, 예외 로그에 method/URI/status 추가, DAST 계정 잠금 기한 면제(~2026-10-05)
+- 작업 요약: 로그인 잠금 응답 403→429, 임계치/잠금시간 설정화, 예외 로그에 method/URI/status 추가, DAST 계정·IP(DART_IP_LIST) 잠금 기한 면제(~2026-10-05)
 - 시작일: 2026-09-30
 
 ## 완료된 작업 (참고용)
