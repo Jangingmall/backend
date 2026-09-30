@@ -43,7 +43,7 @@ public class GenerationAsyncExecutor {
             .description("AI job 제출 재시도 횟수")
             .register(meterRegistry);
         this.failedCounter = Counter.builder("ai_generation_failed")
-            .description("AI job 제출 최종 실패 횟수")
+            .description("AI job 제출이 실패해 대기(재제출) 상태로 전환된 횟수")
             .register(meterRegistry);
     }
 
@@ -86,9 +86,10 @@ public class GenerationAsyncExecutor {
                 discordNotificationService.notifyGenerationSucceeded(generationId, command.productId(), accepted.jobId());
                 return;
             } catch (AiImageFetchException e) {
-                // 이미지 입력 오류는 재시도해도 같은 결과라 즉시 실패 처리한다
+                // 이미지 오류는 즉시 재시도해도 같은 결과일 가능성이 커서 빠른 재시도는 건너뛴다.
+                // 실패 처리는 하지 않고 스케줄러의 주기적 재제출에 맡긴다(이미지가 나중에 준비될 수 있음).
                 lastException = e;
-                log.warn("AI job 제출 중단(이미지 입력 오류) generationId={} reason={}", generationId, e.getMessage());
+                log.warn("AI job 제출 이미지 오류 generationId={} reason={}", generationId, e.getMessage());
                 break;
             } catch (Exception e) {
                 lastException = e;
@@ -96,12 +97,11 @@ public class GenerationAsyncExecutor {
             }
         }
 
+        // 오류 종류(입력 오류 4xx·이미지 오류 포함)와 무관하게 데드라인 전에는 실패가 아니다.
+        // PROCESSING을 유지하고, GenerationDeadlineScheduler가 데드라인까지 주기적으로 재제출한다.
         failedCounter.increment();
-        generation.fail();
-        generationRepository.save(generation);
-        String failReason = lastException != null ? lastException.getMessage() : "unknown";
-        log.error("AI job 제출 최종 실패 generationId={} reason={}", generationId, failReason);
-        discordNotificationService.notifyGenerationFailed(generationId, command.productId(), failReason);
+        String reason = lastException != null ? lastException.getMessage() : "unknown";
+        log.warn("AI job 제출 대기 전환 — 스케줄러가 데드라인까지 재제출합니다 generationId={} reason={}", generationId, reason);
     }
 
     private void sleepWithBackoff(int attempt) {
