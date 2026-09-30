@@ -7,7 +7,6 @@ import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.image.domain.ImageUpload;
 import com.jangingmall.backend.image.domain.ImageUploadRepository;
 import com.jangingmall.backend.member.application.MemberAccess;
-import com.jangingmall.backend.member.domain.MemberRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.Instant;
@@ -45,7 +44,7 @@ public class ImageService {
 
     @Transactional
     public PresignedUpload createPresignedUpload(Long memberId, CreatePresignedUpload command) {
-        requireUploadPermission(memberId, command);
+        memberAccess.active(memberId);
         validate(command);
         String imageId = ulids.next();
         Duration validFor = Duration.ofSeconds(properties.getPresignExpirySeconds());
@@ -278,20 +277,6 @@ public class ImageService {
             uploads.delete(upload);
         }
         return expired.size();
-    }
-
-    /**
-     * 업로드 용도별 권한 확인. 장인 프로필·콘텐츠 이미지는 ARTISAN만 올릴 수 있고,
-     * 상품(리뷰 포함)·반품 이미지는 활성 회원이면 올릴 수 있다.
-     * command 검증 전에 호출되므로 null 입력은 validate()가 처리하도록 활성 회원 확인만 한다.
-     */
-    private void requireUploadPermission(Long memberId, CreatePresignedUpload command) {
-        ImagePurpose purpose = command == null ? null : command.purpose();
-        if (purpose == ImagePurpose.ARTISAN || purpose == ImagePurpose.CONTENT) {
-            memberAccess.requireRole(memberId, MemberRole.ARTISAN);
-            return;
-        }
-        memberAccess.active(memberId);
     }
 
     private void validate(CreatePresignedUpload command) {
