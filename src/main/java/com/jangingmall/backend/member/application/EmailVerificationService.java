@@ -18,7 +18,6 @@ public class EmailVerificationService {
 
     private final EmailVerificationStore verificationStore;
     private final EmailSenderService emailSenderService;
-    private final MemberRepository memberRepository;
 
     public void sendCode(String email) {
         String normalized = email.trim().toLowerCase(Locale.ROOT);
