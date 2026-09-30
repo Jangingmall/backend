@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -74,37 +75,35 @@ class GenerationAsyncExecutorTest {
     }
 
     @Test
-    @DisplayName("AI job 제출 실패 시 최대 2회 재시도 후 FAILED로 전환한다")
-    void onGenerationRequestedRetryThenFail() {
+    @DisplayName("AI job 제출이 계속 실패해도 FAILED로 바꾸지 않고 PROCESSING을 유지한다(스케줄러가 데드라인까지 재제출)")
+    void onGenerationRequestedKeepsProcessingAfterRetries() {
         ContentGeneration generation = ContentGeneration.create(10L, "img1", "청자 다완", "손으로 빚음", "물 닦기");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
-        when(generationRepository.save(any())).thenReturn(generation);
         doThrow(new RuntimeException("AI 서버 오류")).when(aiContentClient)
             .submitJob(any(), any(), any(), any(), any(), any());
 
         executor.onGenerationRequested(new GenerationRequestedEvent(1L, sampleCommand()));
 
         verify(aiContentClient, times(3)).submitJob(any(), any(), any(), any(), any(), any());
-        verify(generationRepository).save(generationCaptor.capture());
-        assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+        verify(generationRepository, never()).save(any());
+        assertThat(generation.getStatus()).isEqualTo(GenerationStatus.PROCESSING);
     }
 
     @Test
-    @DisplayName("이미지 다운로드 실패는 재시도 없이 즉시 FAILED로 전환한다")
-    void onGenerationRequestedImageFetchFailureFailsWithoutRetry() {
+    @DisplayName("이미지 다운로드 실패는 빠른 재시도 없이 중단하되 FAILED가 아니라 PROCESSING을 유지한다")
+    void onGenerationRequestedImageFetchFailureKeepsProcessing() {
         ContentGeneration generation = ContentGeneration.create(10L, "img1", "청자 다완", "손으로 빚음", "물 닦기");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
-        when(generationRepository.save(any())).thenReturn(generation);
         doThrow(new AiImageFetchException("이미지를 내려받지 못했습니다")).when(aiContentClient)
             .submitJob(any(), any(), any(), any(), any(), any());
 
         executor.onGenerationRequested(new GenerationRequestedEvent(1L, sampleCommand()));
 
         verify(aiContentClient, times(1)).submitJob(any(), any(), any(), any(), any(), any());
-        verify(generationRepository).save(generationCaptor.capture());
-        assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+        verify(generationRepository, never()).save(any());
+        assertThat(generation.getStatus()).isEqualTo(GenerationStatus.PROCESSING);
     }
 
     @Test

@@ -204,7 +204,9 @@ class GenerationControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("AI 콘텐츠 생성")
                     .summary("AI 생성 상태 조회 (FAILED)")
-                    .description("제출 실패(3회 시도) 또는 대기 만료로 생성이 실패한 경우 FAILED와 고정 대체 이미지 URL을 반환합니다. "
+                    .description("요청 후 31분(데드라인) 안에 AI가 작업을 접수·완료하지 못했거나 AI가 작업 실패를 확정한 경우 "
+                        + "FAILED와 고정 대체 이미지 URL을 반환합니다. 데드라인 전에는 제출 오류(4xx 포함)가 나도 "
+                        + "FAILED가 아니라 PROCESSING으로 대기하며 서버가 재제출합니다. "
                         + "fallbackImageUrl은 FAILED일 때만 포함됩니다.")
                     .pathParameters(
                         parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),

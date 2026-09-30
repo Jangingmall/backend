@@ -1,6 +1,8 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.AiImageFetchException;
+import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
@@ -24,6 +26,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -49,6 +53,17 @@ class GenerationDeadlineSchedulerTest {
     void setUp() {
         GenerationProperties properties = new GenerationProperties(DEADLINE_SECONDS, 60_000);
         scheduler = new GenerationDeadlineScheduler(generationRepository, properties, aiContentClient);
+        // 기본값: 대기 중인 건 없음 (PROCESSING 재제출 경로가 매 주기 조회하므로 엄격 스텁 충돌 방지)
+        lenient().when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of());
+        lenient().when(generationRepository.findAllByStatus(GenerationStatus.PROCESSING)).thenReturn(List.of());
+    }
+
+    private ContentGeneration processingGeneration(Long id, LocalDateTime requestedAt) {
+        ContentGeneration generation = ContentGeneration.create(
+            10L, "https://img.example/a.webp, https://img.example/b.webp", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(generation, "id", id);
+        ReflectionTestUtils.setField(generation, "requestedAt", requestedAt);
+        return generation;
     }
 
     private ContentGeneration queuedGeneration(Long id, LocalDateTime requestedAt) {
@@ -240,5 +255,80 @@ class GenerationDeadlineSchedulerTest {
 
         assertThat(gen.getStatus()).isEqualTo(GenerationStatus.FAILED);
         verify(aiContentClient, times(cycles)).getJobStatus("job-8");
+    }
+
+    // ── PROCESSING(AI 미접수) 재제출 ─────────────────────────────────────────
+
+    @Test
+    @DisplayName("PROCESSING 건은 데드라인 전까지 재제출하고, 접수되면 QUEUED로 전환한다")
+    void retryProcessingAccepted() {
+        ContentGeneration gen = processingGeneration(5L, LocalDateTime.now().minusSeconds(120));
+        when(generationRepository.findAllByStatus(GenerationStatus.PROCESSING)).thenReturn(List.of(gen));
+        givenReloadable(gen);
+        when(aiContentClient.submitJob(eq(5L), eq(10L),
+            eq(List.of("https://img.example/a.webp", "https://img.example/b.webp")),
+            eq("상품명"), eq("과정"), eq("관리")))
+            .thenReturn(new AiJobAccepted("job-5", "req-5", "http://ai/status/job-5"));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(generationRepository).save(savedCaptor.capture());
+        assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.QUEUED);
+        assertThat(savedCaptor.getValue().getJobId()).isEqualTo("job-5");
+    }
+
+    @Test
+    @DisplayName("재제출이 4xx 등 어떤 오류로 실패해도 데드라인 전에는 FAILED가 아니라 PROCESSING을 유지한다")
+    void retryProcessingFailureKeepsWaiting() {
+        ContentGeneration gen = processingGeneration(6L, LocalDateTime.now().minusSeconds(300));
+        when(generationRepository.findAllByStatus(GenerationStatus.PROCESSING)).thenReturn(List.of(gen));
+        when(aiContentClient.submitJob(any(), any(), any(), any(), any(), any()))
+            .thenThrow(new org.springframework.web.client.HttpClientErrorException(
+                org.springframework.http.HttpStatus.BAD_REQUEST, "Invalid product image"));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(generationRepository, never()).save(any());
+        assertThat(gen.getStatus()).isEqualTo(GenerationStatus.PROCESSING);
+    }
+
+    @Test
+    @DisplayName("이미지 다운로드 실패(AiImageFetchException)도 데드라인 전에는 대기를 유지한다")
+    void retryProcessingImageFetchFailureKeepsWaiting() {
+        ContentGeneration gen = processingGeneration(7L, LocalDateTime.now().minusSeconds(300));
+        when(generationRepository.findAllByStatus(GenerationStatus.PROCESSING)).thenReturn(List.of(gen));
+        when(aiContentClient.submitJob(any(), any(), any(), any(), any(), any()))
+            .thenThrow(new AiImageFetchException("이미지를 내려받지 못했습니다: HTTP 404"));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(generationRepository, never()).save(any());
+        assertThat(gen.getStatus()).isEqualTo(GenerationStatus.PROCESSING);
+    }
+
+    @Test
+    @DisplayName("PROCESSING 건이 데드라인을 넘기면 재제출하지 않고 FAILED 처리한다")
+    void retryProcessingOverdueFails() {
+        ContentGeneration gen = processingGeneration(8L, LocalDateTime.now().minusSeconds(DEADLINE_SECONDS + 30));
+        when(generationRepository.findAllByStatus(GenerationStatus.PROCESSING)).thenReturn(List.of(gen));
+        givenReloadable(gen);
+
+        scheduler.pollQueuedGenerations();
+
+        verify(aiContentClient, never()).submitJob(any(), any(), any(), any(), any(), any());
+        verify(generationRepository).save(savedCaptor.capture());
+        assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+    }
+
+    @Test
+    @DisplayName("요청 직후(scan 주기 이내)의 PROCESSING 건은 GenerationAsyncExecutor가 제출 중이므로 건드리지 않는다")
+    void retryProcessingSkipsFreshRequest() {
+        ContentGeneration gen = processingGeneration(9L, LocalDateTime.now().minusSeconds(10));
+        when(generationRepository.findAllByStatus(GenerationStatus.PROCESSING)).thenReturn(List.of(gen));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(aiContentClient, never()).submitJob(any(), any(), any(), any(), any(), any());
+        verify(generationRepository, never()).save(any());
     }
 }
