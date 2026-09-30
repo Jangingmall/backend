@@ -1,9 +1,11 @@
 package com.jangingmall.backend.e2e;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.global.security.JwtProperties;
 import com.jangingmall.backend.global.security.JwtTokenProvider;
 import com.jangingmall.backend.member.domain.MemberRole;
+import com.jangingmall.backend.member.infrastructure.EmailSenderService;
 import com.jangingmall.backend.member.presentation.dto.MemberAccountRequests;
 import com.jangingmall.backend.member.presentation.dto.MemberSignupRequest;
 import com.jangingmall.backend.payment.application.OrderExpirationScheduler;
@@ -11,8 +13,10 @@ import com.jangingmall.backend.payment.application.PaymentGateway;
 import com.jangingmall.backend.payment.domain.PaymentMethod;
 import com.jangingmall.backend.payment.domain.ReturnReason;
 import com.jangingmall.backend.payment.domain.ReturnType;
+import com.jangingmall.backend.payment.infrastructure.TossPaymentsGateway;
 import com.jangingmall.backend.payment.presentation.PaymentController;
 import com.jangingmall.backend.product.presentation.ProductRequest;
+import com.jangingmall.backend.revalidate.application.RevalidateWebhookDispatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -24,6 +28,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -38,21 +43,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("e2e")
 @ActiveProfiles("local-postgresql")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    properties = {"management.server.port=-1", "spring.sql.init.mode=never"})
+        properties = {"management.server.port=-1", "spring.sql.init.mode=never"})
 class UserJourneyE2ETest {
 
     @LocalServerPort
     private int port;
+    @MockitoBean
+    private EmailSenderService emailSenderService;
+    @MockitoBean
+    private AiContentClient restAiContentClient;
+    @MockitoBean
+    private TossPaymentsGateway paymentGateway;
+    @MockitoBean
+    private RevalidateWebhookDispatcher revalidateWebhookDispatcher;
 
     @Autowired
     private JwtProperties jwtProperties;
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     @Autowired
     private StubPaymentGateway stubPaymentGateway;
-
     @Autowired
     private OrderExpirationScheduler expirationScheduler;
 
@@ -64,7 +74,8 @@ class UserJourneyE2ETest {
     private static final Long ARTISAN_ID = 1L;
     private static final String TEST_EMAIL_PREFIX = "e2e-test-";
 
-    record OrderResult(Long orderId, String orderNumber, long totalAmount, List<Long> orderItemIds) {}
+    record OrderResult(Long orderId, String orderNumber, long totalAmount, List<Long> orderItemIds) {
+    }
 
     @BeforeEach
     void setUp() throws Exception {
@@ -81,9 +92,9 @@ class UserJourneyE2ETest {
 
     private HttpClient newClient() {
         return HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(5))
-            .version(HttpClient.Version.HTTP_1_1)
-            .build();
+                .connectTimeout(Duration.ofSeconds(5))
+                .version(HttpClient.Version.HTTP_1_1)
+                .build();
     }
 
     private String baseUrl() {
@@ -92,9 +103,9 @@ class UserJourneyE2ETest {
 
     private HttpResponse<String> post(String path, Object body, String token) throws Exception {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
-            .uri(URI.create(baseUrl() + path))
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body)));
+                .uri(URI.create(baseUrl() + path))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .POST(HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body)));
         if (token != null) {
             builder.header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         }
@@ -103,8 +114,8 @@ class UserJourneyE2ETest {
 
     private HttpResponse<String> get(String path, String token) throws Exception {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
-            .uri(URI.create(baseUrl() + path))
-            .GET();
+                .uri(URI.create(baseUrl() + path))
+                .GET();
         if (token != null) {
             builder.header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         }
@@ -113,9 +124,9 @@ class UserJourneyE2ETest {
 
     private HttpResponse<String> patch(String path, Object body, String token) throws Exception {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
-            .uri(URI.create(baseUrl() + path))
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .method("PATCH", HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body)));
+                .uri(URI.create(baseUrl() + path))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(objectMapper.writeValueAsString(body)));
         if (token != null) {
             builder.header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         }
@@ -124,8 +135,8 @@ class UserJourneyE2ETest {
 
     private HttpResponse<String> delete(String path, String token) throws Exception {
         HttpRequest.Builder builder = HttpRequest.newBuilder()
-            .uri(URI.create(baseUrl() + path))
-            .DELETE();
+                .uri(URI.create(baseUrl() + path))
+                .DELETE();
         if (token != null) {
             builder.header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         }
@@ -145,8 +156,8 @@ class UserJourneyE2ETest {
 
     private Long signup(String email, String password, String name, String phone) throws Exception {
         MemberSignupRequest req = new MemberSignupRequest(
-            email, password, password, name, phone, MemberRole.USER,
-            new MemberSignupRequest.Agreements(true, true, true, false)
+                email, password, password, name, phone, MemberRole.USER,
+                new MemberSignupRequest.Agreements(true, true, true, false)
         );
         HttpResponse<String> res = post("/api/member/signup", req, null);
         assertThat(res.statusCode()).isEqualTo(201);
@@ -158,15 +169,15 @@ class UserJourneyE2ETest {
 
     private Long createProduct() throws Exception {
         HttpResponse<String> res = post("/api/products",
-            new ProductRequest.Create(null, null, "청자 다완", "설명", 85000, 10, null, List.of(), List.of(), null, List.of()),
-            artisanToken);
+                new ProductRequest.Create(null, null, "청자 다완", "설명", 85000, 10, null, List.of(), List.of(), null, List.of()),
+                artisanToken);
         assertThat(res.statusCode()).isEqualTo(201);
         Long productId = longVal(data(res), "productId");
 
         HttpResponse<String> statusRes = patch(
-            "/api/products/" + productId + "/status",
-            new ProductRequest.ChangeStatus("ON_SALE"),
-            artisanToken
+                "/api/products/" + productId + "/status",
+                new ProductRequest.ChangeStatus("ON_SALE"),
+                artisanToken
         );
         assertThat(statusRes.statusCode()).isBetween(200, 204);
         return productId;
@@ -174,7 +185,7 @@ class UserJourneyE2ETest {
 
     private Long addAddress(String token) throws Exception {
         MemberAccountRequests.CreateAddress req = new MemberAccountRequests.CreateAddress(
-            "홍길동", "01012345678", "06236", "서울시 강남구 테헤란로 1", "101호", true
+                "홍길동", "01012345678", "06236", "서울시 강남구 테헤란로 1", "101호", true
         );
         HttpResponse<String> res = post("/api/member/me/addresses", req, token);
         assertThat(res.statusCode()).isEqualTo(201);
@@ -183,7 +194,7 @@ class UserJourneyE2ETest {
 
     private Long addCartItem(String token, Long productId) throws Exception {
         PaymentController.CartItemRequest req = new PaymentController.CartItemRequest(
-            productId, 1, List.of(), List.of()
+                productId, 1, List.of(), List.of()
         );
         HttpResponse<String> res = post("/api/payments/cart/items", req, token);
         assertThat(res.statusCode()).isEqualTo(201);
@@ -198,7 +209,7 @@ class UserJourneyE2ETest {
 
     private OrderResult createOrder(String token, Long cartItemId, Long addressId) throws Exception {
         PaymentController.CreateOrderRequest req = new PaymentController.CreateOrderRequest(
-            List.of(cartItemId), addressId, null, PaymentMethod.CARD
+                List.of(cartItemId), addressId, null, PaymentMethod.CARD
         );
         HttpResponse<String> res = post("/api/payments/orders", req, token);
         assertThat(res.statusCode()).isEqualTo(201);
@@ -209,14 +220,14 @@ class UserJourneyE2ETest {
         @SuppressWarnings("unchecked")
         List<Map<String, Object>> items = (List<Map<String, Object>>) orderData.get("items");
         List<Long> orderItemIds = items == null ? List.of()
-            : items.stream().map(item -> longVal(item, "orderItemId")).toList();
+                : items.stream().map(item -> longVal(item, "orderItemId")).toList();
         return new OrderResult(orderId, orderNumber, totalAmount, orderItemIds);
     }
 
     // 실제 결제 PG 없이 상태를 PAID로 전환: prepare → stub 등록 → webhook
     private void simulatePaid(Long orderId, String orderNumber, long amount) throws Exception {
         PaymentController.PreparePaymentRequest prepReq = new PaymentController.PreparePaymentRequest(
-            orderId, amount, PaymentMethod.CARD
+                orderId, amount, PaymentMethod.CARD
         );
         HttpResponse<String> prepRes = post("/api/payments", prepReq, userToken);
         assertThat(prepRes.statusCode()).isBetween(200, 201);
@@ -225,8 +236,8 @@ class UserJourneyE2ETest {
         stubPaymentGateway.register(paymentKey, orderNumber, amount, "DONE");
 
         PaymentController.TossWebhookRequest webhook = new PaymentController.TossWebhookRequest(
-            "PAYMENT_STATUS_CHANGED",
-            new PaymentController.TossPaymentData(paymentKey, orderNumber, amount, "DONE")
+                "PAYMENT_STATUS_CHANGED",
+                new PaymentController.TossPaymentData(paymentKey, orderNumber, amount, "DONE")
         );
         HttpResponse<String> res = post("/api/payments/webhooks/toss", webhook, null);
         assertThat(res.statusCode()).isEqualTo(200);
@@ -272,7 +283,7 @@ class UserJourneyE2ETest {
 
     @Test
     @DisplayName("상품 상세 조회 — ON_SALE 상품은 인증 없이 조회된다")
-    void productDetailPublicAccess() throws Exception {
+    void productDetailPublicAccess1() throws Exception {
         Long productId = createProduct();
 
         HttpResponse<String> res = get("/api/products/" + productId, null);
@@ -282,14 +293,38 @@ class UserJourneyE2ETest {
         assertThat(productData.get("productId").toString()).isEqualTo(productId.toString());
         assertThat(productData.get("status")).isEqualTo("ON_SALE");
     }
+    @Test
+    @DisplayName("상품 상세 조회 — ON_SALE 상품은 인증 없이 조회된다")
+    void productDetailPublicAccess() throws Exception {
+        Long productId = createProduct();
 
+        // 1차 조회: DB → ProductResponse → Redis 캐시 저장
+        HttpResponse<String> first = get("/api/products/" + productId, null);
+        assertThat(first.statusCode()).isEqualTo(200);
+
+        Map<String, Object> firstData = data(first);
+        assertThat(firstData.get("productId").toString())
+                .isEqualTo(productId.toString());
+        assertThat(firstData.get("status"))
+                .isEqualTo("ON_SALE");
+
+        // 2차 조회: Redis 캐시 → ProductResponse 역직렬화
+        HttpResponse<String> second = get("/api/products/" + productId, null);
+        assertThat(second.statusCode()).isEqualTo(200);
+
+        Map<String, Object> secondData = data(second);
+        assertThat(secondData.get("productId").toString())
+                .isEqualTo(productId.toString());
+        assertThat(secondData.get("status"))
+                .isEqualTo("ON_SALE");
+    }
     @Test
     @DisplayName("장바구니 담기 — 상품이 장바구니에 추가된다")
     void addToCart() throws Exception {
         Long productId = createProduct();
 
         PaymentController.CartItemRequest req = new PaymentController.CartItemRequest(
-            productId, 2, List.of(), List.of()
+                productId, 2, List.of(), List.of()
         );
         HttpResponse<String> res = post("/api/payments/cart/items", req, userToken);
         assertThat(res.statusCode()).isEqualTo(201);
@@ -308,7 +343,7 @@ class UserJourneyE2ETest {
         Long addressId = addAddress(userToken);
 
         PaymentController.CreateOrderRequest req = new PaymentController.CreateOrderRequest(
-            List.of(cartItemId), addressId, "문 앞에 놓아주세요", PaymentMethod.CARD
+                List.of(cartItemId), addressId, "문 앞에 놓아주세요", PaymentMethod.CARD
         );
         HttpResponse<String> res = post("/api/payments/orders", req, userToken);
         assertThat(res.statusCode()).isEqualTo(201);
@@ -325,7 +360,7 @@ class UserJourneyE2ETest {
         Long cartItemId = addCartItem(userToken, productId);
 
         PaymentController.CreateOrderRequest req = new PaymentController.CreateOrderRequest(
-            List.of(cartItemId), 0L, null, PaymentMethod.CARD
+                List.of(cartItemId), 0L, null, PaymentMethod.CARD
         );
         HttpResponse<String> res = post("/api/payments/orders", req, userToken);
         assertThat(res.statusCode()).isBetween(400, 422);
@@ -420,7 +455,7 @@ class UserJourneyE2ETest {
         OrderResult order = createOrder(userToken, cartItemId, addressId);
 
         PaymentController.PreparePaymentRequest prepReq = new PaymentController.PreparePaymentRequest(
-            order.orderId(), order.totalAmount(), PaymentMethod.CARD
+                order.orderId(), order.totalAmount(), PaymentMethod.CARD
         );
         HttpResponse<String> prepRes = post("/api/payments", prepReq, userToken);
         assertThat(prepRes.statusCode()).isBetween(200, 201);
@@ -429,7 +464,7 @@ class UserJourneyE2ETest {
         stubPaymentGateway.register(paymentKey, order.orderNumber(), order.totalAmount(), "DONE");
 
         PaymentController.ConfirmPaymentRequest confirmReq = new PaymentController.ConfirmPaymentRequest(
-            paymentKey, order.orderNumber(), order.totalAmount() + 1L
+                paymentKey, order.orderNumber(), order.totalAmount() + 1L
         );
         HttpResponse<String> res = post("/api/payments/confirm", confirmReq, userToken);
         assertThat(res.statusCode()).isBetween(400, 422);
@@ -445,9 +480,9 @@ class UserJourneyE2ETest {
         simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
 
         PaymentController.ReturnRequest req = new PaymentController.ReturnRequest(
-            order.orderId(), com.jangingmall.backend.payment.domain.ReturnType.RETURN,
-            order.orderItemIds(), com.jangingmall.backend.payment.domain.ReturnReason.CHANGE_OF_MIND,
-            null, List.of(), null
+                order.orderId(), com.jangingmall.backend.payment.domain.ReturnType.RETURN,
+                order.orderItemIds(), com.jangingmall.backend.payment.domain.ReturnReason.CHANGE_OF_MIND,
+                null, List.of(), null
         );
         HttpResponse<String> res = post("/api/payments/returns", req, userToken);
         assertThat(res.statusCode()).isEqualTo(201);
@@ -464,9 +499,9 @@ class UserJourneyE2ETest {
         OrderResult order = createOrder(userToken, cartItemId, addressId);
 
         PaymentController.ReturnRequest req = new PaymentController.ReturnRequest(
-            order.orderId(), com.jangingmall.backend.payment.domain.ReturnType.RETURN,
-            order.orderItemIds(), com.jangingmall.backend.payment.domain.ReturnReason.CHANGE_OF_MIND,
-            null, List.of(), null
+                order.orderId(), com.jangingmall.backend.payment.domain.ReturnType.RETURN,
+                order.orderItemIds(), com.jangingmall.backend.payment.domain.ReturnReason.CHANGE_OF_MIND,
+                null, List.of(), null
         );
         HttpResponse<String> res = post("/api/payments/returns", req, userToken);
         assertThat(res.statusCode()).isBetween(400, 422);
@@ -479,8 +514,8 @@ class UserJourneyE2ETest {
     void orderWithZeroStockFails() throws Exception {
         Long productId = createProductWithStock(0);
         HttpResponse<String> res = post("/api/payments/cart/items",
-            new PaymentController.CartItemRequest(productId, 1, List.of(), List.of()),
-            userToken);
+                new PaymentController.CartItemRequest(productId, 1, List.of(), List.of()),
+                userToken);
         assertThat(res.statusCode()).isBetween(400, 422);
     }
 
@@ -498,27 +533,33 @@ class UserJourneyE2ETest {
         Long addr2 = addAddress(token2);
 
         PaymentController.CreateOrderRequest req1 = new PaymentController.CreateOrderRequest(
-            List.of(cartId1), addr1, null, PaymentMethod.CARD);
+                List.of(cartId1), addr1, null, PaymentMethod.CARD);
         PaymentController.CreateOrderRequest req2 = new PaymentController.CreateOrderRequest(
-            List.of(cartId2), addr2, null, PaymentMethod.CARD);
+                List.of(cartId2), addr2, null, PaymentMethod.CARD);
 
         java.util.concurrent.CompletableFuture<HttpResponse<String>> f1 =
-            java.util.concurrent.CompletableFuture.supplyAsync(() -> {
-                try { return post("/api/payments/orders", req1, userToken); }
-                catch (Exception e) { throw new RuntimeException(e); }
-            });
+                java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return post("/api/payments/orders", req1, userToken);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
         java.util.concurrent.CompletableFuture<HttpResponse<String>> f2 =
-            java.util.concurrent.CompletableFuture.supplyAsync(() -> {
-                try { return post("/api/payments/orders", req2, token2); }
-                catch (Exception e) { throw new RuntimeException(e); }
-            });
+                java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+                    try {
+                        return post("/api/payments/orders", req2, token2);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
         int s1 = f1.get().statusCode();
         int s2 = f2.get().statusCode();
         assertThat((s1 == 201 ? 1 : 0) + (s2 == 201 ? 1 : 0)).isEqualTo(1);
 
         Integer stock = jdbcTemplate.queryForObject(
-            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
+                "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
         assertThat(stock).isGreaterThanOrEqualTo(0);
     }
 
@@ -527,7 +568,7 @@ class UserJourneyE2ETest {
     void returnApprovalRestoresStock() throws Exception {
         Long productId = createProductWithStock(5);
         Integer stockBefore = jdbcTemplate.queryForObject(
-            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
+                "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
 
         Long cartItemId = addCartItem(userToken, productId);
         Long addressId = addAddress(userToken);
@@ -535,21 +576,21 @@ class UserJourneyE2ETest {
         simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
 
         PaymentController.ReturnRequest returnReq = new PaymentController.ReturnRequest(
-            order.orderId(), ReturnType.RETURN,
-            order.orderItemIds(), ReturnReason.CHANGE_OF_MIND,
-            null, List.of(), null);
+                order.orderId(), ReturnType.RETURN,
+                order.orderItemIds(), ReturnReason.CHANGE_OF_MIND,
+                null, List.of(), null);
         HttpResponse<String> returnRes = post("/api/payments/returns", returnReq, userToken);
         assertThat(returnRes.statusCode()).isEqualTo(201);
         Long returnId = longVal(data(returnRes), "returnId");
 
         HttpResponse<String> approveRes = patch(
-            "/api/payments/returns/" + returnId + "/status",
-            Map.of("status", "APPROVED"),
-            new JwtTokenProvider(jwtProperties).createAccessToken(999L, MemberRole.ADMIN));
+                "/api/payments/returns/" + returnId + "/status",
+                Map.of("status", "APPROVED"),
+                new JwtTokenProvider(jwtProperties).createAccessToken(999L, MemberRole.ADMIN));
         assertThat(approveRes.statusCode()).isBetween(200, 204);
 
         Integer stockAfter = jdbcTemplate.queryForObject(
-            "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
+                "SELECT stock FROM product WHERE product_id = ?", Integer.class, productId);
         assertThat(stockAfter).isEqualTo(stockBefore);
     }
 
@@ -563,9 +604,9 @@ class UserJourneyE2ETest {
         simulatePaid(order.orderId(), order.orderNumber(), order.totalAmount());
 
         PaymentController.ReturnRequest req = new PaymentController.ReturnRequest(
-            order.orderId(), ReturnType.RETURN,
-            order.orderItemIds(), ReturnReason.CHANGE_OF_MIND,
-            null, List.of(), null);
+                order.orderId(), ReturnType.RETURN,
+                order.orderItemIds(), ReturnReason.CHANGE_OF_MIND,
+                null, List.of(), null);
         post("/api/payments/returns", req, userToken);
 
         HttpResponse<String> res2 = post("/api/payments/returns", req, userToken);
@@ -581,8 +622,8 @@ class UserJourneyE2ETest {
         OrderResult order = createOrder(userToken, List.of(cartItemId), addressId);
 
         jdbcTemplate.update(
-            "UPDATE orders SET created_at = NOW() - INTERVAL '31 minutes', updated_at = NOW() - INTERVAL '31 minutes' WHERE order_id = ?",
-            order.orderId());
+                "UPDATE orders SET created_at = NOW() - INTERVAL '31 minutes', updated_at = NOW() - INTERVAL '31 minutes' WHERE order_id = ?",
+                order.orderId());
 
         expirationScheduler.expireAbandonedOrders();
 
@@ -595,22 +636,22 @@ class UserJourneyE2ETest {
 
     private Long createProductWithStock(int stock) throws Exception {
         HttpResponse<String> res = post("/api/products",
-            new ProductRequest.Create(null, null, "재고테스트상품-" + System.currentTimeMillis(),
-                "설명", 10000, stock, null, List.of(), List.of(), null, List.of()),
-            artisanToken);
+                new ProductRequest.Create(null, null, "재고테스트상품-" + System.currentTimeMillis(),
+                        "설명", 10000, stock, null, List.of(), List.of(), null, List.of()),
+                artisanToken);
         assertThat(res.statusCode()).isEqualTo(201);
         Long productId = longVal(data(res), "productId");
         HttpResponse<String> statusRes = patch(
-            "/api/products/" + productId + "/status",
-            new ProductRequest.ChangeStatus("ON_SALE"),
-            artisanToken);
+                "/api/products/" + productId + "/status",
+                new ProductRequest.ChangeStatus("ON_SALE"),
+                artisanToken);
         assertThat(statusRes.statusCode()).isBetween(200, 204);
         return productId;
     }
 
     private OrderResult createOrder(String token, List<Long> cartItemIds, Long addressId) throws Exception {
         PaymentController.CreateOrderRequest req = new PaymentController.CreateOrderRequest(
-            cartItemIds, addressId, null, PaymentMethod.CARD);
+                cartItemIds, addressId, null, PaymentMethod.CARD);
         HttpResponse<String> res = post("/api/payments/orders", req, token);
         assertThat(res.statusCode()).isEqualTo(201);
         Map<String, Object> orderData = data(res);
@@ -620,7 +661,7 @@ class UserJourneyE2ETest {
         @SuppressWarnings("unchecked")
         List<Map<String, Object>> items = (List<Map<String, Object>>) orderData.get("items");
         List<Long> orderItemIds = items == null ? List.of()
-            : items.stream().map(item -> longVal(item, "orderItemId")).toList();
+                : items.stream().map(item -> longVal(item, "orderItemId")).toList();
         return new OrderResult(orderId, orderNumber, totalAmount, orderItemIds);
     }
 }
