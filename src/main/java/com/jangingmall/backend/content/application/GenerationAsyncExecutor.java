@@ -1,6 +1,7 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.AiImageFetchException;
 import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
@@ -84,6 +85,11 @@ public class GenerationAsyncExecutor {
                 log.info("AI job 제출 완료 generationId={} jobId={}", generationId, accepted.jobId());
                 discordNotificationService.notifyGenerationSucceeded(generationId, command.productId(), accepted.jobId());
                 return;
+            } catch (AiImageFetchException e) {
+                // 이미지 입력 오류는 재시도해도 같은 결과라 즉시 실패 처리한다
+                lastException = e;
+                log.warn("AI job 제출 중단(이미지 입력 오류) generationId={} reason={}", generationId, e.getMessage());
+                break;
             } catch (Exception e) {
                 lastException = e;
                 log.warn("AI job 제출 실패 generationId={} attempt={} reason={}", generationId, attempt + 1, e.getMessage());

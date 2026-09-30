@@ -2,6 +2,7 @@ package com.jangingmall.backend.content.infrastructure;
 
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
+import com.jangingmall.backend.content.domain.AiImageFetchException;
 import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.AiProductUpdatePayload;
@@ -17,7 +18,13 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.http.HttpClient;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +100,72 @@ class RestAiContentClientTest {
         ).isInstanceOf(org.springframework.web.client.RestClientException.class);
 
         generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("이미지 URL이 http(s)가 아니면 AI 서버에 요청하지 않고 AiImageFetchException을 던진다")
+    void submitJob_invalidImageUrl_failsWithoutCallingAi() {
+        assertThatThrownBy(() -> contentClient.submitJob(1L, 10L, List.of("1"), "상품명", "과정", "관리법"))
+            .isInstanceOf(AiImageFetchException.class);
+        assertThatThrownBy(() -> contentClient.submitJob(1L, 10L,
+            List.of("https://<이미지-버킷-또는-CDN>/images/product/63/<imageId>/1280w.webp"), "상품명", "과정", "관리법"))
+            .isInstanceOf(AiImageFetchException.class);
+
+        generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("이미지 다운로드가 404이거나 이미지가 아닌 응답이면 AI 서버에 요청하지 않는다")
+    void submitJob_badImageResponse_failsWithoutCallingAi() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/missing", exchange -> respond(exchange, 404, "text/html", "not found"));
+        server.createContext("/html", exchange -> respond(exchange, 200, "text/html", "<html>error</html>"));
+        server.start();
+        try {
+            String base = "http://127.0.0.1:" + server.getAddress().getPort();
+            assertThatThrownBy(() -> contentClient.submitJob(1L, 10L, List.of(base + "/missing"), "상품명", "과정", "관리법"))
+                .isInstanceOf(AiImageFetchException.class);
+            assertThatThrownBy(() -> contentClient.submitJob(1L, 10L, List.of(base + "/html"), "상품명", "과정", "관리법"))
+                .isInstanceOf(AiImageFetchException.class);
+        } finally {
+            server.stop(0);
+        }
+
+        generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("이미지 다운로드가 성공하면 AI 서버에 job을 제출한다")
+    void submitJob_validImage_submits() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/ok", exchange -> respond(exchange, 200, "image/webp", "webp-bytes"));
+        server.start();
+        try {
+            String acceptedJson = OBJECT_MAPPER.writeValueAsString(Map.of(
+                "product_id", "10", "job_id", "job-abc", "request_id", "req-def", "status", "QUEUED",
+                "status_url", "http://ai/status/job-abc", "created_at", OffsetDateTime.now().toString()));
+            generationMockServer
+                .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs"))
+                .andRespond(withSuccess(acceptedJson, MediaType.APPLICATION_JSON));
+
+            AiJobAccepted result = contentClient.submitJob(1L, 10L,
+                List.of("http://127.0.0.1:" + server.getAddress().getPort() + "/ok"), "상품명", "과정", "관리법");
+
+            assertThat(result.jobId()).isEqualTo("job-abc");
+        } finally {
+            server.stop(0);
+        }
+
+        generationMockServer.verify();
+    }
+
+    private static void respond(HttpExchange exchange, int status, String contentType, String body) throws IOException {
+        byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+        exchange.getResponseHeaders().add("Content-Type", contentType);
+        exchange.sendResponseHeaders(status, bytes.length);
+        try (OutputStream out = exchange.getResponseBody()) {
+            out.write(bytes);
+        }
     }
 
     @Test
