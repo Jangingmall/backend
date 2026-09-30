@@ -283,7 +283,11 @@ public class ContentService {
                         text(map.get("src"), text(map.get("url"), null)))) : null));
                 String imageId = "img".equals(tag) ? resolveImageId(imageRef) : null;
                 if ("img".equals(tag) && imageRef != null && !imageRef.isBlank() && imageId == null) {
-                    throw new DomainException(ErrorCode.NOT_FOUND);
+                    // AI가 만든 이미지는 업로드 이미지로 등록되어 있지 않다. 404로 콜백 전체를 실패시키지 않고
+                    // 해당 이미지 블록만 건너뛴다(글 블록과 reactDocument 원문은 그대로 저장된다).
+                    log.warn("reactDocument 이미지 참조를 찾을 수 없어 블록을 건너뜁니다 contentId={} imageRef={}",
+                        content.getId(), imageRef);
+                    continue;
                 }
                 String videoUrl = "video".equals(tag) ? text(values.get("videoUrl"), null) : null;
                 String blockText = Set.of("h2", "p").contains(tag)

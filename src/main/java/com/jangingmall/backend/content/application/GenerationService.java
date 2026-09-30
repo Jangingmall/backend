@@ -4,6 +4,7 @@ import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
 import com.jangingmall.backend.content.domain.GenerationStatus;
+import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ExternalServiceException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
@@ -23,6 +24,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -35,6 +38,8 @@ public class GenerationService {
     private final ImageStorage imageStorage;
     private final ObjectMapper objectMapper;
     private final ApplicationEventPublisher eventPublisher;
+
+    private static final Pattern PHOTO_FILENAME = Pattern.compile("-photo-\\d+-(.+)$");
 
     @Transactional
     public GenerationResponse request(GenerationCommand.Request command) {
@@ -99,6 +104,25 @@ public class GenerationService {
         return new BeToAiPersistAckResponse(command.generationId().toString(), productIdStr, "SAVED", saved.getCompletedAt());
     }
 
+    /**
+     * AI 초안이 끝난 생성 건의 최종 렌더링을 사용자가 수동으로 다시 요청한다. 자동 요청(스케줄러)과 같은 멱등성 키를
+     * 쓰므로 이미 렌더 중이어도 중복 생성되지 않는다. 요청은 커밋 후 비동기로 GenAI에 전달된다.
+     */
+    @Transactional
+    public GenerationResponse requestRender(Long productId, Long generationId, Long requesterId) {
+        Product product = getProduct(productId);
+        verifyOwner(product, requesterId);
+
+        ContentGeneration generation = generationRepository.findByIdAndProductId(generationId, productId)
+            .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
+        if (generation.getStatus() != GenerationStatus.DRAFT_READY) {
+            throw new BusinessRuleViolationException(GenerationErrorMessage.RENDER_NOT_ALLOWED.message());
+        }
+        eventPublisher.publishEvent(new AiRenderApprovalRequestedEvent(generation.getJobId(), generation.getId()));
+        log.info("AI 렌더 수동 요청 generationId={} requesterId={}", generationId, requesterId);
+        return GenerationResponse.from(generation);
+    }
+
     @Transactional(readOnly = true)
     public GenerationResponse poll(Long productId, Long generationId, Long requesterId) {
         Product product = getProduct(productId);
@@ -131,7 +155,7 @@ public class GenerationService {
         for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
             MultipartFile file = entry.getValue();
             try {
-                String fileId = extractPhotoId(file.getOriginalFilename());
+                String fileId = extractFileId(entry.getKey(), file.getOriginalFilename());
                 String key = "ai-generated/" + generationId + "/" + keyPrefix + fileId + "." + extension(file.getContentType());
                 imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
             } catch (IOException exception) {
@@ -150,12 +174,24 @@ public class GenerationService {
         };
     }
 
-    private String extractPhotoId(String filename) {
-        if (filename == null) {
-            return "unknown";
+    /**
+     * GenAI는 사진을 "{generationId}-photo-{NN}-{photo_id}.ext"로, 섹션을 "{generationId}-{NN}-{section_id}.ext"로 보낸다.
+     * 사진은 photo_id 전체(예: detail-02)를 쓰고, 그 외에는 파트 이름의 순번(예: detail_page_section_01 → 01)을 써서
+     * 서로 다른 파일이 같은 S3 키로 덮어써지지 않게 한다.
+     */
+    private String extractFileId(String partName, String filename) {
+        if (filename != null) {
+            Matcher matcher = PHOTO_FILENAME.matcher(filename.replaceAll("\\.[^.]+$", ""));
+            if (matcher.find()) {
+                return sanitizeKeyPart(matcher.group(1));
+            }
         }
-        String[] parts = filename.replaceAll("\\.[^.]+$", "").split("-");
-        return parts[parts.length - 1];
+        int separator = partName.lastIndexOf('_');
+        return sanitizeKeyPart(separator >= 0 ? partName.substring(separator + 1) : partName);
+    }
+
+    private static String sanitizeKeyPart(String value) {
+        return value.replaceAll("[^A-Za-z0-9._-]", "_");
     }
 
     private void verifyOwner(Product product, Long requesterId) {

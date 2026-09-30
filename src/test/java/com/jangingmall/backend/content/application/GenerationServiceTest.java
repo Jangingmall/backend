@@ -4,10 +4,12 @@ import tools.jackson.databind.ObjectMapper;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
+import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ExternalServiceException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.image.application.ImageStorage;
+import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -238,5 +241,90 @@ class GenerationServiceTest {
         BeToAiPersistAckResponse ack = generationService.completeWithImages(command, detailImage, Map.of(), Map.of(), "10");
 
         assertThat(ack.status()).isEqualTo("ALREADY_SAVED");
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — 사진은 photo_id 전체, 섹션은 순번으로 S3 키를 만들어 서로 덮어쓰지 않는다")
+    void completeWithImagesKeepsFileKeysDistinct() {
+        ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
+        when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
+        when(generationRepository.save(any())).thenReturn(generation);
+
+        Map<String, MultipartFile> photoFiles = new java.util.LinkedHashMap<>();
+        photoFiles.put("product_photo_03", new MockMultipartFile(
+            "product_photo_03", "1-photo-03-detail-02.webp", "image/webp", new byte[]{1}));
+        photoFiles.put("product_photo_04", new MockMultipartFile(
+            "product_photo_04", "1-photo-04-detail-03.webp", "image/webp", new byte[]{2}));
+        Map<String, MultipartFile> sectionFiles = Map.of(
+            "detail_page_section_01", new MockMultipartFile(
+                "detail_page_section_01", "1-01-hero.png", "image/png", new byte[]{3}));
+
+        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
+        generationService.completeWithImages(command, null, sectionFiles, photoFiles, "10");
+
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/photo-detail-02.webp"), eq("image/webp"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/photo-detail-03.webp"), eq("image/webp"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/section-01.png"), eq("image/png"), any());
+    }
+
+    // ── 렌더링 수동 요청 ────────────────────────────────────────────────────────
+
+    private ContentGeneration draftReadyGeneration() {
+        ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        generation.markQueued("job-1", "req-1", "1", "http://ai/status/1");
+        generation.markDraftReady();
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        return generation;
+    }
+
+    @Test
+    @DisplayName("렌더링 수동 요청 — DRAFT_READY이면 AiRenderApprovalRequestedEvent를 발행하고 상태는 그대로 반환한다")
+    void requestRender() {
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(draftReadyGeneration()));
+
+        GenerationResponse response = generationService.requestRender(10L, 1L, 1L);
+
+        assertThat(response.status()).isEqualTo(GenerationStatus.DRAFT_READY);
+        ArgumentCaptor<AiRenderApprovalRequestedEvent> captor =
+            ArgumentCaptor.forClass(AiRenderApprovalRequestedEvent.class);
+        verify(eventPublisher).publishEvent(captor.capture());
+        assertThat(captor.getValue().jobId()).isEqualTo("job-1");
+        assertThat(captor.getValue().generationId()).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("렌더링 수동 요청 — DRAFT_READY가 아니면 BusinessRuleViolationException이 발생하고 이벤트를 발행하지 않는다")
+    void requestRenderNotDraftReady() {
+        ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
+
+        assertThatThrownBy(() -> generationService.requestRender(10L, 1L, 1L))
+            .isInstanceOf(BusinessRuleViolationException.class);
+        verify(eventPublisher, never()).publishEvent(any());
+    }
+
+    @Test
+    @DisplayName("렌더링 수동 요청 — 소유자가 아니면 ForbiddenException이 발생한다")
+    void requestRenderForbidden() {
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+
+        assertThatThrownBy(() -> generationService.requestRender(10L, 1L, 999L))
+            .isInstanceOf(ForbiddenException.class);
+        verify(eventPublisher, never()).publishEvent(any());
+    }
+
+    @Test
+    @DisplayName("렌더링 수동 요청 — 존재하지 않는 생성 요청이면 NotFoundException이 발생한다")
+    void requestRenderNotFound() {
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(generationRepository.findByIdAndProductId(999L, 10L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> generationService.requestRender(10L, 999L, 1L))
+            .isInstanceOf(NotFoundException.class);
     }
 }

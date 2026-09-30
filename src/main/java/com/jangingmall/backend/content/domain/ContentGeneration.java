@@ -64,6 +64,9 @@ public class ContentGeneration {
     @Column(name = "react_document", columnDefinition = "TEXT")
     private String reactDocument;
 
+    @Column(name = "draft_ready_at")
+    private LocalDateTime draftReadyAt;
+
     public static ContentGeneration create(Long productId, String images, String productName, String howMade, String careTips) {
         ContentGeneration generation = new ContentGeneration();
         generation.productId = productId;
@@ -86,6 +89,14 @@ public class ContentGeneration {
 
     public void markDraftReady() {
         this.status = GenerationStatus.DRAFT_READY;
+        this.draftReadyAt = LocalDateTime.now();
+    }
+
+    /** draft_ready_at 도입 전에 DRAFT_READY가 된 건의 렌더링 마감 기준 시각을 지금으로 채운다. */
+    public void backfillDraftReadyAt() {
+        if (this.draftReadyAt == null) {
+            this.draftReadyAt = LocalDateTime.now();
+        }
     }
 
     public void complete(String reactDocumentJson, String idempotencyKey) {

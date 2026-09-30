@@ -37,12 +37,16 @@ import static org.mockito.Mockito.when;
 class GenerationDeadlineSchedulerTest {
 
     private static final long DEADLINE_SECONDS = 1861;
+    private static final long RENDER_DEADLINE_SECONDS = 1800;
 
     @Mock
     private ContentGenerationRepository generationRepository;
 
     @Mock
     private AiContentClient aiContentClient;
+
+    @Mock
+    private AiRenderApprovalAsyncExecutor renderExecutor;
 
     @Captor
     private ArgumentCaptor<ContentGeneration> savedCaptor;
@@ -51,11 +55,19 @@ class GenerationDeadlineSchedulerTest {
 
     @BeforeEach
     void setUp() {
-        GenerationProperties properties = new GenerationProperties(DEADLINE_SECONDS, 60_000);
-        scheduler = new GenerationDeadlineScheduler(generationRepository, properties, aiContentClient);
+        GenerationProperties properties = new GenerationProperties(DEADLINE_SECONDS, 60_000, RENDER_DEADLINE_SECONDS);
+        scheduler = new GenerationDeadlineScheduler(generationRepository, properties, aiContentClient, renderExecutor);
         // 기본값: 대기 중인 건 없음 (PROCESSING 재제출 경로가 매 주기 조회하므로 엄격 스텁 충돌 방지)
         lenient().when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of());
         lenient().when(generationRepository.findAllByStatus(GenerationStatus.PROCESSING)).thenReturn(List.of());
+        lenient().when(generationRepository.findAllByStatus(GenerationStatus.DRAFT_READY)).thenReturn(List.of());
+    }
+
+    private ContentGeneration draftReadyGeneration(Long id, LocalDateTime draftReadyAt) {
+        ContentGeneration generation = queuedGeneration(id, LocalDateTime.now().minusMinutes(5));
+        generation.markDraftReady();
+        ReflectionTestUtils.setField(generation, "draftReadyAt", draftReadyAt);
+        return generation;
     }
 
     private ContentGeneration processingGeneration(Long id, LocalDateTime requestedAt) {
@@ -124,6 +136,8 @@ class GenerationDeadlineSchedulerTest {
 
         verify(generationRepository).save(savedCaptor.capture());
         assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.DRAFT_READY);
+        assertThat(savedCaptor.getValue().getDraftReadyAt()).isNotNull();
+        verify(renderExecutor).requestRender(1L);
     }
 
     @Test
@@ -330,5 +344,90 @@ class GenerationDeadlineSchedulerTest {
 
         verify(aiContentClient, never()).submitJob(any(), any(), any(), any(), any(), any());
         verify(generationRepository, never()).save(any());
+    }
+
+    // ── DRAFT_READY 렌더링 요청·마감 ────────────────────────────────────────────
+
+    @Test
+    @DisplayName("DRAFT_READY 전이가 일어나지 않으면 렌더링을 요청하지 않는다")
+    void noRenderRequestWithoutDraftReadyTransition() {
+        ContentGeneration gen = withinDeadline(11L);
+        givenQueued(gen);
+        when(aiContentClient.getJobStatus("job-11")).thenReturn("COMPOSING");
+
+        scheduler.pollQueuedGenerations();
+
+        verify(renderExecutor, never()).requestRender(any());
+    }
+
+    @Test
+    @DisplayName("전이 직후(scan 주기 이내)의 DRAFT_READY 건은 전이 시점에 이미 요청했으므로 다시 요청하지 않는다")
+    void renderSkipsFreshDraftReady() {
+        ContentGeneration gen = draftReadyGeneration(12L, LocalDateTime.now().minusSeconds(10));
+        when(generationRepository.findAllByStatus(GenerationStatus.DRAFT_READY)).thenReturn(List.of(gen));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(renderExecutor, never()).requestRender(any());
+        verify(generationRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("DRAFT_READY가 된 지 scan 주기가 지났고 렌더링 마감 전이면 매 주기 렌더링을 다시 요청한다")
+    void renderRetriedUntilDeadline() {
+        ContentGeneration gen = draftReadyGeneration(13L, LocalDateTime.now().minusMinutes(10));
+        when(generationRepository.findAllByStatus(GenerationStatus.DRAFT_READY)).thenReturn(List.of(gen));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(renderExecutor).requestRender(13L);
+        verify(generationRepository, never()).save(any());
+        assertThat(gen.getStatus()).isEqualTo(GenerationStatus.DRAFT_READY);
+    }
+
+    @Test
+    @DisplayName("렌더링 30분 마감이 지난 DRAFT_READY 건은 요청하지 않고 FAILED 처리한다")
+    void renderOverdueFails() {
+        ContentGeneration gen = draftReadyGeneration(14L,
+            LocalDateTime.now().minusSeconds(RENDER_DEADLINE_SECONDS + 30));
+        when(generationRepository.findAllByStatus(GenerationStatus.DRAFT_READY)).thenReturn(List.of(gen));
+        givenReloadable(gen);
+
+        scheduler.pollQueuedGenerations();
+
+        verify(renderExecutor, never()).requestRender(any());
+        verify(generationRepository).save(savedCaptor.capture());
+        assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+    }
+
+    @Test
+    @DisplayName("draft_ready_at이 없는 기존 DRAFT_READY 건은 지금부터 마감을 세고 렌더링을 요청한다")
+    void renderBackfillsLegacyDraftReady() {
+        ContentGeneration gen = draftReadyGeneration(15L, null);
+        when(generationRepository.findAllByStatus(GenerationStatus.DRAFT_READY)).thenReturn(List.of(gen));
+        givenReloadable(gen);
+
+        scheduler.pollQueuedGenerations();
+
+        assertThat(gen.getDraftReadyAt()).isNotNull();
+        assertThat(gen.getStatus()).isEqualTo(GenerationStatus.DRAFT_READY);
+        verify(renderExecutor).requestRender(15L);
+    }
+
+    @Test
+    @DisplayName("렌더링 중 콜백으로 COMPLETED가 된 건은 마감 처리로 덮어쓰지 않는다")
+    void renderOverdueDoesNotOverwriteCompleted() {
+        ContentGeneration snapshot = draftReadyGeneration(16L,
+            LocalDateTime.now().minusSeconds(RENDER_DEADLINE_SECONDS + 30));
+        ContentGeneration latest = draftReadyGeneration(16L,
+            LocalDateTime.now().minusSeconds(RENDER_DEADLINE_SECONDS + 30));
+        latest.complete("{}", "16");
+        when(generationRepository.findAllByStatus(GenerationStatus.DRAFT_READY)).thenReturn(List.of(snapshot));
+        when(generationRepository.findById(16L)).thenReturn(Optional.of(latest));
+
+        scheduler.pollQueuedGenerations();
+
+        verify(generationRepository, never()).save(any());
+        assertThat(latest.getStatus()).isEqualTo(GenerationStatus.COMPLETED);
     }
 }

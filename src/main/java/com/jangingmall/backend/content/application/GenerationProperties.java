@@ -9,5 +9,6 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public record GenerationProperties(
     @Min(60) @DefaultValue("1861") long deadlineSeconds,
-    @Min(10_000) @DefaultValue("60000") long scanMillis
+    @Min(10_000) @DefaultValue("60000") long scanMillis,
+    @Min(60) @DefaultValue("1800") long renderDeadlineSeconds
 ) {}

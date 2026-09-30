@@ -12,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
@@ -38,6 +40,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withNoContent;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 class RestAiContentClientTest {
@@ -276,5 +279,99 @@ class RestAiContentClientTest {
         contentClient.deleteProduct(42L);
 
         syncMockServer.verify();
+    }
+
+    // ── 렌더링 요청(approveRender) ────────────────────────────────────────────
+
+    private static final String STATUS_WITH_DRAFT = """
+        {"job_id":"job-1","request_id":"req-1","status":"DRAFT_READY","progress":100,
+         "draft":{"draft_id":"job-1","generation_id":"42","version":1,
+                  "draft":{"product_name":"청자 다완","summary":"요약","hero_headline":"제목","hero_description":"설명"}}}
+        """;
+
+    private void expectDraftStatus(String body) {
+        generationMockServer
+            .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs/job-1"))
+            .andExpect(method(HttpMethod.GET))
+            .andExpect(header("X-AI-Internal-Token", AI_INTERNAL_TOKEN))
+            .andRespond(withSuccess(body, MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    @DisplayName("렌더링 요청 — 상태 조회로 받은 초안을 그대로 담아 multipart metadata로 detail-page-renders에 전송한다")
+    void approveRender_sendsDraftAsMultipartMetadata() {
+        expectDraftStatus(STATUS_WITH_DRAFT);
+        generationMockServer
+            .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-renders"))
+            .andExpect(method(HttpMethod.POST))
+            .andExpect(header("X-AI-Internal-Token", AI_INTERNAL_TOKEN))
+            .andExpect(header("Idempotency-Key", "render-42"))
+            .andExpect(header("Content-Type", containsString("multipart/form-data")))
+            .andExpect(content().string(containsString("name=\"metadata\"")))
+            .andExpect(content().string(containsString("\"product_id\":\"10\"")))
+            .andExpect(content().string(containsString("\"idempotency_key\":\"render-42\"")))
+            .andExpect(content().string(containsString("\"draft_id\":\"job-1\"")))
+            .andExpect(content().string(containsString("\"hero_headline\":\"제목\"")))
+            .andExpect(content().string(containsString("\"source_generation_id\":\"42\"")))
+            .andRespond(withSuccess("{\"status\":\"COMPLETED\"}", MediaType.APPLICATION_JSON));
+
+        contentClient.approveRender("job-1", 42L, 10L);
+
+        generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("렌더링 요청 — 상태 응답에 초안이 없으면 렌더링을 요청하지 않고 예외를 던진다")
+    void approveRender_withoutDraft_failsWithoutRenderCall() {
+        expectDraftStatus("{\"job_id\":\"job-1\",\"status\":\"QUEUED\",\"draft\":null}");
+
+        assertThatThrownBy(() -> contentClient.approveRender("job-1", 42L, 10L))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessageContaining("초안");
+
+        generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("렌더링 요청 — 이미 같은 키로 렌더 중(409 in progress)이면 중복 요청으로 보고 정상 종료한다")
+    void approveRender_alreadyInProgress_isIgnored() {
+        expectDraftStatus(STATUS_WITH_DRAFT);
+        generationMockServer
+            .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-renders"))
+            .andRespond(withStatus(HttpStatus.CONFLICT)
+                .body("{\"detail\":\"Approval is already in progress\"}")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        contentClient.approveRender("job-1", 42L, 10L);
+
+        generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("렌더링 요청 — 멱등성 키 충돌(409)은 진행 중이 아니므로 예외를 전파한다")
+    void approveRender_idempotencyConflict_throws() {
+        expectDraftStatus(STATUS_WITH_DRAFT);
+        generationMockServer
+            .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-renders"))
+            .andRespond(withStatus(HttpStatus.CONFLICT)
+                .body("{\"detail\":\"Idempotency key conflict\"}")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        assertThatThrownBy(() -> contentClient.approveRender("job-1", 42L, 10L))
+            .isInstanceOf(HttpClientErrorException.Conflict.class);
+    }
+
+    @Test
+    @DisplayName("렌더링 요청 — AI가 422 등으로 거절하면 예외를 전파한다")
+    void approveRender_rejected_throws() {
+        expectDraftStatus(STATUS_WITH_DRAFT);
+        generationMockServer
+            .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-renders"))
+            .andRespond(withStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body("{\"detail\":\"invalid\"}")
+                .contentType(MediaType.APPLICATION_JSON));
+
+        assertThatThrownBy(() -> contentClient.approveRender("job-1", 42L, 10L))
+            .isInstanceOf(HttpClientErrorException.class);
     }
 }

@@ -8,7 +8,8 @@ public interface AiContentClient {
 
     String getJobStatus(String jobId);
 
-    void approveRender(String jobId, Long generationId);
+    /** AI 초안(draft)을 그대로 승인해 최종 렌더링을 요청한다. 동기 호출이며 완료 결과는 AI가 콜백으로 전달한다. */
+    void approveRender(String jobId, Long generationId, Long productId);
 
     void syncProduct(AiProductSyncPayload payload);
 
