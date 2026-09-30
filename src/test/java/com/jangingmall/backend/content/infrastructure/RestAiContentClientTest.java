@@ -31,6 +31,8 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -43,6 +45,11 @@ class RestAiContentClientTest {
     private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
         .findAndAddModules()
         .build();
+
+    private static final byte[] PNG_BYTES = {(byte) 0x89, 'P', 'N', 'G', '\r', '\n', 0x1A, '\n', 0, 0, 0, 0};
+    private static final byte[] JPEG_BYTES = {(byte) 0xFF, (byte) 0xD8, (byte) 0xFF, (byte) 0xE0, 0, 0};
+    private static final byte[] WEBP_BYTES = {'R', 'I', 'F', 'F', 0, 0, 0, 0, 'W', 'E', 'B', 'P'};
+    private static final byte[] GIF_BYTES = {'G', 'I', 'F', '8', '9', 'a', 0, 0};
 
     private MockRestServiceServer generationMockServer;
     private MockRestServiceServer syncMockServer;
@@ -138,7 +145,7 @@ class RestAiContentClientTest {
     @DisplayName("이미지 다운로드가 성공하면 AI 서버에 job을 제출한다")
     void submitJob_validImage_submits() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
-        server.createContext("/ok", exchange -> respond(exchange, 200, "image/webp", "webp-bytes"));
+        server.createContext("/ok", exchange -> respond(exchange, 200, "image/webp", WEBP_BYTES));
         server.start();
         try {
             String acceptedJson = OBJECT_MAPPER.writeValueAsString(Map.of(
@@ -159,8 +166,68 @@ class RestAiContentClientTest {
         generationMockServer.verify();
     }
 
+    @Test
+    @DisplayName("실제 이미지 종류(PNG, JPEG, WebP)에 맞는 파일명과 Content-Type으로 AI 서버에 전송한다")
+    void submitJob_declaresActualImageMimeType() throws Exception {
+        record Case(String path, byte[] bytes, String mime, String extension) {}
+        List<Case> cases = List.of(
+            new Case("/png", PNG_BYTES, "image/png", "png"),
+            new Case("/jpg", JPEG_BYTES, "image/jpeg", "jpg"),
+            new Case("/webp", WEBP_BYTES, "image/webp", "webp"));
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        for (Case c : cases) {
+            // 서버가 잘못된 Content-Type(octet-stream)을 줘도 바이트 시그니처로 판별해야 한다
+            server.createContext(c.path(), exchange -> respond(exchange, 200, "application/octet-stream", c.bytes()));
+        }
+        server.start();
+        try {
+            String acceptedJson = OBJECT_MAPPER.writeValueAsString(Map.of(
+                "product_id", "10", "job_id", "job-abc", "request_id", "req-def", "status", "QUEUED",
+                "status_url", "http://ai/status/job-abc", "created_at", OffsetDateTime.now().toString()));
+            for (Case c : cases) {
+                generationMockServer.reset();
+                generationMockServer
+                    .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs"))
+                    .andExpect(content().string(containsString("filename=\"product_image." + c.extension() + "\"")))
+                    .andExpect(content().string(containsString("Content-Type: " + c.mime())))
+                    .andRespond(withSuccess(acceptedJson, MediaType.APPLICATION_JSON));
+
+                contentClient.submitJob(1L, 10L,
+                    List.of("http://127.0.0.1:" + server.getAddress().getPort() + c.path()), "상품명", "과정", "관리법");
+
+                generationMockServer.verify();
+            }
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    @Test
+    @DisplayName("PNG·JPEG·WebP가 아닌 이미지(GIF)나 시그니처가 맞지 않는 본문은 AI 서버에 요청하지 않는다")
+    void submitJob_unsupportedImageBytes_failsWithoutCallingAi() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/gif", exchange -> respond(exchange, 200, "image/gif", GIF_BYTES));
+        server.createContext("/fake", exchange -> respond(exchange, 200, "image/png", "<html>not an image</html>"));
+        server.start();
+        try {
+            String base = "http://127.0.0.1:" + server.getAddress().getPort();
+            assertThatThrownBy(() -> contentClient.submitJob(1L, 10L, List.of(base + "/gif"), "상품명", "과정", "관리법"))
+                .isInstanceOf(AiImageFetchException.class)
+                .hasMessageContaining("지원하지 않는 이미지 형식");
+            assertThatThrownBy(() -> contentClient.submitJob(1L, 10L, List.of(base + "/fake"), "상품명", "과정", "관리법"))
+                .isInstanceOf(AiImageFetchException.class);
+        } finally {
+            server.stop(0);
+        }
+
+        generationMockServer.verify();
+    }
+
     private static void respond(HttpExchange exchange, int status, String contentType, String body) throws IOException {
-        byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+        respond(exchange, status, contentType, body.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private static void respond(HttpExchange exchange, int status, String contentType, byte[] bytes) throws IOException {
         exchange.getResponseHeaders().add("Content-Type", contentType);
         exchange.sendResponseHeaders(status, bytes.length);
         try (OutputStream out = exchange.getResponseBody()) {
