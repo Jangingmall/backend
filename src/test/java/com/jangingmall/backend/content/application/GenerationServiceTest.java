@@ -3,6 +3,7 @@ package com.jangingmall.backend.content.application;
 import tools.jackson.databind.ObjectMapper;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
+import com.jangingmall.backend.content.domain.GenerationFailureReason;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ConflictException;
@@ -329,23 +330,73 @@ class GenerationServiceTest {
             .isInstanceOf(NotFoundException.class);
     }
 
-    @Test
-    @DisplayName("멀티파트 콜백 — 이미 FAILED 처리된 생성 요청의 늦은 콜백은 저장하지 않고 ConflictException을 던진다")
-    void completeWithImagesRejectsFailedGeneration() {
+    private ContentGeneration failedGeneration(GenerationFailureReason reason) {
         ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
         ReflectionTestUtils.setField(generation, "id", 1L);
-        generation.fail();
+        generation.fail(reason);
+        return generation;
+    }
+
+    private BeToAiPersistAckResponse completeLate(ContentGeneration generation) {
         when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
         when(generationRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(generation));
-
         MultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", "image/jpeg", new byte[]{1});
         GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
+        return generationService.completeWithImages(command, detailImage, Map.of(), Map.of(), "10");
+    }
 
-        assertThatThrownBy(() -> generationService.completeWithImages(command, detailImage, Map.of(), Map.of(), "10"))
-            .isInstanceOf(ConflictException.class);
+    @Test
+    @DisplayName("멀티파트 콜백 — 마감 초과로 FAILED가 된 건에 결과가 늦게 도착하면 COMPLETED로 되돌려 저장한다")
+    void completeWithImagesAcceptsLateResultAfterDeadline() {
+        ContentGeneration generation = failedGeneration(GenerationFailureReason.RENDER_DEADLINE);
+        when(contentService.canOverwriteWithAiResult(10L)).thenReturn(true);
+        when(generationRepository.save(any())).thenReturn(generation);
+
+        BeToAiPersistAckResponse ack = completeLate(generation);
+
+        assertThat(ack.status()).isEqualTo("SAVED");
+        assertThat(generation.getStatus()).isEqualTo(GenerationStatus.COMPLETED);
+        assertThat(generation.getFailureReason()).isNull();
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/detail-page.jpg"), eq("image/jpeg"), any());
+        verify(contentService).storeReactDocument(any());
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — AI가 실패를 확정한 건의 콜백은 저장하지 않고 ConflictException을 던진다")
+    void completeWithImagesRejectsAiFailed() {
+        ContentGeneration generation = failedGeneration(GenerationFailureReason.AI_FAILED);
+
+        assertThatThrownBy(() -> completeLate(generation)).isInstanceOf(ConflictException.class);
+
+        assertThat(generation.getStatus()).isEqualTo(GenerationStatus.FAILED);
         verify(imageStorage, never()).put(any(), any(), any(), any());
         verify(contentService, never()).storeReactDocument(any());
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — 같은 상품에 더 새로운 생성이 있으면 늦은 결과를 거절한다")
+    void completeWithImagesRejectsWhenNewerGenerationExists() {
+        ContentGeneration generation = failedGeneration(GenerationFailureReason.RENDER_DEADLINE);
+        when(generationRepository.existsNewerNonFailed(eq(10L), any())).thenReturn(true);
+
+        assertThatThrownBy(() -> completeLate(generation)).isInstanceOf(ConflictException.class);
+
         assertThat(generation.getStatus()).isEqualTo(GenerationStatus.FAILED);
+        verify(imageStorage, never()).put(any(), any(), any(), any());
+        verify(contentService, never()).storeReactDocument(any());
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — 사용자가 이미 콘텐츠를 수정했거나 검수 중이면 늦은 결과를 거절한다")
+    void completeWithImagesRejectsWhenContentEdited() {
+        ContentGeneration generation = failedGeneration(GenerationFailureReason.AI_DEADLINE);
+        when(contentService.canOverwriteWithAiResult(10L)).thenReturn(false);
+
+        assertThatThrownBy(() -> completeLate(generation)).isInstanceOf(ConflictException.class);
+
+        assertThat(generation.getStatus()).isEqualTo(GenerationStatus.FAILED);
+        verify(imageStorage, never()).put(any(), any(), any(), any());
+        verify(contentService, never()).storeReactDocument(any());
     }
 
     @Test

@@ -24,6 +24,8 @@ interface JpaContentGenerationRepositoryJpa extends JpaRepository<ContentGenerat
     List<ContentGeneration> findAllByStatus(GenerationStatus status);
     Optional<ContentGeneration> findFirstByProductIdAndStatusOrderByRequestedAtDesc(Long productId, GenerationStatus status);
 
+    boolean existsByProductIdAndRequestedAtAfterAndStatusNot(Long productId, LocalDateTime requestedAt, GenerationStatus status);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select g from ContentGeneration g where g.id = :id")
     Optional<ContentGeneration> findByIdForUpdate(@Param("id") Long id);
@@ -57,6 +59,11 @@ class JpaContentGenerationRepository implements ContentGenerationRepository {
     @Override
     public Optional<ContentGeneration> findByIdForUpdate(Long id) {
         return jpa.findByIdForUpdate(id);
+    }
+
+    @Override
+    public boolean existsNewerNonFailed(Long productId, LocalDateTime requestedAfter) {
+        return jpa.existsByProductIdAndRequestedAtAfterAndStatusNot(productId, requestedAfter, GenerationStatus.FAILED);
     }
 
     @Override

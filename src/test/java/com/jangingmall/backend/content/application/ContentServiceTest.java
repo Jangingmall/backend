@@ -174,6 +174,45 @@ class ContentServiceTest {
     }
 
     @Test
+    @DisplayName("늦은 AI 결과 덮어쓰기 — 콘텐츠가 없으면 허용한다")
+    void canOverwriteWithAiResultWhenNoContent() {
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.empty());
+
+        assertThat(contentService.canOverwriteWithAiResult(10L)).isTrue();
+    }
+
+    @Test
+    @DisplayName("늦은 AI 결과 덮어쓰기 — AI 이력뿐인 DRAFT 콘텐츠는 허용한다")
+    void canOverwriteWithAiResultWhenOnlyAiHistory() {
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+        when(historyRepository.findAllByContentIdOrderByVersionAsc(1L))
+            .thenReturn(java.util.List.of(ContentEditHistory.record(1L, 1, EditedByType.AI, null)));
+
+        assertThat(contentService.canOverwriteWithAiResult(10L)).isTrue();
+    }
+
+    @Test
+    @DisplayName("늦은 AI 결과 덮어쓰기 — 사용자가 수정한 이력이 있으면 거절한다")
+    void cannotOverwriteWithAiResultWhenArtisanEdited() {
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+        when(historyRepository.findAllByContentIdOrderByVersionAsc(1L))
+            .thenReturn(java.util.List.of(
+                ContentEditHistory.record(1L, 1, EditedByType.AI, null),
+                ContentEditHistory.record(1L, 2, EditedByType.ARTISAN, 1L)));
+
+        assertThat(contentService.canOverwriteWithAiResult(10L)).isFalse();
+    }
+
+    @Test
+    @DisplayName("늦은 AI 결과 덮어쓰기 — 검수 중(DRAFT가 아닌) 콘텐츠는 거절한다")
+    void cannotOverwriteWithAiResultWhenNotDraft() {
+        sampleContent.submitForReview();
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+
+        assertThat(contentService.canOverwriteWithAiResult(10L)).isFalse();
+    }
+
+    @Test
     @DisplayName("react_document 저장 — 기존 콘텐츠가 있으면 덮어쓴다")
     void storeReactDocumentUpdate() {
         sampleContent.storeReactDocument("{\"schemaVersion\":\"1.0\"}");

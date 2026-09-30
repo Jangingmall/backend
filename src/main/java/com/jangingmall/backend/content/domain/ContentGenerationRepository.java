@@ -15,6 +15,9 @@ public interface ContentGenerationRepository {
      * DRAFT_READY 건의 렌더링 요청 권한을 원자적으로 선점한다. 아직 선점되지 않았거나 선점 시각이 staleBefore보다
      * 이전일 때만 성공(true)하므로, 여러 인스턴스가 같은 건을 동시에 요청하지 않는다.
      */
+    /** 같은 상품에 기준 시각보다 나중에 요청됐고 FAILED가 아닌 생성 건이 있는지. */
+    boolean existsNewerNonFailed(Long productId, LocalDateTime requestedAfter);
+
     boolean claimRender(Long id, LocalDateTime now, LocalDateTime staleBefore);
     Optional<ContentGeneration> findByIdAndProductId(Long id, Long productId);
     Optional<ContentGeneration> findByIdempotencyKey(String idempotencyKey);

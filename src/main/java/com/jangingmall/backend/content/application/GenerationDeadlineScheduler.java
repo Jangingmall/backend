@@ -4,6 +4,7 @@ import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
+import com.jangingmall.backend.content.domain.GenerationFailureReason;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,12 +80,12 @@ public class GenerationDeadlineScheduler {
                     requestRender(generationId);
                 }
             } else if (AI_STATUS_FAILED.equals(aiStatus)) {
-                if (transition(generationId, GenerationStatus.QUEUED, ContentGeneration::fail)) {
+                if (transition(generationId, GenerationStatus.QUEUED, gen -> gen.fail(GenerationFailureReason.AI_FAILED))) {
                     failed++;
                     log.warn("AI 작업 실패 확인 generationId={} jobId={}", generationId, jobId);
                 }
             } else if (overdue) {
-                if (transition(generationId, GenerationStatus.QUEUED, ContentGeneration::fail)) {
+                if (transition(generationId, GenerationStatus.QUEUED, gen -> gen.fail(GenerationFailureReason.AI_DEADLINE))) {
                     expired++;
                     log.warn("AI 생성 데드라인 초과 — FAILED 처리 generationId={} jobId={} requestedAt={} lastAiStatus={}",
                         generationId, jobId, generation.getRequestedAt(), aiStatus);
@@ -119,7 +120,7 @@ public class GenerationDeadlineScheduler {
         for (ContentGeneration generation : processing) {
             Long generationId = generation.getId();
             if (generation.getRequestedAt().isBefore(deadline)) {
-                if (transition(generationId, GenerationStatus.PROCESSING, ContentGeneration::fail)) {
+                if (transition(generationId, GenerationStatus.PROCESSING, gen -> gen.fail(GenerationFailureReason.SUBMIT_DEADLINE))) {
                     expired++;
                     log.warn("AI 제출 데드라인 초과 — FAILED 처리 generationId={} requestedAt={}",
                         generationId, generation.getRequestedAt());
@@ -168,7 +169,7 @@ public class GenerationDeadlineScheduler {
                 continue;
             }
             if (draftReadyAt.isBefore(renderDeadline)) {
-                if (transition(generationId, GenerationStatus.DRAFT_READY, ContentGeneration::fail)) {
+                if (transition(generationId, GenerationStatus.DRAFT_READY, gen -> gen.fail(GenerationFailureReason.RENDER_DEADLINE))) {
                     expired++;
                     log.warn("AI 렌더 데드라인 초과 — FAILED 처리 generationId={} jobId={} draftReadyAt={}",
                         generationId, generation.getJobId(), draftReadyAt);

@@ -5,6 +5,7 @@ import com.jangingmall.backend.content.domain.AiImageFetchException;
 import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
+import com.jangingmall.backend.content.domain.GenerationFailureReason;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -153,6 +154,7 @@ class GenerationDeadlineSchedulerTest {
         verify(generationRepository).save(savedCaptor.capture());
         assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
         assertThat(savedCaptor.getValue().getCompletedAt()).isNotNull();
+        assertThat(savedCaptor.getValue().getFailureReason()).isEqualTo(GenerationFailureReason.AI_FAILED);
     }
 
     @ParameterizedTest
@@ -183,6 +185,7 @@ class GenerationDeadlineSchedulerTest {
         verify(aiContentClient).getJobStatus("job-4");
         verify(generationRepository).save(savedCaptor.capture());
         assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+        assertThat(savedCaptor.getValue().getFailureReason()).isEqualTo(GenerationFailureReason.AI_DEADLINE);
     }
 
     @Test
@@ -332,6 +335,7 @@ class GenerationDeadlineSchedulerTest {
         verify(aiContentClient, never()).submitJob(any(), any(), any(), any(), any(), any());
         verify(generationRepository).save(savedCaptor.capture());
         assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+        assertThat(savedCaptor.getValue().getFailureReason()).isEqualTo(GenerationFailureReason.SUBMIT_DEADLINE);
     }
 
     @Test
@@ -398,6 +402,7 @@ class GenerationDeadlineSchedulerTest {
         verify(renderExecutor, never()).requestRender(any());
         verify(generationRepository).save(savedCaptor.capture());
         assertThat(savedCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+        assertThat(savedCaptor.getValue().getFailureReason()).isEqualTo(GenerationFailureReason.RENDER_DEADLINE);
     }
 
     @Test

@@ -97,9 +97,7 @@ public class GenerationService {
                 generation.getId().toString(), productIdStr, "ALREADY_SAVED", generation.getCompletedAt());
         }
         if (generation.getStatus() == GenerationStatus.FAILED) {
-            // 마감(또는 AI 실패 확정) 뒤에 늦게 도착한 결과는 저장하지 않는다. 409면 GenAI도 재전송하지 않는다.
-            log.warn("이미 FAILED 처리된 생성의 늦은 콜백을 거절합니다 generationId={}", command.generationId());
-            throw new ConflictException(GenerationErrorMessage.ALREADY_FAILED.message());
+            verifyLateResultAcceptable(generation);
         }
 
         uploadDetailPageImage(command.generationId().toString(), detailPageImage);
@@ -132,6 +130,29 @@ public class GenerationService {
         eventPublisher.publishEvent(new AiRenderApprovalRequestedEvent(generation.getJobId(), generation.getId()));
         log.info("AI 렌더 수동 요청 generationId={} requesterId={}", generationId, requesterId);
         return GenerationResponse.from(generation);
+    }
+
+    /**
+     * 마감 초과로 FAILED가 된 뒤 결과가 늦게 도착하면 COMPLETED로 되돌려 저장한다(사용자는 조회로 확인한다).
+     * 다만 AI가 실패를 확정한 건, 그 사이 같은 상품에 더 새로운 생성이 생긴 건, 사용자가 이미 콘텐츠를 손댄 건은
+     * 결과를 덮어쓰지 않도록 거절한다. 409를 돌려주면 GenAI도 재전송을 멈춘다.
+     */
+    private void verifyLateResultAcceptable(ContentGeneration generation) {
+        Long generationId = generation.getId();
+        if (!generation.acceptsLateResult()) {
+            log.warn("늦은 완료 콜백 거절 generationId={} reason=AI_FAILED", generationId);
+            throw new ConflictException(GenerationErrorMessage.ALREADY_FAILED.message());
+        }
+        if (generationRepository.existsNewerNonFailed(generation.getProductId(), generation.getRequestedAt())) {
+            log.warn("늦은 완료 콜백 거절 generationId={} reason=NEWER_GENERATION", generationId);
+            throw new ConflictException(GenerationErrorMessage.LATE_RESULT_SUPERSEDED.message());
+        }
+        if (!contentService.canOverwriteWithAiResult(generation.getProductId())) {
+            log.warn("늦은 완료 콜백 거절 generationId={} reason=CONTENT_EDITED", generationId);
+            throw new ConflictException(GenerationErrorMessage.LATE_RESULT_SUPERSEDED.message());
+        }
+        log.info("늦은 완료 콜백 수용 — FAILED를 COMPLETED로 되돌립니다 generationId={} failureReason={} failedAt={}",
+            generationId, generation.getFailureReason(), generation.getCompletedAt());
     }
 
     @Transactional(readOnly = true)

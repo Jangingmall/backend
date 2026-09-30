@@ -11,6 +11,7 @@ import com.jangingmall.backend.content.domain.ContentErrorMessage;
 import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.ContentBlock;
 import com.jangingmall.backend.content.domain.ContentBlockRepository;
+import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
 import com.jangingmall.backend.content.domain.Interview;
 import com.jangingmall.backend.content.domain.InterviewRepository;
@@ -119,6 +120,19 @@ public class ContentService {
         return historyRepository.findAllByContentIdOrderByVersionAsc(content.getId()).stream()
             .map(ContentResponse.VersionHistory::from)
             .toList();
+    }
+
+    /**
+     * 늦게 도착한 AI 결과로 이 상품의 콘텐츠를 덮어써도 되는지. 콘텐츠가 없거나, 사용자가 손대지 않은(AI 이력뿐인)
+     * DRAFT일 때만 허용해 사용자의 수정본·검수 중인 콘텐츠를 보호한다.
+     */
+    @Transactional(readOnly = true)
+    public boolean canOverwriteWithAiResult(Long productId) {
+        return contentRepository.findByProductId(productId)
+            .map(content -> content.getStatus() == ContentStatus.DRAFT
+                && historyRepository.findAllByContentIdOrderByVersionAsc(content.getId()).stream()
+                    .noneMatch(history -> history.getEditedByType() == EditedByType.ARTISAN))
+            .orElse(true);
     }
 
     @Transactional
