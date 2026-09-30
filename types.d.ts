@@ -1993,6 +1993,21 @@ export interface components {
             /** @description 인증할 이메일 (@NotBlank, @Email, 최대 255자) */
             email: string;
         };
+        "api-payments-webhooks-toss2067222078": {
+            /** @description 이벤트 데이터 */
+            data: {
+                /** @description 총 결제 금액 */
+                totalAmount: number;
+                /** @description 주문번호 */
+                orderId: string;
+                /** @description 결제 키 */
+                paymentKey: string;
+                /** @description 결제 상태 */
+                status: string;
+            };
+            /** @description 이벤트 유형 */
+            eventType: string;
+        };
         "api-member-me-wishes525484891": {
             data?: {
                 /** @description 현재 페이지 */
@@ -2059,21 +2074,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-payments-webhooks-toss2067222078": {
-            /** @description 이벤트 데이터 */
-            data: {
-                /** @description 총 결제 금액 */
-                totalAmount: number;
-                /** @description 주문번호 */
-                orderId: string;
-                /** @description 결제 키 */
-                paymentKey: string;
-                /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description 이벤트 유형 */
-            eventType: string;
         };
         "api-payments-methods1245291826": {
             data?: {
@@ -2314,7 +2314,7 @@ export interface components {
             /** @description 이메일 (@NotBlank, @Email, 최대 255자) */
             email: string;
         };
-        "api-member-artisans-artisanId-1004667003": {
+        "api-member-artisans-me-1004667003": {
             data?: {
                 /** @description 경력 연수 */
                 careerYears: number;
@@ -2971,6 +2971,30 @@ export interface components {
             /** @description 썸네일 URL (최대 500자) */
             thumbnailUrl?: string | null;
         };
+        "api-products-productId-reviews916845673": {
+            data?: {
+                /** @description 작성일시 */
+                createdAt: string;
+                /** @description 첨부 이미지 ID 목록 */
+                images?: (Record<string, never> | boolean | string | number)[] | null;
+                /** @description 상품 ID */
+                productId: number;
+                /** @description 주문 항목 ID */
+                orderItemId: number;
+                /** @description 평점 */
+                rating: number;
+                /** @description 후기 ID */
+                reviewId: number;
+                /** @description 후기 내용 */
+                content: string;
+                /** @description 작성자 ID */
+                writerId: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
         "api-member-artisans-1902721574": {
             data?: {
                 /** @description 현재 페이지(0-based) */
@@ -3021,30 +3045,6 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-products-productId-reviews916845673": {
-            data?: {
-                /** @description 작성일시 */
-                createdAt: string;
-                /** @description 첨부 이미지 ID 목록 */
-                images?: (Record<string, never> | boolean | string | number)[] | null;
-                /** @description 상품 ID */
-                productId: number;
-                /** @description 주문 항목 ID */
-                orderItemId: number;
-                /** @description 평점 */
-                rating: number;
-                /** @description 후기 ID */
-                reviewId: number;
-                /** @description 후기 내용 */
-                content: string;
-                /** @description 작성자 ID */
-                writerId: number;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-products-productId-status-2050486651": {
             /** @description 변경할 상태 (@NotNull, ProductStatus 값) */
             status: string;
@@ -3052,6 +3052,44 @@ export interface components {
         "api-payments-returns-returnId-status-448941713": {
             /** @description 변경할 상태 (APPROVED) */
             status: string;
+        };
+        "api-images-presigned-url-1900015981": {
+            data?: {
+                /** @description 이미지 ID (ULID) */
+                imageId: string;
+                /** @description 신규 클라이언트용 uploads 별칭 */
+                variants: {
+                    /** @description S3 PUT 전용 Presigned URL */
+                    uploadUrl: string;
+                    /** @description S3 오브젝트 키 */
+                    objectKey: string;
+                    /** @description 기존 클라이언트 호환용 uploadUrl 별칭 */
+                    presignedUrl: string;
+                    /** @description 공개 이미지 조회 URL (RETURN 용도는 null) */
+                    viewUrl: string;
+                    /** @description 변형 이름 */
+                    variant: string;
+                }[];
+                /** @description URL 유효 시간 (초) */
+                expiresInSeconds: number;
+                /** @description 각 변형별 업로드 URL */
+                uploads: {
+                    /** @description S3 PUT 전용 Presigned URL */
+                    uploadUrl: string;
+                    /** @description S3 오브젝트 키 */
+                    objectKey: string;
+                    /** @description 기존 클라이언트 호환용 uploadUrl 별칭 */
+                    presignedUrl: string;
+                    /** @description 공개 이미지 조회 URL (RETURN 용도는 null) */
+                    viewUrl: string;
+                    /** @description 변형 이름 */
+                    variant: string;
+                }[];
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
         };
         "api-member-me-reviews-writable1471322465": {
             data?: {
@@ -3132,44 +3170,6 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-images-presigned-url-1900015981": {
-            data?: {
-                /** @description 이미지 ID (ULID) */
-                imageId: string;
-                /** @description 신규 클라이언트용 uploads 별칭 */
-                variants: {
-                    /** @description S3 PUT 전용 Presigned URL */
-                    uploadUrl: string;
-                    /** @description S3 오브젝트 키 */
-                    objectKey: string;
-                    /** @description 기존 클라이언트 호환용 uploadUrl 별칭 */
-                    presignedUrl: string;
-                    /** @description 공개 이미지 조회 URL (RETURN 용도는 null) */
-                    viewUrl: string;
-                    /** @description 변형 이름 */
-                    variant: string;
-                }[];
-                /** @description URL 유효 시간 (초) */
-                expiresInSeconds: number;
-                /** @description 각 변형별 업로드 URL */
-                uploads: {
-                    /** @description S3 PUT 전용 Presigned URL */
-                    uploadUrl: string;
-                    /** @description S3 오브젝트 키 */
-                    objectKey: string;
-                    /** @description 기존 클라이언트 호환용 uploadUrl 별칭 */
-                    presignedUrl: string;
-                    /** @description 공개 이미지 조회 URL (RETURN 용도는 null) */
-                    viewUrl: string;
-                    /** @description 변형 이름 */
-                    variant: string;
-                }[];
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-member-me-orders-summary-1045841667": {
             data?: {
                 /** @description 진행 중인 주문 집계 */
@@ -3213,6 +3213,16 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
+        };
+        "api-products-productId-reviews-994178327": {
+            /** @description 첨부 이미지 ID 목록 (최대 5개) */
+            images?: (Record<string, never> | boolean | string | number)[] | null;
+            /** @description 주문 항목 ID */
+            orderItemId: number;
+            /** @description 평점 (1~5) */
+            rating: number;
+            /** @description 후기 내용 (최대 2000자) */
+            content: string;
         };
         "api-member-me-reviews-576450061": {
             data?: {
@@ -3296,17 +3306,7 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-products-productId-reviews-994178327": {
-            /** @description 첨부 이미지 ID 목록 (최대 5개) */
-            images?: (Record<string, never> | boolean | string | number)[] | null;
-            /** @description 주문 항목 ID */
-            orderItemId: number;
-            /** @description 평점 (1~5) */
-            rating: number;
-            /** @description 후기 내용 (최대 2000자) */
-            content: string;
-        };
-        "api-payments-returns-returnId-status-1115423141": {
+        "api-payments-returns-1115423141": {
             data?: {
                 /** @description 신청 일시 */
                 requestedAt: string;
@@ -3941,14 +3941,6 @@ export interface components {
             /** @description 첨부 이미지 ID 목록 (최대 5개) */
             imageIds?: (Record<string, never> | boolean | string | number)[] | null;
         };
-        "api-payments999605347": {
-            /** @description 결제 금액 */
-            amount: number;
-            /** @description 주문 ID */
-            orderId: number;
-            /** @description 결제수단 */
-            paymentMethod?: string | null;
-        };
         "api-member-me-orders-941884244": {
             data?: {
                 /** @description 현재 페이지 */
@@ -4067,6 +4059,14 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
+        };
+        "api-payments999605347": {
+            /** @description 결제 금액 */
+            amount: number;
+            /** @description 주문 ID */
+            orderId: number;
+            /** @description 결제수단 */
+            paymentMethod?: string | null;
         };
         "api-admin-artisans-applications-applicationId-pipeline-277586035": {
             /** @description 자격 등급 (선택) */
@@ -4962,7 +4962,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
@@ -5185,7 +5185,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -5209,7 +5209,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -5261,7 +5261,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
                 };
             };
         };
@@ -6517,7 +6517,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
