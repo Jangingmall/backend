@@ -324,6 +324,21 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 - 작업 요약: EKS IRSA 자격증명 해석용 awssdk sts 의존성 추가 (S3 Presigned URL 500 해결)
 - 시작일: 2026-09-30
 
+### Claude-현재세션 (ai-image-fetch-fail-fast)
+- 브랜치: `fix/ai-image-fetch-fail-fast`
+- 상태: 완료
+- 접근 파일:
+  - `src/main/java/com/jangingmall/backend/content/domain/AiImageFetchException.java` (신규)
+  - `src/main/java/com/jangingmall/backend/content/infrastructure/RestAiContentClient.java`
+  - `src/main/java/com/jangingmall/backend/content/application/GenerationAsyncExecutor.java`
+  - `src/test/java/com/jangingmall/backend/content/infrastructure/RestAiContentClientTest.java`
+  - `src/test/java/com/jangingmall/backend/content/application/GenerationAsyncExecutorTest.java`
+  - `src/main/java/com/jangingmall/backend/content/application/GenerationResponse.java`
+  - `src/test/java/com/jangingmall/backend/content/application/GenerationResponseTest.java` (신규)
+  - `src/test/java/com/jangingmall/backend/content/presentation/GenerationControllerTest.java`
+- 작업 요약: FAILED 응답에 고정 대체 이미지 URL(fallbackImageUrl) 포함 + AI 상품 이미지 다운로드 실패(URL 형식·HTTP 상태·Content-Type) 시 빈 데이터 대신 즉시 실패 처리, 재시도 제외
+- 시작일: 2026-09-30
+
 ## 완료된 작업 (참고용)
 
 (없음)

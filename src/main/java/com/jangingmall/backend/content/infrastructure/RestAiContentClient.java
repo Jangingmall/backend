@@ -2,6 +2,7 @@ package com.jangingmall.backend.content.infrastructure;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.AiImageFetchException;
 import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.AiProductUpdatePayload;
@@ -28,6 +29,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @Component
@@ -216,17 +218,49 @@ class RestAiContentClient implements AiContentClient {
             log.warn("이미지 없이 AI job 제출 generationId={}", generationId);
             return new byte[0];
         }
+        String url = images.getFirst();
         try {
-            HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(images.getFirst()))
-                .GET()
-                .build();
-            return httpClient.send(req, HttpResponse.BodyHandlers.ofByteArray()).body();
+            URI uri = URI.create(url);
+            String scheme = uri.getScheme();
+            if (scheme == null || !(scheme.equalsIgnoreCase("http") || scheme.equalsIgnoreCase("https"))) {
+                throw new IllegalArgumentException("http(s) URL이 아닙니다");
+            }
+            HttpResponse<byte[]> response = httpClient.send(
+                HttpRequest.newBuilder().uri(uri).GET().build(), HttpResponse.BodyHandlers.ofByteArray());
+            int status = response.statusCode();
+            String contentType = response.headers().firstValue("Content-Type").orElse("");
+            byte[] body = response.body();
+            if (status < 200 || status >= 300) {
+                throw new IllegalStateException("HTTP " + status);
+            }
+            if (body == null || body.length == 0) {
+                throw new IllegalStateException("빈 응답 본문");
+            }
+            if (!isImageContentType(contentType)) {
+                throw new IllegalStateException("이미지가 아닌 Content-Type=" + contentType);
+            }
+            log.info("이미지 fetch 완료 generationId={} url={} status={} contentType={} bytes={}",
+                generationId, withoutQuery(url), status, contentType, body.length);
+            return body;
         } catch (Exception e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
             imageFetchFailureCounter.increment();
-            log.warn("이미지 fetch 실패 generationId={} url={} reason={}", generationId, images.getFirst(), e.getMessage());
-            return new byte[0];
+            log.warn("이미지 fetch 실패 generationId={} url={} reason={}", generationId, withoutQuery(url), e.getMessage());
+            throw new AiImageFetchException("이미지를 내려받지 못했습니다: " + e.getMessage(), e);
         }
+    }
+
+    private static boolean isImageContentType(String contentType) {
+        String type = contentType.toLowerCase(Locale.ROOT);
+        return type.startsWith("image/") || type.startsWith("application/octet-stream");
+    }
+
+    /** 서명 URL의 쿼리스트링(서명값)이 로그에 남지 않도록 제거한다. */
+    private static String withoutQuery(String url) {
+        int query = url.indexOf('?');
+        return query < 0 ? url : url.substring(0, query);
     }
 
     private record AiJobMetadata(
