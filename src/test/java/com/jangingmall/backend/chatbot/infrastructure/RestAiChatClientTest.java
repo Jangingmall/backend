@@ -2,6 +2,8 @@ package com.jangingmall.backend.chatbot.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jangingmall.backend.chatbot.domain.AiChatClient;
+import com.jangingmall.backend.chatbot.domain.ChatMessage;
+import com.jangingmall.backend.chatbot.domain.ChatSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -108,5 +110,71 @@ class RestAiChatClientTest {
 
         mockServer.verify();
         assertThat(result.reply()).isEqualTo("재시도 성공");
+    }
+
+    @Test
+    @DisplayName("응답 대기 시간 초과(read timeout)는 재시도하지 않고 바로 fallback을 반환한다")
+    void chat_readTimeoutIsNotRetried() {
+        mockServer.expect(requestTo("http://ai-server/ai/chat"))
+            .andRespond(request -> {
+                throw new java.net.http.HttpTimeoutException("request timed out");
+            });
+
+        AiChatClient.AiChatResult result = chatClient.chat(UUID.randomUUID(), "질문", List.of());
+
+        mockServer.verify();
+        assertThat(result.reply()).isEqualTo(AiChatClient.BACKEND_FALLBACK_REPLY);
+    }
+
+    @Test
+    @DisplayName("연결 시간 초과는 읽기 시간 초과가 아니므로 기존처럼 최대 2회 재시도한다")
+    void chat_connectTimeoutIsRetried() {
+        for (int i = 0; i < 3; i++) {
+            mockServer.expect(requestTo("http://ai-server/ai/chat"))
+                .andRespond(request -> {
+                    throw new java.net.http.HttpConnectTimeoutException("connect timed out");
+                });
+        }
+
+        AiChatClient.AiChatResult result = chatClient.chat(UUID.randomUUID(), "질문", List.of());
+
+        mockServer.verify();
+        assertThat(result.reply()).isEqualTo(AiChatClient.BACKEND_FALLBACK_REPLY);
+    }
+
+    @Test
+    @DisplayName("isReadTimeout — 읽기 시간 초과만 true, 연결 시간 초과와 그 외 예외는 false")
+    void isReadTimeout() {
+        assertThat(RestAiChatClient.isReadTimeout(new org.springframework.web.client.ResourceAccessException(
+            "x", new java.net.http.HttpTimeoutException("read")))).isTrue();
+        assertThat(RestAiChatClient.isReadTimeout(new org.springframework.web.client.ResourceAccessException(
+            "x", new java.net.http.HttpConnectTimeoutException("connect")))).isFalse();
+        assertThat(RestAiChatClient.isReadTimeout(new org.springframework.web.client.ResourceAccessException(
+            "x", new java.io.IOException("reset")))).isFalse();
+    }
+
+    @Test
+    @DisplayName("이전에 저장된 장애 안내 문구(ADMIN)는 AI에 보내는 대화 이력에서 제외한다")
+    void chat_excludesFallbackRepliesFromHistory() throws Exception {
+        UUID sessionId = UUID.randomUUID();
+        ChatMessage userMessage = ChatMessage.of(sessionId, ChatSender.USER, "도자기 추천해줘");
+        ChatMessage aiFallback = ChatMessage.of(sessionId, ChatSender.ADMIN, AiChatClient.AI_SERVER_FALLBACK_REPLY);
+        ChatMessage backendFallback = ChatMessage.of(sessionId, ChatSender.ADMIN, AiChatClient.BACKEND_FALLBACK_REPLY);
+        ChatMessage botMessage = ChatMessage.of(sessionId, ChatSender.ADMIN, "청자 찻잔을 추천드려요");
+        ChatMessage nextUser = ChatMessage.of(sessionId, ChatSender.USER, "더 싼 거");
+        String responseBody = OBJECT_MAPPER.writeValueAsString(Map.of(
+            "reply", "ok", "intent", "narrow_down", "product_ids", List.of(), "suggestions", List.of()));
+        mockServer.expect(requestTo("http://ai-server/ai/chat"))
+            .andExpect(org.springframework.test.web.client.match.MockRestRequestMatchers.content()
+                .string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("지연되고 있어요"))))
+            .andExpect(org.springframework.test.web.client.match.MockRestRequestMatchers.content()
+                .string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("이용할 수 없습니다"))))
+            .andExpect(org.springframework.test.web.client.match.MockRestRequestMatchers.content()
+                .string(org.hamcrest.Matchers.containsString("청자 찻잔을 추천드려요")))
+            .andRespond(withSuccess(responseBody, MediaType.APPLICATION_JSON));
+
+        chatClient.chat(sessionId, "더 싼 거", List.of(userMessage, aiFallback, backendFallback, botMessage, nextUser));
+
+        mockServer.verify();
     }
 }

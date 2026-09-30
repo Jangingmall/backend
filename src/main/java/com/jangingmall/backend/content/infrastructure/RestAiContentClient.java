@@ -190,6 +190,21 @@ class RestAiContentClient implements AiContentClient {
     }
 
     @Override
+    public void updateProductStatus(Long productId, String status) {
+        try {
+            syncClient.put()
+                .uri("/ai/products/{id}", productId)
+                .body(Map.of("product", Map.of("status", status)))
+                .retrieve()
+                .toBodilessEntity();
+            log.info("AI 상품 상태 동기화 완료 productId={} status={}", productId, status);
+        } catch (RestClientException e) {
+            updateProductFailureCounter.increment();
+            log.error("AI 상품 상태 동기화 실패 productId={} reason={}", productId, e.getMessage());
+        }
+    }
+
+    @Override
     public void deleteProduct(Long productId) {
         try {
             syncClient.delete()

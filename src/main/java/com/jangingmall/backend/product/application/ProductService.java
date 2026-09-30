@@ -3,6 +3,7 @@ package com.jangingmall.backend.product.application;
 import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.ContentBlockRepository;
 import com.jangingmall.backend.content.domain.ContentRepository;
+import com.jangingmall.backend.content.domain.AiCatalogCodes;
 import com.jangingmall.backend.content.domain.AiProductUpdatePayload;
 import com.jangingmall.backend.content.domain.Interview;
 import com.jangingmall.backend.content.domain.InterviewRepository;
@@ -195,7 +196,7 @@ public class ProductService {
         Product product = getProduct(command.productId());
         ProductStatus next = ProductStatus.valueOf(command.status());
         product.changeStatus(next, command.requesterId());
-        notifyAiProductUpdated(command.productId(), product);
+        notifyAiProductStatusChanged(command.productId(), product);
         if (eventPublisher != null) {
             eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_STATUS_CHANGED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
         }
@@ -221,19 +222,33 @@ public class ProductService {
             Optional<Interview> interview = interviewRepository.findByProductId(productId);
             String makingStory = interview.map(Interview::getProcess).orElse("");
             String usageCare = interview.map(Interview::getMaterials).orElse("");
-            String categoryCode = product.getCategory() != null ? product.getCategory().getName() : null;
             String subcategoryCode = product.getSubcategory() != null ? product.getSubcategory().getName() : null;
-            String color = product.getColors() != null && !product.getColors().isEmpty() ? product.getColors().getFirst() : null;
+            // 챗봇은 영문 코드를 기대한다(종목·색상·선물테마). 매핑할 수 없는 값은 잘못 추정하지 않는다.
+            String categoryCode = AiCatalogCodes.craftCategory(product.getMaterial(), product.getTitle(), subcategoryCode);
+            String color = AiCatalogCodes.color(
+                product.getColors() != null && !product.getColors().isEmpty() ? product.getColors().getFirst() : null);
             AiProductUpdatePayload payload = new AiProductUpdatePayload(
                 new AiProductUpdatePayload.ProductPatch(
                     product.getTitle(), categoryCode, subcategoryCode, product.getMaterial(), product.getPrice(),
-                    product.getGiftThemes(), product.getPurposeTags(),
+                    AiCatalogCodes.giftThemes(product.getGiftThemes()), product.getPurposeTags(),
                     makingStory, usageCare, color, product.getStatus().name()
                 )
             );
             aiContentClient.updateProduct(productId, payload);
         } catch (Exception e) {
             log.error("AI 상품 수정 동기화 실패 productId={} reason={}", productId, e.getMessage());
+        }
+    }
+
+    /**
+     * 상태만 바뀐 경우에는 상태 한 필드만 보낸다. 전체 스냅샷을 보내면 챗봇이 임베딩 대상 필드가 왔다고 보고 매번
+     * 재임베딩하지만, 상태만 오면 임베딩 없이 값만 갱신한다.
+     */
+    private void notifyAiProductStatusChanged(Long productId, Product product) {
+        try {
+            aiContentClient.updateProductStatus(productId, product.getStatus().name());
+        } catch (Exception e) {
+            log.error("AI 상품 상태 동기화 실패 productId={} reason={}", productId, e.getMessage());
         }
     }
 

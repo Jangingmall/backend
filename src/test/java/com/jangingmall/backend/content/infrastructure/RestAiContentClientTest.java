@@ -267,6 +267,21 @@ class RestAiContentClientTest {
     }
 
     @Test
+    @DisplayName("상품 상태 동기화 — updateProductStatus는 상태 한 필드만 PUT으로 보내 챗봇이 재임베딩하지 않게 한다")
+    void updateProductStatus_sendsOnlyStatus() {
+        syncMockServer.expect(requestTo("http://ai-chat-server/ai/products/42"))
+            .andExpect(method(HttpMethod.PUT))
+            .andExpect(content().string(containsString("\"status\":\"SOLD_OUT\"")))
+            .andExpect(content().string(org.hamcrest.Matchers.not(containsString("\"name\""))))
+            .andExpect(content().string(org.hamcrest.Matchers.not(containsString("making_story"))))
+            .andRespond(withNoContent());
+
+        contentClient.updateProductStatus(42L, "SOLD_OUT");
+
+        syncMockServer.verify();
+    }
+
+    @Test
     @DisplayName("상품 삭제 동기화 — deleteProduct가 챗봇 서버 /ai/products/{id}로 전송된다")
     void deleteProduct_routesToChatBotServer() throws Exception {
         syncMockServer.expect(requestTo("http://ai-chat-server/ai/products/42"))

@@ -16,9 +16,10 @@ import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductRepository;
 import com.jangingmall.backend.product.domain.ProductReviewRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionOperations;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -28,7 +29,6 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ChatService {
 
     private final ChatSessionRepository sessionRepository;
@@ -37,31 +37,61 @@ public class ChatService {
     private final ProductRepository productRepository;
     private final ProductReviewRepository reviewRepository;
     private final ArtisanProfileRepository artisanProfileRepository;
+    private final TransactionOperations transactions;
+
+    @Autowired
+    public ChatService(ChatSessionRepository sessionRepository, ChatMessageRepository messageRepository,
+                       AiChatClient aiChatClient, ProductRepository productRepository,
+                       ProductReviewRepository reviewRepository, ArtisanProfileRepository artisanProfileRepository,
+                       TransactionOperations transactions) {
+        this.sessionRepository = sessionRepository;
+        this.messageRepository = messageRepository;
+        this.aiChatClient = aiChatClient;
+        this.productRepository = productRepository;
+        this.reviewRepository = reviewRepository;
+        this.artisanProfileRepository = artisanProfileRepository;
+        this.transactions = transactions;
+    }
+
+    /** 트랜잭션 없이 각 호출이 직접 실행되는 구성(단위 테스트·레거시 호출용). */
+    public ChatService(ChatSessionRepository sessionRepository, ChatMessageRepository messageRepository,
+                       AiChatClient aiChatClient, ProductRepository productRepository,
+                       ProductReviewRepository reviewRepository, ArtisanProfileRepository artisanProfileRepository) {
+        this(sessionRepository, messageRepository, aiChatClient, productRepository, reviewRepository,
+            artisanProfileRepository, TransactionOperations.withoutTransaction());
+    }
 
     @Transactional
     public ChatResponse.SessionView createSession(ChatCommand.CreateSession command) {
         return ChatResponse.SessionView.from(sessionRepository.save(ChatSession.create(command.memberId())));
     }
 
-    @Transactional
+    /**
+     * AI 호출은 수 초~수 분이 걸릴 수 있으므로 DB 트랜잭션(커넥션)을 잡은 채 기다리지 않는다. 사용자 메시지 저장과
+     * 이력 조회(짧은 트랜잭션) → AI 호출(트랜잭션 없음) → 봇 응답 저장·카드 조립(짧은 트랜잭션) 세 단계로 나눈다.
+     * 응답 형태는 그대로 동기 응답이다.
+     */
     public ChatResponse.SendResult sendMessage(ChatCommand.SendMessage command) {
+        List<ChatMessage> history = transactions.execute(status -> saveUserMessageAndLoadHistory(command));
+        AiChatResult result = aiChatClient.chat(command.sessionId(), command.content(), history);
+        return transactions.execute(status -> saveBotMessageAndAssemble(command, result));
+    }
+
+    private List<ChatMessage> saveUserMessageAndLoadHistory(ChatCommand.SendMessage command) {
         ChatSession session = getSession(command.sessionId());
         verifyOwner(session, command.memberId());
         if (session.isEnded()) {
             throw new BusinessRuleViolationException(ChatErrorMessage.SESSION_ALREADY_ENDED.message());
         }
-
         messageRepository.save(ChatMessage.of(command.sessionId(), ChatSender.USER, command.content()));
+        return messageRepository.findBySessionId(command.sessionId());
+    }
 
-        List<ChatMessage> history = messageRepository.findBySessionId(command.sessionId());
-        AiChatResult result = aiChatClient.chat(command.sessionId(), command.content(), history);
-
+    private ChatResponse.SendResult saveBotMessageAndAssemble(ChatCommand.SendMessage command, AiChatResult result) {
         ChatMessage botMessage = messageRepository.save(
             ChatMessage.of(command.sessionId(), ChatSender.ADMIN, result.reply())
         );
-
         List<ChatResponse.ProductCard> productCards = assembleProductCards(result.products());
-
         return new ChatResponse.SendResult(
             command.sessionId(),
             botMessage.getMessageId(),

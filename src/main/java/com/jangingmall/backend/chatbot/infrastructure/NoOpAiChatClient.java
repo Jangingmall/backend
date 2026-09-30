@@ -17,6 +17,6 @@ class NoOpAiChatClient implements AiChatClient {
     @Override
     public AiChatResult chat(UUID sessionId, String message, List<ChatMessage> history) {
         log.warn("AI_BASE_URL 미설정 — chat skip sessionId={}", sessionId);
-        return new AiChatResult("현재 AI 추천을 이용할 수 없습니다", null, List.of(), List.of());
+        return new AiChatResult(BACKEND_FALLBACK_REPLY, null, List.of(), List.of());
     }
 }

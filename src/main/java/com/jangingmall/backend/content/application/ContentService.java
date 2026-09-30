@@ -1,6 +1,7 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.AiCatalogCodes;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.Content;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
@@ -546,17 +547,20 @@ public class ContentService {
     private AiProductSyncPayload buildSyncPayload(Product product, ArtisanProfile artisan, Optional<Interview> interview) {
         String makingStory = interview.map(Interview::getProcess).orElse("");
         String usageCare = interview.map(Interview::getMaterials).orElse("");
-        String categoryCode = product.getCategory() != null ? product.getCategory().getName() : null;
         String subcategoryCode = product.getSubcategory() != null ? product.getSubcategory().getName() : null;
-        String color = product.getColors() != null && !product.getColors().isEmpty() ? product.getColors().getFirst() : null;
+        // 챗봇은 영문 코드를 기대한다(종목·색상·선물테마·인증등급). 매핑할 수 없는 값은 잘못 추정하지 않는다.
+        String categoryCode = AiCatalogCodes.craftCategory(product.getMaterial(), product.getTitle(), subcategoryCode);
+        String color = AiCatalogCodes.color(
+            product.getColors() != null && !product.getColors().isEmpty() ? product.getColors().getFirst() : null);
 
         AiProductSyncPayload.ArtisanInfo artisanInfo = new AiProductSyncPayload.ArtisanInfo(
-            artisan.getId(), artisan.getBusinessName(), artisan.getCertificationLevel(), artisan.getRegion()
+            artisan.getId(), artisan.getBusinessName(),
+            AiCatalogCodes.certificationLevel(artisan.getCertificationLevel()), artisan.getRegion()
         );
         AiProductSyncPayload.ProductInfo productInfo = new AiProductSyncPayload.ProductInfo(
             product.getId(), product.getTitle(), categoryCode, subcategoryCode,
             product.getMaterial(), product.getPrice(),
-            product.getGiftThemes(), product.getPurposeTags(),
+            AiCatalogCodes.giftThemes(product.getGiftThemes()), product.getPurposeTags(),
             makingStory, usageCare, color, product.getStatus().name()
         );
         return new AiProductSyncPayload(artisanInfo, productInfo);
