@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.image.domain.ImagePurpose;
+import com.jangingmall.backend.member.domain.MemberRole;
 import com.jangingmall.backend.image.domain.ImageUpload;
 import com.jangingmall.backend.image.domain.ImageUploadRepository;
 import com.jangingmall.backend.member.application.MemberAccess;
@@ -101,6 +102,21 @@ class ImageServiceTest {
         });
         verify(storage).presignPut(eq(ImagePurpose.RETURN), any(), eq("image/webp"), eq(4096L),
             any(Duration.class));
+    }
+
+    @Test
+    @DisplayName("ARTISAN·CONTENT 용도 업로드는 ARTISAN이 아니면 FORBIDDEN이다")
+    void rejectsArtisanOnlyPurposeForNonArtisan() {
+        when(memberAccess.requireRole(1L, MemberRole.ARTISAN)).thenThrow(new DomainException(ErrorCode.FORBIDDEN));
+
+        for (ImagePurpose purpose : List.of(ImagePurpose.ARTISAN, ImagePurpose.CONTENT)) {
+            assertThatThrownBy(() -> service.createPresignedUpload(1L,
+                new ImageService.CreatePresignedUpload("a.webp", "image/webp", purpose, 1200, 800, publicVariants())))
+                .isInstanceOfSatisfying(DomainException.class,
+                    exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN));
+        }
+
+        verify(storage, never()).presignPut(any(), any(), any(), any(Long.class), any());
     }
 
     @Test
