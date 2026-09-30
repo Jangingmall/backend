@@ -33,7 +33,7 @@
 </nav>
 <div class="container">
   <h1>TypeScript 타입 정의</h1>
-  <div class="meta">FE 팀 · 장인몰 (미담) API v0.0.1-SNAPSHOT · 2026-09-30 09:09 UTC</div>
+  <div class="meta">FE 팀 · 장인몰 (미담) API v0.0.1-SNAPSHOT · 2026-09-30 09:19 UTC</div>
 
   <div class="tip">OpenAPI 스펙에서 자동 생성된 타입입니다. <code>types.d.ts</code>를 프로젝트에 복사하거나 다운로드하세요.</div>
 
@@ -3257,16 +3257,6 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-products-productId-reviews-994178327": {
-            /** @description 첨부 이미지 ID 목록 (최대 5개) */
-            images?: (Record&lt;string, never&gt; | boolean | string | number)[] | null;
-            /** @description 주문 항목 ID */
-            orderItemId: number;
-            /** @description 평점 (1~5) */
-            rating: number;
-            /** @description 후기 내용 (최대 2000자) */
-            content: string;
-        };
         "api-member-me-reviews-576450061": {
             data?: {
                 /** @description 현재 페이지 */
@@ -3348,6 +3338,16 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
+        };
+        "api-products-productId-reviews-994178327": {
+            /** @description 첨부 이미지 ID 목록 (최대 5개) */
+            images?: (Record&lt;string, never&gt; | boolean | string | number)[] | null;
+            /** @description 주문 항목 ID */
+            orderItemId: number;
+            /** @description 평점 (1~5) */
+            rating: number;
+            /** @description 후기 내용 (최대 2000자) */
+            content: string;
         };
         "api-payments-returns-1115423141": {
             data?: {

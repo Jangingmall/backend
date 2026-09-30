@@ -1742,8 +1742,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "DONE",
-                                                "approvedAt": "2026-09-30T09:09:02.115332294Z",
-                                                "canceledAt": "2026-09-30T09:09:02.115332374Z"
+                                                "approvedAt": "2026-09-30T09:19:12.551352482Z",
+                                                "canceledAt": "2026-09-30T09:19:12.551352872Z"
                                             }
                                         }
                                     }
@@ -1966,7 +1966,7 @@
                                                 "orderNumber": "ORD-000001",
                                                 "totalAmount": 25000,
                                                 "status": "CREATED",
-                                                "createdAt": "2026-09-30T09:09:01.876463423Z",
+                                                "createdAt": "2026-09-30T09:19:12.194645493Z",
                                                 "items": [
                                                     
                                                 ]
@@ -2083,7 +2083,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "REQUESTED",
-                                                "requestedAt": "2026-09-30T09:09:01.790654573Z"
+                                                "requestedAt": "2026-09-30T09:19:12.055269044Z"
                                             }
                                         }
                                     }
@@ -3376,6 +3376,7 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "productId": 1,
                                                         "createdAt": "2026-09-01T10:00:00",
                                                         "images": [
                                                             
@@ -3391,8 +3392,7 @@
                                                         "productName": "\uccad\uc790 \ub2e4\uc644",
                                                         "orderItemId": 10,
                                                         "content": "\uc815\ub9d0 \uc544\ub984\ub2e4\uc6b4 \uc791\ud488\uc785\ub2c8\ub2e4.",
-                                                        "reviewId": 1,
-                                                        "productId": 1
+                                                        "reviewId": 1
                                                     }
                                                 ],
                                                 "empty": false,
@@ -4085,8 +4085,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "CANCELED",
-                                                "approvedAt": "2026-09-30T09:09:02.232045607Z",
-                                                "canceledAt": "2026-09-30T09:09:02.232045667Z"
+                                                "approvedAt": "2026-09-30T09:19:12.712991839Z",
+                                                "canceledAt": "2026-09-30T09:19:12.712992320Z"
                                             }
                                         }
                                     }
@@ -5675,7 +5675,7 @@
                                             "data": {
                                                 "orderId": 100,
                                                 "status": "CANCELED",
-                                                "canceledAt": "2026-09-30T09:09:01.986574135Z",
+                                                "canceledAt": "2026-09-30T09:19:12.354512325Z",
                                                 "purchaseConfirmedAt": null
                                             }
                                         }
@@ -5784,7 +5784,7 @@
                                                 "orderId": 100,
                                                 "status": "PURCHASE_CONFIRMED",
                                                 "canceledAt": null,
-                                                "purchaseConfirmedAt": "2026-09-30T09:09:01.986693395Z"
+                                                "purchaseConfirmedAt": "2026-09-30T09:19:12.354769169Z"
                                             }
                                         }
                                     }
@@ -5917,7 +5917,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "APPROVED",
-                                                "requestedAt": "2026-09-30T09:09:02.144999564Z"
+                                                "requestedAt": "2026-09-30T09:19:12.595719105Z"
                                             }
                                         }
                                     }
@@ -9810,52 +9810,6 @@
                     }
                 }
             },
-            "api-products-productId-reviews-994178327": {
-                "required": [
-                    "content",
-                    "orderItemId",
-                    "rating"
-                ],
-                "type": "object",
-                "properties": {
-                    "images": {
-                        "type": "array",
-                        "description": "\ucca8\ubd80 \uc774\ubbf8\uc9c0 ID \ubaa9\ub85d (\ucd5c\ub300 5\uac1c)",
-                        "nullable": true,
-                        "items": {
-                            "oneOf": [
-                                {
-                                    "type": "object"
-                                },
-                                {
-                                    "type": "boolean"
-                                },
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "number"
-                                }
-                            ]
-                        }
-                    },
-                    "orderItemId": {
-                        "type": "number",
-                        "description": "\uc8fc\ubb38 \ud56d\ubaa9 ID"
-                    },
-                    "rating": {
-                        "type": "number",
-                        "description": "\ud3c9\uc810 (1~5)",
-                        "minimum": 1,
-                        "maximum": 5
-                    },
-                    "content": {
-                        "type": "string",
-                        "description": "\ud6c4\uae30 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)",
-                        "maxLength": 2000
-                    }
-                }
-            },
             "api-member-me-reviews-576450061": {
                 "required": [
                     "status",
@@ -10102,6 +10056,52 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
+            "api-products-productId-reviews-994178327": {
+                "required": [
+                    "content",
+                    "orderItemId",
+                    "rating"
+                ],
+                "type": "object",
+                "properties": {
+                    "images": {
+                        "type": "array",
+                        "description": "\ucca8\ubd80 \uc774\ubbf8\uc9c0 ID \ubaa9\ub85d (\ucd5c\ub300 5\uac1c)",
+                        "nullable": true,
+                        "items": {
+                            "oneOf": [
+                                {
+                                    "type": "object"
+                                },
+                                {
+                                    "type": "boolean"
+                                },
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "number"
+                                }
+                            ]
+                        }
+                    },
+                    "orderItemId": {
+                        "type": "number",
+                        "description": "\uc8fc\ubb38 \ud56d\ubaa9 ID"
+                    },
+                    "rating": {
+                        "type": "number",
+                        "description": "\ud3c9\uc810 (1~5)",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "\ud6c4\uae30 \ub0b4\uc6a9 (\ucd5c\ub300 2000\uc790)",
+                        "maxLength": 2000
                     }
                 }
             },

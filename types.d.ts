@@ -3214,16 +3214,6 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-products-productId-reviews-994178327": {
-            /** @description 첨부 이미지 ID 목록 (최대 5개) */
-            images?: (Record<string, never> | boolean | string | number)[] | null;
-            /** @description 주문 항목 ID */
-            orderItemId: number;
-            /** @description 평점 (1~5) */
-            rating: number;
-            /** @description 후기 내용 (최대 2000자) */
-            content: string;
-        };
         "api-member-me-reviews-576450061": {
             data?: {
                 /** @description 현재 페이지 */
@@ -3305,6 +3295,16 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
+        };
+        "api-products-productId-reviews-994178327": {
+            /** @description 첨부 이미지 ID 목록 (최대 5개) */
+            images?: (Record<string, never> | boolean | string | number)[] | null;
+            /** @description 주문 항목 ID */
+            orderItemId: number;
+            /** @description 평점 (1~5) */
+            rating: number;
+            /** @description 후기 내용 (최대 2000자) */
+            content: string;
         };
         "api-payments-returns-1115423141": {
             data?: {
