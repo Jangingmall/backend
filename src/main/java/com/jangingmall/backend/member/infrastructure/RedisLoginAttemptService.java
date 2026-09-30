@@ -6,27 +6,41 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.*;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class RedisLoginAttemptService implements LoginAttemptService {
 
-    private static final int MAX_ATTEMPTS = 5;
-    private static final Duration LOCK_DURATION = Duration.ofMinutes(30);
-
     private final StringRedisTemplate redis;
+    private final int maxAttempts;
+    private final Duration lockDuration;
+    private final DastLoginLockExemption dastExemption;
+
+    public RedisLoginAttemptService(
+        StringRedisTemplate redis,
+        DastLoginLockExemption dastExemption,
+        @Value("${member.login-lock.max-attempts:5}") int maxAttempts,
+        @Value("${member.login-lock.lock-minutes:30}") long lockMinutes
+    ) {
+        this.redis = redis;
+        this.dastExemption = dastExemption;
+        this.maxAttempts = maxAttempts;
+        this.lockDuration = Duration.ofMinutes(lockMinutes);
+    }
 
     @Override
     public void recordFailure(String email) {
+        if (dastExemption.isExempt(email)) {
+            return;
+        }
         String key = attemptKey(email);
         var script = new DefaultRedisScript<Long>(
             "local n=redis.call('INCR',KEYS[1]); if n==1 then redis.call('EXPIRE',KEYS[1],ARGV[1]) end; return n",
             Long.class);
-        redis.execute(script, List.of(key), Long.toString(LOCK_DURATION.getSeconds()));
+        redis.execute(script, List.of(key), Long.toString(lockDuration.getSeconds()));
     }
 
     @Override
@@ -36,11 +50,14 @@ public class RedisLoginAttemptService implements LoginAttemptService {
 
     @Override
     public boolean isLocked(String email) {
+        if (dastExemption.isExempt(email)) {
+            return false;
+        }
         String count = redis.opsForValue().get(attemptKey(email));
         if (count == null) {
             return false;
         }
-        return Long.parseLong(count) >= MAX_ATTEMPTS;
+        return Long.parseLong(count) >= maxAttempts;
     }
 
     private String attemptKey(String email) {

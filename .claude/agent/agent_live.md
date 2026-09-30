@@ -294,6 +294,23 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 - 작업 요약: QUEUED generation을 31분 동안 1분마다 AI 상태 조회, 데드라인 시 최종 조회 후 FAILED (폴링·만료 스케줄 단일화)
 - 시작일: 2026-09-30
 
+### Claude-현재세션 (login-lock-429)
+- 브랜치: `claude/zen-rubin-go05xr`
+- 상태: 완료
+- 접근 파일:
+  - `src/main/java/com/jangingmall/backend/global/exception/DomainException.java`
+  - `src/main/java/com/jangingmall/backend/global/exception/GlobalExceptionHandler.java`
+  - `src/main/java/com/jangingmall/backend/member/application/MemberAuthenticationService.java`
+  - `src/main/java/com/jangingmall/backend/member/infrastructure/RedisLoginAttemptService.java`
+  - `src/main/resources/application-prod.yml`
+  - `src/main/java/com/jangingmall/backend/member/infrastructure/DastLoginLockExemption.java` (신규)
+  - `src/test/java/com/jangingmall/backend/member/infrastructure/DastLoginLockExemptionTest.java` (신규)
+  - `src/test/java/com/jangingmall/backend/member/application/MemberAuthenticationServiceTest.java`
+  - `src/test/java/com/jangingmall/backend/member/presentation/MemberControllerTest.java`
+  - `src/test/java/com/jangingmall/backend/global/exception/GlobalExceptionHandlerTest.java` (신규)
+- 작업 요약: 로그인 잠금 응답 403→429, 임계치/잠금시간 설정화, 예외 로그에 method/URI/status 추가, DAST 계정 잠금 기한 면제(~2026-10-05)
+- 시작일: 2026-09-30
+
 ## 완료된 작업 (참고용)
 
 (없음)

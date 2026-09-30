@@ -1,6 +1,7 @@
 package com.jangingmall.backend.global.exception;
 
 import com.jangingmall.backend.global.common.response.ApiErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -72,14 +73,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApiErrorResponse> handleAccessDenied(AccessDeniedException ex) {
-        log.warn("Access denied: {}", ex.getMessage());
+    public ResponseEntity<ApiErrorResponse> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
+        log.warn("Access denied [{} {} {}]: {}", request.getMethod(), request.getRequestURI(),
+            ErrorCode.FORBIDDEN.httpStatus().value(), ex.getMessage());
         return error(ErrorCode.FORBIDDEN);
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiErrorResponse> handleBusiness(BusinessException ex) {
-        log.warn("Business exception [{}]: {}", ex.errorCode().code(), ex.getMessage());
+    public ResponseEntity<ApiErrorResponse> handleBusiness(BusinessException ex, HttpServletRequest request) {
+        log.warn("Business exception [{}] {} {} {}: {}", ex.errorCode().code(), request.getMethod(),
+            request.getRequestURI(), ex.errorCode().httpStatus().value(), ex.getMessage());
         return error(ex.errorCode(), ex.getMessage());
     }
 
@@ -95,8 +98,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleUnknown(Exception ex) {
-        log.error("Unhandled exception", ex);
+    public ResponseEntity<ApiErrorResponse> handleUnknown(Exception ex, HttpServletRequest request) {
+        log.error("Unhandled exception {} {}", request.getMethod(), request.getRequestURI(), ex);
         return error(ErrorCode.INTERNAL_ERROR);
     }
 
