@@ -3,61 +3,61 @@ CONTRACT-001,챗봇,POST,/api/chatbot/sessions,chatbot-session-create,201,api-ch
 CONTRACT-002,챗봇,DELETE,/api/chatbot/sessions/{sessionId},chatbot-session-end,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-003,챗봇,GET,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-list,200,api-chatbot-sessions-sessionId-messages-2051810038,schema_validation,AUTO
 CONTRACT-004,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,201,api-chatbot-sessions-sessionId-messages-1772920178,schema_validation,AUTO
-CONTRACT-005,이미지,POST,/api/images/presigned-url,image-presigned-url,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-005,이미지,POST,/api/images/presigned-url,image-presigned-url,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-005,이미지,POST,/api/images/presigned-url,image-presigned-url,200,api-images-presigned-url-1900015981,schema_validation,AUTO
-CONTRACT-006,이미지,DELETE,/api/images/{imageId},image-delete,409,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-006,이미지,DELETE,/api/images/{imageId},image-delete,403,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-006,이미지,DELETE,/api/images/{imageId},image-delete,409,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-006,이미지,DELETE,/api/images/{imageId},image-delete,403,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-006,이미지,DELETE,/api/images/{imageId},image-delete,200,api-payments-cart-items-521794704,schema_validation,AUTO
 CONTRACT-007,장인,GET,/api/member/artisans,artisan-list,200,api-member-artisans-1902721574,schema_validation,AUTO
 CONTRACT-008,판매자 신청,POST,/api/member/artisans/applications,seller-application-apply,201,api-admin-seller-applications-applicationId-approve1698846120,schema_validation,AUTO
 CONTRACT-009,판매자 신청,GET,/api/member/artisans/applications/me,seller-application-mine,200,api-admin-seller-applications-applicationId-approve1698846120,schema_validation,AUTO
-CONTRACT-010,장인,GET,/api/member/artisans/me,artisan-mine,200,api-member-artisans-me-1004667003,schema_validation,AUTO
-CONTRACT-011,장인,PATCH,/api/member/artisans/me,artisan-update,200,api-member-artisans-me-1004667003,schema_validation,AUTO
+CONTRACT-010,장인,GET,/api/member/artisans/me,artisan-mine,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
+CONTRACT-011,장인,PATCH,/api/member/artisans/me,artisan-update,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
 CONTRACT-012,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,200,api-member-artisans-subscriptions1318461673,schema_validation,AUTO
-CONTRACT-012,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-013,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-013,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,400,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-012,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,401,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-013,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,401,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-013,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,400,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-013,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-014,장인,GET,/api/member/artisans/{artisanId},artisan-detail,200,api-member-artisans-me-1004667003,schema_validation,AUTO
-CONTRACT-015,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,404,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-014,장인,GET,/api/member/artisans/{artisanId},artisan-detail,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
+CONTRACT-015,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,404,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-015,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-015,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-016,장인 구독,DELETE,/api/member/artisans/{artisanId}/subscribe,member-unsubscribe,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-015,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,401,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-016,장인 구독,DELETE,/api/member/artisans/{artisanId}/subscribe,member-unsubscribe,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-016,장인 구독,DELETE,/api/member/artisans/{artisanId}/subscribe,member-unsubscribe,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-017,회원,POST,/api/member/email/verification-code,member-email-send-code,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-018,회원,POST,/api/member/email/verify,member-email-verify,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-019,회원,POST,/api/member/login,member-login,200,api-member-login-1685410096,schema_validation,AUTO
-CONTRACT-019,회원,POST,/api/member/login,member-login,429,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-019,회원,POST,/api/member/login,member-login,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-019,회원,POST,/api/member/login,member-login,429,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-019,회원,POST,/api/member/login,member-login,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-020,회원,POST,/api/member/logout,member-logout,200,api-payments-cart-items-521794704,schema_validation,AUTO
-CONTRACT-021,회원,GET,/api/member/me,member-get-me,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-021,회원,GET,/api/member/me,member-get-me,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-021,회원,GET,/api/member/me,member-get-me,200,api-member-me-1076569389,schema_validation,AUTO
 CONTRACT-022,회원 계정,DELETE,/api/member/me,member-account-withdraw,200,api-payments-cart-items-521794704,schema_validation,AUTO
-CONTRACT-023,회원 계정,PATCH,/api/member/me,member-account-update,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-023,회원 계정,PATCH,/api/member/me,member-account-update,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-023,회원 계정,PATCH,/api/member/me,member-account-update,200,api-member-me335907477,schema_validation,AUTO
-CONTRACT-024,배송지,GET,/api/member/me/addresses,address-list,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-024,배송지,GET,/api/member/me/addresses,address-list,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-024,배송지,GET,/api/member/me/addresses,address-list,200,api-member-me-addresses-1394498104,schema_validation,AUTO
 CONTRACT-025,배송지,POST,/api/member/me/addresses,address-create,201,api-member-me-addresses-addressId1985616569,schema_validation,AUTO
 CONTRACT-026,배송지,DELETE,/api/member/me/addresses/{addressId},address-delete,200,api-payments-cart-items-521794704,schema_validation,AUTO
 CONTRACT-027,배송지,PATCH,/api/member/me/addresses/{addressId},address-update,200,api-member-me-addresses-addressId1985616569,schema_validation,AUTO
-CONTRACT-028,주문,GET,/api/member/me/orders,member-order-list,400,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-028,주문,GET,/api/member/me/orders,member-order-list,400,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-028,주문,GET,/api/member/me/orders,member-order-list,200,api-member-me-orders-941884244,schema_validation,AUTO
-CONTRACT-028,주문,GET,/api/member/me/orders,member-order-list,403,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-029,주문,GET,/api/member/me/orders/summary,member-order-summary,403,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-028,주문,GET,/api/member/me/orders,member-order-list,403,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-029,주문,GET,/api/member/me/orders/summary,member-order-summary,403,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-029,주문,GET,/api/member/me/orders/summary,member-order-summary,200,api-member-me-orders-summary-1045841667,schema_validation,AUTO
-CONTRACT-030,주문,GET,/api/member/me/orders/{orderId},member-order-detail,404,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-030,주문,GET,/api/member/me/orders/{orderId},member-order-detail,404,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-030,주문,GET,/api/member/me/orders/{orderId},member-order-detail,200,api-member-me-orders-orderId-637732955,schema_validation,AUTO
 CONTRACT-031,회원 계정,PATCH,/api/member/me/password,member-account-change-password,200,api-payments-cart-items-521794704,schema_validation,AUTO
 CONTRACT-032,리뷰,GET,/api/member/me/reviews,member-review-list,200,api-member-me-reviews-576450061,schema_validation,AUTO
 CONTRACT-033,리뷰,GET,/api/member/me/reviews/writable,member-review-writable,200,api-member-me-reviews-writable1471322465,schema_validation,AUTO
 CONTRACT-034,찜,GET,/api/member/me/wishes,member-wish-list,200,api-member-me-wishes525484891,schema_validation,AUTO
-CONTRACT-034,찜,GET,/api/member/me/wishes,member-wish-list,403,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-034,찜,GET,/api/member/me/wishes,member-wish-list,403,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-035,찜,GET,/api/member/me/wishes/{productId},member-wish-check,204,NO_SCHEMA,status_only,PARTIAL
 CONTRACT-036,소셜 로그인,POST,/api/member/oauth2/complete-profile,oauth-complete-profile,201,api-member-oauth2-complete-profile1591061011,schema_validation,AUTO
 CONTRACT-037,소셜 로그인,POST,/api/member/oauth2/exchange,oauth-exchange,200,api-member-oauth2-exchange89318014,schema_validation,AUTO
 CONTRACT-038,소셜 로그인,GET,/api/member/oauth2/kakao,oauth-kakao-redirect,302,NO_SCHEMA,status_only,PARTIAL
 CONTRACT-039,소셜 로그인,GET,/api/member/oauth2/naver,oauth-naver-redirect,302,NO_SCHEMA,status_only,PARTIAL
-CONTRACT-040,회원,POST,/api/member/signup,member-signup,409,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-040,회원,POST,/api/member/signup,member-signup,409,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-040,회원,POST,/api/member/signup,member-signup,201,api-member-signup-1500359845,schema_validation,AUTO
 CONTRACT-041,회원,POST,/api/member/token/refresh,member-token-refresh,200,api-member-token-refresh-1731277407,schema_validation,AUTO
 CONTRACT-042,알림,GET,/api/notifications,notification-list-200,200,api-notifications-977530391,schema_validation,AUTO
@@ -65,13 +65,13 @@ CONTRACT-043,알림,POST,/api/notifications,notification-create-200,201,api-noti
 CONTRACT-044,알림,PATCH,/api/notifications/read-all,notification-read-all-200,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-045,알림,GET,/api/notifications/stream,notification-stream-200,200,NO_SCHEMA,status_only,PARTIAL
 CONTRACT-046,알림,GET,/api/notifications/unread-count,notification-unread-count-200,200,api-notifications-unread-count-716840062,schema_validation,AUTO
-CONTRACT-047,알림,GET,/api/notifications/{notificationId},notification-get-one-,403,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-047,알림,GET,/api/notifications/{notificationId},notification-get-one-,404,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-047,알림,GET,/api/notifications/{notificationId},notification-get-one-,403,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-047,알림,GET,/api/notifications/{notificationId},notification-get-one-,404,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-047,알림,GET,/api/notifications/{notificationId},notification-get-one-,200,api-notifications-notificationId1090539448,schema_validation,AUTO
 CONTRACT-048,알림,DELETE,/api/notifications/{notificationId},notification-delete-,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-048,알림,DELETE,/api/notifications/{notificationId},notification-delete-,422,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-049,알림,PATCH,/api/notifications/{notificationId}/read,notification-read-,404,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-049,알림,PATCH,/api/notifications/{notificationId}/read,notification-read-,422,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-048,알림,DELETE,/api/notifications/{notificationId},notification-delete-,422,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-049,알림,PATCH,/api/notifications/{notificationId}/read,notification-read-,404,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-049,알림,PATCH,/api/notifications/{notificationId}/read,notification-read-,422,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-049,알림,PATCH,/api/notifications/{notificationId}/read,notification-read-,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-050,결제,POST,/api/payments,payment-prepare,201,api-payments316824518,schema_validation,AUTO
 CONTRACT-051,장바구니,GET,/api/payments/cart,cart-get,200,api-payments-cart-merge-82228599,schema_validation,AUTO
@@ -80,11 +80,11 @@ CONTRACT-053,장바구니,DELETE,/api/payments/cart/items,cart-delete-all,200,ap
 CONTRACT-054,장바구니,DELETE,/api/payments/cart/items/{cartItemId},cart-delete-item,200,api-payments-cart-items-521794704,schema_validation,AUTO
 CONTRACT-055,장바구니,PATCH,/api/payments/cart/items/{cartItemId},cart-change-quantity,200,api-payments-cart-merge-82228599,schema_validation,AUTO
 CONTRACT-056,장바구니,PATCH,/api/payments/cart/items/{cartItemId}/options,cart-change-options,200,api-payments-cart-merge-82228599,schema_validation,AUTO
-CONTRACT-057,장바구니,POST,/api/payments/cart/merge,cart-merge,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-057,장바구니,POST,/api/payments/cart/merge,cart-merge,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-057,장바구니,POST,/api/payments/cart/merge,cart-merge,200,api-payments-cart-merge-82228599,schema_validation,AUTO
 CONTRACT-058,결제,POST,/api/payments/confirm,payment-confirm,200,api-payments-confirm1321390106,schema_validation,AUTO
 CONTRACT-059,결제,POST,/api/payments/fail,payment-fail,200,api-payments-cart-items-521794704,schema_validation,AUTO
-CONTRACT-060,결제수단,GET,/api/payments/methods,payment-methods-list,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-060,결제수단,GET,/api/payments/methods,payment-methods-list,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-060,결제수단,GET,/api/payments/methods,payment-methods-list,200,api-payments-methods-220864991,schema_validation,AUTO
 CONTRACT-061,결제수단,POST,/api/payments/methods,payment-methods-register,201,api-payments-methods1245291826,schema_validation,AUTO
 CONTRACT-062,결제수단,DELETE,/api/payments/methods/{paymentMethodId},payment-methods-delete,200,api-payments-cart-items-521794704,schema_validation,AUTO
@@ -100,8 +100,8 @@ CONTRACT-071,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,200,ap
 CONTRACT-072,결제,POST,/api/payments/{paymentId}/cancel,payment-cancel,200,api-payments-paymentId-cancel1498139372,schema_validation,AUTO
 CONTRACT-073,상품,GET,/api/products,product-list,200,api-products-me-2131279592,schema_validation,AUTO
 CONTRACT-074,상품,POST,/api/products,product-create,201,api-products-productId288555837,schema_validation,AUTO
-CONTRACT-074,상품,POST,/api/products,product-create,403,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-074,상품,POST,/api/products,product-create,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-074,상품,POST,/api/products,product-create,403,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-074,상품,POST,/api/products,product-create,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-075,카테고리,GET,/api/products/categories,category-list,200,api-products-categories1684097948,schema_validation,AUTO
 CONTRACT-076,카테고리,GET,/api/products/categories/main,category-main-list,200,api-products-categories1684097948,schema_validation,AUTO
 CONTRACT-077,카테고리,GET,/api/products/materials,material-list,200,api-products-materials-415789377,schema_validation,AUTO
@@ -116,10 +116,10 @@ CONTRACT-085,상품 문의,POST,/api/products/{productId}/questions/{questionId}
 CONTRACT-086,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,200,api-products-productId-reviews-1034318822,schema_validation,AUTO
 CONTRACT-087,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,201,api-products-productId-reviews916845673,schema_validation,AUTO
 CONTRACT-088,상품,PATCH,/api/products/{productId}/status,product-change-status,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-088,상품,PATCH,/api/products/{productId}/status,product-change-status,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
-CONTRACT-089,찜,POST,/api/products/{productId}/wish,product-wish,403,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-088,상품,PATCH,/api/products/{productId}/status,product-change-status,401,api-member-signup16218693,schema_validation,AUTO
+CONTRACT-089,찜,POST,/api/products/{productId}/wish,product-wish,403,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-089,찜,POST,/api/products/{productId}/wish,product-wish,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-089,찜,POST,/api/products/{productId}/wish,product-wish,401,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-089,찜,POST,/api/products/{productId}/wish,product-wish,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-090,찜,DELETE,/api/products/{productId}/wish,product-unwish,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-091,이미지,POST,/internal/images/verify,image-internal-verify,404,api-member-me-orders-orderId16218693,schema_validation,AUTO
+CONTRACT-091,이미지,POST,/internal/images/verify,image-internal-verify,404,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-091,이미지,POST,/internal/images/verify,image-internal-verify,200,internal-images-verify1955001579,schema_validation,AUTO
