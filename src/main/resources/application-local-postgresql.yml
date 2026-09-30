@@ -1,4 +1,8 @@
 spring:
+  mail:
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    from: ${MAIL_FROM:}
   datasource:
     url: jdbc:postgresql://localhost:5432/jangingmall
     username: jangingmall
@@ -16,6 +20,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_batch_fetch_size: 100
     show-sql: false
+    open-in-view: false
   sql:
     init:
       mode: never
@@ -80,7 +85,7 @@ image:
     cleanup-scan-millis: ${IMAGE_CLEANUP_SCAN_MILLIS:60000}
 
 ai:
-  base-url: ${AI_BASE_URL:http://localhost:8001}
+  base-url: ${AI_BASE_URL:}
   content-base-url: ${AI_CONTENT_BASE_URL:}
   timeout-seconds: ${AI_TIMEOUT_SECONDS:300}
   internal-auth-token: ${AI_INTERNAL_AUTH_TOKEN:}
@@ -96,12 +101,12 @@ revalidate:
 
 dast:
   user:
-    email: stguser@midam.store
-    password: OS57IY5ebV1K1LHU
+    email: ${DAST_USER_EMAIL:}
+    password: ${DAST_USER_PASSWORD:}
   artisan:
-    email: stgartisan@midam.store
-    password: P0UL6RhKQ07AcYsR
+    email: ${DAST_ARTISAN_EMAIL:}
+    password: ${DAST_ARTISAN_PASSWORD:}
   admin:
-    email: stgadmin@midam.store
-    password: QBRGe8pbOcJcy9fa
+    email: ${DAST_ADMIN_EMAIL:}
+    password: ${DAST_ADMIN_PASSWORD:}
   timeout-seconds: ${REVALIDATE_TIMEOUT_SECONDS:10}

@@ -3,6 +3,15 @@ spring:
     active: local
   config:
     import: optional:file:.env[.properties]
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    transport:
+      protocol: smtp
+    smtp:
+      auth: true
+      starttls:
+        enable: true
   servlet:
     multipart:
       max-file-size: 10MB

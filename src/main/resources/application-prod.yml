@@ -27,6 +27,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_batch_fetch_size: 100
     show-sql: false
+    open-in-view: false
   flyway:
     enabled: true
     locations: classpath:db/migration
