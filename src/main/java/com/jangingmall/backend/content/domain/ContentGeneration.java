@@ -67,6 +67,9 @@ public class ContentGeneration {
     @Column(name = "draft_ready_at")
     private LocalDateTime draftReadyAt;
 
+    @Column(name = "render_claimed_at")
+    private LocalDateTime renderClaimedAt;
+
     public static ContentGeneration create(Long productId, String images, String productName, String howMade, String careTips) {
         ContentGeneration generation = new ContentGeneration();
         generation.productId = productId;

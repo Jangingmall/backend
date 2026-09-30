@@ -2,6 +2,8 @@ package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.Content;
+import com.jangingmall.backend.content.domain.ContentBlock;
+import com.jangingmall.backend.content.domain.ContentBlockRepository;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
@@ -15,6 +17,7 @@ import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
 import com.jangingmall.backend.member.domain.ArtisanProfile;
+import com.jangingmall.backend.image.domain.ImageUploadRepository;
 import com.jangingmall.backend.member.domain.ArtisanProfileRepository;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductRepository;
@@ -140,6 +143,34 @@ class ContentServiceTest {
         assertThat(result.getProductId()).isEqualTo(10L);
         verify(historyRepository).save(historyCaptor.capture());
         assertThat(historyCaptor.getValue().getEditedByType()).isEqualTo(EditedByType.AI);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    @DisplayName("react_document 저장 — 업로드 이미지로 해석되지 않는 이미지 참조(AI 생성 이미지)는 그 블록만 건너뛰고 저장은 성공한다")
+    void storeReactDocumentSkipsUnresolvedImage() {
+        ContentBlockRepository blockRepository = mock(ContentBlockRepository.class);
+        ImageUploadRepository uploadRepository = mock(ImageUploadRepository.class);
+        ContentService serviceWithBlocks = new ContentService(
+            contentRepository, historyRepository, productRepository, aiContentClient,
+            artisanProfileRepository, interviewRepository, blockRepository, uploadRepository, null,
+            new ObjectMapper(), null, null
+        );
+        String document = "{\"root\":[{\"tag\":\"h2\",\"text\":\"제목\"},"
+            + "{\"tag\":\"img\",\"imageId\":\"ai-hero\"},{\"tag\":\"p\",\"text\":\"본문\"}]}";
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+        when(historyRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        serviceWithBlocks.storeReactDocument(new ContentCommand.StoreReactDocument(10L, document, null));
+
+        ArgumentCaptor<Iterable<ContentBlock>> blocks = ArgumentCaptor.forClass(Iterable.class);
+        verify(blockRepository).saveAll(blocks.capture());
+        java.util.List<String> tags = new java.util.ArrayList<>();
+        blocks.getValue().forEach(block -> tags.add(block.getTag()));
+        assertThat(tags).containsExactly("h2", "p");
+        verify(contentRepository).save(contentCaptor.capture());
+        assertThat(contentCaptor.getValue().getReactDocument()).isEqualTo(document);
     }
 
     @Test

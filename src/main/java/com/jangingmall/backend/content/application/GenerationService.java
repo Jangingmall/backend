@@ -5,6 +5,7 @@ import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationErrorMessage;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
+import com.jangingmall.backend.global.exception.ConflictException;
 import com.jangingmall.backend.global.exception.ExternalServiceException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
@@ -88,8 +89,18 @@ public class GenerationService {
             return new BeToAiPersistAckResponse(gen.getId().toString(), productIdStr, "ALREADY_SAVED", gen.getCompletedAt());
         }
 
-        ContentGeneration generation = generationRepository.findById(command.generationId())
+        // 같은 건의 콜백(GenAI 재전송 포함)이 동시에 들어와도 한 번에 하나만 저장되도록 행을 잠그고 상태를 다시 확인한다.
+        ContentGeneration generation = generationRepository.findByIdForUpdate(command.generationId())
             .orElseThrow(() -> new NotFoundException(GenerationErrorMessage.NOT_FOUND.message()));
+        if (generation.getStatus() == GenerationStatus.COMPLETED) {
+            return new BeToAiPersistAckResponse(
+                generation.getId().toString(), productIdStr, "ALREADY_SAVED", generation.getCompletedAt());
+        }
+        if (generation.getStatus() == GenerationStatus.FAILED) {
+            // 마감(또는 AI 실패 확정) 뒤에 늦게 도착한 결과는 저장하지 않는다. 409면 GenAI도 재전송하지 않는다.
+            log.warn("이미 FAILED 처리된 생성의 늦은 콜백을 거절합니다 generationId={}", command.generationId());
+            throw new ConflictException(GenerationErrorMessage.ALREADY_FAILED.message());
+        }
 
         uploadDetailPageImage(command.generationId().toString(), detailPageImage);
         uploadPrefixedFiles(command.generationId().toString(), "section-", sectionFiles);

@@ -108,8 +108,8 @@ ai:
   generation:
     deadline-seconds: ${GENERATION_DEADLINE_SECONDS:1861}
     scan-millis: ${GENERATION_POLL_SCAN_MILLIS:60000}
-    # AI 초안(DRAFT_READY) 이후 최종 렌더링을 기다리는 시간. 지나면 FAILED (기본 30분)
-    render-deadline-seconds: ${GENERATION_RENDER_DEADLINE_SECONDS:1800}
+    # AI 초안(DRAFT_READY) 이후 최종 렌더링을 기다리는 시간. 지나면 FAILED (기본 3시간)
+    render-deadline-seconds: ${GENERATION_RENDER_DEADLINE_SECONDS:10800}
 
 internal-api:
   backend-auth-token: ${BACKEND_AUTH_TOKEN}

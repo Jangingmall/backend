@@ -209,7 +209,7 @@ class GenerationControllerTest extends RestDocsControllerTest {
                 resource(ResourceSnippetParameters.builder()
                     .tag("AI 콘텐츠 생성")
                     .summary("AI 생성 상태 조회 (FAILED)")
-                    .description("요청 후 31분(데드라인) 안에 AI가 작업을 접수·완료하지 못했거나, AI 초안 이후 렌더링이 30분 안에 "
+                    .description("요청 후 31분(데드라인) 안에 AI가 작업을 접수·완료하지 못했거나, AI 초안 이후 렌더링이 3시간 안에 "
                         + "끝나지 않았거나, AI가 작업 실패를 확정한 경우 FAILED와 고정 대체 이미지 URL을 반환합니다. 데드라인 전에는 제출 오류(4xx 포함)가 나도 "
                         + "FAILED가 아니라 PROCESSING으로 대기하며 서버가 재제출합니다. "
                         + "fallbackImageUrl은 FAILED일 때만 포함됩니다.")
@@ -267,7 +267,7 @@ class GenerationControllerTest extends RestDocsControllerTest {
                     .tag("AI 콘텐츠 생성")
                     .summary("AI 렌더링 수동 요청")
                     .description("AI 초안이 준비된(DRAFT_READY) 생성 요청의 최종 렌더링을 사용자가 수동으로 요청합니다. "
-                        + "서버는 DRAFT_READY가 되면 자동으로 렌더링을 요청하고 30분 동안 주기적으로 재요청하며, "
+                        + "서버는 DRAFT_READY가 되면 자동으로 렌더링을 요청하고 3시간 동안 주기적으로 재요청하며, "
                         + "이 API는 그 사이에 즉시 다시 요청하고 싶을 때 사용합니다. 같은 요청을 반복해도 중복 생성되지 않으며, "
                         + "즉시 202를 반환하고 렌더링은 비동기로 처리됩니다. 완료되면 상태가 COMPLETED가 됩니다.")
                     .pathParameters(

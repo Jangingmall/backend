@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 class GenerationDeadlineSchedulerTest {
 
     private static final long DEADLINE_SECONDS = 1861;
-    private static final long RENDER_DEADLINE_SECONDS = 1800;
+    private static final long RENDER_DEADLINE_SECONDS = 10800;
 
     @Mock
     private ContentGenerationRepository generationRepository;
@@ -386,7 +386,7 @@ class GenerationDeadlineSchedulerTest {
     }
 
     @Test
-    @DisplayName("렌더링 30분 마감이 지난 DRAFT_READY 건은 요청하지 않고 FAILED 처리한다")
+    @DisplayName("렌더링 3시간 마감이 지난 DRAFT_READY 건은 요청하지 않고 FAILED 처리한다")
     void renderOverdueFails() {
         ContentGeneration gen = draftReadyGeneration(14L,
             LocalDateTime.now().minusSeconds(RENDER_DEADLINE_SECONDS + 30));

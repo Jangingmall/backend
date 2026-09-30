@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  *       재제출한다. 접수되면 QUEUED, 데드라인이 지나면 FAILED. 재제출은 같은 멱등성 키(generationId)를 쓰므로
  *       AI 쪽에서 중복 작업이 생기지 않는다.</li>
  *   <li>DRAFT_READY: AI 초안이 끝난 건. 전이 직후와 이후 매 주기마다 GenAI에 최종 렌더링을 요청한다(같은 멱등성 키).
- *       렌더링은 draft-ready 시각부터 render-deadline-seconds(기본 1800초 = 30분) 동안 기다리며, 지나면 FAILED 처리한다.</li>
+ *       렌더링은 draft-ready 시각부터 render-deadline-seconds(기본 10800초 = 3시간) 동안 기다리며, 지나면 FAILED 처리한다.</li>
  * </ol>
  * COMPLETED 전이는 렌더링 결과를 전달하는 AI 콜백(AiCallbackController)이 담당한다.
  */
@@ -76,7 +76,7 @@ public class GenerationDeadlineScheduler {
                 if (transition(generationId, GenerationStatus.QUEUED, ContentGeneration::markDraftReady)) {
                     draftReady++;
                     log.info("AI DRAFT_READY 전이 generationId={} jobId={}", generationId, jobId);
-                    renderExecutor.requestRender(generationId);
+                    requestRender(generationId);
                 }
             } else if (AI_STATUS_FAILED.equals(aiStatus)) {
                 if (transition(generationId, GenerationStatus.QUEUED, ContentGeneration::fail)) {
@@ -163,7 +163,7 @@ public class GenerationDeadlineScheduler {
             if (draftReadyAt == null) {
                 // draft_ready_at 도입 전에 DRAFT_READY가 된 건: 지금부터 렌더링 마감 시간을 센다.
                 transition(generationId, GenerationStatus.DRAFT_READY, ContentGeneration::backfillDraftReadyAt);
-                renderExecutor.requestRender(generationId);
+                requestRender(generationId);
                 requested++;
                 continue;
             }
@@ -178,11 +178,20 @@ public class GenerationDeadlineScheduler {
             if (draftReadyAt.isAfter(graceCutoff)) {
                 continue;
             }
-            renderExecutor.requestRender(generationId);
+            requestRender(generationId);
             requested++;
         }
 
         log.info("AI 렌더 요청 점검 완료 — 대상={} 요청={} 데드라인만료={}", ready.size(), requested, expired);
+    }
+
+    /** 렌더 요청 큐가 가득 차 거절되어도 스캔 루프가 중단되지 않게 하고, 다음 주기에 다시 요청한다. */
+    private void requestRender(Long generationId) {
+        try {
+            renderExecutor.requestRender(generationId);
+        } catch (RuntimeException e) {
+            log.warn("AI 렌더 요청 접수 실패 — 다음 주기에 재시도 generationId={} reason={}", generationId, e.getMessage());
+        }
     }
 
     private boolean resubmit(ContentGeneration generation) {

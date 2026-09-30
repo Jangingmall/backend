@@ -5,6 +5,7 @@ import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.global.exception.BusinessRuleViolationException;
+import com.jangingmall.backend.global.exception.ConflictException;
 import com.jangingmall.backend.global.exception.ExternalServiceException;
 import com.jangingmall.backend.global.exception.ForbiddenException;
 import com.jangingmall.backend.global.exception.NotFoundException;
@@ -171,7 +172,7 @@ class GenerationServiceTest {
         ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
-        when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
+        when(generationRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(generation));
         when(generationRepository.save(any())).thenReturn(generation);
 
         MultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", "image/jpeg", new byte[]{1, 2, 3});
@@ -193,7 +194,7 @@ class GenerationServiceTest {
         ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
-        when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
+        when(generationRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(generation));
 
         MultipartFile detailImage = Mockito.mock(MultipartFile.class);
         when(detailImage.isEmpty()).thenReturn(false);
@@ -212,7 +213,7 @@ class GenerationServiceTest {
         ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
-        when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
+        when(generationRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(generation));
 
         MultipartFile sectionFile = Mockito.mock(MultipartFile.class);
         when(sectionFile.getContentType()).thenReturn("image/jpeg");
@@ -249,7 +250,7 @@ class GenerationServiceTest {
         ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
         ReflectionTestUtils.setField(generation, "id", 1L);
         when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
-        when(generationRepository.findById(1L)).thenReturn(Optional.of(generation));
+        when(generationRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(generation));
         when(generationRepository.save(any())).thenReturn(generation);
 
         Map<String, MultipartFile> photoFiles = new java.util.LinkedHashMap<>();
@@ -326,5 +327,42 @@ class GenerationServiceTest {
 
         assertThatThrownBy(() -> generationService.requestRender(10L, 999L, 1L))
             .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — 이미 FAILED 처리된 생성 요청의 늦은 콜백은 저장하지 않고 ConflictException을 던진다")
+    void completeWithImagesRejectsFailedGeneration() {
+        ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        generation.fail();
+        when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
+        when(generationRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(generation));
+
+        MultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", "image/jpeg", new byte[]{1});
+        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
+
+        assertThatThrownBy(() -> generationService.completeWithImages(command, detailImage, Map.of(), Map.of(), "10"))
+            .isInstanceOf(ConflictException.class);
+        verify(imageStorage, never()).put(any(), any(), any(), any());
+        verify(contentService, never()).storeReactDocument(any());
+        assertThat(generation.getStatus()).isEqualTo(GenerationStatus.FAILED);
+    }
+
+    @Test
+    @DisplayName("멀티파트 콜백 — 잠금을 잡은 뒤 이미 COMPLETED면(동시 콜백) 저장하지 않고 ALREADY_SAVED를 반환한다")
+    void completeWithImagesConcurrentDuplicate() {
+        ContentGeneration generation = ContentGeneration.create(10L, "img", "상품명", "과정", "관리");
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        generation.complete(REACT_DOCUMENT_JSON, "other-key");
+        when(generationRepository.findByIdempotencyKey("idem-key")).thenReturn(Optional.empty());
+        when(generationRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(generation));
+
+        MultipartFile detailImage = new MockMultipartFile("detail_page_image", "detail.jpg", "image/jpeg", new byte[]{1});
+        GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
+        BeToAiPersistAckResponse ack = generationService.completeWithImages(command, detailImage, Map.of(), Map.of(), "10");
+
+        assertThat(ack.status()).isEqualTo("ALREADY_SAVED");
+        verify(imageStorage, never()).put(any(), any(), any(), any());
+        verify(contentService, never()).storeReactDocument(any());
     }
 }

@@ -24,6 +24,20 @@ public class AsyncConfig {
         return executor;
     }
 
+    /** GenAI 최종 렌더링 요청은 동기 호출이라 오래 점유하므로 AI 제출용 풀과 분리한다. */
+    @Bean(name = "aiRenderExecutor")
+    public Executor aiRenderExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(4);
+        executor.setQueueCapacity(50);
+        executor.setThreadNamePrefix("ai-render-");
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(30);
+        executor.initialize();
+        return executor;
+    }
+
     @Bean(name = "sseNotificationExecutor")
     public Executor sseNotificationExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

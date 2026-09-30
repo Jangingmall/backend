@@ -11,18 +11,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * AI 초안(DRAFT_READY)에 대한 최종 렌더링을 GenAI에 요청한다. GenAI의 렌더 API는 동기 호출이라 완료까지 스레드를
- * 점유하므로 스케줄러 스레드가 아닌 aiGenerationExecutor에서 실행한다. 요청 경로는 세 가지다.
+ * 점유하므로 스케줄러 스레드가 아닌 전용 풀(aiRenderExecutor)에서 실행한다. 요청 경로는 세 가지다.
  * <ul>
  *   <li>스케줄러가 DRAFT_READY로 전이한 직후(자동)</li>
  *   <li>스케줄러가 DRAFT_READY 건을 마감 전까지 주기적으로 재요청(자동 재시도)</li>
  *   <li>사용자의 수동 요청·콘텐츠 승인 API({@link AiRenderApprovalRequestedEvent})</li>
  * </ul>
- * 같은 멱등성 키로 요청하므로 중복 호출되어도 GenAI에서 렌더가 중복 생성되지 않는다.
+ * 같은 멱등성 키로 요청하므로 중복 호출되어도 GenAI에서 렌더가 중복 생성되지 않는다. 여기에 더해 여러 인스턴스가
+ * 동시에 같은 건을 호출하지 않도록 DB에서 요청 권한을 원자적으로 선점(claim)한다. 자동 재시도는 선점 후
+ * {@value #CLAIM_LEASE_MINUTES}분이 지나야 다시 요청하고, 사용자의 수동 요청은 선점 기간을 무시하고 즉시 요청한다.
  */
 @Slf4j
 @Component
@@ -30,6 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AiRenderApprovalAsyncExecutor {
 
     private static final int ERROR_DETAIL_LIMIT = 300;
+    static final long CLAIM_LEASE_MINUTES = 5;
 
     private final AiContentClient aiContentClient;
     private final ContentGenerationRepository generationRepository;
@@ -37,27 +41,35 @@ public class AiRenderApprovalAsyncExecutor {
     /** 이 인스턴스에서 렌더 요청이 진행 중인 generationId. 같은 건의 중복 호출을 막는다. */
     private final Set<Long> inFlight = ConcurrentHashMap.newKeySet();
 
-    @Async("aiGenerationExecutor")
+    /** 사용자의 수동 요청·콘텐츠 승인: 선점 기간과 무관하게 즉시 요청한다. */
+    @Async("aiRenderExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT, fallbackExecution = true)
     public void onRenderApprovalRequested(AiRenderApprovalRequestedEvent event) {
-        render(event.generationId());
+        render(event.generationId(), true);
     }
 
-    @Async("aiGenerationExecutor")
+    /** 스케줄러의 자동 요청·재시도: 다른 요청이 최근에 선점했으면 건너뛴다. */
+    @Async("aiRenderExecutor")
     public void requestRender(Long generationId) {
-        render(generationId);
+        render(generationId, false);
     }
 
-    private void render(Long generationId) {
+    private void render(Long generationId, boolean immediate) {
         if (!inFlight.add(generationId)) {
             log.debug("AI 렌더 요청 진행 중 — 중복 요청 생략 generationId={}", generationId);
             return;
         }
         try {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime staleBefore = immediate ? now : now.minusMinutes(CLAIM_LEASE_MINUTES);
+            if (!generationRepository.claimRender(generationId, now, staleBefore)) {
+                log.debug("AI 렌더 요청 생략 — DRAFT_READY가 아니거나 다른 요청이 선점 중 generationId={}", generationId);
+                return;
+            }
             ContentGeneration generation = generationRepository.findById(generationId).orElse(null);
             if (generation == null || generation.getStatus() != GenerationStatus.DRAFT_READY
                 || generation.getJobId() == null) {
-                log.info("AI 렌더 요청 생략 — DRAFT_READY 아님 generationId={} status={}",
+                log.info("AI 렌더 요청 생략 — 요청할 수 없는 상태 generationId={} status={}",
                     generationId, generation == null ? null : generation.getStatus());
                 return;
             }
