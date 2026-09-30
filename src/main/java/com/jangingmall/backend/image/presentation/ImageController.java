@@ -1,8 +1,6 @@
 package com.jangingmall.backend.image.presentation;
 
 import com.jangingmall.backend.global.common.response.ApiResponse;
-import com.jangingmall.backend.global.exception.DomainException;
-import com.jangingmall.backend.global.exception.ErrorCode;
 import com.jangingmall.backend.image.application.ImageService;
 import com.jangingmall.backend.image.domain.ImagePurpose;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,7 +34,7 @@ public class ImageController {
         @AuthenticationPrincipal Long memberId,
         Authentication authentication,
         @Valid @RequestBody PresignedUrlRequest request) {
-        Long resolvedMemberId = isAgent(authentication) ? request.resolveAgentMemberId() : memberId;
+        Long resolvedMemberId = isAgent(authentication) ? request.memberId() : memberId;
         return ApiResponse.ok(images.createPresignedUpload(resolvedMemberId, request.toCommand()));
     }
 
@@ -64,13 +62,6 @@ public class ImageController {
                                       @Positive int sourceHeight,
                                       @NotEmpty @Size(max = 3) List<@Valid @NotNull VariantRequest> variants,
                                       Long memberId) {
-        Long resolveAgentMemberId() {
-            if (memberId == null) {
-                throw new DomainException(ErrorCode.INVALID_INPUT);
-            }
-            return memberId;
-        }
-
         ImageService.CreatePresignedUpload toCommand() {
             return new ImageService.CreatePresignedUpload(fileName, contentType, purpose, sourceWidth, sourceHeight,
                 variants.stream().map(VariantRequest::toCommand).toList());

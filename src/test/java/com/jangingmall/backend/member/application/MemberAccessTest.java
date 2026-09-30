@@ -37,6 +37,17 @@ class MemberAccessTest {
                 exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN));
     }
 
+    @Test
+    void nullMemberIdIsUnauthorizedWithoutQuery() {
+        assertThatThrownBy(() -> access.active(null))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.UNAUTHORIZED));
+        assertThatThrownBy(() -> access.lock(null))
+            .isInstanceOfSatisfying(DomainException.class,
+                exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.UNAUTHORIZED));
+        Mockito.verifyNoInteractions(members);
+    }
+
     private Member active(MemberRole role) {
         Member member = Member.register("artisan@example.com", "hash", "김도공", "01012345678", role,
             true, true, true, false);

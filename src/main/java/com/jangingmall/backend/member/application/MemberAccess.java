@@ -14,11 +14,13 @@ public class MemberAccess {
     private final MemberRepository members;
 
     public Member active(Long memberId) {
+        requireIdentified(memberId);
         return requireActive(members.findById(memberId)
             .orElseThrow(() -> new DomainException(ErrorCode.UNAUTHORIZED)));
     }
 
     public Member lock(Long memberId) {
+        requireIdentified(memberId);
         return requireActive(members.findByIdForUpdate(memberId)
             .orElseThrow(() -> new DomainException(ErrorCode.UNAUTHORIZED)));
     }
@@ -41,6 +43,12 @@ public class MemberAccess {
             throw new DomainException(ErrorCode.FORBIDDEN);
         }
         return member;
+    }
+
+    private void requireIdentified(Long memberId) {
+        if (memberId == null) {
+            throw new DomainException(ErrorCode.UNAUTHORIZED);
+        }
     }
 
     private Member requireActive(Member member) {
