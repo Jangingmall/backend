@@ -316,6 +316,14 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 - 작업 요약: 로그인 잠금 응답 403→429, 임계치/잠금시간 설정화, 예외 로그에 method/URI/status 추가, DAST 계정·IP(DART_IP_LIST) 잠금 기한 면제(~2026-10-05)
 - 시작일: 2026-09-30
 
+### Claude-현재세션 (aws-sts-dependency)
+- 브랜치: `fix/aws-sts-dependency`
+- 상태: 완료
+- 접근 파일:
+  - `build.gradle`
+- 작업 요약: EKS IRSA 자격증명 해석용 awssdk sts 의존성 추가 (S3 Presigned URL 500 해결)
+- 시작일: 2026-09-30
+
 ### Claude-현재세션 (ai-image-fetch-fail-fast)
 - 브랜치: `fix/ai-image-fetch-fail-fast`
 - 상태: 완료
