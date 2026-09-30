@@ -285,6 +285,15 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 - 작업 요약: AI 생성 요청/성공/실패 시 Discord 웹훅 알림 + console 로그, generation.http 테스트 파일
 - 시작일: 2026-09-29
 
+### Claude-현재세션 (ai-job-status-polling-31min)
+- 브랜치: `claude/project-thread-tjtx2i`
+- 상태: 완료
+- 접근 파일:
+  - `src/main/java/com/jangingmall/backend/content/application/GenerationDeadlineScheduler.java`
+  - `src/test/java/com/jangingmall/backend/content/application/GenerationDeadlineSchedulerTest.java`
+- 작업 요약: QUEUED generation을 31분 동안 1분마다 AI 상태 조회, 데드라인 시 최종 조회 후 FAILED (폴링·만료 스케줄 단일화)
+- 시작일: 2026-09-30
+
 ## 완료된 작업 (참고용)
 
 (없음)
