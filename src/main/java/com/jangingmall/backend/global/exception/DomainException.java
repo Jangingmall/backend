@@ -6,6 +6,10 @@ public class DomainException extends BusinessException {
         super(errorCode);
     }
 
+    public DomainException(ErrorCode errorCode, String message) {
+        super(errorCode, message);
+    }
+
     public ErrorCode getErrorCode() {
         return errorCode();
     }

@@ -192,6 +192,21 @@ class MemberControllerTest extends RestDocsControllerTest {
     }
 
     @Test
+    @DisplayName("로그인 시도 횟수를 초과하면 429 TOO_MANY_REQUESTS를 반환한다")
+    void loginWhenLocked() throws Exception {
+        when(memberAuthenticationService.login(any(), any()))
+            .thenThrow(new DomainException(ErrorCode.TOO_MANY_REQUESTS, "로그인 시도 횟수를 초과했습니다. 잠시 후 다시 시도해 주세요"));
+
+        mockMvc.perform(post("/api/member/login")
+                .contentType(APPLICATION_JSON)
+                .content(json(new MemberLoginRequest("artisan@example.com", "wrong-password"))))
+            .andExpect(status().isTooManyRequests())
+            .andExpect(jsonPath("$.errorCode").value("TOO_MANY_REQUESTS"))
+            .andDo(documentError("member-login-locked", "회원", "로그인 — 시도 횟수 초과",
+                "동일 이메일로 연속 실패가 임계치(기본 5회)를 넘으면 잠금 시간(기본 30분) 동안 429를 반환합니다."));
+    }
+
+    @Test
     @DisplayName("Refresh Token 쿠키로 새 Access Token을 반환한다")
     void refresh() throws Exception {
         when(memberAuthenticationService.refresh("refresh-token")).thenReturn(

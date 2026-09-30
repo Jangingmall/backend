@@ -3,6 +3,7 @@ package com.jangingmall.backend.image.presentation;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -179,16 +180,18 @@ class ImageControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("AGENT 토큰으로 memberId 없이 요청하면 400을 반환한다")
-    void agentWithoutMemberIdReturns400() throws Exception {
+    @DisplayName("AGENT 토큰으로 memberId 없이 요청하면 401을 반환한다")
+    void agentWithoutMemberIdReturns401() throws Exception {
+        when(images.createPresignedUpload(isNull(), any())).thenThrow(new DomainException(ErrorCode.UNAUTHORIZED));
+
         mockMvc.perform(post("/api/images/presigned-url")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + AGENT_TOKEN)
                 .contentType(APPLICATION_JSON)
                 .content(json(new ImageController.PresignedUrlRequest(
                     "product.webp", "image/webp", ImagePurpose.PRODUCT, 1200, 800,
                     List.of(new ImageController.VariantRequest("320w", 1024)), null))))
-            .andExpect(status().isBadRequest())
-            .andDo(documentError("image-presigned-url-agent-no-member-id", "이미지", "Presigned URL — AGENT memberId 누락", "AGENT가 memberId 없이 요청하면 400을 반환합니다."));
+            .andExpect(status().isUnauthorized())
+            .andDo(documentError("image-presigned-url-agent-no-member-id", "이미지", "Presigned URL — AGENT memberId 누락", "AGENT가 memberId 없이 요청하면 회원을 식별할 수 없어 401을 반환합니다."));
     }
 
     @Test

@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberAuthenticationService {
 
+    static final String LOGIN_LOCKED_MESSAGE = "로그인 시도 횟수를 초과했습니다. 잠시 후 다시 시도해 주세요";
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -30,7 +32,7 @@ public class MemberAuthenticationService {
     public MemberSession login(String email, String password) {
         String normalized = normalizeEmail(email);
         if (loginAttempts.isLocked(normalized)) {
-            throw new DomainException(ErrorCode.FORBIDDEN);
+            throw new DomainException(ErrorCode.TOO_MANY_REQUESTS, LOGIN_LOCKED_MESSAGE);
         }
         Member member = memberRepository.findByEmail(normalized)
             .orElseThrow(() -> {

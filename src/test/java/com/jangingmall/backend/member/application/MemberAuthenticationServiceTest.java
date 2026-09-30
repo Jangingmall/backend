@@ -3,6 +3,7 @@ package com.jangingmall.backend.member.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -109,6 +110,19 @@ class MemberAuthenticationServiceTest {
         assertThatThrownBy(() -> memberAuthenticationService.login("artisan@example.com", "wrong-password"))
             .isInstanceOfSatisfying(DomainException.class,
                 exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.UNAUTHORIZED));
+    }
+
+    @Test
+    @DisplayName("로그인 시도가 잠긴 이메일은 조회 없이 TOO_MANY_REQUESTS를 반환한다")
+    void loginWhenLocked() {
+        when(loginAttempts.isLocked("artisan@example.com")).thenReturn(true);
+
+        assertThatThrownBy(() -> memberAuthenticationService.login("ARTISAN@example.com", "password"))
+            .isInstanceOfSatisfying(DomainException.class, exception -> {
+                assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.TOO_MANY_REQUESTS);
+                assertThat(exception.getMessage()).isEqualTo(MemberAuthenticationService.LOGIN_LOCKED_MESSAGE);
+            });
+        verifyNoInteractions(memberRepository);
     }
 
     @Test
