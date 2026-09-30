@@ -3306,7 +3306,7 @@ export interface components {
             /** @description 후기 내용 (최대 2000자) */
             content: string;
         };
-        "api-payments-returns-1115423141": {
+        "api-payments-returns-returnId-status-1115423141": {
             data?: {
                 /** @description 신청 일시 */
                 requestedAt: string;
@@ -4961,7 +4961,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
                 };
             };
         };
@@ -6516,7 +6516,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
                 };
             };
         };

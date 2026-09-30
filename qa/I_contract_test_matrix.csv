@@ -94,8 +94,8 @@ CONTRACT-065,배송,GET,/api/payments/orders/{orderId}/delivery,delivery-get,200
 CONTRACT-066,주문,POST,/api/payments/orders/{orderId}/purchase-confirmation,order-purchase-confirmation,200,api-payments-orders-orderId-purchase-confirmation-1703665068,schema_validation,AUTO
 CONTRACT-067,주문,PATCH,/api/payments/orders/{orderId}/shipping-address,order-change-shipping-address,200,api-payments-orders-orderId-shipping-address-48905676,schema_validation,AUTO
 CONTRACT-068,결제수단,POST,/api/payments/refund-account,payment-refund-account-register,201,api-payments-refund-account-135657900,schema_validation,AUTO
-CONTRACT-069,반품/교환,POST,/api/payments/returns,returns-request,201,api-payments-returns-1115423141,schema_validation,AUTO
-CONTRACT-070,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,200,api-payments-returns-1115423141,schema_validation,AUTO
+CONTRACT-069,반품/교환,POST,/api/payments/returns,returns-request,201,api-payments-returns-returnId-status-1115423141,schema_validation,AUTO
+CONTRACT-070,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,200,api-payments-returns-returnId-status-1115423141,schema_validation,AUTO
 CONTRACT-071,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,200,api-payments-cart-items-521794704,schema_validation,AUTO
 CONTRACT-072,결제,POST,/api/payments/{paymentId}/cancel,payment-cancel,200,api-payments-paymentId-cancel1498139372,schema_validation,AUTO
 CONTRACT-073,상품,GET,/api/products,product-list,200,api-products-me-2131279592,schema_validation,AUTO
