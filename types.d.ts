@@ -1993,6 +1993,21 @@ export interface components {
             /** @description 인증할 이메일 (@NotBlank, @Email, 최대 255자) */
             email: string;
         };
+        "api-payments-webhooks-toss2067222078": {
+            /** @description 이벤트 데이터 */
+            data: {
+                /** @description 총 결제 금액 */
+                totalAmount: number;
+                /** @description 주문번호 */
+                orderId: string;
+                /** @description 결제 키 */
+                paymentKey: string;
+                /** @description 결제 상태 */
+                status: string;
+            };
+            /** @description 이벤트 유형 */
+            eventType: string;
+        };
         "api-member-me-wishes525484891": {
             data?: {
                 /** @description 현재 페이지 */
@@ -2059,21 +2074,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-payments-webhooks-toss2067222078": {
-            /** @description 이벤트 데이터 */
-            data: {
-                /** @description 총 결제 금액 */
-                totalAmount: number;
-                /** @description 주문번호 */
-                orderId: string;
-                /** @description 결제 키 */
-                paymentKey: string;
-                /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description 이벤트 유형 */
-            eventType: string;
         };
         "api-payments-methods1245291826": {
             data?: {
@@ -2314,7 +2314,7 @@ export interface components {
             /** @description 이메일 (@NotBlank, @Email, 최대 255자) */
             email: string;
         };
-        "api-member-artisans-me-1004667003": {
+        "api-member-artisans-artisanId-1004667003": {
             data?: {
                 /** @description 경력 연수 */
                 careerYears: number;
@@ -2450,6 +2450,12 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
+        "api-member-login-1429029385": {
+            /** @description 비밀번호 */
+            password: string;
+            /** @description 이메일 */
+            email: string;
+        };
         "api-payments-orders-438073018": {
             data?: {
                 /** @description 주문 생성 일시 */
@@ -2469,12 +2475,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-member-login-1429029385": {
-            /** @description 비밀번호 */
-            password: string;
-            /** @description 이메일 */
-            email: string;
         };
         "api-member-email-verify1884513398": {
             /** @description 6자리 숫자 인증 코드 */
@@ -3306,7 +3306,7 @@ export interface components {
             /** @description 후기 내용 (최대 2000자) */
             content: string;
         };
-        "api-payments-returns-returnId-status-1115423141": {
+        "api-payments-returns-1115423141": {
             data?: {
                 /** @description 신청 일시 */
                 requestedAt: string;
@@ -3941,6 +3941,14 @@ export interface components {
             /** @description 첨부 이미지 ID 목록 (최대 5개) */
             imageIds?: (Record<string, never> | boolean | string | number)[] | null;
         };
+        "api-payments999605347": {
+            /** @description 결제 금액 */
+            amount: number;
+            /** @description 주문 ID */
+            orderId: number;
+            /** @description 결제수단 */
+            paymentMethod?: string | null;
+        };
         "api-member-me-orders-941884244": {
             data?: {
                 /** @description 현재 페이지 */
@@ -4059,14 +4067,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-payments999605347": {
-            /** @description 결제 금액 */
-            amount: number;
-            /** @description 주문 ID */
-            orderId: number;
-            /** @description 결제수단 */
-            paymentMethod?: string | null;
         };
         "api-admin-artisans-applications-applicationId-pipeline-277586035": {
             /** @description 자격 등급 (선택) */
@@ -4962,7 +4962,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
@@ -5185,7 +5185,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
                 };
             };
         };
@@ -5209,7 +5209,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
                 };
             };
         };
@@ -5261,7 +5261,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-member-artisans-me-1004667003"];
+                    "application/json": components["schemas"]["api-member-artisans-artisanId-1004667003"];
                 };
             };
         };
@@ -6517,7 +6517,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
