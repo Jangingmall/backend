@@ -4,6 +4,7 @@ import com.jangingmall.backend.content.domain.AiContentClient;
 import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
+import com.jangingmall.backend.content.domain.GenerationFailureReason;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,15 +19,17 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 /**
- * scan-millis(기본 60초)마다 두 가지를 처리한다.
+ * scan-millis(기본 60초)마다 세 가지를 처리한다.
  * <ol>
  *   <li>QUEUED: AI 작업 상태를 조회한다. 요청 후 deadline-seconds(기본 1861초 ≈ 31분) 동안 폴링하고,
  *       데드라인이 지난 건은 마지막으로 한 번 더 조회한 뒤에도 DRAFT_READY가 아니면 FAILED 처리한다.</li>
  *   <li>PROCESSING(AI 제출이 아직 접수되지 않은 건): 오류 종류(4xx 포함)와 무관하게 데드라인까지 주기적으로
  *       재제출한다. 접수되면 QUEUED, 데드라인이 지나면 FAILED. 재제출은 같은 멱등성 키(generationId)를 쓰므로
  *       AI 쪽에서 중복 작업이 생기지 않는다.</li>
+ *   <li>DRAFT_READY: AI 초안이 끝난 건. 전이 직후와 이후 매 주기마다 GenAI에 최종 렌더링을 요청한다(같은 멱등성 키).
+ *       렌더링은 draft-ready 시각부터 render-deadline-seconds(기본 10800초 = 3시간) 동안 기다리며, 지나면 FAILED 처리한다.</li>
  * </ol>
- * COMPLETED 전이는 AI 콜백(AiCallbackController)이 담당한다.
+ * COMPLETED 전이는 렌더링 결과를 전달하는 AI 콜백(AiCallbackController)이 담당한다.
  */
 @Slf4j
 @Component
@@ -44,11 +47,13 @@ public class GenerationDeadlineScheduler {
     private final ContentGenerationRepository generationRepository;
     private final GenerationProperties properties;
     private final AiContentClient aiContentClient;
+    private final AiRenderApprovalAsyncExecutor renderExecutor;
 
     @Scheduled(fixedDelayString = "${ai.generation.scan-millis:60000}")
     public void pollQueuedGenerations() {
         pollQueued();
         retryUnsubmitted();
+        retryRender();
     }
 
     private void pollQueued() {
@@ -72,14 +77,15 @@ public class GenerationDeadlineScheduler {
                 if (transition(generationId, GenerationStatus.QUEUED, ContentGeneration::markDraftReady)) {
                     draftReady++;
                     log.info("AI DRAFT_READY 전이 generationId={} jobId={}", generationId, jobId);
+                    requestRender(generationId);
                 }
             } else if (AI_STATUS_FAILED.equals(aiStatus)) {
-                if (transition(generationId, GenerationStatus.QUEUED, ContentGeneration::fail)) {
+                if (transition(generationId, GenerationStatus.QUEUED, gen -> gen.fail(GenerationFailureReason.AI_FAILED))) {
                     failed++;
                     log.warn("AI 작업 실패 확인 generationId={} jobId={}", generationId, jobId);
                 }
             } else if (overdue) {
-                if (transition(generationId, GenerationStatus.QUEUED, ContentGeneration::fail)) {
+                if (transition(generationId, GenerationStatus.QUEUED, gen -> gen.fail(GenerationFailureReason.AI_DEADLINE))) {
                     expired++;
                     log.warn("AI 생성 데드라인 초과 — FAILED 처리 generationId={} jobId={} requestedAt={} lastAiStatus={}",
                         generationId, jobId, generation.getRequestedAt(), aiStatus);
@@ -114,7 +120,7 @@ public class GenerationDeadlineScheduler {
         for (ContentGeneration generation : processing) {
             Long generationId = generation.getId();
             if (generation.getRequestedAt().isBefore(deadline)) {
-                if (transition(generationId, GenerationStatus.PROCESSING, ContentGeneration::fail)) {
+                if (transition(generationId, GenerationStatus.PROCESSING, gen -> gen.fail(GenerationFailureReason.SUBMIT_DEADLINE))) {
                     expired++;
                     log.warn("AI 제출 데드라인 초과 — FAILED 처리 generationId={} requestedAt={}",
                         generationId, generation.getRequestedAt());
@@ -133,6 +139,60 @@ public class GenerationDeadlineScheduler {
 
         log.info("AI 제출 재시도 완료 — 대상={} 접수={} 대기유지={} 데드라인만료={}",
             processing.size(), resubmitted, pending, expired);
+    }
+
+    /**
+     * DRAFT_READY 건의 최종 렌더링을 마감(draft-ready 시각 + render-deadline-seconds)까지 주기적으로 다시 요청한다.
+     * 이미 렌더 중이면 GenAI가 같은 멱등성 키로 중복 생성하지 않고, 이 인스턴스에서 진행 중인 건은 실행기가 건너뛴다.
+     * 전이 직후(scan 주기 이내)의 건은 전이 시점에 이미 요청했으므로 다음 주기부터 재요청한다.
+     */
+    private void retryRender() {
+        List<ContentGeneration> ready = generationRepository.findAllByStatus(GenerationStatus.DRAFT_READY);
+        if (ready.isEmpty()) {
+            return;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime renderDeadline = now.minusSeconds(properties.renderDeadlineSeconds());
+        LocalDateTime graceCutoff = now.minus(Duration.ofMillis(properties.scanMillis()));
+        int requested = 0;
+        int expired = 0;
+
+        for (ContentGeneration generation : ready) {
+            Long generationId = generation.getId();
+            LocalDateTime draftReadyAt = generation.getDraftReadyAt();
+            if (draftReadyAt == null) {
+                // draft_ready_at 도입 전에 DRAFT_READY가 된 건: 지금부터 렌더링 마감 시간을 센다.
+                transition(generationId, GenerationStatus.DRAFT_READY, ContentGeneration::backfillDraftReadyAt);
+                requestRender(generationId);
+                requested++;
+                continue;
+            }
+            if (draftReadyAt.isBefore(renderDeadline)) {
+                if (transition(generationId, GenerationStatus.DRAFT_READY, gen -> gen.fail(GenerationFailureReason.RENDER_DEADLINE))) {
+                    expired++;
+                    log.warn("AI 렌더 데드라인 초과 — FAILED 처리 generationId={} jobId={} draftReadyAt={}",
+                        generationId, generation.getJobId(), draftReadyAt);
+                }
+                continue;
+            }
+            if (draftReadyAt.isAfter(graceCutoff)) {
+                continue;
+            }
+            requestRender(generationId);
+            requested++;
+        }
+
+        log.info("AI 렌더 요청 점검 완료 — 대상={} 요청={} 데드라인만료={}", ready.size(), requested, expired);
+    }
+
+    /** 렌더 요청 큐가 가득 차 거절되어도 스캔 루프가 중단되지 않게 하고, 다음 주기에 다시 요청한다. */
+    private void requestRender(Long generationId) {
+        try {
+            renderExecutor.requestRender(generationId);
+        } catch (RuntimeException e) {
+            log.warn("AI 렌더 요청 접수 실패 — 다음 주기에 재시도 generationId={} reason={}", generationId, e.getMessage());
+        }
     }
 
     private boolean resubmit(ContentGeneration generation) {

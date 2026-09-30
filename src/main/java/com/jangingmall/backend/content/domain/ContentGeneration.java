@@ -64,6 +64,16 @@ public class ContentGeneration {
     @Column(name = "react_document", columnDefinition = "TEXT")
     private String reactDocument;
 
+    @Column(name = "draft_ready_at")
+    private LocalDateTime draftReadyAt;
+
+    @Column(name = "render_claimed_at")
+    private LocalDateTime renderClaimedAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "failure_reason", length = 30)
+    private GenerationFailureReason failureReason;
+
     public static ContentGeneration create(Long productId, String images, String productName, String howMade, String careTips) {
         ContentGeneration generation = new ContentGeneration();
         generation.productId = productId;
@@ -86,10 +96,19 @@ public class ContentGeneration {
 
     public void markDraftReady() {
         this.status = GenerationStatus.DRAFT_READY;
+        this.draftReadyAt = LocalDateTime.now();
+    }
+
+    /** draft_ready_at 도입 전에 DRAFT_READY가 된 건의 렌더링 마감 기준 시각을 지금으로 채운다. */
+    public void backfillDraftReadyAt() {
+        if (this.draftReadyAt == null) {
+            this.draftReadyAt = LocalDateTime.now();
+        }
     }
 
     public void complete(String reactDocumentJson, String idempotencyKey) {
         this.status = GenerationStatus.COMPLETED;
+        this.failureReason = null;
         this.reactDocument = reactDocumentJson;
         this.idempotencyKey = idempotencyKey;
         this.completedAt = LocalDateTime.now();
@@ -98,5 +117,15 @@ public class ContentGeneration {
     public void fail() {
         this.status = GenerationStatus.FAILED;
         this.completedAt = LocalDateTime.now();
+    }
+
+    public void fail(GenerationFailureReason reason) {
+        fail();
+        this.failureReason = reason;
+    }
+
+    /** FAILED가 된 뒤 늦게 도착한 결과를 받아도 되는 실패인지. AI가 실패를 확정한 건은 결과가 올 수 없으므로 제외한다. */
+    public boolean acceptsLateResult() {
+        return this.status == GenerationStatus.FAILED && this.failureReason != GenerationFailureReason.AI_FAILED;
     }
 }

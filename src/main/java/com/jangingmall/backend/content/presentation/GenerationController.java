@@ -41,6 +41,17 @@ public class GenerationController {
         return ResponseEntity.status(202).body(ApiResponse.accepted(generationService.request(command)));
     }
 
+    @PostMapping("/{generationId}/render")
+    @PreAuthorize("hasRole('ARTISAN')")
+    public ResponseEntity<ApiResponse<GenerationResponse>> requestRender(
+        @PathVariable Long productId,
+        @PathVariable Long generationId,
+        @AuthenticationPrincipal Long memberId
+    ) {
+        return ResponseEntity.status(202)
+            .body(ApiResponse.accepted(generationService.requestRender(productId, generationId, memberId)));
+    }
+
     @GetMapping("/{generationId}")
     @PreAuthorize("hasRole('ARTISAN')")
     public ApiResponse<GenerationResponse> poll(
