@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -111,11 +113,16 @@ class RestAiContentClient implements AiContentClient {
         String productName, String howMade, String careTips) {
         String idempotencyKey = generationId.toString();
         String metadataJson = buildMetadataJson(generationId, productId, idempotencyKey, productName, howMade, careTips);
-        byte[] imageBytes = fetchFirstImage(images, generationId);
+        FetchedImage image = fetchFirstImage(images, generationId);
 
+        // AI 서버는 part의 Content-Type과 실제 바이트 시그니처가 일치하는지 검증한다.
+        // 파일명 확장자로 Content-Type이 정해지므로 실제 이미지 종류에 맞춰 명시한다.
+        HttpHeaders imageHeaders = new HttpHeaders();
+        imageHeaders.setContentType(MediaType.parseMediaType(image.mimeType()));
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("metadata", metadataJson);
-        body.add("product_image", new NamedByteArrayResource(imageBytes, "product_image.jpg"));
+        body.add("product_image", new HttpEntity<>(
+            new NamedByteArrayResource(image.data(), "product_image." + image.extension()), imageHeaders));
 
         log.info("AI 콘텐츠 생성 job 제출 generationId={} productId={}", generationId, productId);
         AiJobAcceptedResponse response = generationClient.post()
@@ -213,10 +220,10 @@ class RestAiContentClient implements AiContentClient {
         }
     }
 
-    private byte[] fetchFirstImage(List<String> images, Long generationId) {
+    private FetchedImage fetchFirstImage(List<String> images, Long generationId) {
         if (images == null || images.isEmpty()) {
             log.warn("이미지 없이 AI job 제출 generationId={}", generationId);
-            return new byte[0];
+            return new FetchedImage(new byte[0], "image/jpeg", "jpg");
         }
         String url = images.getFirst();
         try {
@@ -239,9 +246,13 @@ class RestAiContentClient implements AiContentClient {
             if (!isImageContentType(contentType)) {
                 throw new IllegalStateException("이미지가 아닌 Content-Type=" + contentType);
             }
-            log.info("이미지 fetch 완료 generationId={} url={} status={} contentType={} bytes={}",
-                generationId, withoutQuery(url), status, contentType, body.length);
-            return body;
+            FetchedImage image = sniffImage(body);
+            if (image == null) {
+                throw new IllegalStateException("지원하지 않는 이미지 형식입니다 (PNG, JPEG, WebP만 가능)");
+            }
+            log.info("이미지 fetch 완료 generationId={} url={} status={} contentType={} detected={} bytes={}",
+                generationId, withoutQuery(url), status, contentType, image.mimeType(), body.length);
+            return image;
         } catch (Exception e) {
             if (e instanceof InterruptedException) {
                 Thread.currentThread().interrupt();
@@ -251,6 +262,24 @@ class RestAiContentClient implements AiContentClient {
             throw new AiImageFetchException("이미지를 내려받지 못했습니다: " + e.getMessage(), e);
         }
     }
+
+    /** 바이트 시그니처로 AI 서버가 허용하는 이미지 종류(PNG, JPEG, WebP)를 판별한다. 그 외는 null. */
+    static FetchedImage sniffImage(byte[] data) {
+        if (data.length >= 8 && (data[0] & 0xFF) == 0x89 && data[1] == 'P' && data[2] == 'N' && data[3] == 'G'
+            && data[4] == '\r' && data[5] == '\n' && data[6] == 0x1A && data[7] == '\n') {
+            return new FetchedImage(data, "image/png", "png");
+        }
+        if (data.length >= 3 && (data[0] & 0xFF) == 0xFF && (data[1] & 0xFF) == 0xD8 && (data[2] & 0xFF) == 0xFF) {
+            return new FetchedImage(data, "image/jpeg", "jpg");
+        }
+        if (data.length >= 12 && data[0] == 'R' && data[1] == 'I' && data[2] == 'F' && data[3] == 'F'
+            && data[8] == 'W' && data[9] == 'E' && data[10] == 'B' && data[11] == 'P') {
+            return new FetchedImage(data, "image/webp", "webp");
+        }
+        return null;
+    }
+
+    record FetchedImage(byte[] data, String mimeType, String extension) {}
 
     private static boolean isImageContentType(String contentType) {
         String type = contentType.toLowerCase(Locale.ROOT);

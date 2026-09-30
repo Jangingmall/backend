@@ -339,16 +339,13 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 - 작업 요약: FAILED 응답에 고정 대체 이미지 URL(fallbackImageUrl) 포함 + AI 상품 이미지 다운로드 실패(URL 형식·HTTP 상태·Content-Type) 시 빈 데이터 대신 즉시 실패 처리, 재시도 제외
 - 시작일: 2026-09-30
 
-### Claude-현재세션 (ai-submit-retry-until-deadline)
-- 브랜치: `fix/ai-submit-retry-until-deadline`
+### Claude-현재세션 (ai-image-mime-detect)
+- 브랜치: `fix/ai-image-mime-detect`
 - 상태: 완료
 - 접근 파일:
-  - `src/main/java/com/jangingmall/backend/content/application/GenerationAsyncExecutor.java`
-  - `src/main/java/com/jangingmall/backend/content/application/GenerationDeadlineScheduler.java`
-  - `src/test/java/com/jangingmall/backend/content/application/GenerationAsyncExecutorTest.java`
-  - `src/test/java/com/jangingmall/backend/content/application/GenerationDeadlineSchedulerTest.java`
-  - `src/test/java/com/jangingmall/backend/content/presentation/GenerationControllerTest.java`
-- 작업 요약: AI 제출 실패(4xx·이미지 오류 포함)를 즉시 FAILED로 처리하지 않고 PROCESSING 대기 유지 → 스케줄러가 31분(데드라인)까지 재제출, 초과 시 FAILED. API 스펙 변경 없음
+  - `src/main/java/com/jangingmall/backend/content/infrastructure/RestAiContentClient.java`
+  - `src/test/java/com/jangingmall/backend/content/infrastructure/RestAiContentClientTest.java`
+- 작업 요약: AI 제출 시 이미지 MIME을 항상 jpeg로 선언하던 버그 수정 — 바이트 시그니처(PNG/JPEG/WebP)로 판별해 part 파일명·Content-Type 명시, 미지원 형식은 즉시 실패
 - 시작일: 2026-09-30
 
 ## 완료된 작업 (참고용)
