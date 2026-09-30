@@ -303,6 +303,7 @@ AI 에이전트가 작업 중인 범위를 등록한다.
   - `src/main/java/com/jangingmall/backend/member/application/MemberAuthenticationService.java`
   - `src/main/java/com/jangingmall/backend/member/infrastructure/RedisLoginAttemptService.java`
   - `src/main/resources/application-prod.yml`
+  - `build.gradle`
   - `src/main/resources/db/migration/V14__create_product_qna_tables.sql` (신규)
   - `src/main/java/com/jangingmall/backend/image/presentation/ImageController.java`
   - `src/main/java/com/jangingmall/backend/member/application/MemberAccess.java`

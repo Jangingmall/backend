@@ -77,6 +77,8 @@ dependencies {
     // AWS S3 (Presigned PUT image upload)
     implementation platform('software.amazon.awssdk:bom:2.54.13')
     implementation 'software.amazon.awssdk:s3'
+    // EKS IRSA(WebIdentityTokenFileCredentialsProvider) 자격증명 해석에 필요
+    implementation 'software.amazon.awssdk:sts'
 
     // Observability
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
