@@ -55,13 +55,29 @@ public class ProviderUserService implements OAuth2UserService<OAuth2UserRequest,
             return new OAuthIdentity(provider,id,email);
         }
         if ("naver".equals(provider)) {
-            var response=(Map<String,Object>)attributes.getOrDefault("response",Map.of());
-            String id=Objects.toString(response.get("id"),"");
-            String email=Objects.toString(response.get("email"),"");
+            log.info("[NAVER] attributes keys={}", attributes.keySet());
+            log.info("[NAVER] response={}", attributes.get("response"));
+
+            var response = (Map<String, Object>)
+                    attributes.getOrDefault("response", Map.of());
+
+            String id = Objects.toString(response.get("id"), "");
+            String email = Objects.toString(response.get("email"), "");
+
+            log.info(
+                    "[NAVER] idPresent={}, emailPresent={}, email={}",
+                    !id.isBlank(),
+                    !email.isBlank(),
+                    email
+            );
+
             if (id.isBlank() || email.isBlank()) {
-                throw new OAuth2AuthenticationException(new OAuth2Error("unverified_email"));
+                throw new OAuth2AuthenticationException(
+                        new OAuth2Error("unverified_email")
+                );
             }
-            return new OAuthIdentity(provider,id,email);
+
+            return new OAuthIdentity(provider, id, email);
         }
         throw new OAuth2AuthenticationException(new OAuth2Error("unsupported_provider"));
     }
