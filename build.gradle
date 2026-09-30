@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.flywaydb:flyway-gradle-plugin:13.8.1'
+        classpath 'org.flywaydb:flyway-database-postgresql:13.8.1'
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.3'
@@ -7,6 +17,9 @@ plugins {
     id 'jacoco'
 }
 
+// Flyway plugin 적용 (buildscript classpath에서 로드)
+apply plugin: 'org.flywaydb.flyway'
+
 group = 'com.jangingmall'
 version = '0.0.1-SNAPSHOT'
 
@@ -15,6 +28,7 @@ java {
         languageVersion = JavaLanguageVersion.of(25)
     }
 }
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -96,6 +110,24 @@ dependencies {
 
     // Gatling load test (k6로 대체 — Gradle 9.x 호환성)
     // gatlingImplementation 'io.gatling.highcharts:gatling-charts-highcharts:3.13.5'
+}
+
+// Flyway Gradle plugin configuration
+// flywayClean task을 위한 설정 — 환경변수(DB_URL, DB_USERNAME, DB_PASSWORD) 사용
+// 인프라에서 SSM → 환경변수 주입, 코드에서는 단순 환경변수 읽기만 수행
+flyway {
+    url = System.getenv('DB_URL')
+    user = System.getenv('DB_USERNAME')
+    password = System.getenv('DB_PASSWORD')
+    schemas = ['public']
+    // 기본적으로 clean 비활성화 — prod 실행 중 실수 방지
+    // flywayClean task 실행 시에만 clean 허용
+    cleanDisabled = true
+}
+
+// flywayClean task에서만 clean 허용
+tasks.named('flywayClean') {
+    cleanDisabled = false
 }
 
 def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
