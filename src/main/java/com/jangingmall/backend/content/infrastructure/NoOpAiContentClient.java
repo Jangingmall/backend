@@ -29,7 +29,7 @@ class NoOpAiContentClient implements AiContentClient {
     }
 
     @Override
-    public void approveRender(String jobId, Long generationId) {
+    public void approveRender(String jobId, Long generationId, Long productId) {
         log.warn("AI_BASE_URL 미설정 — approveRender skip jobId={}", jobId);
     }
 

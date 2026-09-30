@@ -12,6 +12,7 @@ import com.jangingmall.backend.content.domain.ContentErrorMessage;
 import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.ContentBlock;
 import com.jangingmall.backend.content.domain.ContentBlockRepository;
+import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
 import com.jangingmall.backend.content.domain.Interview;
 import com.jangingmall.backend.content.domain.InterviewRepository;
@@ -120,6 +121,19 @@ public class ContentService {
         return historyRepository.findAllByContentIdOrderByVersionAsc(content.getId()).stream()
             .map(ContentResponse.VersionHistory::from)
             .toList();
+    }
+
+    /**
+     * 늦게 도착한 AI 결과로 이 상품의 콘텐츠를 덮어써도 되는지. 콘텐츠가 없거나, 사용자가 손대지 않은(AI 이력뿐인)
+     * DRAFT일 때만 허용해 사용자의 수정본·검수 중인 콘텐츠를 보호한다.
+     */
+    @Transactional(readOnly = true)
+    public boolean canOverwriteWithAiResult(Long productId) {
+        return contentRepository.findByProductId(productId)
+            .map(content -> content.getStatus() == ContentStatus.DRAFT
+                && historyRepository.findAllByContentIdOrderByVersionAsc(content.getId()).stream()
+                    .noneMatch(history -> history.getEditedByType() == EditedByType.ARTISAN))
+            .orElse(true);
     }
 
     @Transactional
@@ -284,7 +298,11 @@ public class ContentService {
                         text(map.get("src"), text(map.get("url"), null)))) : null));
                 String imageId = "img".equals(tag) ? resolveImageId(imageRef) : null;
                 if ("img".equals(tag) && imageRef != null && !imageRef.isBlank() && imageId == null) {
-                    throw new DomainException(ErrorCode.NOT_FOUND);
+                    // AI가 만든 이미지는 업로드 이미지로 등록되어 있지 않다. 404로 콜백 전체를 실패시키지 않고
+                    // 해당 이미지 블록만 건너뛴다(글 블록과 reactDocument 원문은 그대로 저장된다).
+                    log.warn("reactDocument 이미지 참조를 찾을 수 없어 블록을 건너뜁니다 contentId={} imageRef={}",
+                        content.getId(), imageRef);
+                    continue;
                 }
                 String videoUrl = "video".equals(tag) ? text(values.get("videoUrl"), null) : null;
                 String blockText = Set.of("h2", "p").contains(tag)

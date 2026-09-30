@@ -18,9 +18,11 @@ public sealed interface GenerationRequest permits GenerationRequest.Create {
         String productName,
 
         @NotBlank(message = "제작 과정은 필수입니다")
+        @Size(max = 2000, message = "제작 과정은 2000자 이내여야 합니다")
         String howMade,
 
         @NotBlank(message = "관리 방법은 필수입니다")
+        @Size(max = 1000, message = "관리 방법은 1000자 이내여야 합니다")
         String careTips
     ) implements GenerationRequest {}
 }

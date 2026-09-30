@@ -20,8 +20,10 @@ import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.net.URI;
@@ -30,6 +32,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -40,6 +43,9 @@ import java.util.Map;
 class RestAiContentClient implements AiContentClient {
 
     private static final String DETAIL_PAGE_JOBS_PATH = "/internal/v1/ai/detail-page-jobs";
+    private static final String DETAIL_PAGE_RENDERS_PATH = "/internal/v1/ai/detail-page-renders";
+    private static final String RENDER_IDEMPOTENCY_KEY_PREFIX = "render-";
+    private static final String RENDER_IN_PROGRESS_DETAIL = "Approval is already in progress";
     private static final String AI_INTERNAL_TOKEN_HEADER = "X-AI-Internal-Token";
     private static final String IDEMPOTENCY_KEY_HEADER = "Idempotency-Key";
     private static final String DEFAULT_TEMPLATE_ID = "default-long-detail-page";
@@ -149,15 +155,64 @@ class RestAiContentClient implements AiContentClient {
     }
 
     @Override
-    public void approveRender(String jobId, Long generationId) {
-        AiApproveRenderRequest body = new AiApproveRenderRequest(jobId, generationId.toString());
-        generationClient.post()
-            .uri("/internal/v1/ai/detail-page-renders")
+    public void approveRender(String jobId, Long generationId, Long productId) {
+        JsonNode draft = fetchDraft(jobId);
+        String idempotencyKey = RENDER_IDEMPOTENCY_KEY_PREFIX + generationId;
+        // GenAI 계약: multipart 'metadata'(extra=forbid). draft는 AI가 만든 초안을 수정 없이 그대로 돌려준다.
+        Map<String, Object> metadata = new LinkedHashMap<>();
+        metadata.put("product_id", productId.toString());
+        metadata.put("idempotency_key", idempotencyKey);
+        metadata.put("draft_id", jobId);
+        metadata.put("draft", draft);
+        metadata.put("options", new GenerationOptions(generationId.toString()));
+        String metadataJson;
+        try {
+            metadataJson = objectMapper.writeValueAsString(metadata);
+        } catch (Exception e) {
+            throw new RestClientException("AI 렌더 metadata 직렬화 실패", e);
+        }
+
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("metadata", metadataJson);
+        log.info("AI 렌더 요청 generationId={} jobId={} productId={} idempotencyKey={}",
+            generationId, jobId, productId, idempotencyKey);
+        try {
+            generationClient.post()
+                .uri(DETAIL_PAGE_RENDERS_PATH)
+                .header(AI_INTERNAL_TOKEN_HEADER, aiInternalAuthToken)
+                .header(IDEMPOTENCY_KEY_HEADER, idempotencyKey)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(body)
+                .retrieve()
+                .toBodilessEntity();
+        } catch (HttpClientErrorException.Conflict e) {
+            // 같은 멱등성 키로 이미 렌더 중이면 중복 요청이므로 결과를 기다리면 된다.
+            if (e.getResponseBodyAsString().contains(RENDER_IN_PROGRESS_DETAIL)) {
+                log.info("AI 렌더 이미 진행 중 generationId={} jobId={}", generationId, jobId);
+                return;
+            }
+            throw e;
+        }
+        log.info("AI 렌더 요청 완료 generationId={} jobId={}", generationId, jobId);
+    }
+
+    /** AI 작업 상태 응답에서 사용자가 승인할 초안(draft.draft)을 꺼낸다. */
+    private JsonNode fetchDraft(String jobId) {
+        String statusJson = generationClient.get()
+            .uri("/internal/v1/ai/detail-page-jobs/{jobId}", jobId)
             .header(AI_INTERNAL_TOKEN_HEADER, aiInternalAuthToken)
-            .body(body)
             .retrieve()
-            .toBodilessEntity();
-        log.info("AI 렌더 승인 완료 jobId={} generationId={}", jobId, generationId);
+            .body(String.class);
+        JsonNode draft;
+        try {
+            draft = statusJson == null ? null : objectMapper.readTree(statusJson).path("draft").path("draft");
+        } catch (Exception e) {
+            throw new RestClientException("AI 작업 상태 응답을 해석하지 못했습니다 jobId=" + jobId, e);
+        }
+        if (draft == null || draft.isMissingNode() || draft.isNull()) {
+            throw new IllegalStateException("AI 작업 상태 응답에 초안(draft)이 없습니다 jobId=" + jobId);
+        }
+        return draft;
     }
 
     @Override
@@ -340,11 +395,6 @@ class RestAiContentClient implements AiContentClient {
         @JsonProperty("job_id") String jobId,
         String status,
         Integer progress
-    ) {}
-
-    private record AiApproveRenderRequest(
-        @JsonProperty("job_id") String jobId,
-        @JsonProperty("source_generation_id") String sourceGenerationId
     ) {}
 
     private static final class NamedByteArrayResource extends ByteArrayResource {
