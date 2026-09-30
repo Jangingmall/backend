@@ -4,6 +4,15 @@ on:
   push:
     branches: [ develop ]
   workflow_dispatch:
+    inputs:
+      action:
+        description: "Deployment action"
+        required: true
+        type: choice
+        options:
+          - deploy
+          - reset-and-deploy
+        default: deploy
 
 concurrency:
   group: cd-${{ github.ref }}
@@ -24,6 +33,7 @@ jobs:
     outputs:
       image-digest: ${{ steps.resolve.outputs.digest }}
       image-uri: ${{ steps.meta.outputs.image-uri }}
+      action: ${{ github.event.inputs.action || 'deploy' }}
 
     steps:
       - uses: actions/checkout@v4

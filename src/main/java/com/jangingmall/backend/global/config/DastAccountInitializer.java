@@ -17,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Locale;
+
 @Slf4j
 @Profile({"prod", "local-postgresql"})
 @Component
@@ -51,50 +53,59 @@ public class DastAccountInitializer implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        if (userEmail.isBlank() || artisanEmail.isBlank() || adminEmail.isBlank()) {
+        // DAST 이메일 정규화 (trim + toLowerCase) - 프로젝트 전체 이메일 정책과 일치
+        String normalizedUserEmail = normalizeEmail(userEmail);
+        String normalizedArtisanEmail = normalizeEmail(artisanEmail);
+        String normalizedAdminEmail = normalizeEmail(adminEmail);
+
+        if (normalizedUserEmail.isBlank() || normalizedArtisanEmail.isBlank() || normalizedAdminEmail.isBlank()) {
             log.info("[DAST] DAST_* 환경변수 미설정 — 계정 초기화 건너뜀");
             return;
         }
 
-        Long adminId = initAdmin();
-        initUser();
-        initArtisan(adminId);
+        Long adminId = initAdmin(normalizedAdminEmail);
+        initUser(normalizedUserEmail);
+        initArtisan(normalizedArtisanEmail, adminId);
     }
 
-    private Long initAdmin() {
-        return memberRepository.findByEmail(adminEmail)
+    private static String normalizeEmail(String email) {
+        return email.trim().toLowerCase(Locale.ROOT);
+    }
+
+    private Long initAdmin(String normalizedAdminEmail) {
+        return memberRepository.findByEmail(normalizedAdminEmail)
             .map(existing -> {
                 existing.changePassword(passwordEncoder.encode(adminPassword));
                 existing.activate();
                 memberRepository.save(existing);
-                log.info("[DAST] stgAdmin({}) 비밀번호 재해싱 완료", adminEmail);
+                log.info("[DAST] stgAdmin({}) 비밀번호 재해싱 완료", normalizedAdminEmail);
                 return existing.getId();
             })
             .orElseGet(() -> {
                 Member admin = Member.register(
-                    adminEmail,
+                    normalizedAdminEmail,
                     passwordEncoder.encode(adminPassword),
                     "DAST-ADMIN", "01000000003", MemberRole.ADMIN,
                     true, true, true, false
                 );
                 Long id = memberRepository.save(admin).getId();
-                log.info("[DAST] stgAdmin({}) 생성 완료", adminEmail);
+                log.info("[DAST] stgAdmin({}) 생성 완료", normalizedAdminEmail);
                 return id;
             });
     }
 
-    private void initUser() {
-        if (memberRepository.existsByEmail(userEmail)) {
-            memberRepository.findByEmail(userEmail).ifPresent(existing -> {
+    private void initUser(String normalizedUserEmail) {
+        if (memberRepository.existsByEmail(normalizedUserEmail)) {
+            memberRepository.findByEmail(normalizedUserEmail).ifPresent(existing -> {
                 existing.changePassword(passwordEncoder.encode(userPassword));
                 existing.activate();
                 memberRepository.save(existing);
-                log.info("[DAST] stgUser({}) 비밀번호 재해싱 완료", userEmail);
+                log.info("[DAST] stgUser({}) 비밀번호 재해싱 완료", normalizedUserEmail);
             });
             return;
         }
         MemberSignupResult signupResult = memberService.signUp(new MemberSignupCommand(
-            userEmail, userPassword, userPassword,
+            normalizedUserEmail, userPassword, userPassword,
             "DAST-USER", "01000000001", MemberRole.USER,
             true, true, true, false
         ));
@@ -102,21 +113,21 @@ public class DastAccountInitializer implements ApplicationRunner {
             m.activate();
             memberRepository.save(m);
         });
-        log.info("[DAST] stgUser({}) 생성 완료", userEmail);
+        log.info("[DAST] stgUser({}) 생성 완료", normalizedUserEmail);
     }
 
-    private void initArtisan(Long adminId) {
-        if (memberRepository.existsByEmail(artisanEmail)) {
-            memberRepository.findByEmail(artisanEmail).ifPresent(existing -> {
+    private void initArtisan(String normalizedArtisanEmail, Long adminId) {
+        if (memberRepository.existsByEmail(normalizedArtisanEmail)) {
+            memberRepository.findByEmail(normalizedArtisanEmail).ifPresent(existing -> {
                 existing.changePassword(passwordEncoder.encode(artisanPassword));
                 existing.activate();
                 memberRepository.save(existing);
-                log.info("[DAST] stgArtisan({}) 비밀번호 재해싱 완료", artisanEmail);
+                log.info("[DAST] stgArtisan({}) 비밀번호 재해싱 완료", normalizedArtisanEmail);
             });
             return;
         }
         MemberSignupResult result = memberService.signUp(new MemberSignupCommand(
-            artisanEmail, artisanPassword, artisanPassword,
+            normalizedArtisanEmail, artisanPassword, artisanPassword,
             "DAST-ARTISAN", "01000000002", MemberRole.USER,
             true, true, true, false
         ));
@@ -128,6 +139,6 @@ public class DastAccountInitializer implements ApplicationRunner {
             result.memberId(), "DAST 테스트 공방", "DAST 자동화 테스트용 계정", DAST_LICENSE_URL
         );
         sellerApplicationService.approve(adminId, application.applicationId());
-        log.info("[DAST] stgArtisan({}) 생성 및 ARTISAN 승인 완료", artisanEmail);
+        log.info("[DAST] stgArtisan({}) 생성 및 ARTISAN 승인 완료", normalizedArtisanEmail);
     }
 }
