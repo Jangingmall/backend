@@ -52,6 +52,10 @@ class GenerationControllerTest extends RestDocsControllerTest {
         1L, 10L, GenerationStatus.COMPLETED, NOW, NOW.plusMinutes(1)
     );
 
+    private static final GenerationResponse FAILED_RESPONSE = new GenerationResponse(
+        1L, 10L, GenerationStatus.FAILED, NOW, NOW.plusSeconds(8)
+    );
+
     private static final org.springframework.restdocs.payload.FieldDescriptor[] GENERATION_FIELDS = {
         fieldWithPath("data.generationId").type(JsonFieldType.NUMBER).description("생성 요청 ID"),
         fieldWithPath("data.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
@@ -183,6 +187,51 @@ class GenerationControllerTest extends RestDocsControllerTest {
                     .build()
                 )
             ));
+    }
+
+    @Test
+    @DisplayName("AI 콘텐츠 생성 상태 조회 — FAILED 상태면 고정 대체 이미지 URL(fallbackImageUrl)을 함께 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void pollFailed() throws Exception {
+        when(generationService.poll(anyLong(), anyLong(), any())).thenReturn(FAILED_RESPONSE);
+
+        mockMvc.perform(get("/api/content/products/{productId}/generations/{generationId}", 10L, 1L))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.status").value("FAILED"))
+            .andExpect(jsonPath("$.data.fallbackImageUrl").value("http://test.webp"))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "generation-poll-failed",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("AI 콘텐츠 생성")
+                    .summary("AI 생성 상태 조회 (FAILED)")
+                    .description("제출 실패(3회 시도) 또는 대기 만료로 생성이 실패한 경우 FAILED와 고정 대체 이미지 URL을 반환합니다. "
+                        + "fallbackImageUrl은 FAILED일 때만 포함됩니다.")
+                    .pathParameters(
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("generationId").description("생성 요청 ID").type(SimpleType.INTEGER)
+                    )
+                    .responseFields(successEnvelopeFields(
+                        fieldWithPath("data.generationId").type(JsonFieldType.NUMBER).description("생성 요청 ID"),
+                        fieldWithPath("data.productId").type(JsonFieldType.NUMBER).description("상품 ID"),
+                        fieldWithPath("data.status").type(JsonFieldType.STRING).description("생성 상태 (FAILED)"),
+                        fieldWithPath("data.requestedAt").type(JsonFieldType.STRING).description("요청 시각"),
+                        fieldWithPath("data.completedAt").type(JsonFieldType.STRING).optional().description("실패 확정 시각"),
+                        fieldWithPath("data.fallbackImageUrl").type(JsonFieldType.STRING).description("FAILED일 때만 포함되는 고정 대체 이미지 URL")
+                    ))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("AI 콘텐츠 생성 상태 조회 — FAILED가 아니면 fallbackImageUrl 필드가 없다")
+    @WithMockUser(roles = "ARTISAN")
+    void pollProcessingHasNoFallbackImageUrl() throws Exception {
+        when(generationService.poll(anyLong(), anyLong(), any())).thenReturn(PROCESSING_RESPONSE);
+
+        mockMvc.perform(get("/api/content/products/{productId}/generations/{generationId}", 10L, 1L))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.fallbackImageUrl").doesNotExist());
     }
 
     @Test

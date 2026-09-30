@@ -1,6 +1,7 @@
 package com.jangingmall.backend.content.application;
 
 import com.jangingmall.backend.content.domain.AiContentClient;
+import com.jangingmall.backend.content.domain.AiImageFetchException;
 import com.jangingmall.backend.content.domain.AiJobAccepted;
 import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
@@ -85,6 +86,23 @@ class GenerationAsyncExecutorTest {
         executor.onGenerationRequested(new GenerationRequestedEvent(1L, sampleCommand()));
 
         verify(aiContentClient, times(3)).submitJob(any(), any(), any(), any(), any(), any());
+        verify(generationRepository).save(generationCaptor.capture());
+        assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
+    }
+
+    @Test
+    @DisplayName("이미지 다운로드 실패는 재시도 없이 즉시 FAILED로 전환한다")
+    void onGenerationRequestedImageFetchFailureFailsWithoutRetry() {
+        ContentGeneration generation = ContentGeneration.create(10L, "img1", "청자 다완", "손으로 빚음", "물 닦기");
+        ReflectionTestUtils.setField(generation, "id", 1L);
+        when(generationRepository.findByIdAndProductId(1L, 10L)).thenReturn(Optional.of(generation));
+        when(generationRepository.save(any())).thenReturn(generation);
+        doThrow(new AiImageFetchException("이미지를 내려받지 못했습니다")).when(aiContentClient)
+            .submitJob(any(), any(), any(), any(), any(), any());
+
+        executor.onGenerationRequested(new GenerationRequestedEvent(1L, sampleCommand()));
+
+        verify(aiContentClient, times(1)).submitJob(any(), any(), any(), any(), any(), any());
         verify(generationRepository).save(generationCaptor.capture());
         assertThat(generationCaptor.getValue().getStatus()).isEqualTo(GenerationStatus.FAILED);
     }
