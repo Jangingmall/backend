@@ -15,8 +15,9 @@ public enum ErrorCode {
     TOKEN_MISMATCH(HttpStatus.UNAUTHORIZED, "토큰이 유효하지 않습니다"),
 
     // 403
-    FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다"),
 
+
+    FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다"),
     // 404
     NOT_FOUND(HttpStatus.NOT_FOUND, "리소스를 찾을 수 없습니다"),
 
@@ -38,7 +39,10 @@ public enum ErrorCode {
     EXTERNAL_SERVICE_ERROR(HttpStatus.BAD_GATEWAY, "외부 서비스 연동에 실패했습니다"),
 
     // 500
-    INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다");
+    INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다"),
+    EMAIL_SEND_PARSE(HttpStatus.FORBIDDEN, "메시지 구문 분석에 실패"),
+    EMAIL_SEND_AUTHENTICATION(HttpStatus.FORBIDDEN, "인증이 실패"),
+    EMAIL_SEND(HttpStatus.BAD_REQUEST, "메시지 전송에 실패");
 
     private final HttpStatus httpStatus;
     private final String defaultMessage;

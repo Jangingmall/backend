@@ -1,7 +1,16 @@
 # 배포 환경변수 계약서 (백엔드 ↔ 인프라)
 
-> 작성: 강정훈 | 최종 업데이트: 2026-09-15
-> Parameter Store 경로 규칙: `/prod/backend/{KEY}`
+> 작성: 강정훈 | 최종 업데이트: 2026-09-28
+> Parameter Store 경로 규칙: `/prod/backend/{KEY}` (prod) / `/stg/backend/{KEY}` (stg)
+
+---
+
+## 도메인 확정
+
+| 환경 | 백엔드 API | 프론트엔드 |
+|---|---|---|
+| prod | `https://api.midam.store` | `https://midam.store` |
+| stg | `https://api.stg.midam.store` | `https://stg.midam.store` |
 
 ---
 

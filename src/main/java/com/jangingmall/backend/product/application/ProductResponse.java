@@ -49,40 +49,83 @@ public record ProductResponse(
     public static ProductResponse from(Product product, List<ProductImageView> images) {
         return from(product, images, List.of());
     }
-
     public static ProductResponse from(Product product, List<ProductImageView> images,
                                        List<ContentBlockView> detailPageBlocks) {
-        List<ProductImageView> resolvedImages = images == null ? List.of() : List.copyOf(images);
-        List<ImageVariantView> resolvedThumbnail = resolvedImages.isEmpty()
-            ? List.of()
-            : (resolvedImages.get(0).variants() == null ? List.of() : resolvedImages.get(0).variants());
+        List<ProductImageView> resolvedImages =
+                images == null ? List.of() : List.copyOf(images);
+
+        List<ImageVariantView> resolvedThumbnail =
+                resolvedImages.isEmpty()
+                        ? List.of()
+                        : (resolvedImages.get(0).variants() == null
+                        ? List.of()
+                        : List.copyOf(resolvedImages.get(0).variants()));
+
+        List<String> resolvedGiftThemes =
+                product.getGiftThemes() == null
+                        ? List.of()
+                        : List.copyOf(product.getGiftThemes());
+
+        List<String> resolvedPurposeTags =
+                product.getPurposeTags() == null
+                        ? List.of()
+                        : List.copyOf(product.getPurposeTags());
+
+        List<String> resolvedColors =
+                product.getColors() == null
+                        ? List.of()
+                        : List.copyOf(product.getColors());
+
         String thumbnailUrl = product.getThumbnailUrl();
-        if ((thumbnailUrl == null || thumbnailUrl.isBlank()) && !resolvedImages.isEmpty()
-            && resolvedImages.get(0).variants() != null && !resolvedImages.get(0).variants().isEmpty()) {
+
+        if ((thumbnailUrl == null || thumbnailUrl.isBlank())
+                && !resolvedImages.isEmpty()
+                && resolvedImages.get(0).variants() != null
+                && !resolvedImages.get(0).variants().isEmpty()) {
             thumbnailUrl = resolvedImages.get(0).variants().get(0).url();
         }
+
         return new ProductResponse(
-            product.getId(),
-            product.getArtisanId(),
-            product.getCategory() != null ? product.getCategory().getId() : null,
-            product.getCategory() != null ? product.getCategory().getName() : null,
-            product.getSubcategory() != null ? product.getSubcategory().getId() : null,
-            product.getSubcategory() != null ? product.getSubcategory().getName() : null,
-            product.getTitle(),
-            product.getDescription(),
-            product.getPrice(),
-            product.getStock(),
-            thumbnailUrl,
-            product.getStatus().name(),
-            product.getCreatedAt(),
-            product.getUpdatedAt(),
-            product.getGiftThemes(),
-            product.getPurposeTags(),
-            product.getProductionPeriodDays(),
-            product.getColors(),
-            resolvedImages,
-            detailPageBlocks == null ? List.of() : List.copyOf(detailPageBlocks),
-            resolvedThumbnail
+                product.getId(),
+                product.getArtisanId(),
+
+                product.getCategory() != null
+                        ? product.getCategory().getId()
+                        : null,
+
+                product.getCategory() != null
+                        ? product.getCategory().getName()
+                        : null,
+
+                product.getSubcategory() != null
+                        ? product.getSubcategory().getId()
+                        : null,
+
+                product.getSubcategory() != null
+                        ? product.getSubcategory().getName()
+                        : null,
+
+                product.getTitle(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getStock(),
+                thumbnailUrl,
+                product.getStatus().name(),
+                product.getCreatedAt(),
+                product.getUpdatedAt(),
+
+                resolvedGiftThemes,
+                resolvedPurposeTags,
+                product.getProductionPeriodDays(),
+                resolvedColors,
+
+                resolvedImages,
+
+                detailPageBlocks == null
+                        ? List.of()
+                        : List.copyOf(detailPageBlocks),
+
+                resolvedThumbnail
         );
     }
 

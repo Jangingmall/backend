@@ -2,14 +2,13 @@ package com.jangingmall.backend.member.application;
 
 import com.jangingmall.backend.global.exception.DomainException;
 import com.jangingmall.backend.global.exception.ErrorCode;
-import com.jangingmall.backend.member.domain.Member;
-import com.jangingmall.backend.member.domain.MemberRepository;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.jangingmall.backend.member.infrastructure.EmailSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,17 +17,16 @@ public class EmailVerificationService {
     private static final Duration CODE_TTL = Duration.ofMinutes(5);
 
     private final EmailVerificationStore verificationStore;
-    private final EmailSender emailSender;
+    private final EmailSenderService emailSenderService;
     private final MemberRepository memberRepository;
 
     public void sendCode(String email) {
         String normalized = email.trim().toLowerCase(Locale.ROOT);
         String code = String.format("%06d", ThreadLocalRandom.current().nextInt(1_000_000));
         verificationStore.save(normalized, code, CODE_TTL);
-        emailSender.sendVerificationCode(normalized, code);
+        emailSenderService.signupCertSend(normalized, code);
     }
 
-    @Transactional
     public void verify(String email, String code) {
         String normalized = email.trim().toLowerCase(Locale.ROOT);
         String stored = verificationStore.consumeCode(normalized)
@@ -36,6 +34,5 @@ public class EmailVerificationService {
         if (!stored.equals(code.trim())) {
             throw new DomainException(ErrorCode.INVALID_INPUT);
         }
-        memberRepository.findByEmail(normalized).ifPresent(Member::activate);
     }
 }
