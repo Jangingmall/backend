@@ -255,6 +255,36 @@ AI 에이전트가 작업 중인 범위를 등록한다.
 - 작업 요약: 카카오·네이버 OAuth2 소셜 로그인 연동
 - 시작일: 2026-09-28
 
+### Claude-현재세션 (fix-dummy-image-urls)
+- 브랜치: `feat/fix-dummy-image-urls`
+- 상태: 완료
+- 접근 파일:
+  - `src/main/resources/data.sql`
+- 작업 요약: dead domain 9개(youngnamyo/shindawan/kwangjuyo/dadowon/kpicaa/yugi/유기/onggi/mosi/namwonmokgi) 255개 thumbnail_url → 검증된 공개 URL로 교체
+
+### Claude-현재세션 (approve-async-render)
+- 브랜치: `develop`
+- 상태: 완료
+- 접근 파일:
+  - `src/main/java/com/jangingmall/backend/content/application/AiRenderApprovalRequestedEvent.java` (신규)
+  - `src/main/java/com/jangingmall/backend/content/application/AiRenderApprovalAsyncExecutor.java` (신규)
+  - `src/main/java/com/jangingmall/backend/content/application/ContentService.java`
+  - `src/test/java/com/jangingmall/backend/content/application/ContentServiceTest.java`
+- 작업 요약: approve() @Transactional 안 동기 approveRender 호출 → AFTER_COMMIT @Async 이벤트 발행으로 분리 (DB 커넥션 풀 고갈 방지)
+- 시작일: 2026-09-29
+
+### Claude-현재세션 (ai-discord-notification)
+- 브랜치: `develop`
+- 상태: 완료
+- 접근 파일:
+  - `src/main/java/com/jangingmall/backend/content/infrastructure/DiscordNotificationService.java` (신규)
+  - `src/main/java/com/jangingmall/backend/content/application/GenerationAsyncExecutor.java`
+  - `src/test/java/com/jangingmall/backend/content/application/GenerationAsyncExecutorTest.java`
+  - `src/main/resources/application.yml`
+  - `http/generation.http` (신규)
+- 작업 요약: AI 생성 요청/성공/실패 시 Discord 웹훅 알림 + console 로그, generation.http 테스트 파일
+- 시작일: 2026-09-29
+
 ## 완료된 작업 (참고용)
 
 (없음)
