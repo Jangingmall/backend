@@ -1993,6 +1993,21 @@ export interface components {
             /** @description 인증할 이메일 (@NotBlank, @Email, 최대 255자) */
             email: string;
         };
+        "api-payments-webhooks-toss2067222078": {
+            /** @description 이벤트 데이터 */
+            data: {
+                /** @description 총 결제 금액 */
+                totalAmount: number;
+                /** @description 주문번호 */
+                orderId: string;
+                /** @description 결제 키 */
+                paymentKey: string;
+                /** @description 결제 상태 */
+                status: string;
+            };
+            /** @description 이벤트 유형 */
+            eventType: string;
+        };
         "api-member-me-wishes525484891": {
             data?: {
                 /** @description 현재 페이지 */
@@ -2059,21 +2074,6 @@ export interface components {
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-payments-webhooks-toss2067222078": {
-            /** @description 이벤트 데이터 */
-            data: {
-                /** @description 총 결제 금액 */
-                totalAmount: number;
-                /** @description 주문번호 */
-                orderId: string;
-                /** @description 결제 키 */
-                paymentKey: string;
-                /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description 이벤트 유형 */
-            eventType: string;
         };
         "api-payments-methods1245291826": {
             data?: {
@@ -3306,6 +3306,24 @@ export interface components {
             /** @description 후기 내용 (최대 2000자) */
             content: string;
         };
+        "api-payments-returns-1115423141": {
+            data?: {
+                /** @description 신청 일시 */
+                requestedAt: string;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 반품 ID */
+                returnId: number;
+                /** @description 반품·교환 유형 */
+                type: string;
+                /** @description 처리 상태 */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
         "api-payments-confirm1321390106": {
             data?: {
                 /** @description 결제 금액 */
@@ -3323,24 +3341,6 @@ export interface components {
                 /** @description 승인 일시 */
                 approvedAt?: string | null;
                 /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-payments-returns-1115423141": {
-            data?: {
-                /** @description 신청 일시 */
-                requestedAt: string;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 반품 ID */
-                returnId: number;
-                /** @description 반품·교환 유형 */
-                type: string;
-                /** @description 처리 상태 */
                 status: string;
             };
             /** @description true — 항상 성공 */
@@ -3669,6 +3669,12 @@ export interface components {
             /** @description 알림 내용 (@NotBlank, 최대 255자) */
             content: string;
         };
+        "api-chatbot-sessions-sessionId-1487972696": {
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
         "api-payments-confirm-12221918": {
             /** @description 결제 금액 */
             amount: number;
@@ -3676,12 +3682,6 @@ export interface components {
             orderId: string;
             /** @description 토스페이먼츠 결제 키 (최대 200자) */
             paymentKey: string;
-        };
-        "api-chatbot-sessions-sessionId-1487972696": {
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
         };
         "api-admin-seller-applications-applicationId-approve1698846120": {
             data?: {

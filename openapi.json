@@ -913,12 +913,12 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
+                                                        "careerYears": 15,
                                                         "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                         "category": "\ub3c4\uc608",
                                                         "artisanId": 10,
-                                                        "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
-                                                        "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
-                                                        "careerYears": 15
+                                                        "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c"
                                                     }
                                                 ],
                                                 "empty": false,
@@ -1693,8 +1693,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "DONE",
-                                                "approvedAt": "2026-09-29T10:39:52.379484776Z",
-                                                "canceledAt": "2026-09-29T10:39:52.379484876Z"
+                                                "approvedAt": "2026-09-30T00:37:16.263676317Z",
+                                                "canceledAt": "2026-09-30T00:37:16.263676427Z"
                                             }
                                         }
                                     }
@@ -1917,7 +1917,7 @@
                                                 "orderNumber": "ORD-000001",
                                                 "totalAmount": 25000,
                                                 "status": "CREATED",
-                                                "createdAt": "2026-09-29T10:39:52.096918338Z",
+                                                "createdAt": "2026-09-30T00:37:16.018188169Z",
                                                 "items": [
                                                     
                                                 ]
@@ -2034,7 +2034,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "REQUESTED",
-                                                "requestedAt": "2026-09-29T10:39:51.981744530Z"
+                                                "requestedAt": "2026-09-30T00:37:15.930104397Z"
                                             }
                                         }
                                     }
@@ -2609,12 +2609,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
+                                                "careerYears": 15,
                                                 "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                 "category": "\ub3c4\uc608",
                                                 "artisanId": 10,
-                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
-                                                "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
-                                                "careerYears": 15
+                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c"
                                             }
                                         }
                                     }
@@ -2673,12 +2673,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "introduction": "\uc0c8\ub85c\uc6b4 \uc18c\uac1c\uc785\ub2c8\ub2e4.",
+                                                "careerYears": 15,
                                                 "businessName": "\uc0c8\uacf5\ubc29\uba85",
                                                 "category": "\ub3c4\uc608",
                                                 "artisanId": 10,
-                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
-                                                "introduction": "\uc0c8\ub85c\uc6b4 \uc18c\uac1c\uc785\ub2c8\ub2e4.",
-                                                "careerYears": 15
+                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c"
                                             }
                                         }
                                     }
@@ -2714,10 +2714,10 @@
                                             "data": {
                                                 "content": [
                                                     {
-                                                        "artisanId": 10,
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                         "notificationsEnabled": true,
-                                                        "newProductCount": 2
+                                                        "newProductCount": 2,
+                                                        "artisanId": 10,
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                                     }
                                                 ],
                                                 "empty": false,
@@ -2799,12 +2799,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
+                                                "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
+                                                "careerYears": 15,
                                                 "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                 "category": "\ub3c4\uc608",
                                                 "artisanId": 10,
-                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
-                                                "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
-                                                "careerYears": 15
+                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c"
                                             }
                                         }
                                     }
@@ -3162,10 +3162,10 @@
                                                                 "thumbnail": {
                                                                     "variants": [
                                                                         {
-                                                                            "url": "https://cdn.midam.store/products/320.webp",
-                                                                            "width": 320,
                                                                             "format": "webp",
-                                                                            "height": 320
+                                                                            "height": 320,
+                                                                            "url": "https://cdn.midam.store/products/320.webp",
+                                                                            "width": 320
                                                                         }
                                                                     ],
                                                                     "imageId": "01JIMAGE"
@@ -3327,6 +3327,12 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "writerNickname": "\ubbf8\ub2f4",
+                                                        "images": [
+                                                            
+                                                        ],
+                                                        "createdAt": "2026-09-01T10:00:00",
+                                                        "productId": 1,
                                                         "reviewId": 1,
                                                         "content": "\uc815\ub9d0 \uc544\ub984\ub2e4\uc6b4 \uc791\ud488\uc785\ub2c8\ub2e4.",
                                                         "orderItemId": 10,
@@ -3337,13 +3343,7 @@
                                                                 
                                                             ],
                                                             "imageId": "01JIMAGE"
-                                                        },
-                                                        "writerNickname": "\ubbf8\ub2f4",
-                                                        "images": [
-                                                            
-                                                        ],
-                                                        "createdAt": "2026-09-01T10:00:00",
-                                                        "productId": 1
+                                                        }
                                                     }
                                                 ],
                                                 "empty": false,
@@ -3426,12 +3426,12 @@
                                             "data": {
                                                 "content": [
                                                     {
+                                                        "name": "\uccad\uc790 \ub2e4\uc644",
                                                         "price": 85000,
                                                         "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
                                                         "status": "ON_SALE",
                                                         "productId": 1,
-                                                        "artisanId": 10,
-                                                        "name": "\uccad\uc790 \ub2e4\uc644"
+                                                        "artisanId": 10
                                                     }
                                                 ],
                                                 "empty": false,
@@ -4036,8 +4036,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "CANCELED",
-                                                "approvedAt": "2026-09-29T10:39:52.494287738Z",
-                                                "canceledAt": "2026-09-29T10:39:52.494287858Z"
+                                                "approvedAt": "2026-09-30T00:37:16.381707222Z",
+                                                "canceledAt": "2026-09-30T00:37:16.381707322Z"
                                             }
                                         }
                                     }
@@ -5319,10 +5319,10 @@
                                                         "thumbnail": {
                                                             "variants": [
                                                                 {
-                                                                    "url": "https://cdn.midam.store/products/320.webp",
-                                                                    "width": 320,
                                                                     "format": "webp",
-                                                                    "height": 320
+                                                                    "height": 320,
+                                                                    "url": "https://cdn.midam.store/products/320.webp",
+                                                                    "width": 320
                                                                 }
                                                             ],
                                                             "imageId": "01JIMAGE"
@@ -5626,7 +5626,7 @@
                                             "data": {
                                                 "orderId": 100,
                                                 "status": "CANCELED",
-                                                "canceledAt": "2026-09-29T10:39:52.219505244Z",
+                                                "canceledAt": "2026-09-30T00:37:16.123302122Z",
                                                 "purchaseConfirmedAt": null
                                             }
                                         }
@@ -5735,7 +5735,7 @@
                                                 "orderId": 100,
                                                 "status": "PURCHASE_CONFIRMED",
                                                 "canceledAt": null,
-                                                "purchaseConfirmedAt": "2026-09-29T10:39:52.219707447Z"
+                                                "purchaseConfirmedAt": "2026-09-30T00:37:16.123479554Z"
                                             }
                                         }
                                     }
@@ -5868,7 +5868,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "APPROVED",
-                                                "requestedAt": "2026-09-29T10:39:52.409803145Z"
+                                                "requestedAt": "2026-09-30T00:37:16.297495660Z"
                                             }
                                         }
                                     }
@@ -6238,6 +6238,47 @@
                     }
                 }
             },
+            "api-payments-webhooks-toss2067222078": {
+                "required": [
+                    "data",
+                    "eventType"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "orderId",
+                            "paymentKey",
+                            "status",
+                            "totalAmount"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "totalAmount": {
+                                "type": "number",
+                                "description": "\ucd1d \uacb0\uc81c \uae08\uc561"
+                            },
+                            "orderId": {
+                                "type": "string",
+                                "description": "\uc8fc\ubb38\ubc88\ud638"
+                            },
+                            "paymentKey": {
+                                "type": "string",
+                                "description": "\uacb0\uc81c \ud0a4"
+                            },
+                            "status": {
+                                "type": "string",
+                                "description": "\uacb0\uc81c \uc0c1\ud0dc"
+                            }
+                        },
+                        "description": "\uc774\ubca4\ud2b8 \ub370\uc774\ud130"
+                    },
+                    "eventType": {
+                        "type": "string",
+                        "description": "\uc774\ubca4\ud2b8 \uc720\ud615"
+                    }
+                }
+            },
             "api-member-me-wishes525484891": {
                 "required": [
                     "status",
@@ -6413,47 +6454,6 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-payments-webhooks-toss2067222078": {
-                "required": [
-                    "data",
-                    "eventType"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "orderId",
-                            "paymentKey",
-                            "status",
-                            "totalAmount"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "totalAmount": {
-                                "type": "number",
-                                "description": "\ucd1d \uacb0\uc81c \uae08\uc561"
-                            },
-                            "orderId": {
-                                "type": "string",
-                                "description": "\uc8fc\ubb38\ubc88\ud638"
-                            },
-                            "paymentKey": {
-                                "type": "string",
-                                "description": "\uacb0\uc81c \ud0a4"
-                            },
-                            "status": {
-                                "type": "string",
-                                "description": "\uacb0\uc81c \uc0c1\ud0dc"
-                            }
-                        },
-                        "description": "\uc774\ubca4\ud2b8 \ub370\uc774\ud130"
-                    },
-                    "eventType": {
-                        "type": "string",
-                        "description": "\uc774\ubca4\ud2b8 \uc720\ud615"
                     }
                 }
             },
@@ -10056,6 +10056,55 @@
                     }
                 }
             },
+            "api-payments-returns-1115423141": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "orderId",
+                            "requestedAt",
+                            "returnId",
+                            "status",
+                            "type"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "requestedAt": {
+                                "type": "string",
+                                "description": "\uc2e0\uccad \uc77c\uc2dc"
+                            },
+                            "orderId": {
+                                "type": "number",
+                                "description": "\uc8fc\ubb38 ID"
+                            },
+                            "returnId": {
+                                "type": "number",
+                                "description": "\ubc18\ud488 ID"
+                            },
+                            "type": {
+                                "type": "string",
+                                "description": "\ubc18\ud488\u00b7\uad50\ud658 \uc720\ud615"
+                            },
+                            "status": {
+                                "type": "string",
+                                "description": "\ucc98\ub9ac \uc0c1\ud0dc"
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
             "api-payments-confirm1321390106": {
                 "required": [
                     "status",
@@ -10107,55 +10156,6 @@
                             "status": {
                                 "type": "string",
                                 "description": "\uacb0\uc81c \uc0c1\ud0dc"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-payments-returns-1115423141": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "orderId",
-                            "requestedAt",
-                            "returnId",
-                            "status",
-                            "type"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "requestedAt": {
-                                "type": "string",
-                                "description": "\uc2e0\uccad \uc77c\uc2dc"
-                            },
-                            "orderId": {
-                                "type": "number",
-                                "description": "\uc8fc\ubb38 ID"
-                            },
-                            "returnId": {
-                                "type": "number",
-                                "description": "\ubc18\ud488 ID"
-                            },
-                            "type": {
-                                "type": "string",
-                                "description": "\ubc18\ud488\u00b7\uad50\ud658 \uc720\ud615"
-                            },
-                            "status": {
-                                "type": "string",
-                                "description": "\ucc98\ub9ac \uc0c1\ud0dc"
                             }
                         }
                     },
@@ -11117,6 +11117,24 @@
                     }
                 }
             },
+            "api-chatbot-sessions-sessionId-1487972696": {
+                "required": [
+                    "data",
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
             "api-payments-confirm-12221918": {
                 "required": [
                     "amount",
@@ -11136,24 +11154,6 @@
                     "paymentKey": {
                         "type": "string",
                         "description": "\ud1a0\uc2a4\ud398\uc774\uba3c\uce20 \uacb0\uc81c \ud0a4 (\ucd5c\ub300 200\uc790)"
-                    }
-                }
-            },
-            "api-chatbot-sessions-sessionId-1487972696": {
-                "required": [
-                    "data",
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
                     }
                 }
             },
