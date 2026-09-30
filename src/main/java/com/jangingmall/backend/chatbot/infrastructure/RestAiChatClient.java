@@ -2,6 +2,7 @@ package com.jangingmall.backend.chatbot.infrastructure;
 
 import com.jangingmall.backend.chatbot.domain.AiChatClient;
 import com.jangingmall.backend.chatbot.domain.ChatMessage;
+import com.jangingmall.backend.chatbot.domain.ChatSender;
 import lombok.extern.slf4j.Slf4j;
 import com.jangingmall.backend.global.config.AiProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
 import java.net.http.HttpClient;
+import java.net.http.HttpConnectTimeoutException;
+import java.net.http.HttpTimeoutException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,7 @@ class RestAiChatClient implements AiChatClient {
 
     private static final int MAX_HISTORY_TURNS = 6;
     private static final int MAX_RETRY_COUNT = 2;
-    private static final String FALLBACK_REPLY = "현재 AI 추천을 이용할 수 없습니다";
+    private static final String FALLBACK_REPLY = BACKEND_FALLBACK_REPLY;
 
     private final RestClient restClient;
 
@@ -62,6 +65,11 @@ class RestAiChatClient implements AiChatClient {
             } catch (RestClientException e) {
                 lastException = e;
                 log.warn("AI 챗봇 호출 실패 sessionId={} attempt={} reason={}", sessionId, attempt + 1, e.getMessage());
+                if (isReadTimeout(e)) {
+                    // 연결은 됐지만 응답이 늦은 경우다. 챗봇은 끊긴 요청도 계속 처리하므로 재시도하면 부하와 대기만 배로 는다.
+                    log.warn("AI 챗봇 응답 지연 — 재시도하지 않음 sessionId={}", sessionId);
+                    break;
+                }
             }
         }
 
@@ -69,9 +77,25 @@ class RestAiChatClient implements AiChatClient {
         return new AiChatResult(FALLBACK_REPLY, null, List.of(), List.of());
     }
 
+    /** 요청이 전송된 뒤 응답 대기 시간이 초과됐는지(연결 시간 초과는 제외). */
+    static boolean isReadTimeout(RestClientException e) {
+        for (Throwable cause = e; cause != null; cause = cause.getCause()) {
+            if (cause instanceof HttpConnectTimeoutException) {
+                return false;
+            }
+            if (cause instanceof HttpTimeoutException) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private Map<String, Object> buildRequestBody(UUID sessionId, String message, List<ChatMessage> history) {
-        List<Map<String, String>> recentHistory = history.stream()
-            .skip(Math.max(0, history.size() - MAX_HISTORY_TURNS))
+        List<ChatMessage> usable = history.stream()
+            .filter(m -> !(m.getSender() == ChatSender.ADMIN && FALLBACK_REPLIES.contains(m.getContent())))
+            .toList();
+        List<Map<String, String>> recentHistory = usable.stream()
+            .skip(Math.max(0, usable.size() - MAX_HISTORY_TURNS))
             .map(m -> Map.of("sender", m.getSender().name(), "content", m.getContent()))
             .toList();
         return Map.of(

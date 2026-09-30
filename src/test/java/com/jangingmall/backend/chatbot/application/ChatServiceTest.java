@@ -184,4 +184,65 @@ class ChatServiceTest {
 
         assertThat(session.isEnded()).isTrue();
     }
+
+    @Test
+    @DisplayName("AI 호출은 DB 트랜잭션 밖에서 실행된다(사용자 메시지 저장·봇 응답 저장만 각각 짧은 트랜잭션)")
+    void sendMessage_callsAiOutsideTransaction() {
+        TrackingTransactions transactions = new TrackingTransactions();
+        ChatService service = new ChatService(sessionRepository, messageRepository, aiChatClient,
+            productRepository, reviewRepository, artisanProfileRepository, transactions);
+
+        UUID sessionId = UUID.randomUUID();
+        ChatSession session = ChatSession.create(1L);
+        ReflectionTestUtils.setField(session, "sessionId", sessionId);
+        ChatMessage userMsg = ChatMessage.of(sessionId, ChatSender.USER, "질문");
+        ReflectionTestUtils.setField(userMsg, "messageId", 1L);
+        ChatMessage botMsg = ChatMessage.of(sessionId, ChatSender.ADMIN, "응답");
+        ReflectionTestUtils.setField(botMsg, "messageId", 2L);
+
+        when(sessionRepository.findById(sessionId)).thenReturn(Optional.of(session));
+        when(messageRepository.save(any())).thenReturn(userMsg).thenReturn(botMsg);
+        when(messageRepository.findBySessionId(sessionId)).thenReturn(List.of());
+        when(aiChatClient.chat(any(), any(), any())).thenAnswer(invocation -> {
+            assertThat(transactions.active).as("AI 호출 중에는 트랜잭션(DB 커넥션)을 잡지 않는다").isFalse();
+            return new AiChatResult("응답", "intent", List.of(), List.of());
+        });
+
+        ChatResponse.SendResult result = service.sendMessage(new ChatCommand.SendMessage(sessionId, 1L, "질문"));
+
+        assertThat(result.reply()).isEqualTo("응답");
+        assertThat(transactions.executions).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("이미 종료된 세션이면 AI를 호출하지 않는다")
+    void sendMessage_endedSessionDoesNotCallAi() {
+        UUID sessionId = UUID.randomUUID();
+        ChatSession session = ChatSession.create(1L);
+        ReflectionTestUtils.setField(session, "sessionId", sessionId);
+        session.end();
+        when(sessionRepository.findById(sessionId)).thenReturn(Optional.of(session));
+
+        assertThatThrownBy(() -> chatService.sendMessage(new ChatCommand.SendMessage(sessionId, 1L, "질문")))
+            .isInstanceOf(BusinessRuleViolationException.class);
+
+        org.mockito.Mockito.verifyNoInteractions(aiChatClient);
+    }
+
+    /** 트랜잭션이 활성인 동안만 active가 true인 테스트용 TransactionOperations. */
+    private static final class TrackingTransactions implements org.springframework.transaction.support.TransactionOperations {
+        boolean active;
+        int executions;
+
+        @Override
+        public <T> T execute(org.springframework.transaction.support.TransactionCallback<T> action) {
+            active = true;
+            executions++;
+            try {
+                return action.doInTransaction(new org.springframework.transaction.support.SimpleTransactionStatus());
+            } finally {
+                active = false;
+            }
+        }
+    }
 }

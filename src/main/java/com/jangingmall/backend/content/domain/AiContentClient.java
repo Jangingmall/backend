@@ -15,5 +15,8 @@ public interface AiContentClient {
 
     void updateProduct(Long productId, AiProductUpdatePayload payload);
 
+    /** 상태 한 필드만 갱신한다(챗봇이 재임베딩하지 않는 경로). */
+    void updateProductStatus(Long productId, String status);
+
     void deleteProduct(Long productId);
 }

@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -149,6 +150,32 @@ class ProductServiceTest {
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
         productService.changeStatus(new ProductCommand.ChangeStatus(1L, 1L, "ON_SALE"));
+
+        assertThat(product.getStatus()).isEqualTo(ProductStatus.ON_SALE);
+    }
+
+    @Test
+    @DisplayName("상태만 바꾸면 챗봇에는 상태 한 필드만 동기화하고 전체 스냅샷(재임베딩 유발)은 보내지 않는다")
+    void changeStatusSyncsOnlyStatus() {
+        Product product = Product.create(1L, null, null, "제목", "설명", 1000, 5, null);
+        ReflectionTestUtils.setField(product, "id", 7L);
+        when(productRepository.findById(7L)).thenReturn(Optional.of(product));
+
+        productService.changeStatus(new ProductCommand.ChangeStatus(7L, 1L, "ON_SALE"));
+
+        verify(aiContentClient).updateProductStatus(7L, "ON_SALE");
+        verify(aiContentClient, never()).updateProduct(any(), any());
+    }
+
+    @Test
+    @DisplayName("챗봇 상태 동기화가 실패해도 상태 변경은 성공한다")
+    void changeStatusIgnoresAiSyncFailure() {
+        Product product = Product.create(1L, null, null, "제목", "설명", 1000, 5, null);
+        ReflectionTestUtils.setField(product, "id", 7L);
+        when(productRepository.findById(7L)).thenReturn(Optional.of(product));
+        org.mockito.Mockito.doThrow(new RuntimeException("AI down")).when(aiContentClient).updateProductStatus(any(), any());
+
+        productService.changeStatus(new ProductCommand.ChangeStatus(7L, 1L, "ON_SALE"));
 
         assertThat(product.getStatus()).isEqualTo(ProductStatus.ON_SALE);
     }

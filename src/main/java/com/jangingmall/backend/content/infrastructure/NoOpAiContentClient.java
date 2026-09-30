@@ -39,6 +39,11 @@ class NoOpAiContentClient implements AiContentClient {
     }
 
     @Override
+    public void updateProductStatus(Long productId, String status) {
+        log.warn("AI_BASE_URL 미설정 — updateProductStatus skip productId={}", productId);
+    }
+
+    @Override
     public void updateProduct(Long productId, AiProductUpdatePayload payload) {
         log.warn("AI_BASE_URL 미설정 — updateProduct skip productId={}", productId);
     }
