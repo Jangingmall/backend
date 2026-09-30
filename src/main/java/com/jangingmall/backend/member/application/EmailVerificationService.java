@@ -7,6 +7,8 @@ import com.jangingmall.backend.member.domain.MemberRepository;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.jangingmall.backend.member.infrastructure.EmailSenderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,14 +20,14 @@ public class EmailVerificationService {
     private static final Duration CODE_TTL = Duration.ofMinutes(5);
 
     private final EmailVerificationStore verificationStore;
-    private final EmailSender emailSender;
+    private final EmailSenderService emailSenderService;
     private final MemberRepository memberRepository;
 
     public void sendCode(String email) {
         String normalized = email.trim().toLowerCase(Locale.ROOT);
         String code = String.format("%06d", ThreadLocalRandom.current().nextInt(1_000_000));
         verificationStore.save(normalized, code, CODE_TTL);
-        emailSender.sendVerificationCode(normalized, code);
+        emailSenderService.signupCertSend(normalized, code);
     }
 
     @Transactional
