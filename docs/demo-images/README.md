@@ -27,3 +27,15 @@ AI 상세페이지 생성 시연에 쓰는 사진이다. 저장소가 공개라�
 - 기준 주소: `https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/seed-images/sub-NN.webp` (`develop`에 머지된 뒤부터 열린다)
 - S3 배포 버전과 서로 바꾸려면 `switch-image-source.sql`을 쓴다.
 - 이 링크는 저장소가 공개일 때만 열린다. 저장소를 비공개로 바꾸면 깨진다.
+
+## 직접 그린 일러스트 (출처 확인이 필요한 사진 대신 쓰는 안전한 이미지)
+외부에서 받은 사진은 출처·내용을 확인할 수 없어, 공개된 사실을 바탕으로 직접 그린 그림을 따로 두었다. 사람·실제 사진·상표가 없다.
+생성: `python3 scripts/demo-images/draw_demo_products.py` (pillow + 한글 글꼴 필요, 결과는 이 폴더에 저장된다).
+
+| 폴더 | 내용 | 반영한 사실 |
+|---|---|---|
+| `hapjukseon-maehwa-illustrated/` (9장) | 전주 합죽선 · 매화선: 펼친 모습, 접은 모습, 부챗살·변죽 확대, 선면 매화, 제작 과정, 재료, 선물 포장 | 겉대 두 쪽을 붙인 접부채, 부챗살 보통 38개, 변죽은 대나무 7쪽·매화 새김, 민어풀·닥나무 한지(선자지), 사북·선추, 전주 선자청 |
+| `cheongja-bunjeong-teacup/` (6장) | 청자 · 분청 찻잔: 운학문 청자, 귀얄·철화 분청, 한 쌍, 장식 기법, 굽, 선물 상자 | 비색 유약·상감·운학문, 분청은 백토 분장과 상감·인화·박지·조화·철화·귀얄·담금 7가지 기법 |
+
+- 대표 사진은 각 폴더의 첫 장(`01-…`)이다.
+- 기준 주소: `https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/<폴더>/<파일>`
