@@ -216,7 +216,7 @@ WITH new_products AS (
                          thumbnail_url, production_period_days, is_limited, is_custom_order, is_single_item,
                          has_gift_wrap, status, created_at, updated_at)
     SELECT v.artisan_id, s.category_id, v.subcategory_id, v.title, v.description, v.material, v.price, v.stock,
-           v.thumbnail_url, v.days, FALSE, FALSE, FALSE, TRUE, 'ON_SALE',
+           v.thumbnail_url, v.days, FALSE, FALSE, FALSE, FALSE, 'ON_SALE',
            NOW() - (v.ord * INTERVAL '1 second'), NOW()
     FROM (VALUES
 {(","+chr(10)).join(rows)}

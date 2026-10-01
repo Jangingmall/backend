@@ -19,7 +19,7 @@ WITH new_products AS (
                          thumbnail_url, production_period_days, is_limited, is_custom_order, is_single_item,
                          has_gift_wrap, status, created_at, updated_at)
     SELECT v.artisan_id, s.category_id, v.subcategory_id, v.title, v.description, v.material, v.price, v.stock,
-           v.thumbnail_url, v.days, FALSE, FALSE, FALSE, TRUE, 'ON_SALE',
+           v.thumbnail_url, v.days, FALSE, FALSE, FALSE, FALSE, 'ON_SALE',
            NOW() - (v.ord * INTERVAL '1 second'), NOW()
     FROM (VALUES
     ('연분홍 모시 생활한복 저고리', 31, 26, '바람이 잘 통하는 한산모시로 지은 연분홍 저고리입니다. 평상복으로 입기 편하게 품을 넉넉히 잡았습니다. 특징: 한산모시 100% · 손바느질 마감 · 품 넉넉한 생활한복 패턴.', '한산모시', 128000, 8, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p01.webp', 14, 8),
