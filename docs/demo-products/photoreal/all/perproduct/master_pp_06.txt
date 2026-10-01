@@ -1,0 +1,193 @@
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 301~360번 이미지를 번호 순서대로 만들어 줘.
+
+진행 방식 (반드시 지켜)
+1. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 5장씩, 번호 순서대로, 서로 다른 별도 이미지로 만들어 줘.
+2. 이미지마다 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.
+3. 생성 한도에 걸리면 '[번호]까지 완료, 한도 도달'이라고만 말해 줘. 내가 '계속'이라고 하면 이어서 해 줘.
+4. 내가 '다시 [번호]'라고 하면 그 번호를 한 번 더 만들어 줘.
+5. 번호마다 목록의 영어 문장을 그대로 따라. 임의로 상품·색·구도를 바꾸지 마. 번호와 키는 내가 파일을 구분하는 용도이고 이미지에 쓰지 마.
+
+이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 모든 컷이 대표(A) 컷이야. 단색 따뜻한 연회색 배경, 소품·표면 질감 없음, 같은 배경 톤. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
+
+번호 목록
+[301] d325_A
+Product photo of a keyring made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "자수 복주머니 미니 키링", material: 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[302] d326_A
+Product photo of a keyring made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 전통 단청 문양 아크릴 키링", material: 아크릴. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[303] d327_A
+Product photo of a keyring made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 키링 열쇠고리", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[304] d329_A
+Product photo of a folding fan made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 무형유산 오죽선 호랑이 그림 부채", material: 오죽 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[305] d330_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 낙죽 삼태극 단선 선부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[306] d331_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 낙죽 난초문 수제 합죽선", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[307] d332_A
+Product photo of a folding fan made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 접이식 모시 부채", material: 한산모시 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[308] d333_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 십장생도 대형 칠선 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[309] d334_A
+Product photo of a folding fan made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 오죽선 사군자 국화 부채", material: 오죽 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[310] d335_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 전통 칠보 자개 매듭 부채선", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[311] d336_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 훈민정음 언해본 캘리그라피 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[312] d337_A
+Product photo of a folding fan made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 미니 포켓 오죽선 부채", material: 오죽 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[313] d338_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 일월오봉도 프리미엄 합죽선", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[314] d339_A
+Product photo of a folding fan made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 단선 파스텔 부채", material: 한산모시 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[315] d340_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 단청 문양 삼태극 펼침 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[316] d341_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 무형유산 수제 낙죽 선추 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[317] d342_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 풍속화 신윤복 미인도 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[318] d343_A
+Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[319] d345_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 철릭 원피스 생활한복", material: 면 리넨. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[320] d346_A
+Product photo of a Korean everyday hanbok jacket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 남자 두루마기", material: 명주. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[321] d347_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 깃 저고리 여성 생활한복", material: 면 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[322] d348_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 여름 남성 모시 두루마기", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[323] d349_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 허리치마 생활한복 랩스커트", material: 리넨 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[324] d350_A
+Product photo of a Korean everyday hanbok jacket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 여자 배자 조끼", material: 명주 양단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[325] d351_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 마 저고리 남성 생활한복", material: 마 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[326] d352_A
+Product photo of a Korean everyday hanbok jacket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 여자 액주름포 한복", material: 명주. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[327] d353_A
+Product photo of a Korean everyday hanbok jacket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 아동용 색동 저고리 치마 세트", material: 양단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[328] d354_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 여아 모시 원피스", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[329] d355_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 한복 생활한복", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[330] d357_A
+Product photo of a Korean gat hat made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 무형유산 조선 시대 정자관", material: 말총. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[331] d358_A
+Product photo of a Korean gat hat made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 수제 말총 탕건", material: 말총. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[332] d359_A
+Product photo of a Korean gat hat made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복 모직 아동 조바위 모자", material: 모직 양단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[333] d360_A
+Product photo of a Korean gat hat made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 무형유산 백립 갓", material: 대올 삼베. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[334] d361_A
+Product photo of a Korean gat hat made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 털 굴레 아동 겨울 머리 모자", material: 양단 토끼털. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[335] d362_A
+Product photo of a Korean gat hat made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 여름 모시 파나마 햇", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[336] d363_A
+Product photo of a Korean gat hat made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 조선 무관 전립 갓", material: 모펠트 옥. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[337] d364_A
+Product photo of a Korean gat hat made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 여성 남바위 방한 모자", material: 양단 털. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[338] d365_A
+Product photo of a Korean gat hat made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 갓 모자", material: 말총. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[339] d367_A
+Product photo of a Korean headband ornament (mangeon) made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 수제 옥관자 망건 풍잠 세트", material: 말총 백옥. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[340] d368_A
+Product photo of a Korean headband ornament (mangeon) made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "순은 호박 풍잠 갓 끈 장식", material: 순은 호박. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[341] d369_A
+Product photo of a Korean headband ornament (mangeon) made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "천연 백옥 망건 관자 쌍", material: 백옥. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[342] d370_A
+Product photo of a Korean headband ornament (mangeon) made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 무형유산 인모 상투주머니", material: 인모 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[343] d371_A
+Product photo of a Korean headband ornament (mangeon) made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "김은영 오색 실크 댕기 머리띠", material: 비단 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[344] d372_A
+Product photo of a Korean headband ornament (mangeon) made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 궁중 제비꼬리 붉은 댕기", material: 비단 금박. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[345] d373_A
+Product photo of a Korean headband ornament (mangeon) made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "비취 관자 망건 걸쇠 2개", material: 비취. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[346] d375_A
+Product photo of a calligraphy brush and inkstone set made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 세필 붓 5종 세트", material: 족제비털 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[347] d376_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone. Korean product name for reference (ignore the maker's name, never write any text on the image): "김각한 각자장 고급 남포석 벼루", material: 남포석. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[348] d377_A
+Product photo of a calligraphy brush and inkstone set made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 송연묵 전통 송연 먹", material: 송연 아교. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[349] d378_A
+Product photo of a calligraphy brush and inkstone set made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 대형 캘리그라피 퍼포먼스 붓", material: 양모 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[350] d379_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone. Korean product name for reference (ignore the maker's name, never write any text on the image): "김각한 각자장 문양 음각 연적 벼루 세트", material: 오석. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[351] d380_A
+Product photo of a calligraphy brush and inkstone set made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 서예 용품 문방사우 종합 세트", material: 원목 돌 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[352] d381_A
+Product photo of a calligraphy brush and inkstone set made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 황모 수제 사경 붓", material: 족제비털. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[353] d382_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone. Korean product name for reference (ignore the maker's name, never write any text on the image): "김각한 각자장 단령석 조각 벼루", material: 단령석. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[354] d383_A
+Product photo of a calligraphy brush and inkstone set made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 고급 칠보 연적 및 붓받침", material: 도자기 칠보. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[355] d384_A
+Product photo of a calligraphy brush and inkstone set made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 양모 청화 도자 자루 붓", material: 양모 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[356] d385_A
+Product photo of a calligraphy brush and inkstone set made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 정통 유기 붓걸이", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[357] d386_A
+Product photo of a calligraphy brush and inkstone set made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 붓 먹 벼루", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[358] d387_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 미니 벼루", material: 돌. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[359] d389_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 전통 꽃잎 한지 엽서 5종 세트", material: 한지 생화. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[360] d390_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 훈민정음 언해본 한지 방명록", material: 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

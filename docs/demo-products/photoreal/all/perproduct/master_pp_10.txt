@@ -1,0 +1,193 @@
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 541~600번 이미지를 번호 순서대로 만들어 줘.
+
+진행 방식 (반드시 지켜)
+1. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 5장씩, 번호 순서대로, 서로 다른 별도 이미지로 만들어 줘.
+2. 이미지마다 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.
+3. 생성 한도에 걸리면 '[번호]까지 완료, 한도 도달'이라고만 말해 줘. 내가 '계속'이라고 하면 이어서 해 줘.
+4. 내가 '다시 [번호]'라고 하면 그 번호를 한 번 더 만들어 줘.
+5. 번호마다 목록의 영어 문장을 그대로 따라. 임의로 상품·색·구도를 바꾸지 마. 번호와 키는 내가 파일을 구분하는 용도이고 이미지에 쓰지 마.
+
+이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 모든 컷이 대표(A) 컷이야. 단색 따뜻한 연회색 배경, 소품·표면 질감 없음, 같은 배경 톤. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
+
+번호 목록
+[541] d587_A
+Product photo of a Korean traditional mask made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 궁중 나인 비단 인형", material: 닥종이 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[542] d588_A
+Product photo of a Korean traditional mask made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 전통인형 탈", material: 닥종이. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[543] d590_A
+Product photo of a Korean ceremonial dagger made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "유영기 궁시장 수제 전통 조선 활 (각궁)", material: 물뿔 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[544] d591_A
+Product photo of a Korean ceremonial dagger made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 방짜 별상칼 호신용 은장도", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[545] d592_A
+Product photo of a Korean ceremonial dagger made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "남경숙 무형유산 순은 투각 조각 은장도", material: 순은 쇠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[546] d593_A
+Product photo of a Korean ceremonial dagger made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "유영기 무형유산 유엽전 수제 화살 세트 (5시)", material: 시누대 철. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[547] d594_A
+Product photo of a Korean ceremonial dagger made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "남경숙 조각장 칠보 장식 수제 미니 은장도", material: 순은 칠보. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[548] d595_A
+Product photo of a Korean ceremonial dagger made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "유영기 전통 편전 애기살 과 칠전 세트", material: 시누대 깃. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[549] d596_A
+Product photo of a Korean ceremonial dagger made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 장도 전통무구", material: 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[550] d598_A
+Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 무형유산 진고 대형 전통 북", material: 원목 우피. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[551] d599_A
+Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 전통 소북 수제 가죽 북", material: 원목 소가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[552] d600_A
+Product photo of a Korean traditional drum made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 수공예 전통 꽹과리 및 채", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[553] d601_A
+Product photo of a Korean traditional drum made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 방짜유기 징 30cm", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[554] d602_A
+Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 좌고 궁중 연주용 전통 북", material: 원목 소가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[555] d603_A
+Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 수공예 미니 장구", material: 오동나무 가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[556] d604_A
+Product photo of a Korean traditional drum made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 단소 전통 대나무 관악기", material: 오죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[557] d605_A
+Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 국악 연주용 전통 태평소", material: 유자목 유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[558] d606_A
+Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 전통 소고 북 및 채 세트", material: 원목 개가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[559] d607_A
+Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 전통악기", material: 원목 가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[560] d609_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 김홍도 타작도 풍경", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[561] d610_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 황동 코뚜레 현관문 풍경", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[562] d611_A
+Product photo of a Buddhist temple bell ornament made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 수공예 목어 목탁 세트", material: 살구나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[563] d612_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 금강저 스텐 수저세트", material: 스테인리스. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[564] d613_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 놋쇠 학교종 대형 문종", material: 놋쇠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[565] d614_A
+Product photo of a Buddhist temple bell ornament made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 손자수 탱화 벽걸이 족자", material: 비단 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[566] d615_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 세한도 오색실 현관 풍경", material: 황동 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[567] d616_A
+Product photo of a Buddhist temple bell ornament made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 원목 소나무 수제 촛대 (쌍)", material: 소나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[568] d617_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 오색실 엽전꾸러미 금전재물 부적", material: 황동 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[569] d618_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 수공예 향로 및 단조 향도구", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[570] d619_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 복주머니 문종 풍경", material: 놋쇠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[571] d620_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 불교용품", material: 놋쇠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[572] d622_A
+Product photo of a set of collectible traditional coins made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 방짜 마패 5개 세트", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[573] d623_A
+Product photo of a set of collectible traditional coins made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 금도금 마패 5개 고급 소장품 세트", material: 금도금 유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[574] d624_A
+Product photo of a set of collectible traditional coins made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 신주 엽전 (지름 3cm) 100개", material: 신주. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[575] d625_A
+Product photo of a set of collectible traditional coins made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 방짜 엽전 소장품 10개", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[576] d626_A
+Product photo of a set of collectible traditional coins made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 대나무 갈퀴 재물재수 소장품", material: 대나무 짚. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[577] d627_A
+Product photo of a set of collectible traditional coins made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 행운의 키복조리 대형 돈벼락 세트", material: 대나무 짚 엽전. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[578] d628_A
+Product photo of a set of collectible traditional coins made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "남경숙 무형유산 은입사 상감 단검 소장품", material: 철 은상감. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[579] d629_A
+Product photo of a set of collectible traditional coins made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 소장품", material: 놋쇠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[580] d632_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "박흥선 명인 솔송주 13도 700ml", material: 찹쌀 솔잎. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[581] d633_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "전주이강주 특3호 25도 1L 에밀레종 도자기", material: 배 생강 계피. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[582] d634_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 한산불소곡주 43도 700ml", material: 찹쌀 누룩. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[583] d635_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "조옥화 민속주 안동소주 45도 800ml", material: 쌀 누룩. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[584] d636_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "박재서 명인 안동소주 45도 800ml", material: 백미. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[585] d637_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "문배주양조원 문배술 명작500 결정유 도자기 세트", material: 조 찰수수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[586] d638_A
+Product photo of a bottle of Korean traditional liquor made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "박흥선 명인 담솔 소용량 40도 180ml", material: 솔잎 꿀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[587] d639_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 백제소곡주 13도 700ml 2병 세트", material: 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[588] d640_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "전주이강주 미니어처 에밀레종 25도 50ml", material: 배 생강 계피. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[589] d641_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 한산소곡주 명화1호 도자기 1000ml", material: 찹쌀 누룩. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[590] d642_A
+Product photo of a bottle of Korean traditional liquor made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "박흥선 명인 솔송주 와당 13도 700ml 세트", material: 솔잎 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[591] d643_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "문배주양조원 문배술 도자기 40도 400ml", material: 조 찰수수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[592] d644_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "전주이강주 미니어처 편병 25도 50ml", material: 배 생강. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[593] d645_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 불소곡주 미니어처 43도 100ml", material: 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[594] d646_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 어주 선물세트 18도 700ml 잔2", material: 찹쌀 누룩. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[595] d647_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 한산소곡주 18도 360ml 유리병", material: 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[596] d648_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 천상문 선물세트 18도 500ml", material: 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[597] d649_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "문배주양조원 문배술 명작1000 40도 1L 세트", material: 조 찰수수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[598] d650_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "조옥화 안동소주 민속 도자기 45도 400ml", material: 쌀 누룩. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[599] d651_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "박재서 안동소주 호병 35도 500ml", material: 백미. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[600] d652_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "전주이강주 25도 375ml 유리병", material: 배 생강. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.
