@@ -168,9 +168,10 @@ public class JdbcCheckoutCatalog implements CheckoutCatalog {
 
     /** 업로드 이미지가 없는 기존 상품은 product.thumbnail_url 한 장을 대표 이미지로 쓴다. */
     private List<ImageVariant> legacyThumbnail(Long productId) {
-        String url = jdbcTemplate.query("select thumbnail_url from product where product_id = ?",
-            (rs, rowNum) -> rs.getString(1), productId).stream().findFirst().orElse(null);
-        return legacyThumbnail(url);
+        // thumbnail_url 이 null 인 상품도 있어 Stream.findFirst(null 요소는 NPE)를 쓰지 않는다.
+        List<String> urls = jdbcTemplate.query("select thumbnail_url from product where product_id = ?",
+            (rs, rowNum) -> rs.getString(1), productId);
+        return legacyThumbnail(urls.isEmpty() ? null : urls.get(0));
     }
 
     static List<ImageVariant> legacyThumbnail(String url) {
