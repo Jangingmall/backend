@@ -1742,8 +1742,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "DONE",
-                                                "approvedAt": "2026-10-01T07:17:05.842059322Z",
-                                                "canceledAt": "2026-10-01T07:17:05.842059663Z"
+                                                "approvedAt": "2026-10-01T07:29:19.276325337Z",
+                                                "canceledAt": "2026-10-01T07:29:19.276325517Z"
                                             }
                                         }
                                     }
@@ -1966,7 +1966,7 @@
                                                 "orderNumber": "ORD-000001",
                                                 "totalAmount": 25000,
                                                 "status": "CREATED",
-                                                "createdAt": "2026-10-01T07:17:05.363612635Z",
+                                                "createdAt": "2026-10-01T07:29:18.926484959Z",
                                                 "items": [
                                                     
                                                 ]
@@ -2071,7 +2071,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-payments-returns-returnId-status-1115423141"
+                                    "$ref": "#/components/schemas/api-payments-returns-1115423141"
                                 },
                                 "examples": {
                                     "returns-request": {
@@ -2083,7 +2083,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "REQUESTED",
-                                                "requestedAt": "2026-10-01T07:17:05.195896394Z"
+                                                "requestedAt": "2026-10-01T07:29:18.733261305Z"
                                             }
                                         }
                                     }
@@ -4085,8 +4085,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "CANCELED",
-                                                "approvedAt": "2026-10-01T07:17:06.046314394Z",
-                                                "canceledAt": "2026-10-01T07:17:06.046314655Z"
+                                                "approvedAt": "2026-10-01T07:29:19.435756482Z",
+                                                "canceledAt": "2026-10-01T07:29:19.435756672Z"
                                             }
                                         }
                                     }
@@ -5675,7 +5675,7 @@
                                             "data": {
                                                 "orderId": 100,
                                                 "status": "CANCELED",
-                                                "canceledAt": "2026-10-01T07:17:05.544835043Z",
+                                                "canceledAt": "2026-10-01T07:29:19.083756524Z",
                                                 "purchaseConfirmedAt": null
                                             }
                                         }
@@ -5784,7 +5784,7 @@
                                                 "orderId": 100,
                                                 "status": "PURCHASE_CONFIRMED",
                                                 "canceledAt": null,
-                                                "purchaseConfirmedAt": "2026-10-01T07:17:05.545137Z"
+                                                "purchaseConfirmedAt": "2026-10-01T07:29:19.084029287Z"
                                             }
                                         }
                                     }
@@ -5905,7 +5905,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-payments-returns-returnId-status-1115423141"
+                                    "$ref": "#/components/schemas/api-payments-returns-1115423141"
                                 },
                                 "examples": {
                                     "returns-approve": {
@@ -5917,7 +5917,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "APPROVED",
-                                                "requestedAt": "2026-10-01T07:17:05.902409405Z"
+                                                "requestedAt": "2026-10-01T07:29:19.318719007Z"
                                             }
                                         }
                                     }
@@ -7576,23 +7576,6 @@
                     }
                 }
             },
-            "api-member-login-1429029385": {
-                "required": [
-                    "email",
-                    "password"
-                ],
-                "type": "object",
-                "properties": {
-                    "password": {
-                        "type": "string",
-                        "description": "\ube44\ubc00\ubc88\ud638"
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": "\uc774\uba54\uc77c"
-                    }
-                }
-            },
             "api-payments-orders-438073018": {
                 "required": [
                     "status",
@@ -7663,6 +7646,23 @@
                     }
                 }
             },
+            "api-member-login-1429029385": {
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "type": "object",
+                "properties": {
+                    "password": {
+                        "type": "string",
+                        "description": "\ube44\ubc00\ubc88\ud638"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "\uc774\uba54\uc77c"
+                    }
+                }
+            },
             "api-member-email-verify1884513398": {
                 "required": [
                     "code",
@@ -7677,70 +7677,6 @@
                     "email": {
                         "type": "string",
                         "description": "\uc778\uc99d\ud560 \uc774\uba54\uc77c"
-                    }
-                }
-            },
-            "api-payments-paymentId-cancel1498139372": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "amount",
-                            "method",
-                            "orderId",
-                            "orderNumber",
-                            "paymentId",
-                            "status"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "amount": {
-                                "type": "number",
-                                "description": "\uacb0\uc81c \uae08\uc561"
-                            },
-                            "orderNumber": {
-                                "type": "string",
-                                "description": "\uc8fc\ubb38\ubc88\ud638"
-                            },
-                            "method": {
-                                "type": "string",
-                                "description": "\uacb0\uc81c\uc218\ub2e8"
-                            },
-                            "canceledAt": {
-                                "type": "string",
-                                "description": "\ucde8\uc18c \uc77c\uc2dc",
-                                "nullable": true
-                            },
-                            "orderId": {
-                                "type": "number",
-                                "description": "\uc8fc\ubb38 ID"
-                            },
-                            "paymentId": {
-                                "type": "number",
-                                "description": "\uacb0\uc81c ID"
-                            },
-                            "approvedAt": {
-                                "type": "string",
-                                "description": "\uc2b9\uc778 \uc77c\uc2dc",
-                                "nullable": true
-                            },
-                            "status": {
-                                "type": "string",
-                                "description": "\uacb0\uc81c \uc0c1\ud0dc (CANCELED)"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
                     }
                 }
             },
@@ -7839,6 +7775,70 @@
                     "addressId": {
                         "type": "number",
                         "description": "\ubcf8\uc778 \uc8fc\uc18c\ub85d\uc758 \ubc30\uc1a1\uc9c0 ID"
+                    }
+                }
+            },
+            "api-payments-paymentId-cancel1498139372": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "amount",
+                            "method",
+                            "orderId",
+                            "orderNumber",
+                            "paymentId",
+                            "status"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "amount": {
+                                "type": "number",
+                                "description": "\uacb0\uc81c \uae08\uc561"
+                            },
+                            "orderNumber": {
+                                "type": "string",
+                                "description": "\uc8fc\ubb38\ubc88\ud638"
+                            },
+                            "method": {
+                                "type": "string",
+                                "description": "\uacb0\uc81c\uc218\ub2e8"
+                            },
+                            "canceledAt": {
+                                "type": "string",
+                                "description": "\ucde8\uc18c \uc77c\uc2dc",
+                                "nullable": true
+                            },
+                            "orderId": {
+                                "type": "number",
+                                "description": "\uc8fc\ubb38 ID"
+                            },
+                            "paymentId": {
+                                "type": "number",
+                                "description": "\uacb0\uc81c ID"
+                            },
+                            "approvedAt": {
+                                "type": "string",
+                                "description": "\uc2b9\uc778 \uc77c\uc2dc",
+                                "nullable": true
+                            },
+                            "status": {
+                                "type": "string",
+                                "description": "\uacb0\uc81c \uc0c1\ud0dc (CANCELED)"
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
                     }
                 }
             },
@@ -10169,7 +10169,7 @@
                     }
                 }
             },
-            "api-payments-returns-returnId-status-1115423141": {
+            "api-payments-returns-1115423141": {
                 "required": [
                     "status",
                     "success"
@@ -11166,6 +11166,24 @@
                     }
                 }
             },
+            "api-chatbot-sessions-sessionId-1487972696": {
+                "required": [
+                    "data",
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
             "api-payments-confirm-12221918": {
                 "required": [
                     "amount",
@@ -11185,24 +11203,6 @@
                     "paymentKey": {
                         "type": "string",
                         "description": "\ud1a0\uc2a4\ud398\uc774\uba3c\uce20 \uacb0\uc81c \ud0a4 (\ucd5c\ub300 200\uc790)"
-                    }
-                }
-            },
-            "api-chatbot-sessions-sessionId-1487972696": {
-                "required": [
-                    "data",
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
                     }
                 }
             },
