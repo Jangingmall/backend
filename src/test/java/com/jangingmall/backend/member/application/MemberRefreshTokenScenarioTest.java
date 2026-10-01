@@ -153,12 +153,13 @@ class MemberRefreshTokenScenarioTest {
     }
 
     @Test
-    @DisplayName("7. 로그인할 수 없는 회원(미인증·정지·탈퇴)과 존재하지 않는 회원은 갱신할 수 없다")
+    @DisplayName("7. 탈퇴한 회원과 존재하지 않는 회원은 갱신할 수 없다")
     void ineligibleMembersCannotRefresh() {
         String token = service.login("artisan@example.com", "password").refreshToken();
 
-        Member inactive = member();
-        lenient().when(memberRepository.findById(1L)).thenReturn(Optional.of(inactive));
+        Member withdrawn = member();
+        withdrawn.withdraw("탈퇴");
+        lenient().when(memberRepository.findById(1L)).thenReturn(Optional.of(withdrawn));
         assertUnauthorized(() -> service.refresh(token));
 
         lenient().when(memberRepository.findById(1L)).thenReturn(Optional.empty());
@@ -188,9 +189,7 @@ class MemberRefreshTokenScenarioTest {
     }
 
     private Member activeMember() {
-        Member member = member();
-        member.activate();
-        return member;
+        return member();
     }
 
     private Member member() {
