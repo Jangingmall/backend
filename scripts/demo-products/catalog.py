@@ -25,9 +25,10 @@ PALETTES = {
     "pearl":  ("#f9f6f1", "#e8e0d4", "#b8a898", "#4e4036", "#f3ece3"),
     "mop":    ("#eef5f3", "#cfe1dc", "#4f8f9c", "#1f4650", "#cfe9ee"),
     "ivory":  ("#faf6ea", "#e9e0c6", "#b9a46a", "#4d4220", "#f3ecd3"),
+    "ink":    ("#f1f1f1", "#d6d6d6", "#4a4a4a", "#141414", "#d9d9d9"),
 }
 
-# detail_images: 상세 화면 갤러리에 대표 이미지 뒤로 붙는 이미지(없으면 특징 카드·상품 정보 카드를 자동으로 그린다).
+# detail_images: 상세 갤러리에서 자동으로 그린 특징 카드·상품 정보 카드 뒤에 덧붙일 이미지(이미 만든 시연 일러스트).
 # image: None 이면 위 팔레트로 새로 그린다. 문자열이면 이미 만든 시연 일러스트(docs/ 기준 경로)를 쓴다.
 # 장인(artisan)·소분류(sub) 번호는 시드 데이터(V7·V9) 기준이다.
 PRODUCTS = [
@@ -149,7 +150,7 @@ PRODUCTS = [
          material="황동·칠보", days=14, themes=["BOSS", "PROMOTION"], tags=["문방", "업무", "선물"], colors=["남색"],
          intro="몸통에 칠보 문양을 올린 만년필입니다. 부드럽게 써지고 손에 닿는 무게가 안정적입니다.",
          features=["칠보 몸통", "중자 촉", "잉크 컨버터 포함"]),
-    dict(key="p29", name="서예 붓·먹·벼루 세트", artisan=40, sub=29, kind="brush", color="ochre", price=120000, stock=6,
+    dict(key="p29", name="서예 붓·먹·벼루 세트", artisan=40, sub=29, kind="brush", color="ink", price=120000, stock=6,
          material="양모·송연먹·청석", days=12, themes=["BOSS", "PARENTS"], tags=["서예", "문방", "선물"], colors=["먹색"],
          intro="붓, 먹, 벼루를 한 상자에 담은 서예 입문 세트입니다. 처음 먹을 가는 순간부터 정갈해집니다.",
          features=["양모 붓 2자루", "송연먹", "청석 벼루"]),

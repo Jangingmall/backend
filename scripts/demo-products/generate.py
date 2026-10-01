@@ -6,13 +6,13 @@
   2) docs/demo-products/README.md    상품 표(이름·소개·특징·가격·선물 테마·이미지 주소)
   3) src/main/resources/db/migration/V17__demo_curated_products.sql   시드 마이그레이션
 
-필요: pip install pillow, 한글 글꼴(wqy-zenhei 또는 nanum).
+필요: pip install pillow. 이미지에는 글자가 없다(설명은 텍스트로 따로).
 실행: python3 scripts/demo-products/generate.py
 """
 import importlib.util
 import os
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 ROOT = os.path.join(os.path.dirname(__file__), "..", "..")
 IMG_DIR = os.path.join(ROOT, "docs", "demo-products")
@@ -31,103 +31,78 @@ catalog = load("scripts/demo-products/catalog.py", "catalog")
 seed = load("scripts/seed-images/generate.py", "seed_generate")
 
 
-def make_image(font_path, product):
-    top, bottom, accent, dark, light = catalog.PALETTES[product["color"]]
-    size = seed.SIZE
-    im = seed.gradient(top, bottom).convert("RGBA")
-    overlay = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    d = ImageDraw.Draw(overlay)
-    d.ellipse((120, 140, 680, 620), fill=(255, 255, 255, 110))
-    seed.draw(product["kind"], seed.Pen(d, accent, dark, light))
-    im.alpha_composite(overlay)
-    d2 = ImageDraw.Draw(im)
-    d2.rectangle((0, 650, size, size), fill=seed.hexrgb(dark) + (255,))
-    name = product["name"]
-    font_size = 56
-    font = ImageFont.truetype(font_path, font_size)
-    while d2.textlength(name, font=font) > size - 60 and font_size > 28:
-        font_size -= 2
-        font = ImageFont.truetype(font_path, font_size)
-    w = d2.textlength(name, font=font)
-    d2.text(((size - w) / 2, 668), name, font=font, fill=seed.CREAM)
-    small = ImageFont.truetype(font_path, 22)
-    note = "MIDAM · 시연용 일러스트"
-    d2.text(((size - d2.textlength(note, font=small)) / 2, 745), note, font=small, fill=seed.hexrgb(light))
+art = load("scripts/demo-products/art.py", "art")
+
+# 상품 → 소재·무늬(art.py). 이미지로 소재·색·무늬를 보여 주고, 설명 글은 DB 텍스트로 따로 둔다.
+TEXTURES = {
+    "weave": ["p01", "p05", "p14", "p16", "p17", "p18", "p19", "p20"],
+    "quilt": ["p02", "p13"], "patchwork": ["p04", "p08"], "plum": ["p03", "p31"], "peony": ["p11"],
+    "shell": ["p26", "p27"], "knot": ["p06", "p07", "p21", "p22"], "enamel": ["p23", "p28"],
+    "silver": ["p09", "p24"], "jade": ["p10"], "pearls": ["p25"], "hanji": ["p15", "p30"],
+    "landscape": ["p12"], "ink": ["p29"], "crackle": ["p32"], "gwiyal": ["p33"],
+}
+TEXTURE_OF = {key: texture for texture, keys in TEXTURES.items() for key in keys}
+
+# 색 이름 → 색 견본(상세 2번째 이미지의 색 점)
+COLOR_HEX = {
+    "청록": "#1f8a86", "쪽빛": "#2d4f94", "연두": "#a9d27a", "은색": "#c4ccd4", "옥색": "#8fd0b5", "아이보리": "#f3ecd3",
+    "흰색": "#fafafa", "연분홍": "#f6c9d6", "자주": "#8f3a77", "홍색": "#c0392b", "분홍": "#ee8fae", "녹색": "#4f8f45",
+    "황토": "#b9873f", "호박색": "#d9902b", "하늘색": "#8cc4ec", "자연색": "#d8c9a3", "민트": "#8fe0bb", "푸른색": "#3f78c4",
+    "오방색": ["#2d4f94", "#d9b23a", "#c0392b", "#fafafa", "#1a1a1a"],
+    "금색": "#d4af37", "진주색": "#f1e8dc", "남색": "#1f2f6b", "먹색": "#1a1a1a", "비색": "#9bc9b8", "회백색": "#d9d6cf",
+}
+OBJECT_PRODUCTS = {"p31", "p32", "p33"}
+
+
+def macro(product):
+    """상세 1번: 소재·무늬 확대(글자 없음)."""
+    texture = TEXTURE_OF[product["key"]]
+    palette = catalog.PALETTES[product["color"]]
+    im = Image.new("RGBA", (seed.SIZE, seed.SIZE), seed.hexrgb(palette[0]) + (255,))
+    art.paint(texture, ImageDraw.Draw(im), (0, 0, seed.SIZE, seed.SIZE), palette, {"colors": None})
     return im.convert("RGB")
 
 
-GIFT_LABELS = {"HOUSEWARMING": "집들이·이사", "BIRTHDAY_60TH": "돌·환갑", "WEDDING": "웨딩·혼수", "BOSS": "상사·거래처",
-               "PARENTS": "부모님·어른", "FRIEND": "친구·동료", "PROMOTION": "승진·감사", "CORPORATE": "기업·단체 답례품"}
+def make_image(product):
+    """대표 이미지: 상품 모양 일러스트 + 같은 소재의 동그란 무늬 견본(글자 없음)."""
+    palette = catalog.PALETTES[product["color"]]
+    im = seed.render(product["kind"], palette).convert("RGBA")
+    swatch = macro(product).crop((150, 150, 650, 650)).resize((200, 200), Image.LANCZOS).convert("RGBA")
+    mask = Image.new("L", (800, 800), 0)
+    ImageDraw.Draw(mask).ellipse((0, 0, 799, 799), fill=255)
+    mask = mask.resize((200, 200), Image.LANCZOS)
+    cx, cy = 590, 590
+    ring = ImageDraw.Draw(im)
+    ring.ellipse((cx - 8, cy - 8, cx + 208, cy + 208), fill=(255, 255, 255, 255))
+    ring.ellipse((cx - 8, cy - 8, cx + 208, cy + 208), outline=seed.hexrgb(palette[2]) + (255,), width=3)
+    im.paste(swatch, (cx, cy), mask)
+    return im.convert("RGB")
 
 
-def fit_font(draw, font_path, text, max_width, start, minimum=22):
-    size = start
-    font = ImageFont.truetype(font_path, size)
-    while draw.textlength(text, font=font) > max_width and size > minimum:
-        size -= 2
-        font = ImageFont.truetype(font_path, size)
-    return font
-
-
-def make_detail_cards(font_path, product):
-    """대표 일러스트를 바탕으로 상세 화면용 카드 두 장(특징 · 상품 정보)을 그린다."""
+def make_scene(product):
+    """상세 2번: 상품을 작업대 위에 놓은 장면 + 색 견본 점(글자 없음)."""
     top, bottom, accent, dark, light = catalog.PALETTES[product["color"]]
     size = seed.SIZE
-    base = Image.open(os.path.join(IMG_DIR, f"{product['key']}.webp")).convert("RGB")
-    cards = []
-    for index in (1, 2):
-        im = seed.gradient(top, bottom).convert("RGBA")
-        d = ImageDraw.Draw(im)
-        d.rectangle((0, 0, size, 110), fill=seed.hexrgb(dark) + (255,))
-        title_font = fit_font(d, font_path, product["name"], size - 80, 46)
-        d.text((40, 30), product["name"], font=title_font, fill=seed.CREAM)
-        label = "작품 특징" if index == 1 else "상품 정보"
-        label_font = ImageFont.truetype(font_path, 30)
-        d.text((40, 140), label, font=label_font, fill=seed.hexrgb(dark))
-        d.line((40, 188, size - 40, 188), fill=seed.hexrgb(accent), width=4)
-        body = ImageFont.truetype(font_path, 38)
-        small = ImageFont.truetype(font_path, 24)
-        if index == 1:
-            thumb = base.resize((300, 300))
-            im.paste(thumb, (size - 340, 215))
-            y = 235
-            for line in product["features"]:
-                d.ellipse((46, y + 14, 62, y + 30), fill=seed.hexrgb(accent) + (255,))
-                text_font = fit_font(d, font_path, line, size - 420, 38, 24)
-                d.text((82, y), line, font=text_font, fill=seed.hexrgb(dark))
-                y += 74
-            intro = product["intro"]
-            lines, current = [], ""
-            for ch in intro:
-                if d.textlength(current + ch, font=small) > size - 80:
-                    lines.append(current)
-                    current = ch
-                else:
-                    current += ch
-            lines.append(current)
-            y = 560
-            for text in lines[:5]:
-                d.text((40, y), text, font=small, fill=seed.hexrgb(dark))
-                y += 38
-        else:
-            rows = [("소재", product["material"]), ("제작 기간", f"약 {product['days']}일"),
-                    ("가격", f"{product['price']:,}원"), ("재고", f"{product['stock']}개"),
-                    ("추천 선물", " · ".join(GIFT_LABELS[t] for t in product["themes"])),
-                    ("색상", " · ".join(product["colors"]))]
-            y = 225
-            for key, value in rows:
-                d.rectangle((40, y, 200, y + 66), fill=seed.hexrgb(accent) + (255,))
-                d.text((58, y + 14), key, font=ImageFont.truetype(font_path, 30), fill=seed.CREAM)
-                d.rectangle((200, y, size - 40, y + 66), fill=(255, 255, 255, 215))
-                d.text((222, y + 12), value, font=fit_font(d, font_path, value, size - 290, 34, 22),
-                       fill=seed.hexrgb(dark))
-                y += 78
-            d.text((40, size - 70), "전통 공예품은 수작업이라 크기·색이 조금씩 다를 수 있습니다.", font=small,
-                   fill=seed.hexrgb(dark))
-        d.text((40, size - 36), "MIDAM · 시연용 일러스트", font=ImageFont.truetype(font_path, 18),
-               fill=seed.hexrgb(dark))
-        cards.append(im.convert("RGB"))
-    return cards
+    im = seed.gradient(top, bottom).convert("RGBA")
+    d = ImageDraw.Draw(im)
+    d.rectangle((0, 560, size, size), fill=seed.hexrgb(bottom) + (255,))
+    d.rectangle((0, 560, size, 566), fill=seed.hexrgb(accent) + (255,))
+    shadow = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    ImageDraw.Draw(shadow).ellipse((200, 590, 600, 650), fill=(0, 0, 0, 55))
+    im.alpha_composite(shadow)
+    obj = seed.render(product["kind"], catalog.PALETTES[product["color"]], background=False)
+    obj = obj.crop((100, 130, 700, 650)).resize((540, 468), Image.LANCZOS)
+    im.alpha_composite(obj, (130, 110))
+    d = ImageDraw.Draw(im)
+    swatches = []
+    for name in product["colors"]:
+        value = COLOR_HEX[name]
+        swatches += value if isinstance(value, list) else [value]
+    for n, value in enumerate(swatches[:6]):
+        x = 60 + n * 74
+        d.ellipse((x, 60, x + 56, 116), fill=(255, 255, 255, 255))
+        d.ellipse((x + 5, 65, x + 51, 111), fill=art.rgb(value))
+    return im.convert("RGB")
 
 
 def sql_text(value):
@@ -139,22 +114,29 @@ def image_url(product):
 
 
 def detail_urls(product):
-    if product.get("detail_images"):
-        return [f"{RAW}/{path}" for path in product["detail_images"]]
-    return [f"{RAW}/demo-products/details/{product['key']}-{n}.webp" for n in (1, 2)]
+    """상세 갤러리: 소재 확대, 장면(또는 이미 만든 시연 일러스트) 순서."""
+    key = product["key"]
+    if key in OBJECT_PRODUCTS:
+        extras = [f"{RAW}/{path}" for path in product["detail_images"]]
+    else:
+        extras = [f"{RAW}/demo-products/details/{key}-2.webp"]
+    return [f"{RAW}/demo-products/details/{key}-1.webp"] + extras
 
 
 def write_images():
-    font_path = next((f for f in seed.FONT_CANDIDATES if os.path.exists(f)), None)
-    if not font_path:
-        raise SystemExit("한글 글꼴을 찾을 수 없습니다.")
     os.makedirs(os.path.join(IMG_DIR, "details"), exist_ok=True)
+    save = dict(format="WEBP", quality=88, method=6)
     for product in catalog.PRODUCTS:
-        if product.get("image"):
-            continue
-        make_image(font_path, product).save(os.path.join(IMG_DIR, f"{product['key']}.webp"), "WEBP", quality=88, method=6)
-        for number, card in enumerate(make_detail_cards(font_path, product), start=1):
-            card.save(os.path.join(IMG_DIR, "details", f"{product['key']}-{number}.webp"), "WEBP", quality=88, method=6)
+        key = product["key"]
+        if not product.get("image"):
+            make_image(product).save(os.path.join(IMG_DIR, f"{key}.webp"), **save)
+        macro(product).save(os.path.join(IMG_DIR, "details", f"{key}-1.webp"), **save)
+        if key not in OBJECT_PRODUCTS:
+            make_scene(product).save(os.path.join(IMG_DIR, "details", f"{key}-2.webp"), **save)
+        else:
+            stale = os.path.join(IMG_DIR, "details", f"{key}-2.webp")
+            if os.path.exists(stale):
+                os.remove(stale)
 
 
 def write_readme():

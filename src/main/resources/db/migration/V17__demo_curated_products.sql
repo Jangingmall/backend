@@ -299,12 +299,15 @@ detail AS (
     ('서예 붓·먹·벼루 세트', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p29-2.webp'),
     ('한지 편지지 세트', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p30-1.webp'),
     ('한지 편지지 세트', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p30-2.webp'),
-    ('전주 합죽선 · 매화선', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/hapjukseon-maehwa-illustrated/03-detail.webp'),
-    ('전주 합죽선 · 매화선', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/hapjukseon-maehwa-illustrated/06-detail-02.webp'),
-    ('청자 운학문 찻잔', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/05-detail-foot.webp'),
-    ('청자 운학문 찻잔', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/06-gift-set.webp'),
-    ('분청 귀얄 찻잔', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/03-pair.webp'),
-    ('분청 귀얄 찻잔', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/04-techniques.webp')
+    ('전주 합죽선 · 매화선', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p31-1.webp'),
+    ('전주 합죽선 · 매화선', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/hapjukseon-maehwa-illustrated/03-detail.webp'),
+    ('전주 합죽선 · 매화선', 2, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/hapjukseon-maehwa-illustrated/06-detail-02.webp'),
+    ('청자 운학문 찻잔', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p32-1.webp'),
+    ('청자 운학문 찻잔', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/05-detail-foot.webp'),
+    ('청자 운학문 찻잔', 2, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/06-gift-set.webp'),
+    ('분청 귀얄 찻잔', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p33-1.webp'),
+    ('분청 귀얄 찻잔', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/03-pair.webp'),
+    ('분청 귀얄 찻잔', 2, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/04-techniques.webp')
     ) AS t(title, display_order, image_url) ON t.title = n.title
     RETURNING 1
 )

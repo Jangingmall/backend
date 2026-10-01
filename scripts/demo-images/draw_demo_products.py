@@ -29,6 +29,9 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "..", "docs", "demo-images")
 FONTS = ["/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc", "/usr/share/fonts/truetype/nanum/NanumGothic.ttf",
          "/System/Library/Fonts/AppleSDGothicNeo.ttc"]
 
+# 상품 설명은 따로 텍스트로 있으므로 이미지에는 글자를 넣지 않는다(사람이 그림을 보고 설명과 맞는지 해석한다).
+TEXT = False
+
 PAPER, PAPER_SHADE = "#f5ecd7", "#e8dbb9"
 BAMBOO, BAMBOO_DARK, BAMBOO_LIGHT = "#c9a15b", "#8d6a30", "#e6c98c"
 INK, PLUM_PINK, PLUM_DEEP, BRANCH = "#2e2a26", "#f6d4dc", "#d98aa0", "#5a4330"
@@ -77,6 +80,8 @@ class Canvas:
         self.d.rounded_rectangle(self.s(box), radius=r * K, fill=fill, outline=outline, width=w * K)
 
     def text(self, xy, text, size, fill=INK, anchor="mm"):
+        if not TEXT:
+            return
         self.d.text((xy[0] * K, xy[1] * K), text, font=font(size), fill=fill, anchor=anchor)
 
     def shadow(self, box, alpha=50):
@@ -271,18 +276,34 @@ def hap_detail_edge():
 
 
 def hap_process():
+    """제작 과정 여섯 단계를 글자 없이 그림으로만 보여 준다(대나무 → 풀칠 → 살 다듬기 → 한지 → 매화 → 사북·선추)."""
     c = Canvas("#f3ede0", "#e0d2b4")
-    c.text((600, 110), "합죽선이 만들어지는 과정", 54, INK)
-    steps = [("대나무 손질", "겉대를 얇게 가름"), ("살 붙이기", "민어풀로 두 쪽을 합침"),
-             ("모양 다듬기", "낫칼로 매끈하게"), ("선면 바르기", "닥나무 한지를 붙임"),
-             ("문양 새기기", "인두로 매화·운학"), ("마무리", "사북·선추를 닮")]
-    for i, (t, s) in enumerate(steps):
+    for i in range(6):
         col, row = i % 3, i // 3
         x, y = 210 + col * 390, 330 + row * 400
-        c.ell((x - 105, y - 105, x + 105, y + 105), PAPER, BAMBOO_DARK, 5)
-        c.text((x, y - 20), str(i + 1), 90, BAMBOO_DARK)
-        c.text((x, y + 150), t, 34, INK)
-        c.text((x, y + 195), s, 24, "#6b6258")
+        c.ell((x - 140, y - 140, x + 140, y + 140), PAPER, BAMBOO_DARK, 5)
+        if i == 0:      # 대나무 마디
+            c.rect((x - 36, y - 100, x + 36, y + 100), BAMBOO, 18, BAMBOO_DARK, 4)
+            c.line([(x - 36, y - 20), (x + 36, y - 20)], BAMBOO_DARK, 5)
+            c.line([(x - 36, y + 50), (x + 36, y + 50)], BAMBOO_DARK, 5)
+        elif i == 1:    # 겉대 두 쪽 + 민어풀
+            c.rect((x - 90, y - 70, x - 20, y + 90), BAMBOO_LIGHT, 10, BAMBOO_DARK, 3)
+            c.rect((x + 20, y - 70, x + 90, y + 90), BAMBOO, 10, BAMBOO_DARK, 3)
+            c.ell((x - 18, y - 110, x + 18, y - 70), "#e9dcc0", "#8b7b5d", 3)
+        elif i == 2:    # 다듬은 살 묶음
+            for k in range(-4, 5):
+                c.line([(x + k * 14, y - 100), (x + k * 14 * 0.4, y + 100)], BAMBOO_DARK, 5)
+        elif i == 3:    # 한지 붙이기
+            c.poly([polar(x, y + 100, 190, -40 + j * 80 / 30) for j in range(31)] + [polar(x, y + 100, 80, 40 - j * 80 / 30) for j in range(31)], PAPER, BAMBOO_DARK, 3)
+        elif i == 4:    # 매화 새기기
+            plum(c, x, y, 48, 10)
+            c.line([(x - 100, y + 70), (x - 30, y + 20)], BRANCH, 8)
+        else:           # 사북과 선추
+            c.ell((x - 20, y - 60, x + 20, y - 20), BAMBOO_DARK, "#4a3414", 3)
+            c.line([(x, y - 20), (x, y + 30)], "#a63d40", 4)
+            c.ell((x - 18, y + 26, x + 18, y + 62), "#5aa58f", "#2f6e5c", 3)
+            for dx in (-10, -5, 0, 5, 10):
+                c.line([(x + dx * 0.4, y + 60), (x + dx, y + 110)], "#a63d40", 3)
     return c
 
 
