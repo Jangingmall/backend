@@ -66,6 +66,9 @@ public class ContentService {
     private final ContentGenerationRepository generationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    @org.springframework.beans.factory.annotation.Value("${image.base-url:}")
+    private String imageBaseUrl;
+
     @Autowired
     public ContentService(ContentRepository contentRepository, ContentEditHistoryRepository historyRepository,
                           ProductRepository productRepository, AiContentClient aiContentClient,
@@ -104,12 +107,21 @@ public class ContentService {
             interviewRepository, null, null, null, objectMapper, null, null);
     }
 
+    /** 응답의 react 문서는 저장된 assetKey 로 현재 이미지 기본 주소 기준 src 를 다시 만들어 내려준다. */
+    private ContentResponse.Detail detail(Content content, List<ContentResponse.Block> blocks) {
+        ContentResponse.Detail detail = ContentResponse.Detail.from(content, blocks);
+        String refreshed = ReactDocumentAssets.refresh(objectMapper, detail.reactDocument(), imageBaseUrl);
+        return refreshed == detail.reactDocument() ? detail
+            : new ContentResponse.Detail(detail.contentId(), detail.productId(), detail.status(), detail.version(),
+                refreshed, detail.blocks());
+    }
+
     @Transactional(readOnly = true)
     public ContentResponse.Detail getContent(Long productId, Long requesterId) {
         verifyProductOwner(productId, requesterId);
         Content content = contentRepository.findByProductId(productId)
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
-        return ContentResponse.Detail.from(content, readBlocks(content));
+        return detail(content, readBlocks(content));
     }
 
     @Transactional(readOnly = true)
@@ -162,7 +174,7 @@ public class ContentService {
         Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
         Content saved = persistBlocks(content, command.blocks(), command.requesterId());
-        return ContentResponse.Detail.from(saved, readBlocks(saved));
+        return detail(saved, readBlocks(saved));
     }
 
     /** Applies the AI editor's node-id based patch contract to the stored JSON document. */

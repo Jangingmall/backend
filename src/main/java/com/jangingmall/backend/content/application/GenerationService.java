@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -217,66 +216,9 @@ public class GenerationService {
         return keys;
     }
 
-    /**
-     * react 문서의 img 노드 중 props.imageId(또는 imageId)가 올린 사진의 photo_id 와 같으면 props.src 에 공개 주소를 넣는다.
-     * imageId 는 그대로 둔다. 이미지 기본 주소가 없거나 바꿀 노드가 없으면 원문을 그대로 돌려준다.
-     */
-    @SuppressWarnings("unchecked")
+    /** react 문서의 img 노드에 올린 사진의 S3 키(assetKey)와 공개 주소(src)를 채운다. imageId 는 그대로 둔다. */
     String withPhotoUrls(String reactDocumentJson, Map<String, String> photoKeys) {
-        String base = imageBaseUrl == null ? "" : imageBaseUrl.replaceAll("/+$", "");
-        if (reactDocumentJson == null || reactDocumentJson.isBlank() || photoKeys == null || photoKeys.isEmpty()
-            || base.isBlank()) {
-            return reactDocumentJson;
-        }
-        try {
-            Object document = objectMapper.readValue(reactDocumentJson, Object.class);
-            if (!fillPhotoUrls(document, photoKeys, base)) {
-                return reactDocumentJson;
-            }
-            return objectMapper.writeValueAsString(document);
-        } catch (Exception exception) {
-            log.warn("react 문서에 사진 주소를 채우지 못해 원문을 그대로 저장합니다", exception);
-            return reactDocumentJson;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private boolean fillPhotoUrls(Object node, Map<String, String> photoKeys, String base) {
-        boolean changed = false;
-        if (node instanceof List<?> list) {
-            for (Object child : list) {
-                changed |= fillPhotoUrls(child, photoKeys, base);
-            }
-        } else if (node instanceof Map<?, ?> raw) {
-            Map<String, Object> map = (Map<String, Object>) raw;
-            if ("img".equals(map.get("tag"))) {
-                Object props = map.get("props");
-                Map<String, Object> propsMap = props instanceof Map<?, ?> p ? (Map<String, Object>) p : null;
-                Object ref = propsMap != null && propsMap.get("imageId") != null ? propsMap.get("imageId") : map.get("imageId");
-                String key = ref == null ? null : photoKeys.get(String.valueOf(ref));
-                if (key != null) {
-                    if (propsMap == null) {
-                        propsMap = new java.util.LinkedHashMap<>();
-                        map.put("props", propsMap);
-                    }
-                    propsMap.put("src", base + "/" + key);
-                    changed = true;
-                }
-            }
-            for (Object child : map.values()) {
-                changed |= fillPhotoUrls(child, photoKeys, base);
-            }
-        }
-        return changed;
-    }
-
-    private String extension(String contentType) {
-        return switch (contentType == null ? "" : contentType) {
-            case "image/jpeg" -> "jpg";
-            case "image/png" -> "png";
-            case "image/webp" -> "webp";
-            default -> "bin";
-        };
+        return ReactDocumentAssets.attach(objectMapper, reactDocumentJson, photoKeys, imageBaseUrl);
     }
 
     /**

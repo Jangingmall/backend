@@ -288,6 +288,8 @@ class GenerationServiceTest {
         assertThat(children.get(0).get("props").get("src").asText())
             .isEqualTo("https://img.stg.midam.store/images/product/ai-generated/1/photo-hero.webp");
         assertThat(children.get(0).get("props").get("imageId").asText()).isEqualTo("hero");
+        assertThat(children.get(0).get("props").get("assetKey").asText())
+            .isEqualTo("images/product/ai-generated/1/photo-hero.webp");
         assertThat(children.get(1).get("props").get("src").asText())
             .isEqualTo("https://img.stg.midam.store/images/product/ai-generated/1/photo-detail-02.png");
         assertThat(children.get(1).get("props").get("alt").asText()).isEqualTo("상세");
