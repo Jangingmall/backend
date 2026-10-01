@@ -50,6 +50,10 @@ class RestAiContentClient implements AiContentClient {
     private static final String IDEMPOTENCY_KEY_HEADER = "Idempotency-Key";
     private static final String DEFAULT_TEMPLATE_ID = "default-long-detail-page";
     private static final String DEFAULT_LOCALE = "ko-KR";
+    /** AI 접수 계약: 대표 사진 포함 12장, 장당 10MB, 합계 120MB(초과 시 413). */
+    private static final int MAX_ADDITIONAL_IMAGES = 11;
+    private static final int MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+    private static final long MAX_TOTAL_IMAGE_BYTES = 120L * 1024 * 1024;
 
     private final RestClient generationClient;
     private final RestClient syncClient;
@@ -121,6 +125,7 @@ class RestAiContentClient implements AiContentClient {
         String idempotencyKey = generationId.toString();
         String metadataJson = buildMetadataJson(generationId, productId, idempotencyKey, productName, howMade, careTips);
         FetchedImage image = fetchFirstImage(images, generationId);
+        List<FetchedImage> additionalImages = fetchAdditionalImages(images, generationId, image.data().length);
 
         // AI 서버는 part의 Content-Type과 실제 바이트 시그니처가 일치하는지 검증한다.
         // 파일명 확장자로 Content-Type이 정해지므로 실제 이미지 종류에 맞춰 명시한다.
@@ -130,6 +135,15 @@ class RestAiContentClient implements AiContentClient {
         body.add("metadata", metadataJson);
         body.add("product_image", new HttpEntity<>(
             new NamedByteArrayResource(image.data(), "product_image." + image.extension()), imageHeaders));
+        // 대표 사진(첫 장) 외 나머지 판매자 사진은 같은 이름의 파트를 반복해 보낸다. AI는 첫 장으로 상품을 분석하고
+        // 나머지는 상세페이지에 실제 사진으로 쓴다.
+        for (int i = 0; i < additionalImages.size(); i++) {
+            FetchedImage extra = additionalImages.get(i);
+            HttpHeaders extraHeaders = new HttpHeaders();
+            extraHeaders.setContentType(MediaType.parseMediaType(extra.mimeType()));
+            body.add("product_images", new HttpEntity<>(
+                new NamedByteArrayResource(extra.data(), "product_image_" + (i + 2) + "." + extra.extension()), extraHeaders));
+        }
 
         log.info("AI 콘텐츠 생성 job 제출 generationId={} productId={}", generationId, productId);
         AiJobAcceptedResponse response = generationClient.post()
@@ -296,7 +310,45 @@ class RestAiContentClient implements AiContentClient {
             log.warn("이미지 없이 AI job 제출 generationId={}", generationId);
             return new FetchedImage(new byte[0], "image/jpeg", "jpg");
         }
-        String url = images.getFirst();
+        return fetchImage(images.getFirst(), generationId);
+    }
+
+    /**
+     * 대표 사진 다음 사진들을 내려받는다. 첫 장만 있어도 상세페이지를 만들 수 있으므로 추가 사진의 실패·크기 초과는
+     * 그 사진만 빼고 계속한다. 장수(대표 포함 12장)·장당 10MB·합계 120MB를 넘기면 AI가 413으로 거절하므로 미리 제외한다.
+     */
+    private List<FetchedImage> fetchAdditionalImages(List<String> images, Long generationId, int firstImageBytes) {
+        if (images == null || images.size() < 2) {
+            return List.of();
+        }
+        List<FetchedImage> fetched = new java.util.ArrayList<>();
+        long totalBytes = firstImageBytes;
+        List<String> candidates = images.subList(1, images.size());
+        if (candidates.size() > MAX_ADDITIONAL_IMAGES) {
+            log.warn("추가 사진이 상한을 넘어 일부를 제외합니다 generationId={} total={} max={}",
+                generationId, images.size(), MAX_ADDITIONAL_IMAGES + 1);
+        }
+        for (String url : candidates.subList(0, Math.min(candidates.size(), MAX_ADDITIONAL_IMAGES))) {
+            FetchedImage image;
+            try {
+                image = fetchImage(url, generationId);
+            } catch (AiImageFetchException e) {
+                log.warn("추가 사진을 제외하고 제출합니다 generationId={} url={} reason={}",
+                    generationId, withoutQuery(url), e.getMessage());
+                continue;
+            }
+            if (image.data().length > MAX_IMAGE_BYTES || totalBytes + image.data().length > MAX_TOTAL_IMAGE_BYTES) {
+                log.warn("추가 사진이 크기 상한을 넘어 제외합니다 generationId={} url={} bytes={}",
+                    generationId, withoutQuery(url), image.data().length);
+                continue;
+            }
+            totalBytes += image.data().length;
+            fetched.add(image);
+        }
+        return fetched;
+    }
+
+    private FetchedImage fetchImage(String url, Long generationId) {
         try {
             URI uri = URI.create(url);
             String scheme = uri.getScheme();

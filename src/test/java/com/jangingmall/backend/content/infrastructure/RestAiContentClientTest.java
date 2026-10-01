@@ -205,6 +205,101 @@ class RestAiContentClientTest {
         }
     }
 
+    private static final String ACCEPTED_JSON_FOR_PHOTOS =
+        "{\"product_id\":\"10\",\"job_id\":\"job-abc\",\"request_id\":\"req-def\",\"status\":\"QUEUED\","
+            + "\"status_url\":\"http://ai/status/job-abc\",\"created_at\":\"2026-10-01T00:00:00Z\"}";
+
+    private static int countOccurrences(String text, String needle) {
+        int count = 0;
+        for (int from = text.indexOf(needle); from >= 0; from = text.indexOf(needle, from + needle.length())) {
+            count++;
+        }
+        return count;
+    }
+
+    @Test
+    @DisplayName("사진이 여러 장이면 첫 장은 product_image, 나머지는 product_images 파트로 반복해 보낸다")
+    void submitJob_sendsAdditionalPhotosAsProductImages() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/a", exchange -> respond(exchange, 200, "image/webp", WEBP_BYTES));
+        server.createContext("/b", exchange -> respond(exchange, 200, "image/png", PNG_BYTES));
+        server.createContext("/c", exchange -> respond(exchange, 200, "image/jpeg", JPEG_BYTES));
+        server.start();
+        try {
+            String base = "http://127.0.0.1:" + server.getAddress().getPort();
+            generationMockServer
+                .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs"))
+                .andExpect(request -> {
+                    String body = ((org.springframework.mock.http.client.MockClientHttpRequest) request).getBodyAsString();
+                    assertThat(countOccurrences(body, "name=\"product_image\"")).isEqualTo(1);
+                    assertThat(countOccurrences(body, "name=\"product_images\"")).isEqualTo(2);
+                    assertThat(body).contains("filename=\"product_image.webp\"")
+                        .contains("filename=\"product_image_2.png\"")
+                        .contains("filename=\"product_image_3.jpg\"");
+                })
+                .andRespond(withSuccess(ACCEPTED_JSON_FOR_PHOTOS, MediaType.APPLICATION_JSON));
+
+            contentClient.submitJob(1L, 10L, List.of(base + "/a", base + "/b", base + "/c"), "상품명", "과정", "관리법");
+        } finally {
+            server.stop(0);
+        }
+
+        generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("추가 사진을 내려받지 못하면 그 사진만 빼고 제출한다")
+    void submitJob_skipsFailedAdditionalPhoto() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/a", exchange -> respond(exchange, 200, "image/webp", WEBP_BYTES));
+        server.createContext("/missing", exchange -> respond(exchange, 404, "text/html", "not found"));
+        server.createContext("/c", exchange -> respond(exchange, 200, "image/jpeg", JPEG_BYTES));
+        server.start();
+        try {
+            String base = "http://127.0.0.1:" + server.getAddress().getPort();
+            generationMockServer
+                .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs"))
+                .andExpect(request -> {
+                    String body = ((org.springframework.mock.http.client.MockClientHttpRequest) request).getBodyAsString();
+                    assertThat(countOccurrences(body, "name=\"product_images\"")).isEqualTo(1);
+                })
+                .andRespond(withSuccess(ACCEPTED_JSON_FOR_PHOTOS, MediaType.APPLICATION_JSON));
+
+            AiJobAccepted result = contentClient.submitJob(1L, 10L,
+                List.of(base + "/a", base + "/missing", base + "/c"), "상품명", "과정", "관리법");
+
+            assertThat(result.jobId()).isEqualTo("job-abc");
+        } finally {
+            server.stop(0);
+        }
+
+        generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("대표 사진 포함 12장을 넘는 사진은 보내지 않는다")
+    void submitJob_limitsToTwelvePhotos() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
+        server.createContext("/p", exchange -> respond(exchange, 200, "image/webp", WEBP_BYTES));
+        server.start();
+        try {
+            String url = "http://127.0.0.1:" + server.getAddress().getPort() + "/p";
+            generationMockServer
+                .expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs"))
+                .andExpect(request -> {
+                    String body = ((org.springframework.mock.http.client.MockClientHttpRequest) request).getBodyAsString();
+                    assertThat(countOccurrences(body, "name=\"product_images\"")).isEqualTo(11);
+                })
+                .andRespond(withSuccess(ACCEPTED_JSON_FOR_PHOTOS, MediaType.APPLICATION_JSON));
+
+            contentClient.submitJob(1L, 10L, java.util.Collections.nCopies(15, url), "상품명", "과정", "관리법");
+        } finally {
+            server.stop(0);
+        }
+
+        generationMockServer.verify();
+    }
+
     @Test
     @DisplayName("PNG·JPEG·WebP가 아닌 이미지(GIF)나 시그니처가 맞지 않는 본문은 AI 서버에 요청하지 않는다")
     void submitJob_unsupportedImageBytes_failsWithoutCallingAi() throws Exception {
