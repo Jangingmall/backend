@@ -48,10 +48,16 @@ class GenerationAsyncExecutorTest {
     private static final AiJobAccepted ACCEPTED_JOB =
         new AiJobAccepted("job-123", "req-456", "http://ai/status/job-123");
 
+    @Mock
+    private GenerationImageResolver imageResolver;
+
     @BeforeEach
     void setUp() {
         executor = new GenerationAsyncExecutor(generationRepository, aiContentClient,
-            mock(DiscordNotificationService.class), new SimpleMeterRegistry());
+            mock(DiscordNotificationService.class), imageResolver, new SimpleMeterRegistry());
+        // 이미지 변환은 별도 테스트에서 검증하므로 여기서는 입력을 그대로 돌려준다.
+        org.mockito.Mockito.lenient().when(imageResolver.resolve(org.mockito.ArgumentMatchers.anyList()))
+            .thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     private GenerationCommand.Request sampleCommand() {

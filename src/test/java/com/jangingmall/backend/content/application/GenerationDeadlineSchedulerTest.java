@@ -49,6 +49,9 @@ class GenerationDeadlineSchedulerTest {
     @Mock
     private AiRenderApprovalAsyncExecutor renderExecutor;
 
+    @Mock
+    private GenerationImageResolver imageResolver;
+
     @Captor
     private ArgumentCaptor<ContentGeneration> savedCaptor;
 
@@ -57,7 +60,10 @@ class GenerationDeadlineSchedulerTest {
     @BeforeEach
     void setUp() {
         GenerationProperties properties = new GenerationProperties(DEADLINE_SECONDS, 60_000, RENDER_DEADLINE_SECONDS);
-        scheduler = new GenerationDeadlineScheduler(generationRepository, properties, aiContentClient, renderExecutor);
+        scheduler = new GenerationDeadlineScheduler(generationRepository, properties, aiContentClient, renderExecutor, imageResolver);
+        // 이미지 변환은 별도 테스트에서 검증하므로 여기서는 입력을 그대로 돌려준다.
+        lenient().when(imageResolver.resolve(org.mockito.ArgumentMatchers.anyList()))
+            .thenAnswer(invocation -> invocation.getArgument(0));
         // 기본값: 대기 중인 건 없음 (PROCESSING 재제출 경로가 매 주기 조회하므로 엄격 스텁 충돌 방지)
         lenient().when(generationRepository.findAllByStatus(GenerationStatus.QUEUED)).thenReturn(List.of());
         lenient().when(generationRepository.findAllByStatus(GenerationStatus.PROCESSING)).thenReturn(List.of());

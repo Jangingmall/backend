@@ -177,6 +177,21 @@ public class ImageService {
         return List.copyOf(result);
     }
 
+    /**
+     * 이미지 ID로 지정한 크기(예: 1280w)의 공개 URL을 찾는다. AI 서버처럼 URL로 사진을 내려받는 내부 소비자용이며,
+     * 아직 상품에 연결(consume)되지 않은 이미지도 조회할 수 있다. 이미지나 variant가 없으면 빈 값이다.
+     */
+    public java.util.Optional<String> variantUrl(String imageId, String variant) {
+        return uploads.findById(imageId).flatMap(upload -> {
+            Object metadata = variants(upload).get(variant);
+            if (metadata == null) {
+                return java.util.Optional.empty();
+            }
+            String url = publicUrl(objectKey(metadata), normalizedImageBaseUrl(), upload.getPurpose());
+            return java.util.Optional.of(url);
+        });
+    }
+
     public Map<String, List<PublicVariant>> publicVariantsBatch(List<String> imageIds) {
         if (imageIds.isEmpty()) {
             return Map.of();
