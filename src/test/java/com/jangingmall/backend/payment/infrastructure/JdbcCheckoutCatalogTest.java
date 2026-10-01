@@ -1,5 +1,6 @@
 package com.jangingmall.backend.payment.infrastructure;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -38,5 +39,16 @@ class JdbcCheckoutCatalogTest {
         assertThatThrownBy(() -> catalog.reserve(List.of(
             new CheckoutCatalog.InventoryLine(7L, 1, List.of()))))
             .isInstanceOf(BusinessRuleViolationException.class);
+    }
+
+    @Test
+    @DisplayName("업로드 이미지가 없는 상품은 thumbnail_url 한 장을 주문서 대표 이미지로 쓴다")
+    void fallsBackToLegacyThumbnailUrl() {
+        assertThat(JdbcCheckoutCatalog.legacyThumbnail("https://cdn.example/seed-images/sub-25.png"))
+            .containsExactly(new CheckoutCatalog.ImageVariant("https://cdn.example/seed-images/sub-25.png", 800, 800, "png"));
+        assertThat(JdbcCheckoutCatalog.legacyThumbnail("https://images.example/a.jpg?w=600"))
+            .extracting(CheckoutCatalog.ImageVariant::format).containsExactly("jpeg");
+        assertThat(JdbcCheckoutCatalog.legacyThumbnail("울산 울주")).isEmpty();
+        assertThat(JdbcCheckoutCatalog.legacyThumbnail(null)).isEmpty();
     }
 }

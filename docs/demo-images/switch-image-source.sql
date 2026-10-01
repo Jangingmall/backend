@@ -1,0 +1,80 @@
+-- 시연 대표 이미지 출처 전환 스크립트 (수동 실행용, Flyway 마이그레이션 아님)
+--
+-- 같은 소분류 일러스트 56장을 두 곳에서 서비스할 수 있다. 시드(V16)의 기본값은 B(외부 링크)다.
+--   A. S3 배포 버전  : https://img.stg.midam.store/images/product/63/<imageId>/1280w.webp
+--      - 서버(S3/CDN)가 켜져 있어야 하고, 상품에 연결(확정)하지 않으면 업로드 24시간 뒤 삭제된다.
+--   B. 외부 링크 버전 : https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/seed-images/sub-NN.webp
+--      - 저장소(공개) develop 브랜치 파일이라 서버가 꺼져 있어도 열리고 만료가 없다. GitHub 서버에 의존한다.
+--
+-- 사용법: 필요한 쪽의 UPDATE 하나만 실행한다. 직접 업로드한 이미지가 있는 상품(product_image)은 건드리지 않는다.
+
+-- ── B 로 전환 (S3 → 외부 링크, 시드 기본값) ────────────────────────────────────────────────
+UPDATE product p
+SET thumbnail_url = 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/seed-images/sub-'
+        || lpad(p.subcategory_id::text, 2, '0') || '.webp'
+WHERE p.subcategory_id BETWEEN 1 AND 56
+  AND NOT EXISTS (SELECT 1 FROM product_image pi WHERE pi.product_id = p.product_id);
+
+-- ── A 로 전환 (외부 링크 → S3) ────────────────────────────────────────────────
+-- UPDATE product p
+-- SET thumbnail_url = 'https://img.stg.midam.store/images/product/63/' || m.image_id || '/1280w.webp'
+-- FROM (VALUES
+--     (1, '01M3VATRMFHW53E73R8HSRKA2E'),
+--     (2, '01M3VATXA5MRM87RJHF3PHGYVP'),
+--     (3, '01M3VAV21QS19D6KTDE5Q7F1KQ'),
+--     (4, '01M3VAV7WWR156TK7Q8K3M945Q'),
+--     (5, '01M3VAVC7WMTBRG7RS2E4RW7F2'),
+--     (6, '01M3VAVGB7Z79QG054GRJRC8ZB'),
+--     (7, '01M3VAVMHNEEWMHZ6R6YM6VWDK'),
+--     (8, '01M3VAVRXBGNV2HX8P0KKGQKK7'),
+--     (9, '01M3VAVX3RRGFHS6HTKCV4BH55'),
+--     (10, '01M3VAW1D70VH19W03AQA50NBP'),
+--     (11, '01M3VAW5HA5B9SV306JJ6FSJJN'),
+--     (12, '01M3VAWA037JRWW70F937QMXRB'),
+--     (13, '01M3VAWEC62QWTN9E5H6JQGK63'),
+--     (14, '01M3VAWJTWPPTK87542XM1W48A'),
+--     (15, '01M3VAWPZKFS2JWWMW9ZE62MBA'),
+--     (16, '01M3VAWV45Y05K3QZXXDMC0GRM'),
+--     (17, '01M3VAWZD6AA80S95381CPQ9F8'),
+--     (18, '01M3VAX4NYYY8KRXNZB89ME4Q3'),
+--     (19, '01M3VAX8ZXGWPA22SRGNNZWFGK'),
+--     (20, '01M3VAXD8A184THXHXSD8SVTEM'),
+--     (21, '01M3VAXHGE0FEH9P8696545DMK'),
+--     (22, '01M3VAXNVMMPE3BMR82M175F5H'),
+--     (23, '01M3VAXT5M0PC91YMM4V3GAEMW'),
+--     (24, '01M3VAXY8WZQ66KXEKJCFTV8M7'),
+--     (25, '01M3VAY2JC89RQ9G6JXBGV7HS4'),
+--     (26, '01M3VAY71M08K9CWDPS9YFMS8R'),
+--     (27, '01M3VAYBCTVREDWV71NTA1SAX0'),
+--     (28, '01M3VAYFGY34EYHMZYBP51XX2T'),
+--     (29, '01M3VAYKTPP1DKK6FXPR423DN7'),
+--     (30, '01M3VAYR6FKC3WRCRT9P3EYZZE'),
+--     (31, '01M3VAYWEQ4KDVZENFWV2TGRXD'),
+--     (32, '01M3VAZ0V8WN2BHNAS8XVQPD97'),
+--     (33, '01M3VAZ50616QHZGKAP56AKNP3'),
+--     (34, '01M3VAZ9C4BEGC8D7Y8FVHDKC2'),
+--     (35, '01M3VAZDJQ0TNPX66NCRPTVRR6'),
+--     (36, '01M3VAZHT3V8NV80157M8PFZ2E'),
+--     (37, '01M3VAZNZNC96N7XCXZ3S8M14N'),
+--     (38, '01M3VAZTB7A0Z4HEPPQY9CR0T5'),
+--     (39, '01M3VAZYG5989A0R2YWX4G4N1F'),
+--     (40, '01M3VB02STYB59CTMQ3H17GYZX'),
+--     (41, '01M3VB06WAXE6M5T5KQF7HVVBP'),
+--     (42, '01M3VB0B7HGAS8J9HE60FZN7G4'),
+--     (43, '01M3VB0FBTQ0KTRE99AWB7X3PR'),
+--     (44, '01M3VB0KGRG77HKT73B80RF3TE'),
+--     (45, '01M3VB0QNJDVFMZ814J7M8BBFT'),
+--     (46, '01M3VB0VV4DT4NS85DNKMHYHBX'),
+--     (47, '01M3VB10AY1E5P4F5KMSV2S7ZT'),
+--     (48, '01M3VB14P2WB82X7RQ13Y8G0C3'),
+--     (49, '01M3VB195B0F54C3VMCJYXDK9C'),
+--     (50, '01M3VB1DR8YCT3D5NVY0Y304A5'),
+--     (51, '01M3VB1HYSVVXX0Y8E0PQTWM1T'),
+--     (52, '01M3VB1P1VJHPTVCF2MJXNV58Q'),
+--     (53, '01M3VB1T7CQ0KP7N2JZ92VKPS1'),
+--     (54, '01M3VB1YGWF65YDTMVZ4T57VSH'),
+--     (55, '01M3VB22MMV7Z6PNXK703NCCF8'),
+--     (56, '01M3VB28Z1KGEY851FJ9PAXPZZ')
+-- ) AS m(subcategory_id, image_id)
+-- WHERE p.subcategory_id = m.subcategory_id
+--   AND NOT EXISTS (SELECT 1 FROM product_image pi WHERE pi.product_id = p.product_id);
