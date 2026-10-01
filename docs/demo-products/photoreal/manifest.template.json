@@ -1,0 +1,446 @@
+{
+  "_설명": "이미지↔상품 매칭표. 상품은 key(p01~p33) 또는 match(title+artisanId, V17 의 자연키)로 찾는다. dbProductId 는 DB마다 달라 비워 두고, 적용 시 match 로 채운다. 파일명 규칙: <key>_<A|B|C>.<png|jpg|webp>",
+  "version": 1,
+  "items": [
+    {
+      "key": "p31",
+      "match": {
+        "title": "전주 합죽선 · 매화선",
+        "artisanId": 41,
+        "subcategoryId": 25
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p31_A.png",
+        "B": "p31_B.png",
+        "C": "p31_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p32",
+      "match": {
+        "title": "청자 운학문 찻잔",
+        "artisanId": 20,
+        "subcategoryId": 1
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p32_A.png",
+        "B": "p32_B.png",
+        "C": "p32_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p33",
+      "match": {
+        "title": "분청 귀얄 찻잔",
+        "artisanId": 20,
+        "subcategoryId": 1
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p33_A.png",
+        "B": "p33_B.png",
+        "C": "p33_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p06",
+      "match": {
+        "title": "홍매 삼작 노리개",
+        "artisanId": 36,
+        "subcategoryId": 19
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p06_A.png",
+        "B": "p06_B.png",
+        "C": "p06_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p11",
+      "match": {
+        "title": "수자수 모란도 액자",
+        "artisanId": 25,
+        "subcategoryId": 41
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p11_A.png",
+        "B": "p11_B.png",
+        "C": "p11_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p15",
+      "match": {
+        "title": "한지 무드 조명",
+        "artisanId": 25,
+        "subcategoryId": 10
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p15_A.png",
+        "B": "p15_B.png",
+        "C": "p15_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p16",
+      "match": {
+        "title": "하늘빛 한산모시 스카프",
+        "artisanId": 32,
+        "subcategoryId": 21
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p16_A.png",
+        "B": "p16_B.png",
+        "C": "p16_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p26",
+      "match": {
+        "title": "나전 명함집",
+        "artisanId": 40,
+        "subcategoryId": 32
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p26_A.png",
+        "B": "p26_B.png",
+        "C": "p26_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p01",
+      "match": {
+        "title": "연분홍 모시 생활한복 저고리",
+        "artisanId": 31,
+        "subcategoryId": 26
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p01_A.png",
+        "B": "p01_B.png",
+        "C": "p01_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p02",
+      "match": {
+        "title": "쪽빛 누비 복주머니",
+        "artisanId": 31,
+        "subcategoryId": 37
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p02_A.png",
+        "B": "p02_B.png",
+        "C": "p02_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p03",
+      "match": {
+        "title": "매화 자수 손수건 세트",
+        "artisanId": 31,
+        "subcategoryId": 38
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p03_A.png",
+        "B": "p03_B.png",
+        "C": "p03_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p04",
+      "match": {
+        "title": "오방색 조각보 파우치",
+        "artisanId": 31,
+        "subcategoryId": 22
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p04_A.png",
+        "B": "p04_B.png",
+        "C": "p04_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p05",
+      "match": {
+        "title": "연둣빛 모시 스카프",
+        "artisanId": 31,
+        "subcategoryId": 21
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p05_A.png",
+        "B": "p05_B.png",
+        "C": "p05_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p07",
+      "match": {
+        "title": "쪽빛 매듭 키링",
+        "artisanId": 36,
+        "subcategoryId": 24
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p07_A.png",
+        "B": "p07_B.png",
+        "C": "p07_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p08",
+      "match": {
+        "title": "조각보 카드지갑",
+        "artisanId": 36,
+        "subcategoryId": 23
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p08_A.png",
+        "B": "p08_B.png",
+        "C": "p08_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p09",
+      "match": {
+        "title": "은빛 매화 비녀",
+        "artisanId": 36,
+        "subcategoryId": 20
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p09_A.png",
+        "B": "p09_B.png",
+        "C": "p09_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p10",
+      "match": {
+        "title": "옥빛 매듭 귀걸이",
+        "artisanId": 36,
+        "subcategoryId": 17
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p10_A.png",
+        "B": "p10_B.png",
+        "C": "p10_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p12",
+      "match": {
+        "title": "한지 산수화 액자",
+        "artisanId": 25,
+        "subcategoryId": 42
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p12_A.png",
+        "B": "p12_B.png",
+        "C": "p12_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p13",
+      "match": {
+        "title": "오방 누비 방석",
+        "artisanId": 25,
+        "subcategoryId": 34
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p13_A.png",
+        "B": "p13_B.png",
+        "C": "p13_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    },
+    {
+      "key": "p14",
+      "match": {
+        "title": "모시 테이블 러너",
+        "artisanId": 25,
+        "subcategoryId": 36
+      },
+      "dbProductId": null,
+      "files": {
+        "A": "p14_A.png",
+        "B": "p14_B.png",
+        "C": "p14_C.png"
+      },
+      "use": {
+        "A": "대표(thumbnail_url)",
+        "B": "상세 1번(product_detail_image 0)",
+        "C": "상세 2번(product_detail_image 1)"
+      },
+      "required": [
+        "A"
+      ]
+    }
+  ]
+}
