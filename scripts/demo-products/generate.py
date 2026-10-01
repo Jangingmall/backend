@@ -173,13 +173,24 @@ def write_readme():
         handle.write("\n".join(lines) + "\n")
 
 
+# 시연에서 "신상품"·"선물" 첫 화면에 먼저 보이게 할 순서(최신순 정렬이 이 순서를 따른다). 나머지는 catalog 순서.
+SHOWCASE = ["p31", "p32", "p33", "p06", "p11", "p15", "p16", "p26"]
+
+
+def showcase_order():
+    keys = [p["key"] for p in catalog.PRODUCTS]
+    ordered = SHOWCASE + [k for k in keys if k not in SHOWCASE]
+    return {key: position for position, key in enumerate(ordered)}
+
+
 def write_migration():
     rows, themes, tags, colors, details = [], [], [], [], []
+    order = showcase_order()
     for p in catalog.PRODUCTS:
         description = p["intro"] + " 특징: " + " · ".join(p["features"]) + "."
         rows.append("    (" + ", ".join([
             sql_text(p["name"]), str(p["artisan"]), str(p["sub"]), sql_text(description), sql_text(p["material"]),
-            str(p["price"]), str(p["stock"]), sql_text(image_url(p)), str(p["days"])]) + ")")
+            str(p["price"]), str(p["stock"]), sql_text(image_url(p)), str(p["days"]), str(order[p["key"]])]) + ")")
         themes += [f"    ({sql_text(p['name'])}, {sql_text(t)})" for t in p["themes"]]
         tags += [f"    ({sql_text(p['name'])}, {sql_text(t)})" for t in p["tags"]]
         colors += [f"    ({sql_text(p['name'])}, {sql_text(c)})" for c in p["colors"]]
@@ -189,6 +200,7 @@ def write_migration():
 --
 -- 상품명·소개·특징·이미지가 서로 맞도록 상품마다 직접 그린 일러스트(WebP)를 저장소 외부 링크로 연결한다.
 -- 서버(S3/CDN)가 꺼져 있어도 열리고 업로드 만료가 없다. 이미 같은 이름의 상품이 있으면 다시 넣지 않는다.
+-- 등록 시각(created_at)을 1초씩 어긋나게 줘서 최신순(신상품·선물 첫 화면)에서 합죽선·찻잔 같은 대표 상품이 먼저 나온다.
 -- 장인(artisan_id)·소분류(subcategory_id)는 시드 데이터 기준이다. 가격·재고·소개는 시연용 가짜 값이다.
 
 -- 상세 화면 갤러리용 이미지 주소(대표 이미지 뒤에 이어 붙는다). 업로드 이미지(product_image)가 없는 상품에만 쓴다.
@@ -204,10 +216,11 @@ WITH new_products AS (
                          thumbnail_url, production_period_days, is_limited, is_custom_order, is_single_item,
                          has_gift_wrap, status, created_at, updated_at)
     SELECT v.artisan_id, s.category_id, v.subcategory_id, v.title, v.description, v.material, v.price, v.stock,
-           v.thumbnail_url, v.days, FALSE, FALSE, FALSE, TRUE, 'ON_SALE', NOW(), NOW()
+           v.thumbnail_url, v.days, FALSE, FALSE, FALSE, TRUE, 'ON_SALE',
+           NOW() - (v.ord * INTERVAL '1 second'), NOW()
     FROM (VALUES
 {(","+chr(10)).join(rows)}
-    ) AS v(title, artisan_id, subcategory_id, description, material, price, stock, thumbnail_url, days)
+    ) AS v(title, artisan_id, subcategory_id, description, material, price, stock, thumbnail_url, days, ord)
     JOIN subcategory s ON s.subcategory_id = v.subcategory_id
     JOIN member m ON m.member_id = v.artisan_id
     WHERE NOT EXISTS (SELECT 1 FROM product e WHERE e.title = v.title AND e.artisan_id = v.artisan_id)

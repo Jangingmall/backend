@@ -3,6 +3,7 @@
 --
 -- 상품명·소개·특징·이미지가 서로 맞도록 상품마다 직접 그린 일러스트(WebP)를 저장소 외부 링크로 연결한다.
 -- 서버(S3/CDN)가 꺼져 있어도 열리고 업로드 만료가 없다. 이미 같은 이름의 상품이 있으면 다시 넣지 않는다.
+-- 등록 시각(created_at)을 1초씩 어긋나게 줘서 최신순(신상품·선물 첫 화면)에서 합죽선·찻잔 같은 대표 상품이 먼저 나온다.
 -- 장인(artisan_id)·소분류(subcategory_id)는 시드 데이터 기준이다. 가격·재고·소개는 시연용 가짜 값이다.
 
 -- 상세 화면 갤러리용 이미지 주소(대표 이미지 뒤에 이어 붙는다). 업로드 이미지(product_image)가 없는 상품에만 쓴다.
@@ -18,42 +19,43 @@ WITH new_products AS (
                          thumbnail_url, production_period_days, is_limited, is_custom_order, is_single_item,
                          has_gift_wrap, status, created_at, updated_at)
     SELECT v.artisan_id, s.category_id, v.subcategory_id, v.title, v.description, v.material, v.price, v.stock,
-           v.thumbnail_url, v.days, FALSE, FALSE, FALSE, TRUE, 'ON_SALE', NOW(), NOW()
+           v.thumbnail_url, v.days, FALSE, FALSE, FALSE, TRUE, 'ON_SALE',
+           NOW() - (v.ord * INTERVAL '1 second'), NOW()
     FROM (VALUES
-    ('연분홍 모시 생활한복 저고리', 31, 26, '바람이 잘 통하는 한산모시로 지은 연분홍 저고리입니다. 평상복으로 입기 편하게 품을 넉넉히 잡았습니다. 특징: 한산모시 100% · 손바느질 마감 · 품 넉넉한 생활한복 패턴.', '한산모시', 128000, 8, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p01.webp', 14),
-    ('쪽빛 누비 복주머니', 31, 37, '쪽빛 천을 누벼 만든 작은 복주머니입니다. 새해나 결혼 선물로 마음을 담아 건네기 좋습니다. 특징: 손누비 마감 · 매듭 끈 장식 · 손바닥 크기.', '면 누비', 38000, 20, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p02.webp', 10),
-    ('매화 자수 손수건 세트', 31, 38, '매화 한 가지를 손으로 수놓은 무명 손수건 두 장 세트입니다. 부드러워 매일 쓰기 좋습니다. 특징: 손자수 매화 · 부드러운 무명 · 2장 1세트.', '무명', 24000, 30, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p03.webp', 7),
-    ('오방색 조각보 파우치', 31, 22, '남은 천을 이어 붙이는 조각보 기법으로 만든 파우치입니다. 같은 무늬가 하나도 없습니다. 특징: 조각보 기법 · 안감 포함 · 지퍼 마감.', '명주', 52000, 15, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p04.webp', 12),
-    ('연둣빛 모시 스카프', 31, 21, '가볍고 시원한 모시로 짠 연둣빛 스카프입니다. 한여름 목에 둘러도 답답하지 않습니다. 특징: 통풍이 좋은 모시 · 가벼운 무게 · 끝단 술 장식.', '모시', 46000, 18, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p05.webp', 10),
-    ('홍매 삼작 노리개', 36, 19, '붉은 매듭에 세 가지 장식을 단 삼작 노리개입니다. 한복에 달면 단아한 포인트가 됩니다. 특징: 삼작 구성 · 손매듭 끈 · 한복 고름에 걸어 사용.', '명주실', 98000, 6, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p06.webp', 21),
-    ('쪽빛 매듭 키링', 36, 24, '전통 매듭을 작게 엮은 키링입니다. 가방이나 열쇠에 달면 한국의 멋이 은은하게 묻어납니다. 특징: 손매듭 · 가벼운 무게 · 작은 선물로 적합.', '명주실', 18000, 40, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p07.webp', 5),
-    ('조각보 카드지갑', 36, 23, '조각보 천으로 만든 슬림한 카드지갑입니다. 카드 여섯 장과 지폐를 넣을 수 있습니다. 특징: 카드 6칸 · 조각보 무늬 · 얇은 두께.', '명주', 42000, 22, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p08.webp', 10),
-    ('은빛 매화 비녀', 36, 20, '끝에 매화 한 송이를 새긴 은 비녀입니다. 쪽머리뿐 아니라 올림머리에도 단정하게 어울립니다. 특징: 순은 도금 · 매화 문양 조각 · 길이 약 14cm.', '은', 76000, 9, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p09.webp', 18),
-    ('옥빛 매듭 귀걸이', 36, 17, '옥빛 구슬에 작은 매듭을 단 귀걸이입니다. 가볍게 흔들리는 모양이 얼굴을 환하게 밝혀 줍니다. 특징: 옥빛 구슬 · 손매듭 장식 · 알레르기 줄인 은침.', '옥·명주실', 54000, 14, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p10.webp', 14),
-    ('수자수 모란도 액자', 25, 41, '모란을 한 올 한 올 수놓아 표구한 자수 액자입니다. 부귀를 뜻하는 꽃이라 집들이 선물로 많이 찾습니다. 특징: 손수자수 · 원목 액자 표구 · 가로 40cm × 세로 50cm.', '명주 수자수', 185000, 4, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p11.webp', 45),
-    ('한지 산수화 액자', 25, 42, '한지 위에 먹과 채색으로 산수를 그린 액자입니다. 거실이나 서재 벽에 차분한 분위기를 더합니다. 특징: 수제 한지 · 먹·채색 산수화 · 원목 액자.', '한지', 98000, 7, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p12.webp', 20),
-    ('오방 누비 방석', 25, 34, '오방색을 이어 누빈 방석입니다. 바닥에 앉아 지내는 시간이 푹신하고 따뜻해집니다. 특징: 손누비 · 솜 충전 두께 5cm · 가로·세로 45cm.', '명주 누비', 64000, 12, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p13.webp', 14),
-    ('모시 테이블 러너', 25, 36, '상차림 가운데 길게 깔아 쓰는 모시 러너입니다. 은은한 결이 식탁을 단정하게 만들어 줍니다. 특징: 모시 100% · 가장자리 술 장식 · 길이 150cm.', '모시', 72000, 10, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p14.webp', 12),
-    ('한지 무드 조명', 25, 10, '한지를 두른 스탠드 조명입니다. 불을 켜면 한지 결 사이로 따뜻한 빛이 퍼져 방이 포근해집니다. 특징: 한지 갓 · 원목 받침 · 전구 색온도 2700K.', '한지·원목', 89000, 8, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p15.webp', 16),
-    ('하늘빛 한산모시 스카프', 32, 21, '한산모시를 하늘빛으로 물들인 스카프입니다. 바람이 지나가듯 가벼워 여름 외출에 잘 어울립니다. 특징: 천연 염색 · 한산모시 100% · 가로 40cm × 세로 160cm.', '한산모시', 58000, 16, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p16.webp', 12),
-    ('모시 주방 앞치마', 32, 39, '통풍이 잘 되고 물이 빨리 마르는 모시 앞치마입니다. 주방일이 한결 가벼워집니다. 특징: 물 빠짐이 빠른 모시 · 주머니 포함 · 끈 길이 조절.', '한산모시', 68000, 12, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p17.webp', 10),
-    ('모시 홑이불', 32, 35, '여름밤 덮고 자면 시원한 모시 홑이불입니다. 부모님께 드리는 선물이나 혼수로 많이 찾습니다. 특징: 한산모시 · 시원한 촉감 · 퀸 사이즈.', '한산모시', 148000, 5, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p18.webp', 25),
-    ('민트 모시 보자기', 32, 37, '선물을 감싸는 모시 보자기입니다. 포장 후에도 스카프나 벽장식으로 다시 쓸 수 있습니다. 특징: 가로·세로 50cm · 가장자리 박음질 · 재사용 가능.', '모시', 32000, 24, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p19.webp', 7),
-    ('모시 개량한복 상의', 32, 26, '일상에서도 입을 수 있게 단순하게 다듬은 모시 상의입니다. 시원하고 구김이 자연스럽습니다. 특징: 한산모시 · 단순한 선 · 남녀 공용 프리 사이즈.', '한산모시', 138000, 7, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p20.webp', 18),
-    ('은 매듭 팔찌', 34, 18, '은실을 전통 매듭으로 엮은 팔찌입니다. 손목에 가볍게 감겨 매일 하기 편합니다. 특징: 순은 · 손매듭 · 길이 조절 가능.', '은', 64000, 11, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p21.webp', 14),
-    ('옥 노리개 브로치', 34, 19, '옥 장식에 매듭을 단 노리개 브로치입니다. 한복에도, 평소 재킷에도 달 수 있습니다. 특징: 천연 옥 · 손매듭 · 브로치 핀 겸용.', '옥·명주실', 88000, 6, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p22.webp', 21),
-    ('칠보 푸른 반지', 34, 17, '푸른 칠보 유약을 올린 은 반지입니다. 빛에 따라 깊이가 달라 보입니다. 특징: 칠보 유약 · 순은 몸체 · 사이즈 제작 가능.', '은·칠보', 72000, 9, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p23.webp', 18),
-    ('금빛 떨잠', 34, 20, '혼례 때 머리 앞을 장식하는 떨잠입니다. 흔들릴 때마다 은은하게 반짝입니다. 특징: 도금 은 · 손조각 · 혼례·돌잔치용.', '도금 은', 120000, 4, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p24.webp', 28),
-    ('진주 매듭 목걸이', 34, 18, '진주 사이를 손매듭으로 이은 목걸이입니다. 한복과 양장에 모두 잘 어울립니다. 특징: 담수 진주 · 손매듭 · 길이 45cm.', '담수 진주·명주실', 98000, 8, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p25.webp', 16),
-    ('나전 명함집', 40, 32, '자개를 박아 옻칠한 명함집입니다. 명함을 건넬 때 첫인상이 한층 단정해집니다. 특징: 나전 장식 · 옻칠 마감 · 명함 30장 수납.', '나전·옻칠', 56000, 18, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p26.webp', 20),
-    ('나전 필통', 40, 33, '책상 위에 두면 은은하게 빛나는 나전 필통입니다. 필기구 열 자루가 넉넉히 들어갑니다. 특징: 자개 장식 · 원목 몸체 · 필기구 10자루.', '나전·원목', 48000, 20, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p27.webp', 16),
-    ('칠보 문양 만년필', 40, 31, '몸통에 칠보 문양을 올린 만년필입니다. 부드럽게 써지고 손에 닿는 무게가 안정적입니다. 특징: 칠보 몸통 · 중자 촉 · 잉크 컨버터 포함.', '황동·칠보', 88000, 10, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p28.webp', 14),
-    ('서예 붓·먹·벼루 세트', 40, 29, '붓, 먹, 벼루를 한 상자에 담은 서예 입문 세트입니다. 처음 먹을 가는 순간부터 정갈해집니다. 특징: 양모 붓 2자루 · 송연먹 · 청석 벼루.', '양모·송연먹·청석', 120000, 6, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p29.webp', 12),
-    ('한지 편지지 세트', 40, 30, '결이 살아 있는 수제 한지 편지지와 봉투 세트입니다. 손글씨로 마음을 전하기 좋습니다. 특징: 수제 한지 · 편지지 20장·봉투 10장 · 먹이 번지지 않음.', '수제 한지', 22000, 35, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p30.webp', 7),
-    ('전주 합죽선 · 매화선', 41, 25, '담양 왕대를 3년 건조해 손으로 겉대·속대를 깎고, 한지를 겹겹이 붙여 선면을 만들었습니다. 매화를 한 획씩 직접 그려 같은 부채가 하나도 없습니다. 특징: 대나무 겉대 두 쪽을 붙인 합죽선 · 닥나무 한지 선면 · 선추 달린 접부채.', '대나무·한지', 150000, 10, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/hapjukseon-maehwa-illustrated/01-hero.webp', 14),
-    ('청자 운학문 찻잔', 20, 1, '푸른 비색 유약에 학과 구름을 상감한 찻잔입니다. 차를 따르면 유약의 푸른빛이 은은하게 비칩니다. 특징: 비색 유약 · 운학문 상감 · 용량 약 150ml.', '청자', 85000, 12, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/01-hero-celadon.webp', 21),
-    ('분청 귀얄 찻잔', 20, 1, '백토를 귀얄(풀비)로 쓸듯이 바르고 철화로 풀꽃을 그린 분청 찻잔입니다. 투박한 붓결이 손에 따뜻하게 잡힙니다. 특징: 백토 귀얄 분장 · 철화 풀꽃 무늬 · 용량 약 150ml.', '분청사기', 72000, 14, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/02-hero-bunjeong.webp', 21)
-    ) AS v(title, artisan_id, subcategory_id, description, material, price, stock, thumbnail_url, days)
+    ('연분홍 모시 생활한복 저고리', 31, 26, '바람이 잘 통하는 한산모시로 지은 연분홍 저고리입니다. 평상복으로 입기 편하게 품을 넉넉히 잡았습니다. 특징: 한산모시 100% · 손바느질 마감 · 품 넉넉한 생활한복 패턴.', '한산모시', 128000, 8, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p01.webp', 14, 8),
+    ('쪽빛 누비 복주머니', 31, 37, '쪽빛 천을 누벼 만든 작은 복주머니입니다. 새해나 결혼 선물로 마음을 담아 건네기 좋습니다. 특징: 손누비 마감 · 매듭 끈 장식 · 손바닥 크기.', '면 누비', 38000, 20, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p02.webp', 10, 9),
+    ('매화 자수 손수건 세트', 31, 38, '매화 한 가지를 손으로 수놓은 무명 손수건 두 장 세트입니다. 부드러워 매일 쓰기 좋습니다. 특징: 손자수 매화 · 부드러운 무명 · 2장 1세트.', '무명', 24000, 30, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p03.webp', 7, 10),
+    ('오방색 조각보 파우치', 31, 22, '남은 천을 이어 붙이는 조각보 기법으로 만든 파우치입니다. 같은 무늬가 하나도 없습니다. 특징: 조각보 기법 · 안감 포함 · 지퍼 마감.', '명주', 52000, 15, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p04.webp', 12, 11),
+    ('연둣빛 모시 스카프', 31, 21, '가볍고 시원한 모시로 짠 연둣빛 스카프입니다. 한여름 목에 둘러도 답답하지 않습니다. 특징: 통풍이 좋은 모시 · 가벼운 무게 · 끝단 술 장식.', '모시', 46000, 18, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p05.webp', 10, 12),
+    ('홍매 삼작 노리개', 36, 19, '붉은 매듭에 세 가지 장식을 단 삼작 노리개입니다. 한복에 달면 단아한 포인트가 됩니다. 특징: 삼작 구성 · 손매듭 끈 · 한복 고름에 걸어 사용.', '명주실', 98000, 6, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p06.webp', 21, 3),
+    ('쪽빛 매듭 키링', 36, 24, '전통 매듭을 작게 엮은 키링입니다. 가방이나 열쇠에 달면 한국의 멋이 은은하게 묻어납니다. 특징: 손매듭 · 가벼운 무게 · 작은 선물로 적합.', '명주실', 18000, 40, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p07.webp', 5, 13),
+    ('조각보 카드지갑', 36, 23, '조각보 천으로 만든 슬림한 카드지갑입니다. 카드 여섯 장과 지폐를 넣을 수 있습니다. 특징: 카드 6칸 · 조각보 무늬 · 얇은 두께.', '명주', 42000, 22, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p08.webp', 10, 14),
+    ('은빛 매화 비녀', 36, 20, '끝에 매화 한 송이를 새긴 은 비녀입니다. 쪽머리뿐 아니라 올림머리에도 단정하게 어울립니다. 특징: 순은 도금 · 매화 문양 조각 · 길이 약 14cm.', '은', 76000, 9, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p09.webp', 18, 15),
+    ('옥빛 매듭 귀걸이', 36, 17, '옥빛 구슬에 작은 매듭을 단 귀걸이입니다. 가볍게 흔들리는 모양이 얼굴을 환하게 밝혀 줍니다. 특징: 옥빛 구슬 · 손매듭 장식 · 알레르기 줄인 은침.', '옥·명주실', 54000, 14, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p10.webp', 14, 16),
+    ('수자수 모란도 액자', 25, 41, '모란을 한 올 한 올 수놓아 표구한 자수 액자입니다. 부귀를 뜻하는 꽃이라 집들이 선물로 많이 찾습니다. 특징: 손수자수 · 원목 액자 표구 · 가로 40cm × 세로 50cm.', '명주 수자수', 185000, 4, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p11.webp', 45, 4),
+    ('한지 산수화 액자', 25, 42, '한지 위에 먹과 채색으로 산수를 그린 액자입니다. 거실이나 서재 벽에 차분한 분위기를 더합니다. 특징: 수제 한지 · 먹·채색 산수화 · 원목 액자.', '한지', 98000, 7, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p12.webp', 20, 17),
+    ('오방 누비 방석', 25, 34, '오방색을 이어 누빈 방석입니다. 바닥에 앉아 지내는 시간이 푹신하고 따뜻해집니다. 특징: 손누비 · 솜 충전 두께 5cm · 가로·세로 45cm.', '명주 누비', 64000, 12, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p13.webp', 14, 18),
+    ('모시 테이블 러너', 25, 36, '상차림 가운데 길게 깔아 쓰는 모시 러너입니다. 은은한 결이 식탁을 단정하게 만들어 줍니다. 특징: 모시 100% · 가장자리 술 장식 · 길이 150cm.', '모시', 72000, 10, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p14.webp', 12, 19),
+    ('한지 무드 조명', 25, 10, '한지를 두른 스탠드 조명입니다. 불을 켜면 한지 결 사이로 따뜻한 빛이 퍼져 방이 포근해집니다. 특징: 한지 갓 · 원목 받침 · 전구 색온도 2700K.', '한지·원목', 89000, 8, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p15.webp', 16, 5),
+    ('하늘빛 한산모시 스카프', 32, 21, '한산모시를 하늘빛으로 물들인 스카프입니다. 바람이 지나가듯 가벼워 여름 외출에 잘 어울립니다. 특징: 천연 염색 · 한산모시 100% · 가로 40cm × 세로 160cm.', '한산모시', 58000, 16, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p16.webp', 12, 6),
+    ('모시 주방 앞치마', 32, 39, '통풍이 잘 되고 물이 빨리 마르는 모시 앞치마입니다. 주방일이 한결 가벼워집니다. 특징: 물 빠짐이 빠른 모시 · 주머니 포함 · 끈 길이 조절.', '한산모시', 68000, 12, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p17.webp', 10, 20),
+    ('모시 홑이불', 32, 35, '여름밤 덮고 자면 시원한 모시 홑이불입니다. 부모님께 드리는 선물이나 혼수로 많이 찾습니다. 특징: 한산모시 · 시원한 촉감 · 퀸 사이즈.', '한산모시', 148000, 5, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p18.webp', 25, 21),
+    ('민트 모시 보자기', 32, 37, '선물을 감싸는 모시 보자기입니다. 포장 후에도 스카프나 벽장식으로 다시 쓸 수 있습니다. 특징: 가로·세로 50cm · 가장자리 박음질 · 재사용 가능.', '모시', 32000, 24, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p19.webp', 7, 22),
+    ('모시 개량한복 상의', 32, 26, '일상에서도 입을 수 있게 단순하게 다듬은 모시 상의입니다. 시원하고 구김이 자연스럽습니다. 특징: 한산모시 · 단순한 선 · 남녀 공용 프리 사이즈.', '한산모시', 138000, 7, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p20.webp', 18, 23),
+    ('은 매듭 팔찌', 34, 18, '은실을 전통 매듭으로 엮은 팔찌입니다. 손목에 가볍게 감겨 매일 하기 편합니다. 특징: 순은 · 손매듭 · 길이 조절 가능.', '은', 64000, 11, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p21.webp', 14, 24),
+    ('옥 노리개 브로치', 34, 19, '옥 장식에 매듭을 단 노리개 브로치입니다. 한복에도, 평소 재킷에도 달 수 있습니다. 특징: 천연 옥 · 손매듭 · 브로치 핀 겸용.', '옥·명주실', 88000, 6, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p22.webp', 21, 25),
+    ('칠보 푸른 반지', 34, 17, '푸른 칠보 유약을 올린 은 반지입니다. 빛에 따라 깊이가 달라 보입니다. 특징: 칠보 유약 · 순은 몸체 · 사이즈 제작 가능.', '은·칠보', 72000, 9, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p23.webp', 18, 26),
+    ('금빛 떨잠', 34, 20, '혼례 때 머리 앞을 장식하는 떨잠입니다. 흔들릴 때마다 은은하게 반짝입니다. 특징: 도금 은 · 손조각 · 혼례·돌잔치용.', '도금 은', 120000, 4, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p24.webp', 28, 27),
+    ('진주 매듭 목걸이', 34, 18, '진주 사이를 손매듭으로 이은 목걸이입니다. 한복과 양장에 모두 잘 어울립니다. 특징: 담수 진주 · 손매듭 · 길이 45cm.', '담수 진주·명주실', 98000, 8, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p25.webp', 16, 28),
+    ('나전 명함집', 40, 32, '자개를 박아 옻칠한 명함집입니다. 명함을 건넬 때 첫인상이 한층 단정해집니다. 특징: 나전 장식 · 옻칠 마감 · 명함 30장 수납.', '나전·옻칠', 56000, 18, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p26.webp', 20, 7),
+    ('나전 필통', 40, 33, '책상 위에 두면 은은하게 빛나는 나전 필통입니다. 필기구 열 자루가 넉넉히 들어갑니다. 특징: 자개 장식 · 원목 몸체 · 필기구 10자루.', '나전·원목', 48000, 20, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p27.webp', 16, 29),
+    ('칠보 문양 만년필', 40, 31, '몸통에 칠보 문양을 올린 만년필입니다. 부드럽게 써지고 손에 닿는 무게가 안정적입니다. 특징: 칠보 몸통 · 중자 촉 · 잉크 컨버터 포함.', '황동·칠보', 88000, 10, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p28.webp', 14, 30),
+    ('서예 붓·먹·벼루 세트', 40, 29, '붓, 먹, 벼루를 한 상자에 담은 서예 입문 세트입니다. 처음 먹을 가는 순간부터 정갈해집니다. 특징: 양모 붓 2자루 · 송연먹 · 청석 벼루.', '양모·송연먹·청석', 120000, 6, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p29.webp', 12, 31),
+    ('한지 편지지 세트', 40, 30, '결이 살아 있는 수제 한지 편지지와 봉투 세트입니다. 손글씨로 마음을 전하기 좋습니다. 특징: 수제 한지 · 편지지 20장·봉투 10장 · 먹이 번지지 않음.', '수제 한지', 22000, 35, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/p30.webp', 7, 32),
+    ('전주 합죽선 · 매화선', 41, 25, '담양 왕대를 3년 건조해 손으로 겉대·속대를 깎고, 한지를 겹겹이 붙여 선면을 만들었습니다. 매화를 한 획씩 직접 그려 같은 부채가 하나도 없습니다. 특징: 대나무 겉대 두 쪽을 붙인 합죽선 · 닥나무 한지 선면 · 선추 달린 접부채.', '대나무·한지', 150000, 10, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/hapjukseon-maehwa-illustrated/01-hero.webp', 14, 0),
+    ('청자 운학문 찻잔', 20, 1, '푸른 비색 유약에 학과 구름을 상감한 찻잔입니다. 차를 따르면 유약의 푸른빛이 은은하게 비칩니다. 특징: 비색 유약 · 운학문 상감 · 용량 약 150ml.', '청자', 85000, 12, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/01-hero-celadon.webp', 21, 1),
+    ('분청 귀얄 찻잔', 20, 1, '백토를 귀얄(풀비)로 쓸듯이 바르고 철화로 풀꽃을 그린 분청 찻잔입니다. 투박한 붓결이 손에 따뜻하게 잡힙니다. 특징: 백토 귀얄 분장 · 철화 풀꽃 무늬 · 용량 약 150ml.', '분청사기', 72000, 14, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/02-hero-bunjeong.webp', 21, 2)
+    ) AS v(title, artisan_id, subcategory_id, description, material, price, stock, thumbnail_url, days, ord)
     JOIN subcategory s ON s.subcategory_id = v.subcategory_id
     JOIN member m ON m.member_id = v.artisan_id
     WHERE NOT EXISTS (SELECT 1 FROM product e WHERE e.title = v.title AND e.artisan_id = v.artisan_id)
