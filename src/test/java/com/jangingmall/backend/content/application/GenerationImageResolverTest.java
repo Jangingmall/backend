@@ -111,4 +111,21 @@ class GenerationImageResolverTest {
 
         assertThat(resolver.resolve(List.of("id-9"))).containsExactly("https://cdn/9.webp");
     }
+
+    @Test
+    @DisplayName("AI가 받는 12장 뒤의 항목은 조회하지 않고 그대로 둔다 (수백 장 요청 대비)")
+    void resolvesOnlyFirstTwelve() {
+        List<String> ids = java.util.stream.IntStream.range(0, 500).mapToObj(i -> "id-" + i).toList();
+        when(imageService.variantUrl(org.mockito.ArgumentMatchers.anyString(), org.mockito.ArgumentMatchers.eq("1280w")))
+            .thenAnswer(invocation -> Optional.of("https://cdn/" + invocation.getArgument(0) + ".webp"));
+
+        List<String> result = resolver().resolve(ids);
+
+        assertThat(result).hasSize(500);
+        assertThat(result.get(0)).isEqualTo("https://cdn/id-0.webp");
+        assertThat(result.get(11)).isEqualTo("https://cdn/id-11.webp");
+        assertThat(result.get(12)).isEqualTo("id-12");
+        verify(imageService, org.mockito.Mockito.times(12))
+            .variantUrl(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any());
+    }
 }

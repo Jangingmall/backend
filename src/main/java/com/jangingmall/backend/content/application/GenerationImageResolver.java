@@ -14,6 +14,9 @@ import java.util.List;
 @Component
 public class GenerationImageResolver {
 
+    /** AI가 한 번에 받는 사진은 최대 12장이다. 그 뒤 항목까지 조회하면 요청이 수백 장일 때 쿼리만 낭비된다. */
+    static final int MAX_AI_IMAGES = 12;
+
     private final List<ImageReferenceProvider> providers;
 
     public GenerationImageResolver(List<ImageReferenceProvider> providers) {
@@ -24,7 +27,11 @@ public class GenerationImageResolver {
         if (images == null || images.isEmpty()) {
             return images;
         }
-        return images.stream().map(this::resolveOne).toList();
+        List<String> resolved = new java.util.ArrayList<>(images.size());
+        for (int i = 0; i < images.size(); i++) {
+            resolved.add(i < MAX_AI_IMAGES ? resolveOne(images.get(i)) : images.get(i));
+        }
+        return resolved;
     }
 
     private String resolveOne(String reference) {

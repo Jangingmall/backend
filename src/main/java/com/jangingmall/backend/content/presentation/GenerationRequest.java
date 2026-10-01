@@ -10,7 +10,7 @@ public sealed interface GenerationRequest permits GenerationRequest.Create {
 
     record Create(
         @NotEmpty(message = "이미지 목록은 비워둘 수 없습니다")
-        @Size(max = 8, message = "이미지는 최대 8장까지 첨부할 수 있습니다")
+        @Size(max = 500, message = "이미지는 최대 500장까지 첨부할 수 있습니다")
         List<@NotBlank String> images,
 
         @NotBlank(message = "작품명은 필수입니다")
