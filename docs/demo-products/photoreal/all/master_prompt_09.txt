@@ -1,4 +1,4 @@
-너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 799~858번 이미지를 번호 순서대로 만들어 줘.
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 828~887번 이미지를 번호 순서대로 만들어 줘.
 
 진행 방식 (반드시 지켜)
 0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
@@ -11,93 +11,6 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[799] d578_A
-Product photo of a Korean traditional mask made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "하회탈공방 각시탈 전통 목조각 탈", material: 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[800] d579_A
-Product photo of a Korean traditional mask made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 액자형 수공예 민속탈 액자 세트", material: 원목 흙. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[801] d580_A
-Product photo of a Korean traditional mask made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 탁상용 신랑신부 전통 인형 (9.5cm)", material: 세라믹. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[802] d581_A
-Product photo of a Korean traditional mask made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "하회탈공방 초랭이탈 안동 민속 탈", material: 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[803] d582_A
-Product photo of a Korean traditional mask made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 침선장 전통 비단 한복 닥종이 인형", material: 닥종이 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[804] d583_A
-Product photo of a Korean traditional mask made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "하회탈공방 백정탈 전통 민속 탈", material: 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[805] d584_A
-Product photo of a Korean traditional mask made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 조선 혼례 신랑신부 세라믹 인형", material: 세라믹 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[806] d585_A
-Product photo of a Korean traditional mask made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "하회탈공방 미니 하회탈 5종 벽걸이 장식 세트", material: 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[807] d586_A
-Product photo of a Korean traditional mask made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "하회탈공방 먹중탈 봉산탈춤 가면", material: 종이 흙. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[808] d587_A
-Product photo of a Korean traditional mask made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 궁중 나인 비단 인형", material: 닥종이 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[809] d588_A
-Product photo of a Korean traditional mask made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 전통인형 탈", material: 닥종이. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[810] d590_A
-Product photo of a Korean ceremonial dagger made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "유영기 궁시장 수제 전통 조선 활 (각궁)", material: 물뿔 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[811] d591_A
-Product photo of a Korean ceremonial dagger made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 방짜 별상칼 호신용 은장도", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[812] d592_A
-Product photo of a Korean ceremonial dagger made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "남경숙 무형유산 순은 투각 조각 은장도", material: 순은 쇠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[813] d593_A
-Product photo of a Korean ceremonial dagger made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "유영기 무형유산 유엽전 수제 화살 세트 (5시)", material: 시누대 철. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[814] d594_A
-Product photo of a Korean ceremonial dagger made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "남경숙 조각장 칠보 장식 수제 미니 은장도", material: 순은 칠보. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[815] d595_A
-Product photo of a Korean ceremonial dagger made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "유영기 전통 편전 애기살 과 칠전 세트", material: 시누대 깃. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[816] d596_A
-Product photo of a Korean ceremonial dagger made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 장도 전통무구", material: 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[817] d598_A
-Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 무형유산 진고 대형 전통 북", material: 원목 우피. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[818] d599_A
-Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 전통 소북 수제 가죽 북", material: 원목 소가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[819] d600_A
-Product photo of a Korean traditional drum made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 수공예 전통 꽹과리 및 채", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[820] d601_A
-Product photo of a Korean traditional drum made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 방짜유기 징 30cm", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[821] d602_A
-Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 좌고 궁중 연주용 전통 북", material: 원목 소가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[822] d603_A
-Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 수공예 미니 장구", material: 오동나무 가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[823] d604_A
-Product photo of a Korean traditional drum made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 단소 전통 대나무 관악기", material: 오죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[824] d605_A
-Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "영도불교공예 국악 연주용 전통 태평소", material: 유자목 유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[825] d606_A
-Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤종국 전통 소고 북 및 채 세트", material: 원목 개가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[826] d607_A
-Product photo of a Korean traditional drum made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 전통악기", material: 원목 가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[827] d609_A
-Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 김홍도 타작도 풍경", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
 [828] d610_A
 Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "불교존 황동 코뚜레 현관문 풍경", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
@@ -190,5 +103,92 @@ Product photo of a bottle of Korean traditional liquor made of dried green tea l
 
 [858] d643_A
 Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "문배주양조원 문배술 도자기 40도 400ml", material: 조 찰수수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[859] d644_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "전주이강주 미니어처 편병 25도 50ml", material: 배 생강. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[860] d645_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 불소곡주 미니어처 43도 100ml", material: 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[861] d646_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 어주 선물세트 18도 700ml 잔2", material: 찹쌀 누룩. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[862] d647_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 한산소곡주 18도 360ml 유리병", material: 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[863] d648_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "우희열 명인 천상문 선물세트 18도 500ml", material: 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[864] d649_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "문배주양조원 문배술 명작1000 40도 1L 세트", material: 조 찰수수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[865] d650_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "조옥화 안동소주 민속 도자기 45도 400ml", material: 쌀 누룩. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[866] d651_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "박재서 안동소주 호병 35도 500ml", material: 백미. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[867] d652_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "전주이강주 25도 375ml 유리병", material: 배 생강. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[868] d653_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 전통주", material: 찹쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[869] d654_A
+Product photo of a bottle of Korean traditional liquor made of glutinous rice, grain and traditional sweets. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 미니 전통주", material: 쌀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[870] d656_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 일상다완 천하춘 잎차 30g", material: 녹차잎 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[871] d657_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 일상다완 천고향 잎차 30g", material: 찻잎. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[872] d658_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 일상다완 작설 잎차 60g", material: 녹차잎 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[873] d659_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 일상다완 죽로 잎차 60g", material: 녹차잎 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[874] d660_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 덖음세작 삼각티백 20입", material: 녹차. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[875] d661_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 파우치 도라지차 20티백 3팩", material: 도라지 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[876] d662_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 쌍계명차 오마주 티 마스터", material: 수제 차 모음. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[877] d663_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 옥로 화개차 벌크 80g", material: 녹차. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[878] d664_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 나홀로다 황차 캐모마일", material: 황차 캐모마일. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[879] d665_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 감농 삼각티백 세트", material: 감잎. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[880] d666_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 일상다완 잎차 4종 선택 세트", material: 전통 차. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[881] d667_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 지리산 하동 6대 다류 세트", material: 전통 차. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[882] d668_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 지리산 야생 우전차 틴캔 50g", material: 녹차. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[883] d669_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 전통 덖음 우엉차 30티백", material: 우엉. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[884] d670_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 지리산 솔송차 20티백", material: 솔잎 녹차. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[885] d671_A
+Product photo of a package of tea leaves made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 무형유산 수제 생강나무꽃차", material: 생강나무꽃. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[886] d672_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 국화차 유리병 30g", material: 국화. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[887] d673_A
+Product photo of a package of tea leaves made of dried green tea leaves. Korean product name for reference (ignore the maker's name, never write any text on the image): "김동곤 명차 하동 덖음 뽕잎차 삼각티백", material: 뽕잎. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

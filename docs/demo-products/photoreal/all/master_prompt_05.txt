@@ -1,4 +1,4 @@
-너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 559~618번 이미지를 번호 순서대로 만들어 줘.
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 588~647번 이미지를 번호 순서대로 만들어 줘.
 
 진행 방식 (반드시 지켜)
 0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
@@ -11,93 +11,6 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[559] d316_A
-Product photo of a keyring made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "김은영 전통 매듭 실크 키링", material: 명주실 금속. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[560] d317_A
-Product photo of a keyring made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "은 칠보 미니 노리개 키링", material: 칠보 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[561] d318_A
-Product photo of a keyring made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 낙죽 대나무 마디 키링", material: 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[562] d319_A
-Product photo of a keyring made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 자개 미니 거울 키링", material: 자개 금속. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[563] d320_A
-Product photo of a keyring made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 전통 각시탈 미니 키링", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[564] d321_A
-Product photo of a keyring made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "오색 국화 매듭 태술 키링", material: 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[565] d322_A
-Product photo of a keyring made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복 꽃신 미니 열쇠고리", material: 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[566] d323_A
-Product photo of a keyring made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "은 세공 태극문 키링", material: 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[567] d324_A
-Product photo of a keyring made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 초랭이탈 백탈 열쇠고리", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[568] d325_A
-Product photo of a keyring made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "자수 복주머니 미니 키링", material: 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[569] d326_A
-Product photo of a keyring made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 전통 단청 문양 아크릴 키링", material: 아크릴. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[570] d327_A
-Product photo of a keyring made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 키링 열쇠고리", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[571] d329_A
-Product photo of a folding fan made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 무형유산 오죽선 호랑이 그림 부채", material: 오죽 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[572] d330_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 낙죽 삼태극 단선 선부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[573] d331_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 낙죽 난초문 수제 합죽선", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[574] d332_A
-Product photo of a folding fan made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 접이식 모시 부채", material: 한산모시 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[575] d333_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 십장생도 대형 칠선 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[576] d334_A
-Product photo of a folding fan made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 오죽선 사군자 국화 부채", material: 오죽 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[577] d335_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 전통 칠보 자개 매듭 부채선", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[578] d336_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 훈민정음 언해본 캘리그라피 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[579] d337_A
-Product photo of a folding fan made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 미니 포켓 오죽선 부채", material: 오죽 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[580] d338_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 일월오봉도 프리미엄 합죽선", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[581] d339_A
-Product photo of a folding fan made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 단선 파스텔 부채", material: 한산모시 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[582] d340_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 단청 문양 삼태극 펼침 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[583] d341_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 무형유산 수제 낙죽 선추 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[584] d342_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 풍속화 신윤복 미인도 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[585] d343_A
-Product photo of a folding fan made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 부채", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[586] d345_A
-Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 철릭 원피스 생활한복", material: 면 리넨. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[587] d346_A
-Product photo of a Korean everyday hanbok jacket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 남자 두루마기", material: 명주. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
 [588] d347_A
 Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 깃 저고리 여성 생활한복", material: 면 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
@@ -190,5 +103,92 @@ Product photo of a calligraphy brush and inkstone set made of dark polished inks
 
 [618] d380_A
 Product photo of a calligraphy brush and inkstone set made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 서예 용품 문방사우 종합 세트", material: 원목 돌 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[619] d381_A
+Product photo of a calligraphy brush and inkstone set made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 황모 수제 사경 붓", material: 족제비털. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[620] d382_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone. Korean product name for reference (ignore the maker's name, never write any text on the image): "김각한 각자장 단령석 조각 벼루", material: 단령석. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[621] d383_A
+Product photo of a calligraphy brush and inkstone set made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 고급 칠보 연적 및 붓받침", material: 도자기 칠보. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[622] d384_A
+Product photo of a calligraphy brush and inkstone set made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 양모 청화 도자 자루 붓", material: 양모 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[623] d385_A
+Product photo of a calligraphy brush and inkstone set made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 정통 유기 붓걸이", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[624] d386_A
+Product photo of a calligraphy brush and inkstone set made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 붓 먹 벼루", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[625] d387_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 미니 벼루", material: 돌. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[626] d389_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 전통 꽃잎 한지 엽서 5종 세트", material: 한지 생화. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[627] d390_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 훈민정음 언해본 한지 방명록", material: 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[628] d391_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 천연 쑥 닥종이 한지 봉투 세트", material: 닥종이 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[629] d392_A
+Product photo of a stationery letter paper set made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 하회탈 금장 책갈피", material: 금도금 금속. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[630] d393_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 일월오봉도 한지 메모패드", material: 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[631] d394_A
+Product photo of a stationery letter paper set made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 옻칠 한지 바인딩 수제 다이어리", material: 한지 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[632] d395_A
+Product photo of a stationery letter paper set made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 전통 혼례 금장 책갈피", material: 금도금. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[633] d396_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 청사초롱 한지 엽서 세트", material: 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[634] d397_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 색동 한지 편지지 봉투 세트", material: 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[635] d398_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 단청 문양 한지 스티커 세트", material: 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[636] d399_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 신윤복 풍속도 한지 L홀더 파일", material: 한지 PP. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[637] d400_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 100% 닥나무 한지 캘리그라피 용지 20매", material: 닥종이 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[638] d401_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 선비의 서재 한지 노트", material: 한지 실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[639] d402_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 한지 편지지", material: 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[640] d404_A
+Product photo of a pen made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 백자 청화 모란문 고급 만년필", material: 세라믹 독일닙. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[641] d405_A
+Product photo of a pen made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 옻칠 원목 수제 수성펜", material: 원목 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[642] d406_A
+Product photo of a pen made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 나전칠기 매화 자개 만년필", material: 자개 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[643] d407_A
+Product photo of a pen made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 훈민정음 각인 수제 나무 볼펜", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[644] d408_A
+Product photo of a pen made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 단청 문양 세라믹 만년필", material: 세라믹. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[645] d409_A
+Product photo of a pen made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 나전 십장생문 회전식 볼펜", material: 자개 금속. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[646] d410_A
+Product photo of a pen made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 고려청자 상감 학문 볼펜 세트", material: 세라믹. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[647] d411_A
+Product photo of a pen made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 황동 주물 전통 펜 및 펜대", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.
