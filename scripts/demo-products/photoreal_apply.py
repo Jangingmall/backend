@@ -57,10 +57,18 @@ def main():
     parser.add_argument("--manual-sql", action="store_true", help="마이그레이션 대신 직접 실행할 SQL(docs/…/apply-manually.sql)을 만든다")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--max-side", type=int, default=1280)
+    parser.add_argument("--crop-square", action="store_true",
+                        help="정사각형이 아닌 이미지를 짧은 변 기준으로 가운데(또는 --focus 위치)에서 정사각형으로 자른다")
+    parser.add_argument("--focus", action="append", default=[], metavar="파일=0~1",
+                        help="세로로 긴 이미지의 자를 위치(0=위, 0.5=가운데, 1=아래). 예: --focus p31_A=0.55 (여러 번 가능)")
     parser.add_argument("--images-dir", default=IMG_DIR)
     parser.add_argument("--sql-out")
     args = parser.parse_args()
 
+    focus = {}
+    for spec in args.focus:
+        name, _, value = spec.partition("=")
+        focus[name.strip()] = min(1.0, max(0.0, float(value)))
     items = {item["key"]: item for item in json.load(open(TEMPLATE, encoding="utf-8"))["items"]}
     files = collect(args.source)
     errors, picked = [], {}
@@ -74,8 +82,8 @@ def main():
             continue
         with Image.open(path) as image:
             width, height = image.size
-        if abs(width - height) > max(width, height) * 0.02:
-            errors.append(f"정사각형 아님: {name} {width}x{height}")
+        if abs(width - height) > max(width, height) * 0.02 and not args.crop_square:
+            errors.append(f"정사각형 아님: {name} {width}x{height}  (자동으로 자르려면 --crop-square)")
         picked.setdefault(key, {})[cut] = path
     for key in items:
         if "A" not in picked.get(key, {}):
@@ -95,6 +103,12 @@ def main():
                 os.makedirs(args.images_dir, exist_ok=True)
                 with Image.open(path) as image:
                     image = image.convert("RGB")
+                    if args.crop_square and image.width != image.height:
+                        side = min(image.size)
+                        ratio = focus.get(f"{key}_{cut}", 0.5)
+                        left = int((image.width - side) * ratio) if image.width > side else 0
+                        top = int((image.height - side) * ratio) if image.height > side else 0
+                        image = image.crop((left, top, left + side, top + side))
                     image.thumbnail((args.max_side, args.max_side), Image.LANCZOS)
                     quality = 90
                     while True:
