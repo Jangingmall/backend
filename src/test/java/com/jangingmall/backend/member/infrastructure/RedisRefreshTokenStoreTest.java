@@ -2,6 +2,7 @@ package com.jangingmall.backend.member.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -13,6 +14,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
@@ -25,6 +27,9 @@ class RedisRefreshTokenStoreTest {
     @Mock
     private ValueOperations<String, String> valueOperations;
 
+    @Mock
+    private SetOperations<String, String> setOperations;
+
     @Captor
     private ArgumentCaptor<String> storedValueCaptor;
 
@@ -34,6 +39,7 @@ class RedisRefreshTokenStoreTest {
     void setUp() {
         refreshTokenStore = new RedisRefreshTokenStore(redisTemplate);
         when(redisTemplate.opsForValue()).thenReturn(valueOperations);
+        lenient().when(redisTemplate.opsForSet()).thenReturn(setOperations);
     }
 
     @Test
@@ -52,10 +58,6 @@ class RedisRefreshTokenStoreTest {
 
     @Test
     void sharedTokensAreAcceptedAlongsideTheSingleToken() {
-        org.springframework.data.redis.core.SetOperations<String, String> setOperations =
-            org.mockito.Mockito.mock(org.springframework.data.redis.core.SetOperations.class);
-        when(redisTemplate.opsForSet()).thenReturn(setOperations);
-
         refreshTokenStore.saveShared(1L, "shared-token", Duration.ofDays(7));
 
         ArgumentCaptor<String> hash = ArgumentCaptor.forClass(String.class);
