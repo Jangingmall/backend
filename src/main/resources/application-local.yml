@@ -70,6 +70,8 @@ jwt:
   refresh-cookie-secure: false
 
 member:
+  # 같은 계정 동시 로그인을 허용할 테스트 계정(쉼표 구분). 비우면 모든 계정이 단일 세션으로 동작한다.
+  multi-session-emails: ${MEMBER_MULTI_SESSION_EMAILS:stguser@midam.store,stgartisan@midam.store,stgadmin@midam.store}
   oauth:
     frontend-redirect-url: http://localhost:3000/oauth/callback
     http-timeout-millis: 5000

@@ -49,4 +49,22 @@ class RedisRefreshTokenStoreTest {
         assertThat(refreshTokenStore.matches(1L, "raw-refresh-token")).isTrue();
         assertThat(refreshTokenStore.matches(1L, "different-token")).isFalse();
     }
+
+    @Test
+    void sharedTokensAreAcceptedAlongsideTheSingleToken() {
+        org.springframework.data.redis.core.SetOperations<String, String> setOperations =
+            org.mockito.Mockito.mock(org.springframework.data.redis.core.SetOperations.class);
+        when(redisTemplate.opsForSet()).thenReturn(setOperations);
+
+        refreshTokenStore.saveShared(1L, "shared-token", Duration.ofDays(7));
+
+        ArgumentCaptor<String> hash = ArgumentCaptor.forClass(String.class);
+        verify(setOperations).add(org.mockito.ArgumentMatchers.eq("member:refresh-tokens:1"), hash.capture());
+        verify(redisTemplate).expire("member:refresh-tokens:1", Duration.ofDays(7));
+        when(valueOperations.get("member:refresh-token:1")).thenReturn(null);
+        when(setOperations.isMember("member:refresh-tokens:1", hash.getValue())).thenReturn(true);
+
+        assertThat(refreshTokenStore.matches(1L, "shared-token")).isTrue();
+        assertThat(refreshTokenStore.matches(1L, "other-token")).isFalse();
+    }
 }

@@ -60,7 +60,8 @@ class MemberRefreshTokenScenarioTest {
     @BeforeEach
     void setUp() {
         service = new MemberAuthenticationService(
-            memberRepository, passwordEncoder, jwtTokenProvider, PROPERTIES, store, socialAccounts, loginAttempts);
+            memberRepository, passwordEncoder, jwtTokenProvider, PROPERTIES, store, socialAccounts, loginAttempts,
+            new MultiSessionAccounts(""));
         Member member = activeMember();
         lenient().when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
         lenient().when(memberRepository.findByEmail("artisan@example.com")).thenReturn(Optional.of(member));
