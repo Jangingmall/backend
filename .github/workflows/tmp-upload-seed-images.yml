@@ -8,6 +8,7 @@ on:
     paths:
       - ".github/workflows/tmp-upload-seed-images.yml"
       - "scripts/demo-images/**"
+      - "docs/demo-images/**"
 
 permissions:
   contents: read
@@ -36,36 +37,59 @@ jobs:
             exit 1
           fi
 
-      - name: 소분류 일러스트 업로드 (장인 액세스 토큰 → 이미지 API → 비공개 보관 상품에 연결)
+      - name: 한글 글꼴 설치
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq fonts-nanum
+
+      - name: 시연 상품 일러스트를 CI 에서 직접 그린다 (합죽선 9장 · 청자/분청 찻잔 6장)
+        run: python3 scripts/demo-images/draw_demo_products.py
+
+      - name: Flow 1 합죽선 일러스트 업로드 (장인 액세스 토큰 → 이미지 API → 비공개 보관 상품에 연결)
         env:
           DEMO_API_BASE_URL: ${{ secrets.test_host }}
           DEMO_AGENT_TOKEN: ${{ secrets.test_token }}
           DEMO_IMAGE_BASE_URL: ${{ vars.DEMO_IMAGE_BASE_URL || 'https://img.stg.midam.store' }}
         run: |
           python3 scripts/demo-images/upload_demo_images.py \
-            --src docs/seed-images \
+            --src docs/demo-images/hapjukseon-maehwa-illustrated \
             --similar-distance -1 \
-            --create-holder-product "[시연 이미지 보관함] 소분류 일러스트 - 공개·삭제 금지" \
+            --create-holder-product "[시연 이미지 보관함] 합죽선 일러스트 - 공개·삭제 금지" \
             --out seed-manifest.json
+
+      - name: Flow 2 청자·분청 찻잔 일러스트 업로드
+        if: always()
+        env:
+          DEMO_API_BASE_URL: ${{ secrets.test_host }}
+          DEMO_AGENT_TOKEN: ${{ secrets.test_token }}
+          DEMO_IMAGE_BASE_URL: ${{ vars.DEMO_IMAGE_BASE_URL || 'https://img.stg.midam.store' }}
+        run: |
+          python3 scripts/demo-images/upload_demo_images.py \
+            --src docs/demo-images/cheongja-bunjeong-teacup \
+            --similar-distance -1 \
+            --create-holder-product "[시연 이미지 보관함] 청자·분청 찻잔 일러스트 - 공개·삭제 금지" \
+            --out tea-manifest.json
 
       - name: 소분류 번호 ↔ 이미지 주소 표
         if: always()
         run: |
-          [ -f seed-manifest.json ] || exit 0
           python3 - <<'PY' | tee -a "$GITHUB_STEP_SUMMARY"
-          import json
-          d = json.load(open("seed-manifest.json"))
-          print("SEED_MAP_BEGIN")
-          for e in d["images"]:
-              u = (e.get("urls") or {}).get("1280w", "")
-              print(f"{e['name']}\t{e.get('imageId')}\t{u}")
-          print("SEED_MAP_END")
-          print("attach:", d.get("attach"))
+          import json, os
+          for label, path in (("FLOW1", "seed-manifest.json"), ("FLOW2", "tea-manifest.json")):
+              if not os.path.exists(path):
+                  continue
+              d = json.load(open(path))
+              print(f"{label}_MAP_BEGIN")
+              for e in d["images"]:
+                  u = (e.get("urls") or {}).get("1280w", "")
+                  print(f"{e['name']}\t{e.get('imageId')}\t{u}")
+              print(f"{label}_MAP_END")
+              print(label, "attach:", d.get("attach"))
           PY
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: seed-image-manifest
-          path: seed-manifest.json
+          path: |
+            seed-manifest.json
+            tea-manifest.json
           if-no-files-found: ignore
