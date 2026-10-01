@@ -1,0 +1,71 @@
+# 임시 워크플로 — 시연용 소분류 일러스트(docs/seed-images) 56장을 STG 이미지 서버(img.stg.midam.store)에 올린다.
+# 업로드가 끝나면 이 파일과 scripts/demo-images/ 는 develop 에 넣지 않는다.
+name: tmp-upload-seed-images
+
+on:
+  push:
+    branches: [tmp/seed-image-upload]
+    paths:
+      - ".github/workflows/tmp-upload-seed-images.yml"
+      - "scripts/demo-images/**"
+
+permissions:
+  contents: read
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pillow
+
+      - name: 필요한 설정 확인
+        env:
+          TEST_HOST: ${{ secrets.test_host }}
+          TEST_TOKEN: ${{ secrets.test_token }}
+        run: |
+          missing=""
+          [ -z "$TEST_HOST" ] && missing="$missing secrets.test_host"
+          [ -z "$TEST_TOKEN" ] && missing="$missing secrets.test_token"
+          if [ -n "$missing" ]; then
+            echo "::error::저장소 Secret 이 필요합니다:$missing (test_token 은 30분 유효한 장인 액세스 토큰)"
+            exit 1
+          fi
+
+      - name: 소분류 일러스트 업로드 (장인 액세스 토큰 → 이미지 API → 비공개 보관 상품에 연결)
+        env:
+          DEMO_API_BASE_URL: ${{ secrets.test_host }}
+          DEMO_AGENT_TOKEN: ${{ secrets.test_token }}
+          DEMO_IMAGE_BASE_URL: ${{ vars.DEMO_IMAGE_BASE_URL || 'https://img.stg.midam.store' }}
+        run: |
+          python3 scripts/demo-images/upload_demo_images.py \
+            --src docs/seed-images \
+            --similar-distance -1 \
+            --create-holder-product "[시연 이미지 보관함] 소분류 일러스트 - 공개·삭제 금지" \
+            --out seed-manifest.json
+
+      - name: 소분류 번호 ↔ 이미지 주소 표
+        if: always()
+        run: |
+          [ -f seed-manifest.json ] || exit 0
+          python3 - <<'PY' | tee -a "$GITHUB_STEP_SUMMARY"
+          import json
+          d = json.load(open("seed-manifest.json"))
+          print("SEED_MAP_BEGIN")
+          for e in d["images"]:
+              u = (e.get("urls") or {}).get("1280w", "")
+              print(f"{e['name']}\t{e.get('imageId')}\t{u}")
+          print("SEED_MAP_END")
+          print("attach:", d.get("attach"))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seed-image-manifest
+          path: seed-manifest.json
+          if-no-files-found: ignore

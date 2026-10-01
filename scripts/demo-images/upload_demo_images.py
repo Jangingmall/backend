@@ -70,13 +70,13 @@ def find_sources(src):
     return files
 
 
-def dedupe(files):
-    """(고유 사진 목록, {중복 파일: 원본 파일}) 을 돌려준다."""
+def dedupe(files, similar_distance=SIMILAR_HASH_DISTANCE):
+    """(고유 사진 목록, {중복 파일: 원본 파일}) 을 돌려준다. similar_distance 가 음수면 픽셀이 완전히 같은 것만 중복으로 본다."""
     unique, duplicates = [], {}
     for path in files:
         image = load_image(path)
         sha, ahash = pixel_sha256(image), average_hash(image)
-        match = next((u for u in unique if u["sha"] == sha or hash_distance(u["ahash"], ahash) <= SIMILAR_HASH_DISTANCE), None)
+        match = next((u for u in unique if u["sha"] == sha or hash_distance(u["ahash"], ahash) <= similar_distance), None)
         if match:
             duplicates[path] = match["path"]
         else:
@@ -220,6 +220,30 @@ def attach_to_product(base_url, token, product_id, image_ids):
     return True, f"상품 {product_id} 이미지 {len(image_ids)}장 연결 완료"
 
 
+def create_holder_product(base_url, token, image_ids, title, category_id, subcategory_id):
+    """올린 사진을 확정해 두는 비공개(DRAFT) 보관 상품을 만든다. 확정되지 않은 업로드는 24시간 뒤 지워지기 때문이다."""
+    body = {
+        "categoryId": category_id,
+        "subcategoryId": subcategory_id,
+        "title": title,
+        "description": "시연용 이미지 보관 상품입니다. 공개하거나 삭제하지 마세요.",
+        "price": 1000,
+        "stock": 0,
+        "giftThemes": [],
+        "purposeTags": [],
+        "productionPeriodDays": 14,
+        "colors": [],
+        "images": image_ids,
+    }
+    code, _, answer = request("POST", f"{base_url}/api/products", token, body, timeout=60)
+    text = answer[:400].decode(errors="replace")
+    if code >= 300:
+        return False, f"HTTP {code} {text}", None
+    data = json.loads(answer.decode() or "{}")
+    data = data.get("data", data)
+    return True, f"보관 상품 {data.get('productId') or data.get('id')} 생성 · 이미지 {len(image_ids)}장 연결", data.get("productId") or data.get("id")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--src", required=True)
@@ -230,12 +254,18 @@ def main():
     parser.add_argument("--email", default=os.environ.get("DEMO_LOGIN_EMAIL"))
     parser.add_argument("--password", default=os.environ.get("DEMO_LOGIN_PASSWORD"))
     parser.add_argument("--attach-product-id", type=int, default=int(os.environ["DEMO_PRODUCT_ID"]) if os.environ.get("DEMO_PRODUCT_ID") else None)
+    parser.add_argument("--similar-distance", type=int, default=SIMILAR_HASH_DISTANCE,
+                        help="평균 해시 거리가 이 값 이하면 같은 사진으로 본다. 음수면 픽셀이 완전히 같은 것만 중복 처리한다.")
+    parser.add_argument("--create-holder-product", metavar="TITLE", default=None,
+                        help="올린 사진을 이 제목의 비공개(DRAFT) 상품에 연결해 확정한다(--attach-product-id 와 함께 쓸 수 없음).")
+    parser.add_argument("--holder-category-id", type=int, default=1)
+    parser.add_argument("--holder-subcategory-id", type=int, default=1)
     parser.add_argument("--out", default="manifest.json")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
     files = find_sources(args.src)
-    unique, duplicates = dedupe(files)
+    unique, duplicates = dedupe(files, args.similar_distance)
     print(f"원본 {len(files)}장 -> 고유 {len(unique)}장, 중복 {len(duplicates)}장")
     for dup, original in duplicates.items():
         print(f"  중복: {os.path.basename(dup)} == {os.path.basename(original)} (한 번만 업로드)")
@@ -250,7 +280,7 @@ def main():
             if not args.attach_product_id:
                 print("[경고] --attach-product-id 가 없으면 업로드가 확정되지 않아 24시간 뒤 자동 삭제됩니다.", file=sys.stderr)
         elif token and not member_id:  # 장인 액세스 토큰 모드: 이미 로그인된 토큰을 그대로 쓴다
-            if not args.attach_product_id:
+            if not args.attach_product_id and not args.create_holder_product:
                 print("[경고] --attach-product-id 가 없으면 업로드가 확정되지 않아 24시간 뒤 자동 삭제됩니다.", file=sys.stderr)
         elif not (token and member_id):
             fail("--email/--password(장인 계정), --token(장인 액세스 토큰), 또는 --token/--member-id(AGENT) 가 필요합니다.")
@@ -274,6 +304,13 @@ def main():
         attach_result = attach_to_product(base_url, token, args.attach_product_id,
                                           [e["imageId"] for e in entries if e.get("imageId")])
         print(f"  {'연결 성공' if attach_result[0] else '[경고] 연결 실패'}: {attach_result[1]}")
+    if not args.dry_run and member_id is None and args.create_holder_product and not args.attach_product_id:
+        ok, message, holder_id = create_holder_product(
+            base_url, token, [e["imageId"] for e in entries if e.get("imageId")],
+            args.create_holder_product, args.holder_category_id, args.holder_subcategory_id)
+        attach_result = (ok, message)
+        args.attach_product_id = holder_id
+        print(f"  {'보관 상품 생성 성공' if ok else '[경고] 보관 상품 생성 실패'}: {message}")
     for dup, original in duplicates.items():
         base = next(e for e in entries if e["source"] == original)
         entries.append({"name": os.path.splitext(os.path.basename(dup))[0], "duplicateOf": base["name"],
