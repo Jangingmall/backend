@@ -149,7 +149,7 @@ def login(base_url, email, password):
     return token
 
 
-def upload_one(base_url, token, member_id, name, image, variants):
+def upload_one(base_url, token, member_id, name, image, variants, image_base):
     """presign + PUT. member_id 가 있으면 AGENT 모드(요청 본문에 memberId), 없으면 로그인한 장인 본인 이름으로 올린다."""
     body = {
         "fileName": f"{name}.webp",
@@ -173,7 +173,10 @@ def upload_one(base_url, token, member_id, name, image, variants):
         verified = api_json("POST", f"{base_url}/internal/images/verify", token, {"imageId": image_id, "requesterId": member_id})
         if not (verified.get("exists") and verified.get("ownerMatched")):
             fail(f"{name} ({image_id}) 확정 실패: {verified}")
-    return image_id, {item["variant"]: item["viewUrl"] for item in items}
+    # 공개 경로는 항상 이미지 CDN 주소(https://img.stg.midam.store/...)를 앞에 붙인 전체 주소로 만든다.
+    # 서버가 돌려준 viewUrl 이 상대 경로이거나 다른 도메인(S3 직접 주소 등)이어도 AI·FE가 쓰는 CDN 주소를 기준으로 삼는다.
+    urls = {item["variant"]: f"{image_base}/{item['objectKey'].lstrip('/')}" for item in items}
+    return image_id, urls, {item["variant"]: item.get("viewUrl") for item in items}
 
 
 def attach_to_product(base_url, token, product_id, image_ids):
@@ -223,6 +226,7 @@ def main():
     parser.add_argument("--base-url", default=os.environ.get("DEMO_API_BASE_URL"))
     parser.add_argument("--token", default=os.environ.get("DEMO_AGENT_TOKEN"))
     parser.add_argument("--member-id", type=int, default=int(os.environ["DEMO_MEMBER_ID"]) if os.environ.get("DEMO_MEMBER_ID") else None)
+    parser.add_argument("--image-base-url", default=os.environ.get("DEMO_IMAGE_BASE_URL") or "https://img.stg.midam.store")
     parser.add_argument("--email", default=os.environ.get("DEMO_LOGIN_EMAIL"))
     parser.add_argument("--password", default=os.environ.get("DEMO_LOGIN_PASSWORD"))
     parser.add_argument("--attach-product-id", type=int, default=int(os.environ["DEMO_PRODUCT_ID"]) if os.environ.get("DEMO_PRODUCT_ID") else None)
@@ -237,6 +241,7 @@ def main():
         print(f"  중복: {os.path.basename(dup)} == {os.path.basename(original)} (한 번만 업로드)")
 
     token, member_id, base_url = args.token, args.member_id, (args.base_url or "").rstrip("/")
+    image_base = args.image_base_url.rstrip("/")
     if not args.dry_run:
         if not base_url:
             fail("--base-url 이 필요합니다 (또는 DEMO_API_BASE_URL).")
@@ -257,8 +262,8 @@ def main():
         entry = {"name": name, "sha256": item["sha"], "source": item["path"], "width": item["image"].width,
                  "height": item["image"].height, "variantBytes": {k: len(v) for k, v in variants.items()}}
         if not args.dry_run:
-            image_id, urls = upload_one(base_url, token, member_id, name, item["image"], variants)
-            entry.update({"imageId": image_id, "urls": urls})
+            image_id, urls, view_urls = upload_one(base_url, token, member_id, name, item["image"], variants, image_base)
+            entry.update({"imageId": image_id, "urls": urls, "serverViewUrls": view_urls})
             checks = {variant: public_check(url) for variant, url in urls.items()}
             entry["publicCheck"] = {variant: {"ok": ok, "detail": detail} for variant, (ok, detail) in checks.items()}
             print(f"  {name}: {image_id} " + ", ".join(f"{v}={'OK' if ok else 'FAIL'}" for v, (ok, _) in checks.items()))

@@ -57,6 +57,7 @@ jobs:
           DEMO_API_BASE_URL: ${{ secrets.test_host }}
           DEMO_AGENT_TOKEN: ${{ secrets.test_token }}
           DEMO_PRODUCT_ID: ${{ vars.DEMO_PRODUCT_ID || '750' }}
+          DEMO_IMAGE_BASE_URL: ${{ vars.DEMO_IMAGE_BASE_URL || 'https://img.stg.midam.store' }}
         run: |
           python3 scripts/demo-images/upload_demo_images.py \
             --src tmp-demo-images/hapjukseon-maehwa/source \
