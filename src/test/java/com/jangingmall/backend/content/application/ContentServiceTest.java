@@ -8,6 +8,7 @@ import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.ContentGeneration;
+import com.jangingmall.backend.image.application.ImageService;
 import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
@@ -109,6 +110,70 @@ class ContentServiceTest {
         assertThat(detail.contentId()).isEqualTo(1L);
         assertThat(detail.productId()).isEqualTo(10L);
         assertThat(detail.status()).isEqualTo(ContentStatus.DRAFT);
+    }
+
+    @Test
+    @DisplayName("콘텐츠 조회 — 두 경로(AI 사진 키 · 시연 시드 이미지 키)는 현재 이미지 기본 주소로 src를 만들고, 업로드 imageId 노드는 그대로 둔다")
+    void getContentResolvesBothImagePaths() throws Exception {
+        ReflectionTestUtils.setField(contentService, "imageBaseUrl", "https://img.stg.midam.store/");
+        String document = "{\"root\":[{\"tag\":\"section\",\"children\":["
+            // 1) AI 가 만든 사진 — 저장 때 남긴 assetKey 와 (옛 도메인의) src
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"hero\",\"assetKey\":\"ai-generated/1/photo-hero.webp\","
+            + "\"src\":\"https://old.example/ai-generated/1/photo-hero.webp\"}},"
+            // 2) 시연 시드 이미지(소분류 일러스트) — STG 이미지 서버에 올린 키
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"sub-25\",\"assetKey\":\"images/product/63/01M3VAY2JC89RQ9G6JXBGV7HS4/1280w.webp\"}},"
+            // 3) 업로드 이미지 — imageId 만 있고 FE 가 이미지 테이블 변형으로 찾는다
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"01JUPLOADEDIMAGE00000000000\"}}]}]}";
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", document);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+
+        ContentResponse.Detail detail = contentService.getContent(10L, 1L);
+
+        var images = new ObjectMapper().readTree(detail.reactDocument()).get("root").get(0).get("children");
+        assertThat(images.get(0).get("props").get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/ai-generated/1/photo-hero.webp");
+        assertThat(images.get(1).get("props").get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/images/product/63/01M3VAY2JC89RQ9G6JXBGV7HS4/1280w.webp");
+        assertThat(images.get(2).get("props").has("src")).isFalse();
+        assertThat(images.get(2).get("props").get("imageId").asText()).isEqualTo("01JUPLOADEDIMAGE00000000000");
+    }
+
+    @Test
+    @DisplayName("콘텐츠 조회 — 예전 AI 문서(photo_id 만 있음)는 완료된 생성 건의 ai-generated 파일을 찾아 src 를 채운다")
+    void getContentResolvesLegacyAiPhotos() throws Exception {
+        ImageService imageService = mock(ImageService.class);
+        ContentGenerationRepository generationRepository = mock(ContentGenerationRepository.class);
+        ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
+        ContentService service = new ContentService(
+            contentRepository, historyRepository, productRepository, aiContentClient,
+            artisanProfileRepository, interviewRepository, null, null, imageService,
+            new ObjectMapper(), generationRepository, eventPublisher
+        );
+        ReflectionTestUtils.setField(service, "imageBaseUrl", "https://img.stg.midam.store/");
+        ContentGeneration completed = mock(ContentGeneration.class);
+        when(completed.getId()).thenReturn(42L);
+        when(generationRepository.findFirstByProductIdAndStatusOrderByRequestedAtDesc(10L, GenerationStatus.COMPLETED))
+            .thenReturn(Optional.of(completed));
+        // hero 는 webp, 나머지는 png 로 올라가 있다
+        when(imageService.publicObjectExists("ai-generated/42/photo-hero.webp")).thenReturn(true);
+        when(imageService.publicObjectExists("ai-generated/42/photo-detail-02.png")).thenReturn(true);
+        String document = "{\"root\":[{\"tag\":\"section\",\"children\":["
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"hero\"}},"
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"detail-02\"}},"
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"missing\"}}]}]}";
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", document);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+
+        ContentResponse.Detail detail = service.getContent(10L, 1L);
+
+        var images = new ObjectMapper().readTree(detail.reactDocument()).get("root").get(0).get("children");
+        assertThat(images.get(0).get("props").get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/ai-generated/42/photo-hero.webp");
+        assertThat(images.get(1).get("props").get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/ai-generated/42/photo-detail-02.png");
+        assertThat(images.get(2).get("props").has("src")).isFalse();
     }
 
     @Test

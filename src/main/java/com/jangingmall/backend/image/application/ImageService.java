@@ -238,6 +238,11 @@ public class ImageService {
         return Optional.empty();
     }
 
+    /** 공개 버킷에 이 키의 객체가 있는지 확인한다(AI 가 만든 사진처럼 업로드 이미지 테이블에 없는 파일용). */
+    public boolean publicObjectExists(String objectKey) {
+        return storage.exists(ImagePurpose.PRODUCT, objectKey);
+    }
+
     private String publicUrl(String key, String base, ImagePurpose purpose) {
         if (!base.isBlank()) {
             return base + "/" + key.replaceAll("^/+", "");

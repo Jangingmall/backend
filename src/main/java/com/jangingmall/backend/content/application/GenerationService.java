@@ -16,6 +16,7 @@ import com.jangingmall.backend.product.domain.ProductErrorMessage;
 import com.jangingmall.backend.product.domain.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,15 @@ public class GenerationService {
     private final ImageStorage imageStorage;
     private final ObjectMapper objectMapper;
     private final ApplicationEventPublisher eventPublisher;
+
+    /**
+     * AI 가 만든 이미지의 S3 키 접두어. 공개 주소는 이미지 기본 주소 + 이 키(https://img.stg.midam.store/ai-generated/…)다.
+     * CDN(CloudFront)이 ai-generated/* 를 공개해야 열린다(인프라 승인·적용 필요).
+     */
+    static final String AI_KEY_PREFIX = "ai-generated/";
+
+    @Value("${image.base-url:}")
+    private String imageBaseUrl;
 
     private static final Pattern PHOTO_FILENAME = Pattern.compile("-photo-\\d+-(.+)$");
 
@@ -102,12 +112,14 @@ public class GenerationService {
 
         uploadDetailPageImage(command.generationId().toString(), detailPageImage);
         uploadPrefixedFiles(command.generationId().toString(), "section-", sectionFiles);
-        uploadPrefixedFiles(command.generationId().toString(), "photo-", photoFiles);
+        Map<String, String> photoKeys = uploadPrefixedFiles(command.generationId().toString(), "photo-", photoFiles);
 
-        generation.complete(command.reactDocumentJson(), command.idempotencyKey());
+        // react 문서의 이미지 노드는 photo_id(hero, detail-02 …)만 갖고 있어 FE 가 그림을 찾지 못한다. 올린 사진의 공개 주소를 src 로 채운다.
+        String reactDocumentJson = withPhotoUrls(command.reactDocumentJson(), photoKeys);
+        generation.complete(reactDocumentJson, command.idempotencyKey());
         ContentGeneration saved = generationRepository.save(generation);
         contentService.storeReactDocument(
-            new ContentCommand.StoreReactDocument(saved.getProductId(), command.reactDocumentJson(), null)
+            new ContentCommand.StoreReactDocument(saved.getProductId(), reactDocumentJson, null)
         );
         log.info("AI 멀티파트 콜백 완료 generationId={}", command.generationId());
         return new BeToAiPersistAckResponse(command.generationId().toString(), productIdStr, "SAVED", saved.getCompletedAt());
@@ -175,7 +187,7 @@ public class GenerationService {
             return;
         }
         try {
-            String key = "ai-generated/" + generationId + "/detail-page." + extension(file.getContentType());
+            String key = AI_KEY_PREFIX + generationId + "/detail-page." + extension(file.getContentType());
             imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
         } catch (IOException exception) {
             log.error("상세페이지 이미지 업로드 실패 generationId={}", generationId, exception);
@@ -183,18 +195,25 @@ public class GenerationService {
         }
     }
 
-    private void uploadPrefixedFiles(String generationId, String keyPrefix, Map<String, MultipartFile> files) {
+    /** 올린 파일의 {fileId → S3 키}를 돌려준다. */
+    private Map<String, String> uploadPrefixedFiles(String generationId, String keyPrefix, Map<String, MultipartFile> files) {
+        Map<String, String> keys = new java.util.LinkedHashMap<>();
+        if (files == null) {
+            return keys;
+        }
         for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
             MultipartFile file = entry.getValue();
             try {
                 String fileId = extractFileId(entry.getKey(), file.getOriginalFilename());
-                String key = "ai-generated/" + generationId + "/" + keyPrefix + fileId + "." + extension(file.getContentType());
+                String key = AI_KEY_PREFIX + generationId + "/" + keyPrefix + fileId + "." + extension(file.getContentType());
                 imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
+                keys.put(fileId, key);
             } catch (IOException exception) {
                 log.error("파일 업로드 실패 generationId={} prefix={} filename={}", generationId, keyPrefix, file.getOriginalFilename(), exception);
                 throw new ExternalServiceException("파일 업로드 실패 generationId=" + generationId + " prefix=" + keyPrefix);
             }
         }
+        return keys;
     }
 
     private String extension(String contentType) {
@@ -204,6 +223,11 @@ public class GenerationService {
             case "image/webp" -> "webp";
             default -> "bin";
         };
+    }
+
+    /** react 문서의 img 노드에 올린 사진의 S3 키(assetKey)와 공개 주소(src)를 채운다. imageId 는 그대로 둔다. */
+    String withPhotoUrls(String reactDocumentJson, Map<String, String> photoKeys) {
+        return ReactDocumentAssets.attach(objectMapper, reactDocumentJson, photoKeys, imageBaseUrl);
     }
 
     /**
