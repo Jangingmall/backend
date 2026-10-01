@@ -266,9 +266,9 @@ class GenerationServiceTest {
         GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
         generationService.completeWithImages(command, null, sectionFiles, photoFiles, "10");
 
-        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("images/product/ai-generated/1/photo-detail-02.webp"), eq("image/webp"), any());
-        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("images/product/ai-generated/1/photo-detail-03.webp"), eq("image/webp"), any());
-        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("images/product/ai-generated/1/section-01.png"), eq("image/png"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/photo-detail-02.webp"), eq("image/webp"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/photo-detail-03.webp"), eq("image/webp"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/section-01.png"), eq("image/png"), any());
     }
 
     @Test
@@ -281,17 +281,17 @@ class GenerationServiceTest {
             + "{\"tag\":\"img\",\"props\":{\"imageId\":\"unknown\"}}]}]}";
 
         String result = generationService.withPhotoUrls(json, Map.of(
-            "hero", "images/product/ai-generated/1/photo-hero.webp",
-            "detail-02", "images/product/ai-generated/1/photo-detail-02.png"));
+            "hero", "ai-generated/1/photo-hero.webp",
+            "detail-02", "ai-generated/1/photo-detail-02.png"));
 
         var children = objectMapper.readTree(result).get("root").get(0).get("children");
         assertThat(children.get(0).get("props").get("src").asText())
-            .isEqualTo("https://img.stg.midam.store/images/product/ai-generated/1/photo-hero.webp");
+            .isEqualTo("https://img.stg.midam.store/ai-generated/1/photo-hero.webp");
         assertThat(children.get(0).get("props").get("imageId").asText()).isEqualTo("hero");
         assertThat(children.get(0).get("props").get("assetKey").asText())
-            .isEqualTo("images/product/ai-generated/1/photo-hero.webp");
+            .isEqualTo("ai-generated/1/photo-hero.webp");
         assertThat(children.get(1).get("props").get("src").asText())
-            .isEqualTo("https://img.stg.midam.store/images/product/ai-generated/1/photo-detail-02.png");
+            .isEqualTo("https://img.stg.midam.store/ai-generated/1/photo-detail-02.png");
         assertThat(children.get(1).get("props").get("alt").asText()).isEqualTo("상세");
         assertThat(children.get(2).get("props").has("src")).isFalse();
     }
@@ -390,7 +390,7 @@ class GenerationServiceTest {
         assertThat(ack.status()).isEqualTo("SAVED");
         assertThat(generation.getStatus()).isEqualTo(GenerationStatus.COMPLETED);
         assertThat(generation.getFailureReason()).isNull();
-        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("images/product/ai-generated/1/detail-page.jpg"), eq("image/jpeg"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/detail-page.jpg"), eq("image/jpeg"), any());
         verify(contentService).storeReactDocument(any());
     }
 

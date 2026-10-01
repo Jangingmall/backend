@@ -117,8 +117,8 @@ class ContentServiceTest {
         ReflectionTestUtils.setField(contentService, "imageBaseUrl", "https://img.stg.midam.store/");
         String document = "{\"root\":[{\"tag\":\"section\",\"children\":["
             // 1) AI 가 만든 사진 — 저장 때 남긴 assetKey 와 (옛 도메인의) src
-            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"hero\",\"assetKey\":\"images/product/ai-generated/1/photo-hero.webp\","
-            + "\"src\":\"https://old.example/images/product/ai-generated/1/photo-hero.webp\"}},"
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"hero\",\"assetKey\":\"ai-generated/1/photo-hero.webp\","
+            + "\"src\":\"https://old.example/ai-generated/1/photo-hero.webp\"}},"
             // 2) 시연 시드 이미지(소분류 일러스트) — STG 이미지 서버에 올린 키
             + "{\"tag\":\"img\",\"props\":{\"imageId\":\"sub-25\",\"assetKey\":\"images/product/63/01M3VAY2JC89RQ9G6JXBGV7HS4/1280w.webp\"}},"
             // 3) 업로드 이미지 — imageId 만 있고 FE 가 이미지 테이블 변형으로 찾는다
@@ -131,7 +131,7 @@ class ContentServiceTest {
 
         var images = new ObjectMapper().readTree(detail.reactDocument()).get("root").get(0).get("children");
         assertThat(images.get(0).get("props").get("src").asText())
-            .isEqualTo("https://img.stg.midam.store/images/product/ai-generated/1/photo-hero.webp");
+            .isEqualTo("https://img.stg.midam.store/ai-generated/1/photo-hero.webp");
         assertThat(images.get(1).get("props").get("src").asText())
             .isEqualTo("https://img.stg.midam.store/images/product/63/01M3VAY2JC89RQ9G6JXBGV7HS4/1280w.webp");
         assertThat(images.get(2).get("props").has("src")).isFalse();

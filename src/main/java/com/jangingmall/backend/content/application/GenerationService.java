@@ -42,10 +42,10 @@ public class GenerationService {
     private final ApplicationEventPublisher eventPublisher;
 
     /**
-     * AI 가 만든 이미지는 이미지 CDN 이 이미 공개하는 경로(images/product/*) 아래에 저장한다.
-     * 다른 경로(ai-generated/*)에 두면 CDN 이 403 을 돌려줘 화면에서 이미지가 깨진다.
+     * AI 가 만든 이미지의 S3 키 접두어. 공개 주소는 이미지 기본 주소 + 이 키(https://img.stg.midam.store/ai-generated/…)다.
+     * CDN(CloudFront)이 ai-generated/* 를 공개해야 열린다(인프라 승인·적용 필요).
      */
-    static final String AI_KEY_PREFIX = "images/product/ai-generated/";
+    static final String AI_KEY_PREFIX = "ai-generated/";
 
     @Value("${image.base-url:}")
     private String imageBaseUrl;
