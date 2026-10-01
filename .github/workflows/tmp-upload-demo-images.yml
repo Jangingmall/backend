@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   # PR 이 열려 있으면 항상 빨갛게 보여 임시 파일이 develop 에 들어가는 실수를 막는다.
@@ -78,6 +79,19 @@ jobs:
               ok = "중복(재사용)" if "duplicateOf" in e else ("OK" if check and all(c["ok"] for c in check.values()) else "FAIL")
               print(f"| {e['name']} | `{e.get('imageId')}` | {urls.get('1280w','')} | {ok} |")
           PY
+
+      - name: PR 에 번호 붙은 업로드 결과 댓글 남기기
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/demo-images/format_comment.py manifest.json > comment.md
+          pr=$(gh pr list --head "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')
+          if [ -n "$pr" ]; then
+            gh pr comment "$pr" --body-file comment.md
+          else
+            echo "열린 PR 이 없어 댓글은 남기지 않았습니다. Job Summary 와 manifest 아티팩트를 확인하세요."
+          fi
 
       - uses: actions/upload-artifact@v4
         if: always()
