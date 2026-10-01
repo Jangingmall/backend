@@ -556,3 +556,12 @@ python3 scripts/demo-products/photoreal_apply.py photoreal.zip --crop-square \
 - 같은 상품의 A·B·C 는 이어서 만들어야 톤이 비슷하다. 20개 모두 이 도구로 통일한다.
 - 같은 구도가 계속 나오지 않거나 톤이 흔들리면, ImageFX 에서 마음에 드는 이미지를 골라 같은 프롬프트로 한 번 더 만든다(시안 변형).
 - 받은 파일은 `photoreal_apply.py --crop-square` 로 검증·WebP 변환한다(11번).
+
+## 13. 60장을 한 번에 시키는 마스터 프롬프트 (채팅형 AI 용)
+
+`docs/demo-products/photoreal/master_prompt.txt` 한 개를 **처음에 한 번만 붙여 넣고**, 이후에는 **'계속'** 만 보내면 번호 순서대로 한 장씩 만든다.
+
+- 채팅형 AI 는 답 하나에 이미지 한 장만 만든다. 60장이면 '계속'을 60번 보낸다(대표(A)만 하려면 [01]·[04]·[07]… 번호만 골라 쓴다).
+- ImageFX 처럼 한 번에 한 장을 만드는 도구는 이 마스터 프롬프트 대신 `prompts_imagefx.txt` 의 줄을 한 줄씩 쓴다.
+- 한도에 걸리면 AI 가 '[번호]까지 완료'라고 알려 주므로, 한도가 풀린 뒤 '계속'으로 이어 간다.
+- 받은 이미지는 `p31_A.png` 규칙으로 저장한다.
