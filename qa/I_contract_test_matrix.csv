@@ -11,14 +11,14 @@ CONTRACT-006,이미지,DELETE,/api/images/{imageId},image-delete,200,api-payment
 CONTRACT-007,장인,GET,/api/member/artisans,artisan-list,200,api-member-artisans-1902721574,schema_validation,AUTO
 CONTRACT-008,판매자 신청,POST,/api/member/artisans/applications,seller-application-apply,201,api-admin-seller-applications-applicationId-approve1698846120,schema_validation,AUTO
 CONTRACT-009,판매자 신청,GET,/api/member/artisans/applications/me,seller-application-mine,200,api-admin-seller-applications-applicationId-approve1698846120,schema_validation,AUTO
-CONTRACT-010,장인,GET,/api/member/artisans/me,artisan-mine,200,api-member-artisans-me-1004667003,schema_validation,AUTO
-CONTRACT-011,장인,PATCH,/api/member/artisans/me,artisan-update,200,api-member-artisans-me-1004667003,schema_validation,AUTO
+CONTRACT-010,장인,GET,/api/member/artisans/me,artisan-mine,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
+CONTRACT-011,장인,PATCH,/api/member/artisans/me,artisan-update,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
 CONTRACT-012,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,200,api-member-artisans-subscriptions1318461673,schema_validation,AUTO
 CONTRACT-012,장인 구독,GET,/api/member/artisans/subscriptions,member-subscriptions,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-013,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,401,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-013,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,400,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-013,장인 구독,PATCH,/api/member/artisans/subscriptions/notifications,member-notifications,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
-CONTRACT-014,장인,GET,/api/member/artisans/{artisanId},artisan-detail,200,api-member-artisans-me-1004667003,schema_validation,AUTO
+CONTRACT-014,장인,GET,/api/member/artisans/{artisanId},artisan-detail,200,api-member-artisans-artisanId-1004667003,schema_validation,AUTO
 CONTRACT-015,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,404,api-member-signup16218693,schema_validation,AUTO
 CONTRACT-015,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,200,api-chatbot-sessions-sessionId-1487972696,schema_validation,AUTO
 CONTRACT-015,장인 구독,POST,/api/member/artisans/{artisanId}/subscribe,member-subscribe,401,api-member-signup16218693,schema_validation,AUTO
@@ -94,8 +94,8 @@ CONTRACT-065,배송,GET,/api/payments/orders/{orderId}/delivery,delivery-get,200
 CONTRACT-066,주문,POST,/api/payments/orders/{orderId}/purchase-confirmation,order-purchase-confirmation,200,api-payments-orders-orderId-purchase-confirmation-1703665068,schema_validation,AUTO
 CONTRACT-067,주문,PATCH,/api/payments/orders/{orderId}/shipping-address,order-change-shipping-address,200,api-payments-orders-orderId-shipping-address-48905676,schema_validation,AUTO
 CONTRACT-068,결제수단,POST,/api/payments/refund-account,payment-refund-account-register,201,api-payments-refund-account-135657900,schema_validation,AUTO
-CONTRACT-069,반품/교환,POST,/api/payments/returns,returns-request,201,api-payments-returns-1115423141,schema_validation,AUTO
-CONTRACT-070,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,200,api-payments-returns-1115423141,schema_validation,AUTO
+CONTRACT-069,반품/교환,POST,/api/payments/returns,returns-request,201,api-payments-returns-returnId-status-1115423141,schema_validation,AUTO
+CONTRACT-070,반품/교환,PATCH,/api/payments/returns/{returnId}/status,returns-approve,200,api-payments-returns-returnId-status-1115423141,schema_validation,AUTO
 CONTRACT-071,결제,POST,/api/payments/webhooks/toss,payment-webhook-toss,200,api-payments-cart-items-521794704,schema_validation,AUTO
 CONTRACT-072,결제,POST,/api/payments/{paymentId}/cancel,payment-cancel,200,api-payments-paymentId-cancel1498139372,schema_validation,AUTO
 CONTRACT-073,상품,GET,/api/products,product-list,200,api-products-me-2131279592,schema_validation,AUTO
