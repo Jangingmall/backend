@@ -1,4 +1,4 @@
-너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 531~590번 이미지를 번호 순서대로 만들어 줘.
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 560~619번 이미지를 번호 순서대로 만들어 줘.
 
 진행 방식 (반드시 지켜)
 0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
@@ -11,93 +11,6 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[531] d286_A
-Product photo of a small pouch bag made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 여름 마숄더백", material: 한산모시 가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[532] d287_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복지 사각 미니 크로스백", material: 양단 한복지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[533] d288_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 궁중 약주머니", material: 비단 금사. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[534] d289_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 전통 자수 안경 파우치 케이스", material: 양단 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[535] d290_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 명주 조각보 에코백", material: 명주 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[536] d291_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 오색 매듭 복주머니 핸드백", material: 실크 매듭. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[537] d292_A
-Product photo of a small pouch bag made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 천연염색 파우치 3종", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[538] d293_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복 양단 숄더백", material: 양단 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[539] d294_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 침선장 색동 미니 돈주머니", material: 비단 명주. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[540] d295_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 손자수 매화 스트링 파우치", material: 비단 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[541] d296_A
-Product photo of a small pouch bag made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 모시 조각보 클러치", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[542] d297_A
-Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복 원단 여행용 대형 파우치", material: 양단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[543] d298_A
-Product photo of a small pouch bag made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 가방 파우치", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[544] d300_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복지 조각보 슬림 카드지갑", material: 양단 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[545] d301_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 누비 지퍼 동전지갑", material: 명주실 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[546] d302_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 전통 자수 모란문 접이식 반지갑", material: 양단 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[547] d303_A
-Product photo of a slim card wallet made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 나전칠기 문양 가죽 명함 지갑", material: 천연소가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[548] d304_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 색동 쌈지 지갑", material: 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[549] d305_A
-Product photo of a slim card wallet made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 매듭 술 장식 가죽 카드지갑", material: 소가죽 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[550] d306_A
-Product photo of a slim card wallet made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 미니 카드지갑", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[551] d307_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 전통 십장생 자수 장지갑", material: 비단 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[552] d308_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 실크 조각보 동전지갑", material: 실크 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[553] d309_A
-Product photo of a slim card wallet made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 모란문 음각 소가죽 카드홀더", material: 소가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[554] d310_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 손자수 매화 삼각 지갑", material: 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[555] d311_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복 양단 똑딱이 동전지갑", material: 양단 금속. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[556] d312_A
-Product photo of a slim card wallet made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 전통 자수 아코디언 카드지갑", material: 양단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[557] d313_A
-Product photo of a slim card wallet made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 지갑 카드지갑", material: 소가죽. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[558] d315_A
-Product photo of a keyring made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "김기찬 무형유산 양반탈 단품 키링", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[559] d316_A
-Product photo of a keyring made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "김은영 전통 매듭 실크 키링", material: 명주실 금속. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
 [560] d317_A
 Product photo of a keyring made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "은 칠보 미니 노리개 키링", material: 칠보 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
@@ -190,5 +103,92 @@ Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or 
 
 [590] d349_A
 Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 허리치마 생활한복 랩스커트", material: 리넨 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[591] d350_A
+Product photo of a Korean everyday hanbok jacket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 여자 배자 조끼", material: 명주 양단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[592] d351_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 마 저고리 남성 생활한복", material: 마 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[593] d352_A
+Product photo of a Korean everyday hanbok jacket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 여자 액주름포 한복", material: 명주. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[594] d353_A
+Product photo of a Korean everyday hanbok jacket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 아동용 색동 저고리 치마 세트", material: 양단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[595] d354_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 여아 모시 원피스", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[596] d355_A
+Product photo of a Korean everyday hanbok jacket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 한복 생활한복", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[597] d357_A
+Product photo of a Korean gat hat made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 무형유산 조선 시대 정자관", material: 말총. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[598] d358_A
+Product photo of a Korean gat hat made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 수제 말총 탕건", material: 말총. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[599] d359_A
+Product photo of a Korean gat hat made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복 모직 아동 조바위 모자", material: 모직 양단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[600] d360_A
+Product photo of a Korean gat hat made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 무형유산 백립 갓", material: 대올 삼베. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[601] d361_A
+Product photo of a Korean gat hat made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 털 굴레 아동 겨울 머리 모자", material: 양단 토끼털. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[602] d362_A
+Product photo of a Korean gat hat made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 여름 모시 파나마 햇", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[603] d363_A
+Product photo of a Korean gat hat made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 조선 무관 전립 갓", material: 모펠트 옥. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[604] d364_A
+Product photo of a Korean gat hat made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 여성 남바위 방한 모자", material: 양단 털. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[605] d365_A
+Product photo of a Korean gat hat made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 갓 모자", material: 말총. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[606] d367_A
+Product photo of a Korean headband ornament (mangeon) made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 수제 옥관자 망건 풍잠 세트", material: 말총 백옥. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[607] d368_A
+Product photo of a Korean headband ornament (mangeon) made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "순은 호박 풍잠 갓 끈 장식", material: 순은 호박. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[608] d369_A
+Product photo of a Korean headband ornament (mangeon) made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "천연 백옥 망건 관자 쌍", material: 백옥. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[609] d370_A
+Product photo of a Korean headband ornament (mangeon) made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "정춘모 무형유산 인모 상투주머니", material: 인모 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[610] d371_A
+Product photo of a Korean headband ornament (mangeon) made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "김은영 오색 실크 댕기 머리띠", material: 비단 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[611] d372_A
+Product photo of a Korean headband ornament (mangeon) made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 궁중 제비꼬리 붉은 댕기", material: 비단 금박. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[612] d373_A
+Product photo of a Korean headband ornament (mangeon) made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "비취 관자 망건 걸쇠 2개", material: 비취. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[613] d375_A
+Product photo of a calligraphy brush and inkstone set made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 세필 붓 5종 세트", material: 족제비털 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[614] d376_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone. Korean product name for reference (ignore the maker's name, never write any text on the image): "김각한 각자장 고급 남포석 벼루", material: 남포석. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[615] d377_A
+Product photo of a calligraphy brush and inkstone set made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 송연묵 전통 송연 먹", material: 송연 아교. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[616] d378_A
+Product photo of a calligraphy brush and inkstone set made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 대형 캘리그라피 퍼포먼스 붓", material: 양모 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[617] d379_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone. Korean product name for reference (ignore the maker's name, never write any text on the image): "김각한 각자장 문양 음각 연적 벼루 세트", material: 오석. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[618] d380_A
+Product photo of a calligraphy brush and inkstone set made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "숍오브코리아 서예 용품 문방사우 종합 세트", material: 원목 돌 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[619] d381_A
+Product photo of a calligraphy brush and inkstone set made of natural leather and horsehair. Korean product name for reference (ignore the maker's name, never write any text on the image): "성심필방 황모 수제 사경 붓", material: 족제비털. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

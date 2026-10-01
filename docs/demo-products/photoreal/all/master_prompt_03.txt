@@ -1,4 +1,4 @@
-너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 351~410번 이미지를 번호 순서대로 만들어 줘.
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 380~439번 이미지를 번호 순서대로 만들어 줘.
 
 진행 방식 (반드시 지켜)
 0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
@@ -11,93 +11,6 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[351] d090_A
-Product photo of a kitchen cutting board made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "남원목기 옻칠 원목 플레이팅 도마", material: 원목 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[352] d091_A
-Product photo of a kitchen cutting board made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "남원목기 대나무 통도마", material: 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[353] d092_A
-Product photo of a kitchen cutting board made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김수영 방짜유기 수제 육회 과도", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[354] d093_A
-Product photo of a kitchen cutting board made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "남원목기 느티나무 핸들 트레이 도마", material: 느티나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[355] d094_A
-Product photo of a kitchen cutting board made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "남원목기 느티나무 미니 찻도마", material: 느티나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[356] d095_A
-Product photo of a kitchen cutting board made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김수영 방짜유기 단조 생선 칼", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[357] d096_A
-Product photo of a kitchen cutting board made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "남원목기 물푸레나무 사각 도마", material: 물푸레나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[358] d097_A
-Product photo of a kitchen cutting board made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 칼 도마", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[359] d099_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 숨쉬는 외고산 된장 항아리 10L", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[360] d100_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 미니 쌀독 옹기 10kg", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[361] d101_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 옹기 고추장 단지 5L", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[362] d102_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 전통 옹기 정수 항아리", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[363] d103_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 미니 옹기 양념단지 3종 세트", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[364] d104_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 옹기 발효 장단지 15L", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[365] d105_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 외고산 전통 옹기 시루", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[366] d106_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 옹기 소금단지 3L", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[367] d107_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 옹기 젓갈 단지 8L", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[368] d108_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 전통 옹기 뚝배기 단지", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[369] d109_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 외고산 미니 장독대 4종", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[370] d110_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 옹기 수저통 및 단지", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[371] d111_A
-Product photo of a Korean storage jar made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 항아리 옹기", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[372] d113_A
-Product photo of a Korean cooking pot with lid made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김수영 방짜유기 1인 전골 냄비", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[373] d114_A
-Product photo of a Korean cooking pot with lid made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 옹기 2인 밥솥", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[374] d115_A
-Product photo of a Korean cooking pot with lid made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김수영 방짜유기 신선로 냄비 세트", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[375] d116_A
-Product photo of a Korean cooking pot with lid made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 전통 옹기 계란찜 뚝배기", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[376] d117_A
-Product photo of a Korean cooking pot with lid made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형근 방짜유기 무유기 찌개 냄비", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[377] d118_A
-Product photo of a Korean cooking pot with lid made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 옹기 내열 전골 냄비", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[378] d119_A
-Product photo of a Korean cooking pot with lid made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김수영 방짜유기 샤브샤브 냄비", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[379] d120_A
-Product photo of a Korean cooking pot with lid made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 옹기 직화 찌개 냄비", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
 [380] d121_A
 Product photo of a Korean cooking pot with lid made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 냄비 솥", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
@@ -190,5 +103,92 @@ Product photo of a jewelry box made of black lacquer inlaid with iridescent moth
 
 [410] d154_A
 Product photo of a jewelry box made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 미니 수납함", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[411] d156_A
+Product photo of a flower vase made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "박강용 옻칠 원목 둔각 달화병", material: 원목 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[412] d157_A
+Product photo of a flower vase made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 분청 모란문 오목 화병", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[413] d158_A
+Product photo of a flower vase made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형만 나전 옻칠 미니 매화 화병", material: 나전 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[414] d159_A
+Product photo of a flower vase made of pale jade-green celadon glaze with fine crackle. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 고려청자 상감 학문 화병", material: 청자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[415] d160_A
+Product photo of a flower vase made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "박강용 댓살 대나무 유기 결합 화병", material: 대나무 유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[416] d161_A
+Product photo of a flower vase made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 백자 달항아리 미니 화병", material: 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[417] d162_A
+Product photo of a flower vase made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 전통 모시 매듭 한송이 화병", material: 모시 매듭. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[418] d163_A
+Product photo of a flower vase made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 철화백자 도롱뇽문 화병", material: 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[419] d164_A
+Product photo of a flower vase made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "박강용 주칠 원통형 옻칠 화병", material: 원목 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[420] d165_A
+Product photo of a flower vase made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 분청 철화 문양 투박 화병", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[421] d166_A
+Product photo of a flower vase made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형만 나전칠기 당초문 사각 화병", material: 나전 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[422] d167_A
+Product photo of a flower vase made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 화병 꽃", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[423] d169_A
+Product photo of a small desk clock made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 자수 십장생 벽걸이 수자수 액자", material: 명주실 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[424] d170_A
+Product photo of a small desk clock made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형만 나전칠기 일월오봉도 원형 벽시계", material: 나전 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[425] d171_A
+Product photo of a small desk clock made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "에이치케이스튜디오 단오풍정 명화 벽장식", material: 아크릴. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[426] d172_A
+Product photo of a small desk clock made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "박강용 옻칠 창살 문양 벽걸이 장식", material: 원목 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[427] d173_A
+Product photo of a small desk clock made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 전통 궁중 모란 자수 액자", material: 명주실 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[428] d174_A
+Product photo of a small desk clock made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형만 나전칠기 매화 한지 사각 벽시계", material: 한지 나전. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[429] d175_A
+Product photo of a small desk clock made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "에이치케이스튜디오 모란 문양 미니 시계", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[430] d176_A
+Product photo of a small desk clock made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 연화도 손자수 미니 패브릭 벽장식", material: 비단 실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[431] d177_A
+Product photo of a small desk clock made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "박강용 주칠 한지 혼합 사각 벽시계", material: 원목 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[432] d178_A
+Product photo of a small desk clock made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 시계 벽장식", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[433] d179_A
+Product photo of a small desk clock made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 미니 액자 시계", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[434] d181_A
+Product photo of a hanging window blind screen made of natural carved and woven bamboo. Korean product name for reference (ignore the maker's name, never write any text on the image): "박강용 대나무 살문 1단 전통 가림막", material: 대나무 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[435] d182_A
+Product photo of a hanging window blind screen made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 조각보 모시 3단 창문 발", material: 모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[436] d183_A
+Product photo of a hanging window blind screen made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 전통 한지 문살 2폭 가림막 파티션", material: 원목 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[437] d184_A
+Product photo of a hanging window blind screen made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 모시 연화 수자수 가림막 롤스크린", material: 모시 실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[438] d185_A
+Product photo of a hanging window blind screen made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "박강용 옻칠 대나무 통발 가림막", material: 대나무 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[439] d186_A
+Product photo of a hanging window blind screen made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 명주 국화 자수 2단 가림막", material: 명주. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.
