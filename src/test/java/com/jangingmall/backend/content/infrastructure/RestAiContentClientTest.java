@@ -285,6 +285,32 @@ class RestAiContentClientTest {
     }
 
     @Test
+    @DisplayName("job 상태 조회 — FAILED 응답의 error(code/retryable)가 있어도 상태 문자열을 그대로 반환한다")
+    void getJobStatus_failedWithError() {
+        generationMockServer.expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs/job-9"))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess("""
+                {"job_id":"job-9","status":"FAILED","progress":40,
+                 "error":{"code":"AI_JOB_FAILED","message":"AI processing failed. Please retry.","retryable":true,"request_id":"r-9"}}
+                """, MediaType.APPLICATION_JSON));
+
+        assertThat(contentClient.getJobStatus("job-9")).isEqualTo("FAILED");
+
+        generationMockServer.verify();
+    }
+
+    @Test
+    @DisplayName("job 상태 조회 — error가 없는 FAILED 응답도 예외 없이 처리한다")
+    void getJobStatus_failedWithoutError() {
+        generationMockServer.expect(requestTo("http://ai-content-server/internal/v1/ai/detail-page-jobs/job-10"))
+            .andRespond(withSuccess("{\"job_id\":\"job-10\",\"status\":\"FAILED\",\"progress\":0}", MediaType.APPLICATION_JSON));
+
+        assertThat(contentClient.getJobStatus("job-10")).isEqualTo("FAILED");
+
+        generationMockServer.verify();
+    }
+
+    @Test
     @DisplayName("상품 삭제 동기화 — deleteProduct가 챗봇 서버 /ai/products/{id}로 전송된다")
     void deleteProduct_routesToChatBotServer() throws Exception {
         syncMockServer.expect(requestTo("http://ai-chat-server/ai/products/42"))

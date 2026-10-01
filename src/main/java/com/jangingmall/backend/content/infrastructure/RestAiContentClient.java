@@ -151,7 +151,18 @@ class RestAiContentClient implements AiContentClient {
             .header(AI_INTERNAL_TOKEN_HEADER, aiInternalAuthToken)
             .retrieve()
             .body(AiJobStatusResponse.class);
-        return response != null ? response.status() : null;
+        if (response == null) {
+            return null;
+        }
+        if ("FAILED".equals(response.status())) {
+            AiJobError error = response.error();
+            log.warn("AI job FAILED 응답 jobId={} progress={} errorCode={} retryable={} errorMessage={}",
+                jobId, response.progress(),
+                error != null ? error.code() : null,
+                error != null ? error.retryable() : null,
+                error != null ? error.message() : null);
+        }
+        return response.status();
     }
 
     @Override
@@ -394,8 +405,12 @@ class RestAiContentClient implements AiContentClient {
     private record AiJobStatusResponse(
         @JsonProperty("job_id") String jobId,
         String status,
-        Integer progress
+        Integer progress,
+        AiJobError error
     ) {}
+
+    /** AI가 FAILED로 응답할 때 내려주는 오류(진단 로그용). 서버가 일반화한 code/message만 온다. */
+    private record AiJobError(String code, String message, Boolean retryable) {}
 
     private static final class NamedByteArrayResource extends ByteArrayResource {
         private final String filename;
