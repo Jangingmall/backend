@@ -171,12 +171,20 @@ public class ChatService {
             isNew,
             product.isHasGiftWrap(),
             false,
-            product.getPurposeTags(),
+            snapshotOf(product.getPurposeTags()),
             primaryBadge,
             product.getArtisanId(),
             artisanName,
             card.reason()
         ));
+    }
+
+    /**
+     * 트랜잭션이 끝난 뒤 JSON으로 직렬화되므로 지연 로딩 컬렉션을 그대로 담으면 LazyInitializationException이 난다.
+     * 트랜잭션 안에서 값을 복사해 둔다.
+     */
+    private List<String> snapshotOf(List<String> values) {
+        return values == null ? List.of() : List.copyOf(values);
     }
 
     private List<ChatResponse.ThumbnailVariant> buildThumbnailVariants(String thumbnailUrl) {

@@ -107,6 +107,38 @@ class ChatServiceTest {
     }
 
     @Test
+    @DisplayName("상품카드의 purposeTags는 엔티티의 지연 로딩 컬렉션이 아니라 복사본이다(트랜잭션 밖 직렬화 대비)")
+    void sendMessage_purposeTagsAreDetachedCopy() {
+        UUID sessionId = UUID.randomUUID();
+        ChatSession session = ChatSession.create(1L);
+        ReflectionTestUtils.setField(session, "sessionId", sessionId);
+        ChatMessage botMsg = ChatMessage.of(sessionId, ChatSender.ADMIN, "추천드려요");
+        ReflectionTestUtils.setField(botMsg, "messageId", 2L);
+
+        Product product = Product.create(1L, null, null, "청자 다완", "설명", 85000, 10, null);
+        ReflectionTestUtils.setField(product, "id", 1L);
+        List<String> entityTags = new java.util.ArrayList<>(List.of("WEDDING"));
+        ReflectionTestUtils.setField(product, "purposeTags", entityTags);
+
+        when(sessionRepository.findById(sessionId)).thenReturn(Optional.of(session));
+        when(messageRepository.save(any())).thenReturn(botMsg);
+        when(messageRepository.findBySessionId(sessionId)).thenReturn(List.of());
+        when(aiChatClient.chat(any(), any(), any())).thenReturn(
+            new AiChatResult("추천드려요", "gift_recommendation", List.of(new ProductCard(1L, "이유")), List.of()));
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        when(reviewRepository.findAverageRatingByProductId(1L)).thenReturn(null);
+        when(artisanProfileRepository.findById(1L)).thenReturn(Optional.empty());
+
+        ChatResponse.SendResult result = chatService.sendMessage(new ChatCommand.SendMessage(sessionId, 1L, "추천"));
+
+        List<String> cardTags = result.products().get(0).purposeTags();
+        assertThat(cardTags).containsExactly("WEDDING");
+        assertThat(cardTags).isNotSameAs(entityTags);
+        entityTags.add("PARENTS");
+        assertThat(cardTags).containsExactly("WEDDING");
+    }
+
+    @Test
     @DisplayName("AI 응답에 없는 상품 ID는 카드에서 제외된다")
     void sendMessage_skipsUnknownProduct() {
         UUID sessionId = UUID.randomUUID();
