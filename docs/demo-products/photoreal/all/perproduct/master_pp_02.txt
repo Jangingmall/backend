@@ -11,7 +11,7 @@
 
 번호 목록
 [061] d065_A
-Product photo of a Korean liquor cup and small bottle made of pale jade-green celadon glaze with fine crackle. Korean product name for reference (ignore the maker's name, never write any text on the image): "신정희요 분청 술잔 5인 세트", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+Product photo of a Korean liquor cup and small bottle made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "신정희요 분청 술잔 5인 세트", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
 
 [062] d066_A
 Product photo of a Korean liquor cup and small bottle made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 옹기 찻컵", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
@@ -26,7 +26,7 @@ Product photo of a Korean liquor cup and small bottle made of pale jade-green ce
 Product photo of a Korean liquor cup and small bottle made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "광주요 백자 가볍 잔 2종", material: 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
 
 [066] d070_A
-Product photo of a Korean liquor cup and small bottle made of pale jade-green celadon glaze with fine crackle. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 컵 술병 술잔", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+Product photo of a Korean liquor cup and small bottle made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 컵 술병 술잔", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
 
 [067] d072_A
 Product photo of a small Korean traditional tray table (soban) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "이종덕 무형유산 해주반 조각 소반", material: 고급 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text

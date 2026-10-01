@@ -28,7 +28,8 @@ def main():
     names = {s: n for s, n, _c, _k in A.V.seed.ITEMS}
     items = []
     for n, p in enumerate(rows, 1):
-        prompt = (f"Product photo of {A.SUBNOUN[p['sub']]} made of {A.MAT[p['cls']]}. "
+        mat = "glazed Korean ceramic whose glaze color and style follow the product name" if p["material"].strip() == "도자기" else A.MAT[p["cls"]]
+        prompt = (f"Product photo of {A.SUBNOUN[p['sub']]} made of {mat}. "
                   f"Korean product name for reference (ignore the maker's name, never write any text on the image): \"{p['title']}\", material: {p['material']}. "
                   f"Show one single item that fits this name, {A.A_TAIL}")
         items.append((n, f"d{p['id']:03d}_A", p, prompt))
