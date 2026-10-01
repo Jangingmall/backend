@@ -1,4 +1,4 @@
-너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 440~499번 이미지를 번호 순서대로 만들어 줘.
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 469~528번 이미지를 번호 순서대로 만들어 줘.
 
 진행 방식 (반드시 지켜)
 0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
@@ -11,93 +11,6 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[440] d187_A
-Product photo of a hanging window blind screen made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 세살문 한지 3폭 원목 가림막", material: 원목 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[441] d188_A
-Product photo of a hanging window blind screen made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 삼베 칠보문양 1단 문발", material: 삼베. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[442] d189_A
-Product photo of a hanging window blind screen made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 발 가림막", material: 면 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[443] d191_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 전통 느티나무 2층 머릿장", material: 느티나무 두석. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[444] d192_A
-Product photo of a small piece of furniture (chest) made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형만 나전칠기 십장생 문갑 2층 장", material: 나전 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[445] d193_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "이재만 화각장 모란문 애기농", material: 우각 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[446] d194_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 오동나무 먹감나무 문갑", material: 먹감나무 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[447] d195_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 전통 원목 서안 찻상 Desk", material: 느티나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[448] d196_A
-Product photo of a small piece of furniture (chest) made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형만 나전칠기 당초문 3단 서랍 농", material: 나전 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[449] d197_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 오동나무 3단 탁자장", material: 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[450] d198_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "이재만 화각장 십장생문 수장", material: 우각 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[451] d199_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 소형 좌식 1인 서안 탁자", material: 느티나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[452] d200_A
-Product photo of a small piece of furniture (chest) made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형만 나전칠기 포도문 콘솔 탁자", material: 나전 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[453] d201_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 원목 반닫이 궤", material: 소나무 두석. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[454] d202_A
-Product photo of a small piece of furniture (chest) made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "박강용 주칠 원목 대형 찻상", material: 원목 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[455] d203_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "양석중 고가구 삼층장", material: 느티나무 오동나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[456] d204_A
-Product photo of a small piece of furniture (chest) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 가구", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[457] d206_A
-Product photo of a decorative furniture hardware handle and hinge made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 두석장 백동 제비꼬리 가구 손잡이 4개", material: 백동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[458] d207_A
-Product photo of a decorative furniture hardware handle and hinge made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 두석장 무쇠 박쥐 문양 모서리 장석 4개", material: 무쇠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[459] d208_A
-Product photo of a decorative furniture hardware handle and hinge made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 황동 국화문 문고리 들쇠 세트", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[460] d209_A
-Product photo of a decorative furniture hardware handle and hinge made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 백동 사각 둥근 고리 장석 2개", material: 백동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[461] d210_A
-Product photo of a decorative furniture hardware handle and hinge made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 황동 칠보 문양 경첩 4개 세트", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[462] d211_A
-Product photo of a decorative furniture hardware handle and hinge made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 무쇠 전통 자물쇠 및 열쇠 세트", material: 무쇠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[463] d212_A
-Product photo of a decorative furniture hardware handle and hinge made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 백동 화형 둥근 보목 장석 4개", material: 백동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[464] d213_A
-Product photo of a decorative furniture hardware handle and hinge made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 황동 십장생문 자물쇠 장석", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[465] d214_A
-Product photo of a decorative furniture hardware handle and hinge made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "김극천 백동 귀두문 가구 걸쇠 손잡이 2개", material: 백동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[466] d215_A
-Product photo of a decorative furniture hardware handle and hinge made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 장석 손잡이", material: 황동. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[467] d217_A
-Product photo of a pair of rings and earrings made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "천연 옥 은 칠보 귀걸이", material: 천연옥 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[468] d218_A
-Product photo of a pair of rings and earrings made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 매듭 매화 매듭 반지", material: 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
 [469] d219_A
 Product photo of a pair of rings and earrings made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "비취 상감 은가락지", material: 비취 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
@@ -190,5 +103,92 @@ Product photo of a Korean norigae ornament made of lustrous silk in soft colors.
 
 [499] d251_A
 Product photo of a Korean norigae ornament made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "비취 박쥐문 옥 노리개", material: 비취 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[500] d252_A
+Product photo of a Korean norigae ornament made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "호박 원석 은 나비 브로치", material: 호박 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[501] d253_A
+Product photo of a Korean norigae ornament made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "김혜순 박쥐 매듭 미니 노리개", material: 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[502] d254_A
+Product photo of a Korean norigae ornament made of black lacquer inlaid with iridescent mother-of-pearl. Korean product name for reference (ignore the maker's name, never write any text on the image): "자수 자개 모란문 코사지", material: 비단 자개. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[503] d255_A
+Product photo of a Korean norigae ornament made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "은 칠보 당초문 스카프 링 브로치", material: 칠보 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[504] d256_A
+Product photo of a Korean norigae ornament made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "김혜순 자수 복주머니 3작 노리개", material: 명주실 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[505] d257_A
+Product photo of a Korean norigae ornament made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 노리개 브로치", material: 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[506] d259_A
+Product photo of a hairpin (binyeo) made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "비취 원석 봉황 비녀", material: 비취 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[507] d260_A
+Product photo of a hairpin (binyeo) made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "은 칠보 매화 떨잠 뒤꼬지", material: 칠보 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[508] d261_A
+Product photo of a hairpin (binyeo) made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "김은영 전통 매듭 올림머리 핀", material: 명주실 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[509] d262_A
+Product photo of a hairpin (binyeo) made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "백옥 매화 문양 뒤꼬지", material: 백옥 은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[510] d263_A
+Product photo of a hairpin (binyeo) made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "산호 칠보 나비 비녀", material: 산호 칠보 은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[511] d264_A
+Product photo of a hairpin (binyeo) made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 자수 꽃신 모양 머리핀", material: 비단 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[512] d265_A
+Product photo of a hairpin (binyeo) made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "흑각 원목 국화 조각 비녀", material: 흑각 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[513] d266_A
+Product photo of a hairpin (binyeo) made of deep blue cloisonne enamel with fine gold wire. Korean product name for reference (ignore the maker's name, never write any text on the image): "은 칠보 모란꽃 뒤꼬지 2종 세트", material: 칠보 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[514] d267_A
+Product photo of a hairpin (binyeo) made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "매듭 첩지 머리장식 핀", material: 명주실 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[515] d268_A
+Product photo of a hairpin (binyeo) made of translucent jade-green stone. Korean product name for reference (ignore the maker's name, never write any text on the image): "호박 상감 은 가락 비녀", material: 호박 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[516] d269_A
+Product photo of a hairpin (binyeo) made of polished sterling silver with fine engraving. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 머리핀 비녀", material: 순은. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[517] d271_A
+Product photo of a scarf made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 감나무 천연염색 머플러", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[518] d272_A
+Product photo of a scarf made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 한복 실크 조각보 머플러", material: 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[519] d273_A
+Product photo of a scarf made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 쪽빛 천연염색 숄", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[520] d274_A
+Product photo of a scarf made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 100% 순양모 전통 문양 머플러", material: 울 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[521] d275_A
+Product photo of a scarf made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 분홍화 천연염색 스카프", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[522] d276_A
+Product photo of a scarf made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 양단 한복 패치워크 스카프", material: 양단 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[523] d277_A
+Product photo of a scarf made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 먹물 염색 롱 스카프", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[524] d278_A
+Product photo of a scarf made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 손자수 매화 실크 미니 스카프", material: 실크 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[525] d279_A
+Product photo of a scarf made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 쑥 염색 그린 숄", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[526] d280_A
+Product photo of a scarf made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 스카프 머플러", material: 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[527] d282_A
+Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 무형유산 손자수 누비 토트백", material: 명주실 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[528] d283_A
+Product photo of a small pouch bag made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "예당 전통 자수 화장품 파우치", material: 양단 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.
