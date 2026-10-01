@@ -1,0 +1,193 @@
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 241~300번 이미지를 번호 순서대로 만들어 줘.
+
+진행 방식 (반드시 지켜)
+1. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 5장씩, 번호 순서대로, 서로 다른 별도 이미지로 만들어 줘.
+2. 이미지마다 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.
+3. 생성 한도에 걸리면 '[번호]까지 완료, 한도 도달'이라고만 말해 줘. 내가 '계속'이라고 하면 이어서 해 줘.
+4. 내가 '다시 [번호]'라고 하면 그 번호를 한 번 더 만들어 줘.
+5. 번호마다 목록의 영어 문장을 그대로 따라. 임의로 상품·색·구도를 바꾸지 마. 번호와 키는 내가 파일을 구분하는 용도이고 이미지에 쓰지 마.
+
+이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
+
+번호 목록
+[241] f52_A
+Product photo of a 30 g package of premium green tea leaves with a small tea bowl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[242] f52_B
+Macro close-up of the material and craftsmanship of a 30 g package of premium green tea leaves with a small tea bowl, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+
+[243] f52_C
+A 30 g package of premium green tea leaves with a small tea bowl in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+
+[244] f53_A
+Product photo of a 320 g jar of traditional fermented soybean paste in a brass-colored lid, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[245] f53_B
+Macro close-up of the material and craftsmanship of a 320 g jar of traditional fermented soybean paste in a brass-colored lid, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+
+[246] f53_C
+A 320 g jar of traditional fermented soybean paste in a brass-colored lid in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+
+[247] f54_A
+Product photo of a 3 kg container of white gardenia kimchi, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[248] f54_B
+Macro close-up of the material and craftsmanship of a 3 kg container of white gardenia kimchi, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+
+[249] f54_C
+A 3 kg container of white gardenia kimchi in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+
+[250] f55_A
+Product photo of a three-tier holiday gift box of traditional hangwa sweets, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[251] f55_B
+Macro close-up of the material and craftsmanship of a three-tier holiday gift box of traditional hangwa sweets, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+
+[252] f55_C
+A three-tier holiday gift box of traditional hangwa sweets in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+
+[253] f56_A
+Product photo of a gift set of hangwa sweets and dried beef jerky, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[254] f56_B
+Macro close-up of the material and craftsmanship of a gift set of hangwa sweets and dried beef jerky, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+
+[255] f56_C
+A gift set of hangwa sweets and dried beef jerky in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+
+[256] s01-celadon_A
+Product photo of a Korean tea cup made of pale jade-green celadon glaze with fine crackle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[257] s01-lacquer_A
+Product photo of a Korean tea cup made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[258] s01-onggi_A
+Product photo of a Korean tea cup made of earthy brown onggi earthenware, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[259] s01-porcelain_A
+Product photo of a Korean tea cup made of white porcelain with blue cobalt painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[260] s02-brass_A
+Product photo of a Korean serving bowl and plate made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[261] s02-celadon_A
+Product photo of a Korean serving bowl and plate made of pale jade-green celadon glaze with fine crackle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[262] s02-lacquer_A
+Product photo of a Korean serving bowl and plate made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[263] s02-onggi_A
+Product photo of a Korean serving bowl and plate made of earthy brown onggi earthenware, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[264] s02-porcelain_A
+Product photo of a Korean serving bowl and plate made of white porcelain with blue cobalt painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[265] s03-brass_A
+Product photo of a Korean spoon and chopsticks set made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[266] s03-celadon_A
+Product photo of a Korean spoon and chopsticks set made of pale jade-green celadon glaze with fine crackle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[267] s03-lacquer_A
+Product photo of a Korean spoon and chopsticks set made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[268] s03-porcelain_A
+Product photo of a Korean spoon and chopsticks set made of white porcelain with blue cobalt painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[269] s04-brass_A
+Product photo of a Korean liquor cup and small bottle made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[270] s04-celadon_A
+Product photo of a Korean liquor cup and small bottle made of pale jade-green celadon glaze with fine crackle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[271] s04-lacquer_A
+Product photo of a Korean liquor cup and small bottle made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[272] s04-onggi_A
+Product photo of a Korean liquor cup and small bottle made of earthy brown onggi earthenware, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[273] s04-porcelain_A
+Product photo of a Korean liquor cup and small bottle made of white porcelain with blue cobalt painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[274] s05-lacquer_A
+Product photo of a small Korean traditional tray table (soban) made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[275] s05-najeon_A
+Product photo of a small Korean traditional tray table (soban) made of black lacquer inlaid with iridescent mother-of-pearl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[276] s05-wood_A
+Product photo of a small Korean traditional tray table (soban) made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[277] s06-bamboo_A
+Product photo of a kitchen cutting board made of natural carved and woven bamboo, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[278] s06-brass_A
+Product photo of a kitchen cutting board made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[279] s06-lacquer_A
+Product photo of a kitchen cutting board made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[280] s06-wood_A
+Product photo of a kitchen cutting board made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[281] s07-onggi_A
+Product photo of a Korean storage jar made of earthy brown onggi earthenware, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[282] s08-brass_A
+Product photo of a Korean cooking pot with lid made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[283] s08-onggi_A
+Product photo of a Korean cooking pot with lid made of earthy brown onggi earthenware, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[284] s10-bamboo_A
+Product photo of a table lamp made of natural carved and woven bamboo, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[285] s10-hanji_A
+Product photo of a table lamp made of handmade mulberry hanji paper, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[286] s10-lacquer_A
+Product photo of a table lamp made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[287] s10-textile_A
+Product photo of a table lamp made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[288] s10-wood_A
+Product photo of a table lamp made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[289] s11-lacquer_A
+Product photo of a jewelry box made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[290] s11-najeon_A
+Product photo of a jewelry box made of black lacquer inlaid with iridescent mother-of-pearl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[291] s11-silk_A
+Product photo of a jewelry box made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[292] s11-wood_A
+Product photo of a jewelry box made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[293] s12-bamboo_A
+Product photo of a flower vase made of natural carved and woven bamboo, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[294] s12-celadon_A
+Product photo of a flower vase made of pale jade-green celadon glaze with fine crackle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[295] s12-lacquer_A
+Product photo of a flower vase made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[296] s12-najeon_A
+Product photo of a flower vase made of black lacquer inlaid with iridescent mother-of-pearl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[297] s12-porcelain_A
+Product photo of a flower vase made of white porcelain with blue cobalt painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[298] s12-textile_A
+Product photo of a flower vase made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[299] s13-lacquer_A
+Product photo of a small desk clock made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[300] s13-najeon_A
+Product photo of a small desk clock made of black lacquer inlaid with iridescent mother-of-pearl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

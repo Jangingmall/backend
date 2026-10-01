@@ -1,0 +1,193 @@
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 361~420번 이미지를 번호 순서대로 만들어 줘.
+
+진행 방식 (반드시 지켜)
+1. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 5장씩, 번호 순서대로, 서로 다른 별도 이미지로 만들어 줘.
+2. 이미지마다 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.
+3. 생성 한도에 걸리면 '[번호]까지 완료, 한도 도달'이라고만 말해 줘. 내가 '계속'이라고 하면 이어서 해 줘.
+4. 내가 '다시 [번호]'라고 하면 그 번호를 한 번 더 만들어 줘.
+5. 번호마다 목록의 영어 문장을 그대로 따라. 임의로 상품·색·구도를 바꾸지 마. 번호와 키는 내가 파일을 구분하는 용도이고 이미지에 쓰지 마.
+
+이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
+
+번호 목록
+[361] s28-silver_A
+Product photo of a Korean headband ornament (mangeon) made of polished sterling silver with fine engraving, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[362] s29-brass_A
+Product photo of a calligraphy brush and inkstone set made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[363] s29-enamel_A
+Product photo of a calligraphy brush and inkstone set made of deep blue cloisonne enamel with fine gold wire, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[364] s29-leather_A
+Product photo of a calligraphy brush and inkstone set made of natural leather and horsehair, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[365] s29-stone_A
+Product photo of a calligraphy brush and inkstone set made of dark polished inkstone, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[366] s29-textile_A
+Product photo of a calligraphy brush and inkstone set made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[367] s29-wood_A
+Product photo of a calligraphy brush and inkstone set made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[368] s30-brass_A
+Product photo of a stationery letter paper set made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[369] s30-hanji_A
+Product photo of a stationery letter paper set made of handmade mulberry hanji paper, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[370] s30-lacquer_A
+Product photo of a stationery letter paper set made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[371] s31-brass_A
+Product photo of a pen made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[372] s31-lacquer_A
+Product photo of a pen made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[373] s31-najeon_A
+Product photo of a pen made of black lacquer inlaid with iridescent mother-of-pearl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[374] s31-porcelain_A
+Product photo of a pen made of white porcelain with blue cobalt painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[375] s31-wood_A
+Product photo of a pen made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[376] s32-brass_A
+Product photo of a business card case made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[377] s32-hanji_A
+Product photo of a business card case made of handmade mulberry hanji paper, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[378] s32-lacquer_A
+Product photo of a business card case made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[379] s32-najeon_A
+Product photo of a business card case made of black lacquer inlaid with iridescent mother-of-pearl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[380] s33-brass_A
+Product photo of a pen holder made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[381] s33-celadon_A
+Product photo of a pen holder made of pale jade-green celadon glaze with fine crackle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[382] s33-lacquer_A
+Product photo of a pen holder made of glossy deep red-brown urushi lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[383] s33-najeon_A
+Product photo of a pen holder made of black lacquer inlaid with iridescent mother-of-pearl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[384] s33-porcelain_A
+Product photo of a pen holder made of white porcelain with blue cobalt painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[385] s33-wood_A
+Product photo of a pen holder made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[386] s34-silk_A
+Product photo of a floor cushion made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[387] s34-textile_A
+Product photo of a floor cushion made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[388] s35-silk_A
+Product photo of a blanket made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[389] s35-textile_A
+Product photo of a blanket made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[390] s36-silk_A
+Product photo of a table runner made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[391] s36-textile_A
+Product photo of a table runner made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[392] s37-silk_A
+Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[393] s37-textile_A
+Product photo of a bojagi wrapping cloth made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[394] s38-silk_A
+Product photo of a handkerchief made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[395] s38-textile_A
+Product photo of a handkerchief made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[396] s39-textile_A
+Product photo of an apron made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[397] s40-hanji_A
+Product photo of a woven floor mat made of handmade mulberry hanji paper, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[398] s40-textile_A
+Product photo of a woven floor mat made of natural ramie, hemp or cotton weave, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[399] s41-silk_A
+Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[400] s41-wood_A
+Product photo of a small embroidery piece in a frame made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[401] s42-silk_A
+Product photo of a framed artwork made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[402] s42-wood_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[403] s43-hanji_A
+Product photo of a folding screen made of handmade mulberry hanji paper, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[404] s43-silk_A
+Product photo of a folding screen made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[405] s43-wood_A
+Product photo of a folding screen made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[406] s44-hanji_A
+Product photo of a carved calligraphy plaque made of handmade mulberry hanji paper, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[407] s44-wood_A
+Product photo of a carved calligraphy plaque made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[408] s45-wood_A
+Product photo of a small wood carving figure made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[409] s46-hanji_A
+Product photo of a Korean traditional mask made of handmade mulberry hanji paper, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[410] s46-porcelain_A
+Product photo of a Korean traditional mask made of white porcelain with blue cobalt painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[411] s46-wood_A
+Product photo of a Korean traditional mask made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[412] s47-bamboo_A
+Product photo of a Korean ceremonial dagger made of natural carved and woven bamboo, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[413] s47-brass_A
+Product photo of a Korean ceremonial dagger made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[414] s47-enamel_A
+Product photo of a Korean ceremonial dagger made of deep blue cloisonne enamel with fine gold wire, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[415] s47-silver_A
+Product photo of a Korean ceremonial dagger made of polished sterling silver with fine engraving, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[416] s48-bamboo_A
+Product photo of a Korean traditional drum made of natural carved and woven bamboo, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[417] s48-brass_A
+Product photo of a Korean traditional drum made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[418] s48-wood_A
+Product photo of a Korean traditional drum made of natural solid hardwood with visible grain, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[419] s49-brass_A
+Product photo of a Buddhist temple bell ornament made of hand-hammered golden bangjja brass, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+[420] s49-silk_A
+Product photo of a Buddhist temple bell ornament made of lustrous silk in soft colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+
+위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

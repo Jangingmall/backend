@@ -5,6 +5,7 @@
   - prompts_all.txt   번호·파일 키·프롬프트 (한 줄이 이미지 한 장)
   - batches.txt       5개씩 묶어 그대로 붙여 넣는 배치
   - manifest.json     번호 → 키·종류·대상 (적용 스크립트가 쓴다)
+  - master_prompt_NN.txt 대화형 AI에 한 번에 붙여 넣는 60개 묶음(8개)
 실행: python3 scripts/demo-products/photoreal_all.py
 """
 import importlib.util
@@ -193,6 +194,25 @@ def main():
         body = "\n".join(f"[{i + j + 1:03d}] {c[1]} — {c[4]}" for j, c in enumerate(chunk))
         out.append(f"=== 배치 {i // 5 + 1:02d} ([{i + 1:03d}]–[{i + len(chunk):03d}]) ===\n" + head.format(n=len(chunk)) + body + "\n")
     open(os.path.join(OUT, "batches.txt"), "w", encoding="utf-8").write("\n".join(out))
+
+    # 대화형 AI에 한 번에 붙여 넣는 마스터 프롬프트 (60개씩)
+    head2 = ("너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 {a}~{b}번 이미지를 번호 순서대로 만들어 줘.\n\n"
+             "진행 방식 (반드시 지켜)\n"
+             "1. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 5장씩, 번호 순서대로, 서로 다른 별도 이미지로 만들어 줘.\n"
+             "2. 이미지마다 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.\n"
+             "3. 생성 한도에 걸리면 '[번호]까지 완료, 한도 도달'이라고만 말해 줘. 내가 '계속'이라고 하면 이어서 해 줘.\n"
+             "4. 내가 '다시 [번호]'라고 하면 그 번호를 한 번 더 만들어 줘.\n"
+             "5. 번호마다 목록의 영어 문장을 그대로 따라. 임의로 상품·색·구도를 바꾸지 마. 번호와 키는 내가 파일을 구분하는 용도이고 이미지에 쓰지 마.\n\n"
+             "이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). "
+             "글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. "
+             "_B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. "
+             "접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.\n\n번호 목록\n")
+    for k in range(0, len(items), 60):
+        chunk = items[k:k + 60]
+        body = "\n\n".join(f"[{k + j + 1:03d}] {c[1]}\n{c[4]}" for j, c in enumerate(chunk))
+        tail = "\n\n위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘."
+        open(os.path.join(OUT, f"master_prompt_{k // 60 + 1:02d}.txt"), "w", encoding="utf-8").write(
+            head2.format(a=k + 1, b=k + len(chunk)) + body + tail + "\n")
     from collections import Counter
     print(Counter(i[0] for i in items), len(items), "batches", len(out))
 
