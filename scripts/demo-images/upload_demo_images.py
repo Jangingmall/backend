@@ -2,18 +2,22 @@
 """시연용 상품 사진을 백엔드 이미지 API로 올리고 공개 링크를 만든다 (임시 도구 — merge 전 제거).
 
 백엔드의 정식 업로드 흐름을 그대로 쓴다. S3 자격 증명이 필요 없다.
-  1) POST /api/images/presigned-url  (AGENT 토큰 + memberId) -> 320w/640w/1280w 업로드 주소
+  1) POST /api/images/presigned-url  -> 320w/640w/1280w 업로드 주소
   2) 각 WebP 변형을 업로드 주소로 PUT
-  3) POST /internal/images/verify    -> 업로드를 확정(consume)해 24시간 뒤 자동 삭제되지 않게 한다
+  3) 업로드 확정(consume): 확정하지 않으면 24시간 뒤 자동 삭제된다
+       - 장인 계정 모드(--email/--password): 로그인 후 --attach-product-id 상품의 이미지로 연결한다
+       - AGENT 모드(--token/--member-id)   : POST /internal/images/verify
   4) 공개 주소(viewUrl)를 3초 안에 내려받아 image/webp 인지 확인한다
 
 같은 사진(화소가 같거나 거의 같은 사진)은 한 번만 올리고 링크를 재사용한다.
 
-사용 예:
+사용 예 (장인 계정):
   python3 scripts/demo-images/upload_demo_images.py --src tmp-demo-images/hapjukseon-maehwa/source \
-      --base-url https://<STG API 주소> --token <AGENT 토큰> --member-id <소유 회원 ID> --out manifest.json
+      --base-url https://api.stg.midam.store --email stgArtisan@midam.store --password <비밀번호> \
+      --attach-product-id 750 --out manifest.json
   (--dry-run 이면 변환·중복 검사만 하고 네트워크를 쓰지 않는다)
-환경변수 DEMO_API_BASE_URL / DEMO_AGENT_TOKEN / DEMO_MEMBER_ID 로도 줄 수 있다. 필요: pip install pillow
+환경변수 DEMO_API_BASE_URL / DEMO_LOGIN_EMAIL / DEMO_LOGIN_PASSWORD / DEMO_PRODUCT_ID / DEMO_AGENT_TOKEN /
+DEMO_MEMBER_ID 로도 줄 수 있다. 필요: pip install pillow
 """
 import argparse
 import glob
@@ -137,7 +141,16 @@ def public_check(url):
     return False, last
 
 
+def login(base_url, email, password):
+    data = api_json("POST", f"{base_url}/api/member/login", None, {"email": email, "password": password})
+    token = data.get("accessToken")
+    if not token:
+        fail("로그인 응답에 accessToken 이 없습니다.")
+    return token
+
+
 def upload_one(base_url, token, member_id, name, image, variants):
+    """presign + PUT. member_id 가 있으면 AGENT 모드(요청 본문에 memberId), 없으면 로그인한 장인 본인 이름으로 올린다."""
     body = {
         "fileName": f"{name}.webp",
         "contentType": "image/webp",
@@ -145,20 +158,44 @@ def upload_one(base_url, token, member_id, name, image, variants):
         "sourceWidth": image.width,
         "sourceHeight": image.height,
         "variants": [{"name": key, "sizeBytes": len(data)} for key, data in variants.items()],
-        "memberId": member_id,
     }
+    if member_id:
+        body["memberId"] = member_id
     presigned = api_json("POST", f"{base_url}/api/images/presigned-url", token, body)
     image_id = presigned["imageId"]
-    for item in presigned.get("uploads") or presigned.get("variants"):
+    items = presigned.get("uploads") or presigned.get("variants")
+    for item in items:
         status, _, raw = request("PUT", item.get("presignedUrl") or item["uploadUrl"], body=variants[item["variant"]],
                                  content_type="image/webp", timeout=60)
         if status >= 300:
             fail(f"{name} {item['variant']} 업로드 실패 HTTP {status} {raw[:200].decode(errors='replace')}")
-    verified = api_json("POST", f"{base_url}/internal/images/verify", token, {"imageId": image_id, "requesterId": member_id})
-    if not (verified.get("exists") and verified.get("ownerMatched")):
-        fail(f"{name} ({image_id}) 확정 실패: {verified}")
-    urls = {item["variant"]: item["viewUrl"] for item in (presigned.get("uploads") or presigned.get("variants"))}
-    return image_id, urls
+    if member_id:  # AGENT 모드는 여기서 바로 확정한다. 장인 모드는 상품 연결로 확정한다.
+        verified = api_json("POST", f"{base_url}/internal/images/verify", token, {"imageId": image_id, "requesterId": member_id})
+        if not (verified.get("exists") and verified.get("ownerMatched")):
+            fail(f"{name} ({image_id}) 확정 실패: {verified}")
+    return image_id, {item["variant"]: item["viewUrl"] for item in items}
+
+
+def attach_to_product(base_url, token, product_id, image_ids):
+    """상품의 이미지 목록을 올린 사진으로 바꿔 업로드를 확정한다(현재 상품 정보는 그대로 유지)."""
+    current = api_json("GET", f"{base_url}/api/products/{product_id}", None, None)
+    body = {
+        "categoryId": current.get("categoryId"),
+        "subcategoryId": current.get("subcategoryId"),
+        "title": current["title"],
+        "description": current.get("description"),
+        "price": current["price"],
+        "stock": current["stock"],
+        "thumbnailUrl": current.get("thumbnailUrl"),
+        "giftThemes": current.get("giftThemes") or [],
+        "purposeTags": current.get("purposeTags") or [],
+        "productionPeriodDays": current.get("productionPeriodDays"),
+        "colors": current.get("colors") or [],
+        "images": image_ids,
+    }
+    updated = api_json("PATCH", f"{base_url}/api/products/{product_id}", token, body)
+    print(f"  상품 {product_id} 이미지 {len(image_ids)}장 연결 완료 ({updated.get('title')})")
+    return updated
 
 
 def main():
@@ -167,6 +204,9 @@ def main():
     parser.add_argument("--base-url", default=os.environ.get("DEMO_API_BASE_URL"))
     parser.add_argument("--token", default=os.environ.get("DEMO_AGENT_TOKEN"))
     parser.add_argument("--member-id", type=int, default=int(os.environ["DEMO_MEMBER_ID"]) if os.environ.get("DEMO_MEMBER_ID") else None)
+    parser.add_argument("--email", default=os.environ.get("DEMO_LOGIN_EMAIL"))
+    parser.add_argument("--password", default=os.environ.get("DEMO_LOGIN_PASSWORD"))
+    parser.add_argument("--attach-product-id", type=int, default=int(os.environ["DEMO_PRODUCT_ID"]) if os.environ.get("DEMO_PRODUCT_ID") else None)
     parser.add_argument("--out", default="manifest.json")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
@@ -177,6 +217,17 @@ def main():
     for dup, original in duplicates.items():
         print(f"  중복: {os.path.basename(dup)} == {os.path.basename(original)} (한 번만 업로드)")
 
+    token, member_id, base_url = args.token, args.member_id, (args.base_url or "").rstrip("/")
+    if not args.dry_run:
+        if not base_url:
+            fail("--base-url 이 필요합니다 (또는 DEMO_API_BASE_URL).")
+        if args.email and args.password:  # 장인 계정 모드
+            token, member_id = login(base_url, args.email, args.password), None
+            if not args.attach_product_id:
+                print("[경고] --attach-product-id 가 없으면 업로드가 확정되지 않아 24시간 뒤 자동 삭제됩니다.", file=sys.stderr)
+        elif not (token and member_id):
+            fail("--email/--password(장인 계정) 또는 --token/--member-id(AGENT) 가 필요합니다.")
+
     entries = []
     for item in unique:
         name = os.path.splitext(os.path.basename(item["path"]))[0]
@@ -184,14 +235,14 @@ def main():
         entry = {"name": name, "sha256": item["sha"], "source": item["path"], "width": item["image"].width,
                  "height": item["image"].height, "variantBytes": {k: len(v) for k, v in variants.items()}}
         if not args.dry_run:
-            if not (args.base_url and args.token and args.member_id):
-                fail("--base-url, --token, --member-id 가 필요합니다 (또는 DEMO_* 환경변수).")
-            image_id, urls = upload_one(args.base_url.rstrip("/"), args.token, args.member_id, name, item["image"], variants)
+            image_id, urls = upload_one(base_url, token, member_id, name, item["image"], variants)
             entry.update({"imageId": image_id, "urls": urls})
             checks = {variant: public_check(url) for variant, url in urls.items()}
             entry["publicCheck"] = {variant: {"ok": ok, "detail": detail} for variant, (ok, detail) in checks.items()}
             print(f"  {name}: {image_id} " + ", ".join(f"{v}={'OK' if ok else 'FAIL'}" for v, (ok, _) in checks.items()))
         entries.append(entry)
+    if not args.dry_run and args.email and args.attach_product_id:
+        attach_to_product(base_url, token, args.attach_product_id, [e["imageId"] for e in entries if e.get("imageId")])
     for dup, original in duplicates.items():
         base = next(e for e in entries if e["source"] == original)
         entries.append({"name": os.path.splitext(os.path.basename(dup))[0], "duplicateOf": base["name"],
