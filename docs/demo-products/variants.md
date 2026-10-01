@@ -7,24 +7,25 @@
 
 | 묶음 | 이름 | 이미지 | 상품 수 |
 |---|---|---|---|
-| wood | 목재 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/wood.webp) | 116 |
-| silk | 비단·명주 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/silk.webp) | 108 |
-| textile | 면·모시·삼베 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/textile.webp) | 98 |
+| wood | 목재 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/wood.webp) | 115 |
+| silk | 비단·명주 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/silk.webp) | 107 |
+| textile | 면·모시·삼베 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/textile.webp) | 83 |
 | brass | 방짜유기·황동 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/brass.webp) | 63 |
-| rice | 떡·한과·곡물 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/rice.webp) | 40 |
+| rice | 떡·한과·곡물 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/rice.webp) | 45 |
 | lacquer | 옻칠 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/lacquer.webp) | 39 |
 | hanji | 한지 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/hanji.webp) | 39 |
-| celadon | 청자·분청 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/celadon.webp) | 32 |
-| paste | 장·김치 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/paste.webp) | 31 |
 | najeon | 나전·자개 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/najeon.webp) | 30 |
+| paste | 장·김치 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/paste.webp) | 29 |
+| celadon | 청자·분청 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/celadon.webp) | 28 |
 | onggi | 옹기·흙 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/onggi.webp) | 28 |
-| porcelain | 백자·도자기 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/porcelain.webp) | 20 |
-| silver | 은·백동 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/silver.webp) | 20 |
+| tea | 차 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/tea.webp) | 24 |
+| porcelain | 백자·도자기 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/porcelain.webp) | 19 |
+| jade | 옥·보석 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/jade.webp) | 18 |
+| silver | 은·백동 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/silver.webp) | 17 |
 | bamboo | 대나무 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/bamboo.webp) | 16 |
-| tea | 차 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/tea.webp) | 15 |
-| jade | 옥·보석 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/jade.webp) | 12 |
-| leather | 가죽·모피 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/leather.webp) | 12 |
+| leather | 가죽·모피 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/leather.webp) | 15 |
 | enamel | 칠보 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/enamel.webp) | 10 |
+| stone | 벼루·돌 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/stone.webp) | 4 |
 
 ## 대표 상품 56개 (소분류마다 먼저 등록된 상품, 상품명 색 반영)
 
@@ -58,7 +59,7 @@
 | f26 | 구혜자 무형유산 당의 한복 맞춤 세트 | 한복·생활한복 | 비단·명주 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f26.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/silk.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f26-2.webp) |
 | f27 | 정춘모 무형유산 흑대립 정통 조선 갓 | 갓·모자 | 가죽·모피 | 검정 | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f27.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/leather.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f27-2.webp) |
 | f28 | 정춘모 무형유산 말총 망건 | 망건·머리장식 | 가죽·모피 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f28.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/leather.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f28-2.webp) |
-| f29 | 성심필방 전통 수제 겸호필 붓 세트 (3종) | 붓·먹·벼루 | 면·모시·삼베 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f29.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/textile.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f29-2.webp) |
+| f29 | 성심필방 전통 수제 겸호필 붓 세트 (3종) | 붓·먹·벼루 | 가죽·모피 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f29.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/leather.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f29-2.webp) |
 | f30 | 윤규상 무형유산 수제 닥종이 한지 편지지 세트 | 한지·편지지 | 한지 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f30.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/hanji.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f30-2.webp) |
 | f31 | 숍오브코리아 나전칠기 나비 자개 수제 볼펜 | 볼펜·만년필 | 나전·자개 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f31.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/najeon.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f31-2.webp) |
 | f32 | 숍오브코리아 나전칠기 적매화 자개 명함집 | 명함집 | 나전·자개 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f32.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/najeon.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f32-2.webp) |
@@ -87,4 +88,4 @@
 | f55 | 담양한과 3단 예향 명절 한과선물세트 | 떡·한과 | 떡·한과·곡물 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f55.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/rice.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f55-2.webp) |
 | f56 | 담양한과 궁중 명가 한과 육포 종합 선물세트 | 궁중음식·선물세트 | 떡·한과·곡물 | - | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f56.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/materials/rice.webp) | [보기](https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/flagship/f56-2.webp) |
 
-변형 대표 이미지 184개는 `docs/demo-products/variants/s<소분류>-<묶음>.webp` 이다.
+변형 대표 이미지 180개는 `docs/demo-products/variants/s<소분류>-<묶음>.webp` 이다.

@@ -170,6 +170,24 @@ def rice(d, box, light, dark, seed_=30):
         d.ellipse((x, y, x + 6, y + 9), fill=rgb("#3a2c22"))
 
 
+def stone(d, box, light, dark, seed_=32):
+    """벼루·돌: 짙은 회색 돌결과 잔 흠."""
+    rnd = random.Random(seed_)
+    x0, y0, x1, y1 = box
+    d.rectangle(box, fill=rgb(light))
+    for _ in range(260):
+        x, y, r = rnd.randint(0, 800), rnd.randint(0, 800), rnd.randint(10, 70)
+        d.ellipse((x - r, y - r * 0.6, x + r, y + r * 0.6), fill=rgb(dark if rnd.random() < 0.55 else "#9aa0a6", rnd.randint(16, 46)))
+    for _ in range(18):
+        x, y = rnd.randint(0, 800), rnd.randint(0, 800)
+        pts = [(x, y)]
+        for _ in range(6):
+            x += rnd.randint(-40, 40)
+            y += rnd.randint(10, 50)
+            pts.append((x, y))
+        d.line(pts, fill=rgb(dark, 120), width=2)
+
+
 def porcelain(d, box, light, dark, seed_=31):
     """백자: 맑은 흰 유약과 청화 붓 무늬."""
     x0, y0, x1, y1 = box
@@ -205,6 +223,7 @@ CLASSES = {
     "hanji": ("한지", ("#faf6ea", "#e9e0c6", "#b9a46a", "#4d4220", "#f3ecd3"), lambda d, b, l, k: art.hanji(d, b, l, k)),
     "bamboo": ("대나무", ("#eff5ec", "#d5e3cf", "#5f8f4e", "#2c4a22", "#cfe6c3"), bamboo),
     "leather": ("가죽·모피", ("#f4ece2", "#dbc6ab", "#8a5a30", "#3a2410", "#a8784a"), leather),
+    "stone": ("벼루·돌", ("#f1f1f1", "#d3d6d9", "#4a4f55", "#23272b", "#6b7279"), stone),
     "wood": ("목재", ("#f4eee3", "#dccdb0", "#a8763e", "#5e3b1c", "#e8cfa5"), wood),
     "textile": ("면·모시·삼베", ("#f4f0e6", "#ded4bd", "#a38b5c", "#4a3b1f", "#e6dbbd"), lambda d, b, l, k: art.weave(d, b, l, k)),
     "paste": ("장·김치", ("#fbeee6", "#ecc9b4", "#b22a1e", "#5a1a10", "#f1d4b8"), paste),
@@ -214,16 +233,18 @@ CLASSES = {
 TOKEN_RULES = [  # (묶음, 포함하는 낱말) — 소재의 첫 낱말부터 이 순서로 맞춰 본다
     ("lacquer", ["옻칠"]), ("najeon", ["나전", "자개"]), ("enamel", ["칠보"]),
     ("brass", ["유기", "놋쇠", "황동", "신주", "두석", "금도금", "금속", "무쇠", "쇠", "철", "스테인리스"]),
-    ("silver", ["순은", "백동", "은사", "은침", "은상감"]), ("jade", ["옥", "비취", "산호", "호박", "자수정", "원석", "석"]),
+    ("silver", ["순은", "백동", "은사", "은침", "은상감"]), ("jade", ["옥", "비취", "산호", "호박", "자수정", "원석"]),
     ("celadon", ["청자", "분청", "자기"]), ("porcelain", ["백자", "도자기", "세라믹"]),
+    ("stone", ["남포석", "단령석", "오석", "돌", "석"]),
     ("onggi", ["옹기", "흙"]), ("silk", ["비단", "명주", "실크", "양단", "오간자", "금사", "솜", "금박"]),
     ("hanji", ["한지", "닥종이", "종이", "PP"]), ("bamboo", ["대나무", "오죽", "시누대", "물뿔", "대올", "대"]),
     ("leather", ["가죽", "우피", "털", "말총", "인모", "마이크로"]),
     ("wood", ["원목", "나무", "목재", "느티", "오동", "박달", "소나무", "물푸레", "캄포", "유자목", "은행", "먹감", "고급 원목"]),
     ("textile", ["모시", "삼베", "면", "리넨", "울", "모직", "양모", "마", "짚", "왕골", "실", "아크릴", "캔버스"]),
-    ("paste", ["간장", "고추장", "된장", "고춧가루", "액젓", "김치", "배추", "무", "열무", "갓", "쪽파", "오이", "부추", "마늘", "깻잎", "우엉", "도라지", "대두", "천일염", "감자", "단감", "매실", "굴비", "알타리", "식품"]),
+    ("tea", ["도라지", "우엉"]),
+    ("paste", ["간장", "고추장", "된장", "고춧가루", "액젓", "김치", "배추", "무", "열무", "갓", "쪽파", "오이", "부추", "마늘", "깻잎", "우엉", "도라지", "대두", "천일염", "감자", "단감", "매실", "굴비", "알타리", "식품", "무말랭이", "돌산갓"]),
     ("tea", ["차", "녹차", "잎", "국화", "생강나무꽃", "산수유", "황차", "수국"]),
-    ("rice", ["찹쌀", "쌀", "조청", "엿", "튀밥", "백미", "밀가루", "메밀", "수수", "견과", "아몬드", "솔잎", "꿀", "누룩", "흑임자", "소곡주", "한과", "조"]),
+    ("rice", ["찹쌀", "쌀", "조청", "엿", "튀밥", "백미", "밀가루", "메밀", "수수", "견과", "아몬드", "솔잎", "꿀", "누룩", "흑임자", "소곡주", "한과", "조", "생강", "계피", "배"]),
 ]
 OVERRIDE = [("lacquer", "옻칠"), ("najeon", "나전"), ("najeon", "자개"), ("enamel", "칠보")]
 
@@ -234,7 +255,7 @@ def classify(material):
             return name
     for token in material.split():
         for name, words in TOKEN_RULES:
-            if any((token == w) if len(w) == 1 else (w in token) for w in words):
+            if any(token.endswith(w) if len(w) == 1 else (w in token) for w in words):
                 return name
     return "textile"
 
@@ -317,6 +338,9 @@ def main():
     products = json.load(open(os.path.join(os.path.dirname(__file__), "seed_products.json"), encoding="utf-8"))
     for p in products:
         p["cls"] = classify(p["material"])
+    import shutil
+    for sub in ("variants", "materials", "flagship"):
+        shutil.rmtree(os.path.join(DOCS, sub), ignore_errors=True)
     # 1) 소재 확대 이미지
     used = sorted({p["cls"] for p in products})
     macros = {cls: macro(cls) for cls in used}
