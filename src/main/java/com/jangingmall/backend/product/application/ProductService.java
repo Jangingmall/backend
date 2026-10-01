@@ -289,8 +289,40 @@ public class ProductService {
                     .stream().map(variant -> new ProductResponse.ImageVariantView(
                         variant.url(), variant.width(), variant.height(), variant.format())).toList()))
             .toList();
+        if (includeContent && images.isEmpty()) {
+            images = detailGallery(product);
+        }
         List<ProductResponse.ContentBlockView> blocks = includeContent ? contentBlocks(product) : List.of();
         return ProductResponse.from(product, images, blocks);
+    }
+
+    /**
+     * 업로드 이미지가 없는 상품의 상세 갤러리: 대표 이미지(thumbnail_url)에 이어 product_detail_image 의 주소를 순서대로 붙인다.
+     * 화면(FE)은 images[].variants 의 마지막 주소를 쓰므로 변형 하나짜리로 만든다. 이미지가 하나도 없으면 빈 목록이다.
+     */
+    static List<ProductResponse.ProductImageView> galleryFrom(String title, String thumbnailUrl, List<String> detailImageUrls) {
+        List<String> urls = new java.util.ArrayList<>();
+        if (thumbnailUrl != null && !thumbnailUrl.isBlank()) {
+            urls.add(thumbnailUrl);
+        }
+        if (detailImageUrls != null) {
+            detailImageUrls.stream().filter(url -> url != null && !url.isBlank() && !urls.contains(url)).forEach(urls::add);
+        }
+        if (urls.size() <= 1) {
+            return List.of();
+        }
+        List<ProductResponse.ProductImageView> views = new java.util.ArrayList<>();
+        for (int index = 0; index < urls.size(); index++) {
+            String url = urls.get(index);
+            String extension = url.contains(".") ? url.substring(url.lastIndexOf('.') + 1).toLowerCase() : "webp";
+            views.add(new ProductResponse.ProductImageView("gallery-" + (index + 1), title,
+                List.of(new ProductResponse.ImageVariantView(url, 800, 800, extension))));
+        }
+        return List.copyOf(views);
+    }
+
+    private List<ProductResponse.ProductImageView> detailGallery(Product product) {
+        return galleryFrom(product.getTitle(), product.getThumbnailUrl(), product.getDetailImageUrls());
     }
 
     private List<ProductResponse.ContentBlockView> contentBlocks(Product product) {

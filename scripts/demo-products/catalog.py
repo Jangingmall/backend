@@ -27,6 +27,7 @@ PALETTES = {
     "ivory":  ("#faf6ea", "#e9e0c6", "#b9a46a", "#4d4220", "#f3ecd3"),
 }
 
+# detail_images: 상세 화면 갤러리에 대표 이미지 뒤로 붙는 이미지(없으면 특징 카드·상품 정보 카드를 자동으로 그린다).
 # image: None 이면 위 팔레트로 새로 그린다. 문자열이면 이미 만든 시연 일러스트(docs/ 기준 경로)를 쓴다.
 # 장인(artisan)·소분류(sub) 번호는 시드 데이터(V7·V9) 기준이다.
 PRODUCTS = [
@@ -161,15 +162,21 @@ PRODUCTS = [
          material="대나무·한지", days=14, themes=["BIRTHDAY_60TH", "WEDDING"], tags=["전통공예", "선물", "부채"], colors=["흰색"],
          intro="담양 왕대를 3년 건조해 손으로 겉대·속대를 깎고, 한지를 겹겹이 붙여 선면을 만들었습니다. 매화를 한 획씩 직접 그려 같은 부채가 하나도 없습니다.",
          features=["대나무 겉대 두 쪽을 붙인 합죽선", "닥나무 한지 선면", "선추 달린 접부채"],
-         image="demo-images/hapjukseon-maehwa-illustrated/01-hero.webp"),
+         image="demo-images/hapjukseon-maehwa-illustrated/01-hero.webp",
+         detail_images=["demo-images/hapjukseon-maehwa-illustrated/03-detail.webp",
+                        "demo-images/hapjukseon-maehwa-illustrated/06-detail-02.webp"]),
     dict(key="p32", name="청자 운학문 찻잔", artisan=20, sub=1, kind="teacup", color="teal", price=85000, stock=12,
          material="청자", days=21, themes=["BIRTHDAY_60TH", "PARENTS", "BOSS"], tags=["다도", "전통공예", "선물"], colors=["비색"],
          intro="푸른 비색 유약에 학과 구름을 상감한 찻잔입니다. 차를 따르면 유약의 푸른빛이 은은하게 비칩니다.",
          features=["비색 유약", "운학문 상감", "용량 약 150ml"],
-         image="demo-images/cheongja-bunjeong-teacup/01-hero-celadon.webp"),
+         image="demo-images/cheongja-bunjeong-teacup/01-hero-celadon.webp",
+         detail_images=["demo-images/cheongja-bunjeong-teacup/05-detail-foot.webp",
+                        "demo-images/cheongja-bunjeong-teacup/06-gift-set.webp"]),
     dict(key="p33", name="분청 귀얄 찻잔", artisan=20, sub=1, kind="teacup", color="natural", price=72000, stock=14,
          material="분청사기", days=21, themes=["HOUSEWARMING", "FRIEND"], tags=["다도", "전통공예", "선물"], colors=["회백색"],
          intro="백토를 귀얄(풀비)로 쓸듯이 바르고 철화로 풀꽃을 그린 분청 찻잔입니다. 투박한 붓결이 손에 따뜻하게 잡힙니다.",
          features=["백토 귀얄 분장", "철화 풀꽃 무늬", "용량 약 150ml"],
-         image="demo-images/cheongja-bunjeong-teacup/02-hero-bunjeong.webp"),
+         image="demo-images/cheongja-bunjeong-teacup/02-hero-bunjeong.webp",
+         detail_images=["demo-images/cheongja-bunjeong-teacup/03-pair.webp",
+                        "demo-images/cheongja-bunjeong-teacup/04-techniques.webp"]),
 ]

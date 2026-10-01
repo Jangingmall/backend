@@ -5,6 +5,14 @@
 -- 서버(S3/CDN)가 꺼져 있어도 열리고 업로드 만료가 없다. 이미 같은 이름의 상품이 있으면 다시 넣지 않는다.
 -- 장인(artisan_id)·소분류(subcategory_id)는 시드 데이터 기준이다. 가격·재고·소개는 시연용 가짜 값이다.
 
+-- 상세 화면 갤러리용 이미지 주소(대표 이미지 뒤에 이어 붙는다). 업로드 이미지(product_image)가 없는 상품에만 쓴다.
+CREATE TABLE IF NOT EXISTS product_detail_image (
+    product_id    BIGINT       NOT NULL REFERENCES product (product_id) ON DELETE CASCADE,
+    display_order INT          NOT NULL,
+    image_url     VARCHAR(500) NOT NULL,
+    PRIMARY KEY (product_id, display_order)
+);
+
 WITH new_products AS (
     INSERT INTO product (artisan_id, category_id, subcategory_id, title, description, material, price, stock,
                          thumbnail_url, production_period_days, is_limited, is_custom_order, is_single_item,
@@ -223,6 +231,79 @@ purpose AS (
     ('분청 귀얄 찻잔', '전통공예'),
     ('분청 귀얄 찻잔', '선물')
     ) AS t(title, purpose_tag) ON t.title = n.title
+    RETURNING 1
+),
+detail AS (
+    INSERT INTO product_detail_image (product_id, display_order, image_url)
+    SELECT n.product_id, t.display_order, t.image_url FROM new_products n
+    JOIN (VALUES
+    ('연분홍 모시 생활한복 저고리', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p01-1.webp'),
+    ('연분홍 모시 생활한복 저고리', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p01-2.webp'),
+    ('쪽빛 누비 복주머니', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p02-1.webp'),
+    ('쪽빛 누비 복주머니', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p02-2.webp'),
+    ('매화 자수 손수건 세트', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p03-1.webp'),
+    ('매화 자수 손수건 세트', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p03-2.webp'),
+    ('오방색 조각보 파우치', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p04-1.webp'),
+    ('오방색 조각보 파우치', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p04-2.webp'),
+    ('연둣빛 모시 스카프', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p05-1.webp'),
+    ('연둣빛 모시 스카프', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p05-2.webp'),
+    ('홍매 삼작 노리개', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p06-1.webp'),
+    ('홍매 삼작 노리개', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p06-2.webp'),
+    ('쪽빛 매듭 키링', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p07-1.webp'),
+    ('쪽빛 매듭 키링', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p07-2.webp'),
+    ('조각보 카드지갑', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p08-1.webp'),
+    ('조각보 카드지갑', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p08-2.webp'),
+    ('은빛 매화 비녀', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p09-1.webp'),
+    ('은빛 매화 비녀', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p09-2.webp'),
+    ('옥빛 매듭 귀걸이', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p10-1.webp'),
+    ('옥빛 매듭 귀걸이', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p10-2.webp'),
+    ('수자수 모란도 액자', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p11-1.webp'),
+    ('수자수 모란도 액자', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p11-2.webp'),
+    ('한지 산수화 액자', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p12-1.webp'),
+    ('한지 산수화 액자', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p12-2.webp'),
+    ('오방 누비 방석', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p13-1.webp'),
+    ('오방 누비 방석', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p13-2.webp'),
+    ('모시 테이블 러너', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p14-1.webp'),
+    ('모시 테이블 러너', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p14-2.webp'),
+    ('한지 무드 조명', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p15-1.webp'),
+    ('한지 무드 조명', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p15-2.webp'),
+    ('하늘빛 한산모시 스카프', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p16-1.webp'),
+    ('하늘빛 한산모시 스카프', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p16-2.webp'),
+    ('모시 주방 앞치마', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p17-1.webp'),
+    ('모시 주방 앞치마', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p17-2.webp'),
+    ('모시 홑이불', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p18-1.webp'),
+    ('모시 홑이불', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p18-2.webp'),
+    ('민트 모시 보자기', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p19-1.webp'),
+    ('민트 모시 보자기', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p19-2.webp'),
+    ('모시 개량한복 상의', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p20-1.webp'),
+    ('모시 개량한복 상의', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p20-2.webp'),
+    ('은 매듭 팔찌', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p21-1.webp'),
+    ('은 매듭 팔찌', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p21-2.webp'),
+    ('옥 노리개 브로치', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p22-1.webp'),
+    ('옥 노리개 브로치', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p22-2.webp'),
+    ('칠보 푸른 반지', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p23-1.webp'),
+    ('칠보 푸른 반지', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p23-2.webp'),
+    ('금빛 떨잠', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p24-1.webp'),
+    ('금빛 떨잠', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p24-2.webp'),
+    ('진주 매듭 목걸이', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p25-1.webp'),
+    ('진주 매듭 목걸이', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p25-2.webp'),
+    ('나전 명함집', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p26-1.webp'),
+    ('나전 명함집', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p26-2.webp'),
+    ('나전 필통', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p27-1.webp'),
+    ('나전 필통', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p27-2.webp'),
+    ('칠보 문양 만년필', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p28-1.webp'),
+    ('칠보 문양 만년필', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p28-2.webp'),
+    ('서예 붓·먹·벼루 세트', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p29-1.webp'),
+    ('서예 붓·먹·벼루 세트', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p29-2.webp'),
+    ('한지 편지지 세트', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p30-1.webp'),
+    ('한지 편지지 세트', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/details/p30-2.webp'),
+    ('전주 합죽선 · 매화선', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/hapjukseon-maehwa-illustrated/03-detail.webp'),
+    ('전주 합죽선 · 매화선', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/hapjukseon-maehwa-illustrated/06-detail-02.webp'),
+    ('청자 운학문 찻잔', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/05-detail-foot.webp'),
+    ('청자 운학문 찻잔', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/06-gift-set.webp'),
+    ('분청 귀얄 찻잔', 0, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/03-pair.webp'),
+    ('분청 귀얄 찻잔', 1, 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-images/cheongja-bunjeong-teacup/04-techniques.webp')
+    ) AS t(title, display_order, image_url) ON t.title = n.title
     RETURNING 1
 )
 INSERT INTO product_color (product_id, color)

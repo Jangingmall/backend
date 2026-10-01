@@ -46,7 +46,7 @@ class DemoCuratedProductsMigrationTest {
     }
 
     @Test
-    @DisplayName("모든 상품의 대표 이미지는 저장소에 있는 WebP 파일(10MB 이하)을 가리킨다")
+    @DisplayName("대표 이미지 33개와 상세 이미지 66개는 모두 저장소에 있는 WebP 파일(10MB 이하)을 가리킨다")
     void everyThumbnailIsAnExistingWebpWithinLimits() throws Exception {
         Matcher matcher = Pattern.compile(Pattern.quote(RAW) + "([A-Za-z0-9_./-]+\\.webp)").matcher(sql);
         Set<String> paths = new HashSet<>();
@@ -55,7 +55,7 @@ class DemoCuratedProductsMigrationTest {
             total++;
             paths.add(matcher.group(1));
         }
-        assertThat(total).isEqualTo(33);
+        assertThat(total).isEqualTo(33 + 66);
         for (String path : paths) {
             Path file = Path.of("docs", path);
             assertThat(file).as(file.toString()).exists();
@@ -65,6 +65,25 @@ class DemoCuratedProductsMigrationTest {
             assertThat(new String(bytes, 8, 4, StandardCharsets.US_ASCII)).isEqualTo("WEBP");
         }
         assertThat(sql).doesNotContain("unsplash").doesNotContain("img.stg.midam.store");
+    }
+
+    @Test
+    @DisplayName("상세 갤러리용 이미지 테이블을 만들고 상품마다 상세 이미지 두 장을 순서대로 넣는다")
+    void insertsTwoDetailImagesPerProduct() {
+        assertThat(sql).contains("CREATE TABLE IF NOT EXISTS product_detail_image")
+            .contains("INSERT INTO product_detail_image (product_id, display_order, image_url)");
+        Matcher matcher = Pattern.compile("(?m)^    \\('[^']+', ([01]), '" + Pattern.quote(RAW)).matcher(sql);
+        int first = 0;
+        int second = 0;
+        while (matcher.find()) {
+            if (matcher.group(1).equals("0")) {
+                first++;
+            } else {
+                second++;
+            }
+        }
+        assertThat(first).isEqualTo(33);
+        assertThat(second).isEqualTo(33);
     }
 
     @Test
