@@ -1,5 +1,7 @@
 # 시연용 큐레이션 상품 (33개)
 
+> 기존 시드 상품 729개의 이미지(소재·소분류별 변형, 대표 56개)는 [variants.md](variants.md) 를 본다.
+
 이름·소개·특징·이미지가 서로 맞도록 `scripts/demo-products/catalog.py` 한곳에서 관리한다. 이 문서와 이미지, 시드 마이그레이션(V17)은
 `python3 scripts/demo-products/generate.py` 로 다시 만든다. 이미지는 직접 그린 일러스트(WebP)이며 사람·실제 사진·상표가 없다.
 

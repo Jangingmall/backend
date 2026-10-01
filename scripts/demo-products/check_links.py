@@ -22,14 +22,18 @@ RAW = "https://raw.githubusercontent.com/Jangingmall/backend/"
 
 
 def collect(ref):
-    """V16(소분류 56장)과 V17(상품 대표·상세 이미지)이 가리키는 주소를 모은다."""
+    """V16(소분류 56장), V17(큐레이션 상품 이미지), V19(시드 상품 변형 이미지)가 가리키는 주소를 모은다."""
     urls = set()
     v16 = open(os.path.join(MIGRATIONS, "V16__demo_consumer_seed_images_gift_themes_artisans.sql"), encoding="utf-8").read()
     if "docs/seed-images/sub-" in v16:
         urls |= {f"{RAW}{ref}/docs/seed-images/sub-{n:02d}.webp" for n in range(1, 57)}
-    v17 = open(os.path.join(MIGRATIONS, "V17__demo_curated_products.sql"), encoding="utf-8").read()
-    for match in re.finditer(r"https://raw\.githubusercontent\.com/Jangingmall/backend/develop/(docs/[A-Za-z0-9_./-]+\.webp)", v17):
-        urls.add(f"{RAW}{ref}/{match.group(1)}")
+    for name in ("V17__demo_curated_products.sql", "V19__demo_seed_product_image_variants.sql"):
+        path = os.path.join(MIGRATIONS, name)
+        if not os.path.exists(path):
+            continue
+        text = open(path, encoding="utf-8").read()
+        for match in re.finditer(r"https://raw\.githubusercontent\.com/Jangingmall/backend/develop/(docs/[A-Za-z0-9_./-]+\.webp)", text):
+            urls.add(f"{RAW}{ref}/{match.group(1)}")
     return sorted(urls)
 
 
