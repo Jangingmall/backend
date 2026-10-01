@@ -177,25 +177,44 @@ def upload_one(base_url, token, member_id, name, image, variants):
 
 
 def attach_to_product(base_url, token, product_id, image_ids):
-    """상품의 이미지 목록을 올린 사진으로 바꿔 업로드를 확정한다(현재 상품 정보는 그대로 유지)."""
-    current = api_json("GET", f"{base_url}/api/products/{product_id}", None, None)
-    body = {
-        "categoryId": current.get("categoryId"),
-        "subcategoryId": current.get("subcategoryId"),
-        "title": current["title"],
-        "description": current.get("description"),
-        "price": current["price"],
-        "stock": current["stock"],
-        "thumbnailUrl": current.get("thumbnailUrl"),
-        "giftThemes": current.get("giftThemes") or [],
-        "purposeTags": current.get("purposeTags") or [],
-        "productionPeriodDays": current.get("productionPeriodDays"),
-        "colors": current.get("colors") or [],
-        "images": image_ids,
-    }
-    updated = api_json("PATCH", f"{base_url}/api/products/{product_id}", token, body)
-    print(f"  상품 {product_id} 이미지 {len(image_ids)}장 연결 완료 ({updated.get('title')})")
-    return updated
+    """상품의 이미지 목록을 올린 사진으로 바꿔 업로드를 확정한다(현재 상품 정보는 그대로 유지). (성공 여부, 메시지)를 돌려준다.
+
+    기존 이미지가 있는 상품은 한 번에 교체하면 (product_id, display_order) 유니크 제약과 부딪혀 409 가 날 수 있다.
+    그때는 이미지를 비운 뒤 다시 채운다.
+    """
+    status, _, raw = request("GET", f"{base_url}/api/products/{product_id}", timeout=30)
+    if status >= 300:
+        return False, f"상품 조회 실패 HTTP {status}"
+    current = json.loads(raw.decode() or "{}")
+    current = current.get("data", current)
+
+    def patch(images):
+        body = {
+            "categoryId": current.get("categoryId"),
+            "subcategoryId": current.get("subcategoryId"),
+            "title": current["title"],
+            "description": current.get("description"),
+            "price": current["price"],
+            "stock": current["stock"],
+            "thumbnailUrl": current.get("thumbnailUrl"),
+            "giftThemes": current.get("giftThemes") or [],
+            "purposeTags": current.get("purposeTags") or [],
+            "productionPeriodDays": current.get("productionPeriodDays"),
+            "colors": current.get("colors") or [],
+            "images": images,
+        }
+        code, _, answer = request("PATCH", f"{base_url}/api/products/{product_id}", token, body)
+        return code, answer[:300].decode(errors="replace")
+
+    code, answer = patch(image_ids)
+    if code == 409:
+        print("  409 충돌 — 기존 이미지를 비운 뒤 다시 연결합니다.")
+        code, answer = patch([])
+        if code < 300:
+            code, answer = patch(image_ids)
+    if code >= 300:
+        return False, f"HTTP {code} {answer}"
+    return True, f"상품 {product_id} 이미지 {len(image_ids)}장 연결 완료"
 
 
 def main():
@@ -243,21 +262,29 @@ def main():
             checks = {variant: public_check(url) for variant, url in urls.items()}
             entry["publicCheck"] = {variant: {"ok": ok, "detail": detail} for variant, (ok, detail) in checks.items()}
             print(f"  {name}: {image_id} " + ", ".join(f"{v}={'OK' if ok else 'FAIL'}" for v, (ok, _) in checks.items()))
+            print(f"    경로(1280w): {urls.get('1280w')}")
         entries.append(entry)
+    attach_result = None
     if not args.dry_run and member_id is None and args.attach_product_id:
-        attach_to_product(base_url, token, args.attach_product_id, [e["imageId"] for e in entries if e.get("imageId")])
+        attach_result = attach_to_product(base_url, token, args.attach_product_id,
+                                          [e["imageId"] for e in entries if e.get("imageId")])
+        print(f"  {'연결 성공' if attach_result[0] else '[경고] 연결 실패'}: {attach_result[1]}")
     for dup, original in duplicates.items():
         base = next(e for e in entries if e["source"] == original)
         entries.append({"name": os.path.splitext(os.path.basename(dup))[0], "duplicateOf": base["name"],
                         "imageId": base.get("imageId"), "urls": base.get("urls")})
 
     with open(args.out, "w", encoding="utf-8") as handle:
-        json.dump({"images": entries}, handle, ensure_ascii=False, indent=2)
+        json.dump({"images": entries,
+                   "attach": ({"productId": args.attach_product_id, "ok": attach_result[0], "message": attach_result[1]}
+                              if attach_result else None)}, handle, ensure_ascii=False, indent=2)
     print(f"매니페스트: {args.out}")
     if not args.dry_run:
         bad = [e["name"] for e in entries if "publicCheck" in e and not all(c["ok"] for c in e["publicCheck"].values())]
         if bad:
             fail(f"공개 주소 확인에 실패한 사진: {', '.join(bad)}")
+        if attach_result and not attach_result[0]:
+            fail(f"상품 연결에 실패했습니다(사진은 올라갔지만 24시간 뒤 삭제됩니다): {attach_result[1]}")
 
 
 if __name__ == "__main__":
