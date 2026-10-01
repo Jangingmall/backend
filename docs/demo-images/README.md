@@ -21,7 +21,9 @@ AI 상세페이지 생성 시연에 쓰는 사진이다. 저장소가 공개라�
 - 대표 사진(첫 장)이 AI 상품 분석에 쓰인다. AI는 최대 12장까지 받는다.
 - 상품명·설명 문구는 시연 계획서(Flow 1)를 따른다.
 
-## 대표 이미지 출처 전환 (S3 배포 버전 ↔ 외부 URI 버전)
-소분류 일러스트 56장은 S3(`img.stg.midam.store`)와 저장소 raw 주소 두 곳에서 서비스할 수 있다. `switch-image-source.sql`로 한 번에 바꾼다.
-- S3 버전은 상품에 연결하지 않으면 24시간 뒤 삭제된다. 만료가 걱정되면 외부 URI 버전으로 전환해 둔다.
-- 외부 URI 버전은 만료가 없지만 GitHub 서버에 의존한다.
+## 대표 이미지 출처 (외부 링크가 기본)
+소분류 일러스트 56장(`docs/seed-images/sub-NN.webp`)은 저장소 raw 주소로 서비스한다. 서버(S3/CDN)가 꺼져 있어도 열리고, 올린 뒤 24시간 만료가 없다.
+- 형식·크기는 이미지 규격과 같다: WebP, 10MB 이하, 10,000px 이하(실제 800×800, 파일당 약 10KB).
+- 기준 주소: `https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/seed-images/sub-NN.webp` (`develop`에 머지된 뒤부터 열린다)
+- S3 배포 버전과 서로 바꾸려면 `switch-image-source.sql`을 쓴다.
+- 이 링크는 저장소가 공개일 때만 열린다. 저장소를 비공개로 바꾸면 깨진다.

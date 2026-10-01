@@ -1,21 +1,21 @@
 -- 시연 대표 이미지 출처 전환 스크립트 (수동 실행용, Flyway 마이그레이션 아님)
 --
--- 같은 소분류 일러스트 56장을 두 곳에서 서비스할 수 있다.
+-- 같은 소분류 일러스트 56장을 두 곳에서 서비스할 수 있다. 시드(V16)의 기본값은 B(외부 링크)다.
 --   A. S3 배포 버전  : https://img.stg.midam.store/images/product/63/<imageId>/1280w.webp
---      - 상품에 연결(확정)하지 않으면 업로드 24시간 뒤 자동 삭제된다. 영구 보존하려면 이미지 연결 수정이 배포돼야 한다.
---   B. 외부 URI 버전 : https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/seed-images/sub-NN.png
---      - 저장소(공개)의 develop 브랜치 파일이라 만료가 없다. GitHub 서버라 트래픽이 많으면 느려질 수 있다.
+--      - 서버(S3/CDN)가 켜져 있어야 하고, 상품에 연결(확정)하지 않으면 업로드 24시간 뒤 삭제된다.
+--   B. 외부 링크 버전 : https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/seed-images/sub-NN.webp
+--      - 저장소(공개) develop 브랜치 파일이라 서버가 꺼져 있어도 열리고 만료가 없다. GitHub 서버에 의존한다.
 --
 -- 사용법: 필요한 쪽의 UPDATE 하나만 실행한다. 직접 업로드한 이미지가 있는 상품(product_image)은 건드리지 않는다.
 
--- ── B 로 전환 (S3 → 외부 URI) ────────────────────────────────────────────────
+-- ── B 로 전환 (S3 → 외부 링크, 시드 기본값) ────────────────────────────────────────────────
 UPDATE product p
 SET thumbnail_url = 'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/seed-images/sub-'
-        || lpad(p.subcategory_id::text, 2, '0') || '.png'
+        || lpad(p.subcategory_id::text, 2, '0') || '.webp'
 WHERE p.subcategory_id BETWEEN 1 AND 56
   AND NOT EXISTS (SELECT 1 FROM product_image pi WHERE pi.product_id = p.product_id);
 
--- ── A 로 전환 (외부 URI → S3) ────────────────────────────────────────────────
+-- ── A 로 전환 (외부 링크 → S3) ────────────────────────────────────────────────
 -- UPDATE product p
 -- SET thumbnail_url = 'https://img.stg.midam.store/images/product/63/' || m.image_id || '/1280w.webp'
 -- FROM (VALUES

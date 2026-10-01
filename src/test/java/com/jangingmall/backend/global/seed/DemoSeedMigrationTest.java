@@ -3,10 +3,8 @@ package com.jangingmall.backend.global.seed;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,25 +23,26 @@ class DemoSeedMigrationTest {
     }
 
     @Test
-    @DisplayName("소분류 1~56 모두에 STG 이미지 서버의 서로 다른 이미지 ID 가 하나씩 짝지어진다")
-    void everySubcategoryHasItsOwnCdnImage() {
-        Matcher matcher = Pattern.compile("\\((\\d+), '([0-9A-Z]{26})'\\)").matcher(sql);
-        Set<Integer> subcategories = new HashSet<>();
-        Set<String> imageIds = new HashSet<>();
-        while (matcher.find()) {
-            subcategories.add(Integer.parseInt(matcher.group(1)));
-            imageIds.add(matcher.group(2));
+    @DisplayName("소분류 1~56 모두의 일러스트(WebP)가 저장소에 있고, 업로드 규격(WebP·10MB 이하)을 지킨다")
+    void everySubcategoryHasAWebpIllustrationWithinLimits() throws Exception {
+        for (int id = 1; id <= 56; id++) {
+            Path file = Path.of("docs/seed-images", String.format("sub-%02d.webp", id));
+            assertThat(file).as(file.toString()).exists();
+            byte[] bytes = Files.readAllBytes(file);
+            assertThat(bytes.length).as(file + " 크기").isBetween(100, 10 * 1024 * 1024);
+            // WebP 파일은 RIFF....WEBP 로 시작한다
+            assertThat(new String(bytes, 0, 4, StandardCharsets.US_ASCII)).isEqualTo("RIFF");
+            assertThat(new String(bytes, 8, 4, StandardCharsets.US_ASCII)).isEqualTo("WEBP");
         }
-        assertThat(subcategories).containsExactlyInAnyOrderElementsOf(
-            java.util.stream.IntStream.rangeClosed(1, 56).boxed().toList());
-        assertThat(imageIds).hasSize(56);
+        assertThat(sql).contains("p.subcategory_id BETWEEN 1 AND 56");
     }
 
     @Test
-    @DisplayName("대표 이미지는 이미지 서버(img.stg.midam.store) 1280w 주소로 만들고 외부 사이트를 가리키지 않는다")
-    void thumbnailPointsAtImageServer() {
-        assertThat(sql).contains("https://img.stg.midam.store/images/product/63/' || m.image_id || '/1280w.webp");
-        assertThat(sql).doesNotContain("raw.githubusercontent.com").doesNotContain("unsplash");
+    @DisplayName("대표 이미지는 서버(S3/CDN)가 아닌 저장소 외부 링크(.webp)로 연결하고 다른 외부 사이트를 가리키지 않는다")
+    void thumbnailPointsAtRepositoryFiles() {
+        assertThat(sql).contains("https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/seed-images/sub-")
+            .contains("|| '.webp'");
+        assertThat(sql).doesNotContain("img.stg.midam.store").doesNotContain("unsplash");
     }
 
     @Test
