@@ -204,6 +204,7 @@ class MemberRefreshTokenScenarioTest {
     /** Redis 대신 쓰는 저장소. 회원당 토큰 1개(마지막 로그인 값)만 보관한다. */
     private static final class InMemoryRefreshTokenStore implements RefreshTokenStore {
         private final Map<Long, String> tokens = new ConcurrentHashMap<>();
+        private final Map<Long, java.util.Set<String>> sharedTokens = new ConcurrentHashMap<>();
 
         @Override
         public void save(Long memberId, String refreshToken, Duration ttl) {
@@ -211,13 +212,20 @@ class MemberRefreshTokenScenarioTest {
         }
 
         @Override
+        public void saveShared(Long memberId, String refreshToken, Duration ttl) {
+            sharedTokens.computeIfAbsent(memberId, id -> ConcurrentHashMap.newKeySet()).add(refreshToken);
+        }
+
+        @Override
         public boolean matches(Long memberId, String refreshToken) {
-            return refreshToken.equals(tokens.get(memberId));
+            return refreshToken.equals(tokens.get(memberId))
+                || sharedTokens.getOrDefault(memberId, java.util.Set.of()).contains(refreshToken);
         }
 
         @Override
         public void delete(Long memberId) {
             tokens.remove(memberId);
+            sharedTokens.remove(memberId);
         }
 
         String stored(Long memberId) {
@@ -226,6 +234,7 @@ class MemberRefreshTokenScenarioTest {
 
         void clear() {
             tokens.clear();
+            sharedTokens.clear();
         }
     }
 }
