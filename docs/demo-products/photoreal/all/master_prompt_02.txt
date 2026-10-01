@@ -1,8 +1,9 @@
 너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 61~120번 이미지를 번호 순서대로 만들어 줘.
 
 진행 방식 (반드시 지켜)
+0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
 1. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 5장씩, 번호 순서대로, 서로 다른 별도 이미지로 만들어 줘.
-2. 이미지마다 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.
+2. 이미지마다 이미지 제목(파일 이름)을 반드시 그 번호의 키(예: f31_A)로 정하고, 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.
 3. 생성 한도에 걸리면 '[번호]까지 완료, 한도 도달'이라고만 말해 줘. 내가 '계속'이라고 하면 이어서 해 줘.
 4. 내가 '다시 [번호]'라고 하면 그 번호를 한 번 더 만들어 줘.
 5. 번호마다 목록의 영어 문장을 그대로 따라. 임의로 상품·색·구도를 바꾸지 마. 번호와 키는 내가 파일을 구분하는 용도이고 이미지에 쓰지 마.
@@ -10,184 +11,184 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[061] p22_A
-Product photo of a jade-green stone ornament brooch with hand-tied silk knot and tassel, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[061] p21_A
+Product photo of a sterling-silver bracelet with a hand-tied Korean knot and adjustable length, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[062] p22_B
-Macro close-up of the material and craftsmanship of a jade-green stone ornament brooch with hand-tied silk knot and tassel, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[062] p21_B
+Macro close-up of the material and craftsmanship of a sterling-silver bracelet with a hand-tied Korean knot and adjustable length, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[063] p22_C
-The brooch pinned on a folded cream silk cloth. The product is a jade-green stone ornament brooch with hand-tied silk knot and tassel, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[063] p21_C
+The bracelet resting on a small dark ceramic dish on a wooden table. The product is a sterling-silver bracelet with a hand-tied Korean knot and adjustable length, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[064] p23_A
-Product photo of a sterling-silver ring with deep blue cloisonne enamel, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[064] p22_A
+Product photo of a jade-green stone ornament brooch with hand-tied silk knot and tassel, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[065] p23_B
-Macro close-up of the material and craftsmanship of a sterling-silver ring with deep blue cloisonne enamel, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[065] p22_B
+Macro close-up of the material and craftsmanship of a jade-green stone ornament brooch with hand-tied silk knot and tassel, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[066] p23_C
-The ring on a small ceramic ring dish beside a dried flower. The product is a sterling-silver ring with deep blue cloisonne enamel, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[066] p22_C
+The brooch pinned on a folded cream silk cloth. The product is a jade-green stone ornament brooch with hand-tied silk knot and tassel, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[067] p24_A
-Product photo of a gold-plated silver ornamental hair pin (ddeoljam) with fine carving and small trembling charms, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[067] p23_A
+Product photo of a sterling-silver ring with deep blue cloisonne enamel, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[068] p24_B
-Macro close-up of the material and craftsmanship of a gold-plated silver ornamental hair pin (ddeoljam) with fine carving and small trembling charms, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[068] p23_B
+Macro close-up of the material and craftsmanship of a sterling-silver ring with deep blue cloisonne enamel, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[069] p24_C
-The hair ornament laid on dark velvet with a soft window light. The product is a gold-plated silver ornamental hair pin (ddeoljam) with fine carving and small trembling charms, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[069] p23_C
+The ring on a small ceramic ring dish beside a dried flower. The product is a sterling-silver ring with deep blue cloisonne enamel, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[070] p25_A
-Product photo of a freshwater-pearl necklace with a hand-tied Korean knot clasp, 45 cm, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[070] p24_A
+Product photo of a gold-plated silver ornamental hair pin (ddeoljam) with fine carving and small trembling charms, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[071] p25_B
-Macro close-up of the material and craftsmanship of a freshwater-pearl necklace with a hand-tied Korean knot clasp, 45 cm, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[071] p24_B
+Macro close-up of the material and craftsmanship of a gold-plated silver ornamental hair pin (ddeoljam) with fine carving and small trembling charms, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[072] p25_C
-The necklace laid on a linen cloth beside a small mirror. The product is a freshwater-pearl necklace with a hand-tied Korean knot clasp, 45 cm, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[072] p24_C
+The hair ornament laid on dark velvet with a soft window light. The product is a gold-plated silver ornamental hair pin (ddeoljam) with fine carving and small trembling charms, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[073] p26_A
-Product photo of a slim Korean business card case with black urushi lacquer finish and an inlaid turquoise-green mother-of-pearl (najeon) floral pattern on the lid, slightly open showing blank cards, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[073] p25_A
+Product photo of a freshwater-pearl necklace with a hand-tied Korean knot clasp, 45 cm, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[074] p26_B
-Close-up of the mother-of-pearl inlay with iridescent shimmer over glossy black lacquer of a black lacquer card case with turquoise-green mother-of-pearl floral inlay, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[074] p25_B
+Macro close-up of the material and craftsmanship of a freshwater-pearl necklace with a hand-tied Korean knot clasp, 45 cm, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[075] p26_C
-The case on a dark desk next to a fountain pen, reflective surface. The product is a black lacquer card case with turquoise-green mother-of-pearl floral inlay, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[075] p25_C
+The necklace laid on a linen cloth beside a small mirror. The product is a freshwater-pearl necklace with a hand-tied Korean knot clasp, 45 cm, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[076] p27_A
-Product photo of a wooden pencil case with mother-of-pearl floral inlay on dark lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[076] p26_A
+Product photo of a slim Korean business card case with black urushi lacquer finish and an inlaid turquoise-green mother-of-pearl (najeon) floral pattern on the lid, slightly open showing blank cards, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[077] p27_B
-Macro close-up of the material and craftsmanship of a wooden pencil case with mother-of-pearl floral inlay on dark lacquer, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[077] p26_B
+Close-up of the mother-of-pearl inlay with iridescent shimmer over glossy black lacquer of a black lacquer card case with turquoise-green mother-of-pearl floral inlay, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[078] p27_C
-The pencil case on a dark writing desk with pens inside and an open notebook. The product is a wooden pencil case with mother-of-pearl floral inlay on dark lacquer, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[078] p26_C
+The case on a dark desk next to a fountain pen, reflective surface. The product is a black lacquer card case with turquoise-green mother-of-pearl floral inlay, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[079] p28_A
-Product photo of a fountain pen with a blue cloisonne enamel barrel and gold trim, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[079] p27_A
+Product photo of a wooden pencil case with mother-of-pearl floral inlay on dark lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[080] p28_B
-Macro close-up of the material and craftsmanship of a fountain pen with a blue cloisonne enamel barrel and gold trim, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[080] p27_B
+Macro close-up of the material and craftsmanship of a wooden pencil case with mother-of-pearl floral inlay on dark lacquer, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[081] p28_C
-The pen lying on a cream notebook page beside an ink bottle. The product is a fountain pen with a blue cloisonne enamel barrel and gold trim, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[081] p27_C
+The pencil case on a dark writing desk with pens inside and an open notebook. The product is a wooden pencil case with mother-of-pearl floral inlay on dark lacquer, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[082] p29_A
-Product photo of a calligraphy set: two brushes on a rest, an ink stick and a dark stone inkstone, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[082] p28_A
+Product photo of a fountain pen with a blue cloisonne enamel barrel and gold trim, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[083] p29_B
-Macro close-up of the material and craftsmanship of a calligraphy set: two brushes on a rest, an ink stick and a dark stone inkstone, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[083] p28_B
+Macro close-up of the material and craftsmanship of a fountain pen with a blue cloisonne enamel barrel and gold trim, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[084] p29_C
-The calligraphy set on a low wooden desk with white paper, window light. The product is a calligraphy set: two brushes on a rest, an ink stick and a dark stone inkstone, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[084] p28_C
+The pen lying on a cream notebook page beside an ink bottle. The product is a fountain pen with a blue cloisonne enamel barrel and gold trim, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[085] p30_A
-Product photo of a set of handmade hanji letter paper and envelopes tied with a thin cord, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[085] p29_A
+Product photo of a calligraphy set: two brushes on a rest, an ink stick and a dark stone inkstone, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[086] p30_B
-Macro close-up of the material and craftsmanship of a set of handmade hanji letter paper and envelopes tied with a thin cord, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[086] p29_B
+Macro close-up of the material and craftsmanship of a calligraphy set: two brushes on a rest, an ink stick and a dark stone inkstone, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[087] p30_C
-The hanji stationery set on a wooden desk with a pen and a small flower. The product is a set of handmade hanji letter paper and envelopes tied with a thin cord, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[087] p29_C
+The calligraphy set on a low wooden desk with white paper, window light. The product is a calligraphy set: two brushes on a rest, an ink stick and a dark stone inkstone, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[088] f01_A
-Product photo of a buncheong tea set: teapot and cups with grayish slip brush decoration, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[088] p30_A
+Product photo of a set of handmade hanji letter paper and envelopes tied with a thin cord, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[089] f01_B
-Macro close-up of the material and craftsmanship of a buncheong tea set: teapot and cups with grayish slip brush decoration, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[089] p30_B
+Macro close-up of the material and craftsmanship of a set of handmade hanji letter paper and envelopes tied with a thin cord, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[090] f01_C
-A buncheong tea set: teapot and cups with grayish slip brush decoration in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[090] p30_C
+The hanji stationery set on a wooden desk with a pen and a small flower. The product is a set of handmade hanji letter paper and envelopes tied with a thin cord, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[091] f02_A
-Product photo of a set of golden brass bangjja bowls and plates for four, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[091] p31_A
+Product photo of a Korean traditional folding fan (hapjukseon) fully opened in a half-circle, two-layer bamboo ribs with warm natural tone, white mulberry-paper (hanji) fan face painted with delicate plum blossom branches in ink and pale pink, a small knotted tassel pendant at the handle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, two thick outer guard sticks on both the left and right edges of the fan, no stains or smudges, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[092] f02_B
-Macro close-up of the material and craftsmanship of a set of golden brass bangjja bowls and plates for four, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[092] p31_B
+Extreme close-up of the paper fan face with hand-painted plum blossoms and the fine bamboo ribs, visible mulberry paper fibers of a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[093] f02_C
-A set of golden brass bangjja bowls and plates for four in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[093] p31_C
+The opened fan resting on a dark wooden tray beside a small celadon tea cup, soft window light. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[094] f03_A
-Product photo of a matte golden bangjja brass spoon and chopsticks set, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[094] p32_A
+Product photo of a Korean celadon tea cup with luminous translucent jade-green (bisaek) glaze, inlaid crane-and-cloud (unhak) pattern in white and black slip, about 150ml, small foot ring, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[095] f03_B
-Macro close-up of the material and craftsmanship of a matte golden bangjja brass spoon and chopsticks set, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[095] p32_B
+Close-up of the inlaid cranes and clouds on the glaze, showing fine craquelure and glaze pooling of a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[096] f03_C
-A matte golden bangjja brass spoon and chopsticks set in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[096] p32_C
+The cup on a small wooden tea tray with steam from green tea, a ceramic teapot softly blurred behind. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[097] f04_A
-Product photo of a brass kettle and four brass liquor cups, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[097] p33_A
+Product photo of a Korean buncheong stoneware tea cup, grayish-white slip applied with bold brush strokes (gwiyal), simple iron-brown wildflower pattern, about 150ml, rustic and warm, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[098] f04_B
-Macro close-up of the material and craftsmanship of a brass kettle and four brass liquor cups, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[098] p33_B
+Close-up of the brush-stroke slip texture and the hand-painted iron-brown grass flowers of a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[099] f04_C
-A brass kettle and four brass liquor cups in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[099] p33_C
+The cup on a linen cloth next to a small tea caddy, natural daylight. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[100] f05_A
-Product photo of a small traditional Naju soban tray table in dark red lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[100] f01_A
+Product photo of a buncheong tea set: teapot and cups with grayish slip brush decoration, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[101] f05_B
-Macro close-up of the material and craftsmanship of a small traditional Naju soban tray table in dark red lacquer, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[101] f01_B
+Macro close-up of the material and craftsmanship of a buncheong tea set: teapot and cups with grayish slip brush decoration, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[102] f05_C
-A small traditional Naju soban tray table in dark red lacquer in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[102] f01_C
+A buncheong tea set: teapot and cups with grayish slip brush decoration in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[103] f06_A
-Product photo of a thick whole zelkova wood cutting board, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[103] f02_A
+Product photo of a set of golden brass bangjja bowls and plates for four, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[104] f06_B
-Macro close-up of the material and craftsmanship of a thick whole zelkova wood cutting board, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[104] f02_B
+Macro close-up of the material and craftsmanship of a set of golden brass bangjja bowls and plates for four, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[105] f06_C
-A thick whole zelkova wood cutting board in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[105] f02_C
+A set of golden brass bangjja bowls and plates for four in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[106] f07_A
-Product photo of a large 20-liter onggi soy sauce jar with glossy brown glaze, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[106] f03_A
+Product photo of a matte golden bangjja brass spoon and chopsticks set, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[107] f07_B
-Macro close-up of the material and craftsmanship of a large 20-liter onggi soy sauce jar with glossy brown glaze, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[107] f03_B
+Macro close-up of the material and craftsmanship of a matte golden bangjja brass spoon and chopsticks set, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[108] f07_C
-A large 20-liter onggi soy sauce jar with glossy brown glaze in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[108] f03_C
+A matte golden bangjja brass spoon and chopsticks set in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[109] f08_A
-Product photo of a brown onggi hot-pot ttukbaegi bowl with lid, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[109] f04_A
+Product photo of a brass kettle and four brass liquor cups, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[110] f08_B
-Macro close-up of the material and craftsmanship of a brown onggi hot-pot ttukbaegi bowl with lid, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[110] f04_B
+Macro close-up of the material and craftsmanship of a brass kettle and four brass liquor cups, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[111] f08_C
-A brown onggi hot-pot ttukbaegi bowl with lid in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[111] f04_C
+A brass kettle and four brass liquor cups in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[112] f09_A
-Product photo of a large set of lacquered wooden ritual vessels, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[112] f05_A
+Product photo of a small traditional Naju soban tray table in dark red lacquer, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[113] f09_B
-Macro close-up of the material and craftsmanship of a large set of lacquered wooden ritual vessels, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[113] f05_B
+Macro close-up of the material and craftsmanship of a small traditional Naju soban tray table in dark red lacquer, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[114] f09_C
-A large set of lacquered wooden ritual vessels in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[114] f05_C
+A small traditional Naju soban tray table in dark red lacquer in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[115] f10_A
-Product photo of a wooden music box lamp with a lotus-flower shaped glowing acrylic top, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[115] f06_A
+Product photo of a thick whole zelkova wood cutting board, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[116] f10_B
-Macro close-up of the material and craftsmanship of a wooden music box lamp with a lotus-flower shaped glowing acrylic top, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[116] f06_B
+Macro close-up of the material and craftsmanship of a thick whole zelkova wood cutting board, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[117] f10_C
-A wooden music box lamp with a lotus-flower shaped glowing acrylic top in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[117] f06_C
+A thick whole zelkova wood cutting board in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[118] f11_A
-Product photo of a wooden jewelry box with red plum mother-of-pearl inlay and hanji lining, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text
+[118] f07_A
+Product photo of a large 20-liter onggi soy sauce jar with glossy brown glaze, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[119] f11_B
-Macro close-up of the material and craftsmanship of a wooden jewelry box with red plum mother-of-pearl inlay and hanji lining, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text
+[119] f07_B
+Macro close-up of the material and craftsmanship of a large 20-liter onggi soy sauce jar with glossy brown glaze, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[120] f11_C
-A wooden jewelry box with red plum mother-of-pearl inlay and hanji lining in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text
+[120] f07_C
+A large 20-liter onggi soy sauce jar with glossy brown glaze in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

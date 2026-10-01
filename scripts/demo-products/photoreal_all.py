@@ -23,8 +23,9 @@ spec = importlib.util.spec_from_file_location("variants", os.path.join(os.path.d
 V = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(V)
 
-A_TAIL, B_TAIL, C_TAIL = pp.A_TAIL, pp.B_TAIL, pp.C_TAIL
-DONE = {"p31", "p32", "p33", "p15"}  # 이미 받은 상품(A·B·C)
+GUARD = "full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark"
+A_TAIL, B_TAIL, C_TAIL = (f"{t}, {GUARD}" for t in (pp.A_TAIL, pp.B_TAIL, pp.C_TAIL))
+DONE = set()  # 처음부터 다시 만든다(기존 이미지 재사용 안 함)
 
 # 큐레이션 중 prompts_imagefx 에 아직 없는 13개 + 이미 있는 16개는 기존 문장을 쓴다
 CURATED_NEW = {
@@ -141,7 +142,7 @@ def curated_rows():
     for line in open(os.path.join(OUT, "..", "prompts_imagefx.txt"), encoding="utf-8"):
         m = re.match(r"\[(\d+)\] (p\d\d)_([ABC])\.png \((.*?)\) \| (.*)", line.strip())
         if m and m.group(2) not in DONE:
-            rows.append((m.group(2), m.group(3), m.group(4), m.group(5)))
+            rows.append((m.group(2), m.group(3), m.group(4), f"{m.group(5)}, {GUARD}"))
     for key, (name, short, scene) in CURATED_NEW.items():
         rows.append((key, "A", f"{name} · 대표", f"Product photo of {short}, {A_TAIL}"))
         rows.append((key, "B", f"{name} · 소재 확대", f"Macro close-up of the material and craftsmanship of {short}, {B_TAIL}"))
@@ -170,15 +171,22 @@ def main():
         items.append((2, f"{k}_B", "B", f"{title} · 소재 확대", f"Macro close-up of the material and craftsmanship of {d}, {B_TAIL}", {"type": "flagship", "sub": sub}))
         items.append((2, f"{k}_C", "C", f"{title} · 장면", f"{cap(d)} in a natural, realistic setting where it is normally used, no people. {C_TAIL}", {"type": "flagship", "sub": sub}))
     names = {s: n for s, n, _c, _k in V.seed.ITEMS}
-    for sub, cls in combos:
-        items.append((3, f"s{sub:02d}-{cls}_A", "A", f"{names[sub]} · {V.CLASSES[cls][0]} · 대표",
-                      f"Product photo of {SUBNOUN[sub]} made of {MAT[cls]}, {A_TAIL}", {"type": "variant", "sub": sub, "cls": cls}))
+    for p in sorted(P, key=lambda x: x["id"]):
+        if p["id"] in fids:
+            continue
+        mat = ("glazed Korean ceramic whose glaze color and style follow the product name"
+               if p["material"].strip() == "도자기" else MAT[p["cls"]])
+        prompt = (f"Product photo of {SUBNOUN[p['sub']]} made of {mat}. Korean product name for reference "
+                  f"(ignore the maker's name, never write any text on the image): \"{p['title']}\", material: {p['material']}. "
+                  f"Show one single item that fits this name, {A_TAIL}")
+        items.append((3, f"d{p['id']:03d}_A", "A", f"{names[p['sub']]} · {p['title']}", prompt,
+                      {"type": "product", "productId": p["id"], "sub": p["sub"], "cls": p["cls"]}))
     for cls in sorted({p["cls"] for p in P}):
         items.append((4, f"m-{cls}_B", "B", f"{V.CLASSES[cls][0]} · 소재 확대(공용)",
                       f"Macro close-up of {MACRO[cls]}, filling the frame, {B_TAIL}", {"type": "material", "cls": cls}))
     manifest = []
     lines = ["# 전체 상품 실사 프롬프트 — 한 줄이 이미지 한 장 (정사각형 1:1)",
-             "# 구성: Tier1 큐레이션 29개 상품 A·B·C / Tier2 대표 56개 A·B·C / Tier3 소분류×소재 변형 대표 / Tier4 소재 확대 공용",
+             "# 구성: Tier1 큐레이션 33개 상품 A·B·C / Tier2 대표 56개 A·B·C / Tier3 상품별 대표컷(시드 673) / Tier4 소재 확대 공용",
              "# 번호와 키는 파일 매칭용이다. 이미지에 글자를 넣지 말 것.", ""]
     for n, (tier, key, cut, label, prompt, target) in enumerate(items, 1):
         lines.append(f"[{n:03d}] {key} (T{tier} · {label}) | {prompt}")
@@ -198,8 +206,9 @@ def main():
     # 대화형 AI에 한 번에 붙여 넣는 마스터 프롬프트 (60개씩)
     head2 = ("너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 {a}~{b}번 이미지를 번호 순서대로 만들어 줘.\n\n"
              "진행 방식 (반드시 지켜)\n"
+             "0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.\n"
              "1. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 5장씩, 번호 순서대로, 서로 다른 별도 이미지로 만들어 줘.\n"
-             "2. 이미지마다 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.\n"
+             "2. 이미지마다 이미지 제목(파일 이름)을 반드시 그 번호의 키(예: f31_A)로 정하고, 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.\n"
              "3. 생성 한도에 걸리면 '[번호]까지 완료, 한도 도달'이라고만 말해 줘. 내가 '계속'이라고 하면 이어서 해 줘.\n"
              "4. 내가 '다시 [번호]'라고 하면 그 번호를 한 번 더 만들어 줘.\n"
              "5. 번호마다 목록의 영어 문장을 그대로 따라. 임의로 상품·색·구도를 바꾸지 마. 번호와 키는 내가 파일을 구분하는 용도이고 이미지에 쓰지 마.\n\n"
