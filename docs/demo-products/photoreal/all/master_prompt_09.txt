@@ -1,4 +1,4 @@
-너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 481~540번 이미지를 번호 순서대로 만들어 줘.
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 711~770번 이미지를 번호 순서대로 만들어 줘.
 
 진행 방식 (반드시 지켜)
 0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
@@ -11,184 +11,184 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[481] d451_A
-Product photo of a blanket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 손자수 원통형 목베개", material: 비단 메밀. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[482] d452_A
-Product photo of a blanket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 홑이불 및 베갯잇", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[483] d453_A
-Product photo of a blanket made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 십장생 자수 베개", material: 명주 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[484] d454_A
-Product photo of a blanket made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 침구 이불", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[485] d456_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 모시 조각보 테이블 러너", material: 모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[486] d457_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 야생화 매트 2개 세트", material: 리넨 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[487] d458_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 4인용 사각 식탁보", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[488] d459_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 삼베 칠보문양 미니 티매트 4종", material: 삼베. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[489] d460_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 모란문 식탁 러너", material: 면 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[490] d461_A
-Product photo of a table runner made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 명주 조각보 롱 러너", material: 명주 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[491] d462_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 쪽빛 천연염색 티코스터 세트", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[492] d463_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 리넨 전통 창살문 테이블매트", material: 리넨. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[493] d464_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 수저받침 패브릭 매트", material: 면 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[494] d465_A
-Product photo of a table runner made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 테이블보 러너", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[495] d467_A
-Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "장윤영 미니 보자기 - 적의보", material: 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[496] d468_A
-Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 무형유산 정통 실크 겹보자기", material: 명주 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[497] d469_A
-Product photo of a bojagi wrapping cloth made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 모시 조각보 예단 보자기", material: 모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[498] d470_A
-Product photo of a bojagi wrapping cloth made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 보자기 (모란 자수)", material: 면 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[499] d471_A
-Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 궁중 자수 복주머니 3색 세트", material: 비단 금박. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[500] d472_A
-Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "장윤영 양면 실크 선물 포장 보자기", material: 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[501] d473_A
-Product photo of a bojagi wrapping cloth made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 홑보자기 대형", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[502] d474_A
-Product photo of a bojagi wrapping cloth made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 삼베 전통 밥상 덮개 보자기", material: 삼베. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[503] d475_A
-Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 침선장 전통 색동 복주머니", material: 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[504] d476_A
-Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "장윤영 오간자 은사 투명 보자기", material: 오간자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[505] d477_A
-Product photo of a bojagi wrapping cloth made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 십장생 조각 보자기", material: 면 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[506] d478_A
-Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 자수 향낭 복주머니", material: 비단 한약재. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[507] d479_A
-Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 궁중 예단용 은사 자수 대형 보자기", material: 명주 은사. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[508] d480_A
-Product photo of a bojagi wrapping cloth made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 보자기 복주머니", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[509] d481_A
+[711] d481_A
 Product photo of a bojagi wrapping cloth made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 미니 복주머니", material: 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[510] d483_A
+[712] d483_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 수제 천연염색 손수건", material: 한산모시 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[511] d484_A
+[713] d484_A
 Product photo of a handkerchief made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 실크 손자수 매화 손수건", material: 실크. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[512] d485_A
+[714] d485_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 야생화 면 손수건 3종", material: 순면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[513] d486_A
+[715] d486_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 쪽빛 쁘띠 손수건", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[514] d487_A
+[716] d487_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 오선 누비 손수건", material: 면 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[515] d488_A
+[717] d488_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 초충도 손수건", material: 순면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[516] d489_A
+[718] d489_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 60수 고급 면 모란 손수건", material: 면 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[517] d490_A
+[719] d490_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 감물 천연염색 손수건", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[518] d491_A
+[720] d491_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 나비와 모란 손수건", material: 면 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[519] d492_A
+[721] d492_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 전통 색동 띠 면 손수건", material: 순면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[520] d493_A
+[722] d493_A
 Product photo of a handkerchief made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 손수건", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[521] d495_A
+[723] d495_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 전통 모시 조각보 앞치마", material: 리넨 모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[522] d496_A
+[724] d496_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 야생화 주방 냄비장갑 세트", material: 면 100%. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[523] d497_A
+[725] d497_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 손누비 주방 주전자 받침", material: 면 솜. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[524] d498_A
+[726] d498_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 모란문 리넨 앞치마", material: 리넨. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[525] d499_A
+[727] d499_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 삼베 전통 식기 건조 타월 2장", material: 삼베. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[526] d500_A
+[728] d500_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 미니 원피스형 앞치마", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[527] d501_A
+[729] d501_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 주방 행주 세트 (3개입)", material: 순면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[528] d502_A
+[730] d502_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 전통 무늬 주방 장갑 손잡이 커버", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[529] d503_A
+[731] d503_A
 Product photo of an apron made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 앞치마 주방패브릭", material: 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[530] d505_A
+[732] d505_A
 Product photo of a woven floor mat made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 한지 조각우산 (특대)", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[531] d506_A
+[733] d506_A
 Product photo of a woven floor mat made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 한지 파라솔", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[532] d507_A
+[734] d507_A
 Product photo of a woven floor mat made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "방연옥 한산모시 여름 모시 돗자리 (1인용)", material: 한산모시. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[533] d508_A
+[735] d508_A
 Product photo of a woven floor mat made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 강화 왕골 수제 미니 돗자리", material: 왕골. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[534] d509_A
+[736] d509_A
 Product photo of a woven floor mat made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 왕골 화문석 다도 방석 돗자리", material: 왕골. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[535] d510_A
+[737] d510_A
 Product photo of a woven floor mat made of handmade mulberry hanji paper. Korean product name for reference (ignore the maker's name, never write any text on the image): "윤규상 한지 조각우산 (소) - 7색", material: 한지 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[536] d511_A
+[738] d511_A
 Product photo of a woven floor mat made of natural ramie, hemp or cotton weave. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 돗자리 왕골", material: 왕골. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[537] d513_A
+[739] d513_A
 Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 전통 십장생 손자수 벽걸이 소품", material: 명주실 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[538] d514_A
+[740] d514_A
 Product photo of a small embroidery piece in a frame made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "인네이처 반달나무 빗 (얼레빗)", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[539] d515_A
+[741] d515_A
 Product photo of a small embroidery piece in a frame made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "인네이처 퍼즐 고등어 윷놀이 세트", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[540] d516_A
+[742] d516_A
 Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 초충도 소형 자수 액자", material: 명주실 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[743] d517_A
+Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 자수 골무 10종 노리개 세트", material: 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[744] d518_A
+Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "구혜자 전통 침선 누비 안경집 소품", material: 명주 면. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[745] d519_A
+Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 연화문 원형 자수 수틀", material: 명주실 대나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[746] d520_A
+Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "소품쟁이 궁중 자수 열쇠고리 패치 소품", material: 비단 자수. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[747] d521_A
+Product photo of a small embroidery piece in a frame made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "인네이처 원목 수제 빗 (참빗)", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[748] d522_A
+Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 자수 액자 소품", material: 명주실. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[749] d523_A
+Product photo of a small embroidery piece in a frame made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 미니 자수 소품", material: 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[750] d525_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 민화 오색 연화도 원목 액자", material: 원목 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[751] d526_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 까치와 호랑이 민화 액자", material: 원목 캔버스. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[752] d527_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 신윤복 미인도 수묵화 액자", material: 원목 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[753] d528_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "김각한 각자장 사군자 서각 수제 액자", material: 느티나무. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[754] d529_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 사군자 매화 수묵채색화 액자", material: 원목 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[755] d530_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 전통 책가도 민화 표구 액자", material: 원목 비단. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[756] d531_A
+Product photo of a framed artwork made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "박인숙 강릉자수 자수 십장생도 고급 액자", material: 명주실 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[757] d532_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 십장생도 대형 캔버스 아트 액자", material: 원목 캔버스. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[758] d533_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "국립박물관 김홍도 타작도 풍속화 액자", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[759] d534_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 어변성룡도 출세 기원 민화 액자", material: 원목 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[760] d535_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 연꽃과 붕어 부귀도 액자", material: 원목 캔버스. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[761] d536_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 액자 그림", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[762] d537_A
+Product photo of a framed artwork made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 미니 그림 액자", material: 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[763] d539_A
+Product photo of a folding screen made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 연꽃 반야심경 병풍 (4폭)", material: 원목 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[764] d540_A
+Product photo of a folding screen made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 팔선녀 병풍 (4폭)", material: 비단 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[765] d541_A
+Product photo of a folding screen made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 금목단 원형 병풍", material: 금박 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[766] d542_A
+Product photo of a folding screen made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 서수도 병풍 4폭", material: 비단 금사 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[767] d543_A
+Product photo of a folding screen made of natural solid hardwood with visible grain. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 사군자 병풍 (소)", material: 원목 한지. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[768] d544_A
+Product photo of a folding screen made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 목단 병풍 4폭", material: 비단 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[769] d545_A
+Product photo of a folding screen made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "종로불교사 매화 병풍 4폭", material: 비단 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[770] d546_A
+Product photo of a folding screen made of lustrous silk in soft colors. Korean product name for reference (ignore the maker's name, never write any text on the image): "조화자 민화 십장생도 6폭 대형 병풍", material: 비단 원목. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

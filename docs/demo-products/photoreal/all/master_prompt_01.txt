@@ -1,4 +1,4 @@
-너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 1~60번 이미지를 번호 순서대로 만들어 줘.
+너는 전통 공예 쇼핑몰 '미담'의 상품 사진 작가야. 아래 번호 목록 159~290번 이미지를 번호 순서대로 만들어 줘.
 
 진행 방식 (반드시 지켜)
 0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들거나 여러 장을 내지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
@@ -11,184 +11,184 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[001] p29_A
-Product photo of a calligraphy set: two brushes on a rest, an ink stick and a dark stone inkstone, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[159] f20_C
+A sterling silver hairpin with dragon-head finial lying alone on a small wooden dresser tray next to an antique hand mirror, still life, nobody in the scene, no hair, no head, no person. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[002] f02_B
-Macro close-up of the material and craftsmanship of a set of golden brass bangjja bowls and plates for four, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[003] f20_C
-A sterling silver hairpin with dragon-head finial in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[004] f36_A
-Product photo of a naturally dyed ramie table runner, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[005] f36_B
-Macro close-up of the material and craftsmanship of a naturally dyed ramie table runner, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[006] f36_C
-A naturally dyed ramie table runner in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[007] f37_A
-Product photo of a small silk bojagi with embroidered court insignia, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[008] f37_B
-Macro close-up of the material and craftsmanship of a small silk bojagi with embroidered court insignia, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[009] f37_C
-A small silk bojagi with embroidered court insignia in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[010] f38_A
-Product photo of a microfiber glasses cloth handkerchief with embroidery, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[011] f38_B
-Macro close-up of the material and craftsmanship of a microfiber glasses cloth handkerchief with embroidery, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[012] f38_C
-A microfiber glasses cloth handkerchief with embroidery in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[013] f39_A
-Product photo of a naturally dyed ramie kitchen apron, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[014] f39_B
-Macro close-up of the material and craftsmanship of a naturally dyed ramie kitchen apron, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[015] f39_C
-A naturally dyed ramie kitchen apron in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[016] f40_A
-Product photo of a hanji and bamboo umbrella in seven colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[017] f40_B
-Macro close-up of the material and craftsmanship of a hanji and bamboo umbrella in seven colors, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[018] f40_C
-A hanji and bamboo umbrella in seven colors in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[019] f41_B
-Macro close-up of the material and craftsmanship of a framed peony satin-stitch embroidery in a wooden frame, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[020] f41_C
-A framed peony satin-stitch embroidery in a wooden frame in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[021] f42_A
-Product photo of a canvas framed art of the Sun, Moon and Five Peaks painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[022] f42_B
-Macro close-up of the material and craftsmanship of a canvas framed art of the Sun, Moon and Five Peaks painting, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[023] f42_C
-A canvas framed art of the Sun, Moon and Five Peaks painting in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[024] f43_A
-Product photo of a four-panel gold-leaf folding screen of the Sun, Moon and Five Peaks, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[025] f43_B
-Macro close-up of the material and craftsmanship of a four-panel gold-leaf folding screen of the Sun, Moon and Five Peaks, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[026] f43_C
-A four-panel gold-leaf folding screen of the Sun, Moon and Five Peaks in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[027] f44_A
-Product photo of a carved wooden plaque with relief carving of Hwaseong Haenggung, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[028] f44_B
-Macro close-up of the material and craftsmanship of a carved wooden plaque with relief carving of Hwaseong Haenggung, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[029] f44_C
-A carved wooden plaque with relief carving of Hwaseong Haenggung in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
-
-[030] f45_A
+[232] f45_A
 Product photo of a pair of carved wooden mandarin ducks with flowers, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[031] f45_B
+[233] f45_B
 Macro close-up of the material and craftsmanship of a pair of carved wooden mandarin ducks with flowers, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[032] f45_C
+[234] f45_C
 A pair of carved wooden mandarin ducks with flowers in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[033] f46_A
+[235] f46_A
 Product photo of a Hahoe yangban mask carved in paulownia wood, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[034] f46_B
+[236] f46_B
 Macro close-up of the material and craftsmanship of a Hahoe yangban mask carved in paulownia wood, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[035] f46_C
+[237] f46_C
 A Hahoe yangban mask carved in paulownia wood in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[036] f47_A
+[238] f47_A
 Product photo of traditional bamboo arrows with pheasant feather fletching, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[037] f47_B
+[239] f47_B
 Macro close-up of the material and craftsmanship of traditional bamboo arrows with pheasant feather fletching, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[038] f47_C
+[240] f47_C
 Traditional bamboo arrows with pheasant feather fletching in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[039] f48_A
+[241] f48_A
 Product photo of a traditional dragon drum with wooden body and leather head, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[040] f48_B
+[242] f48_B
 Macro close-up of the material and craftsmanship of a traditional dragon drum with wooden body and leather head, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[041] f48_C
+[243] f48_C
 A traditional dragon drum with wooden body and leather head in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[042] f49_A
+[244] f49_A
 Product photo of a brass lotus-shaped wind chime bell, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[043] f49_B
+[245] f49_B
 Macro close-up of the material and craftsmanship of a brass lotus-shaped wind chime bell, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[044] f49_C
+[246] f49_C
 A brass lotus-shaped wind chime bell in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[045] f50_A
+[247] f50_A
 Product photo of five bangjja brass maepae horse-warrant tokens on a cord, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[046] f50_B
+[248] f50_B
 Macro close-up of the material and craftsmanship of five bangjja brass maepae horse-warrant tokens on a cord, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[047] f50_C
+[249] f50_C
 Five bangjja brass maepae horse-warrant tokens on a cord in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[048] f51_A
+[250] f51_A
 Product photo of a 500 ml bottle of Korean traditional liquor in a ceramic bottle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[049] f51_B
+[251] f51_B
 Macro close-up of the material and craftsmanship of a 500 ml bottle of Korean traditional liquor in a ceramic bottle, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[050] f51_C
+[252] f51_C
 A 500 ml bottle of Korean traditional liquor in a ceramic bottle in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[051] f52_A
+[253] f52_A
 Product photo of a 30 g package of premium green tea leaves with a small tea bowl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[052] f52_B
+[254] f52_B
 Macro close-up of the material and craftsmanship of a 30 g package of premium green tea leaves with a small tea bowl, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[053] f52_C
+[255] f52_C
 A 30 g package of premium green tea leaves with a small tea bowl in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[054] f53_A
+[256] f53_A
 Product photo of a 320 g jar of traditional fermented soybean paste in a brass-colored lid, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[055] f53_B
+[257] f53_B
 Macro close-up of the material and craftsmanship of a 320 g jar of traditional fermented soybean paste in a brass-colored lid, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[056] f53_C
+[258] f53_C
 A 320 g jar of traditional fermented soybean paste in a brass-colored lid in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[057] f54_A
+[259] f54_A
 Product photo of a 3 kg container of white gardenia kimchi, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[058] f54_B
+[260] f54_B
 Macro close-up of the material and craftsmanship of a 3 kg container of white gardenia kimchi, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[059] f54_C
+[261] f54_C
 A 3 kg container of white gardenia kimchi in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[060] f55_A
+[262] f55_A
 Product photo of a three-tier holiday gift box of traditional hangwa sweets, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[263] f55_B
+Macro close-up of the material and craftsmanship of a three-tier holiday gift box of traditional hangwa sweets, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[264] f55_C
+A three-tier holiday gift box of traditional hangwa sweets in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[265] f56_A
+Product photo of a gift set of hangwa sweets and dried beef jerky, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[266] f56_B
+Macro close-up of the material and craftsmanship of a gift set of hangwa sweets and dried beef jerky, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[267] f56_C
+A gift set of hangwa sweets and dried beef jerky in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[268] d002_A
+Product photo of a Korean tea cup made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "신정희요 수제 이도다완", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[269] d003_A
+Product photo of a Korean tea cup made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "광주요 백자 청화 다기 3인 세트", material: 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[270] d004_A
+Product photo of a Korean tea cup made of pale jade-green celadon glaze with fine crackle. Korean product name for reference (ignore the maker's name, never write any text on the image): "강진 청자 운학문 다기 세트", material: 청자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[271] d005_A
+Product photo of a Korean tea cup made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "이종덕 옻칠 목다완 찻잔", material: 원목 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[272] d006_A
+Product photo of a Korean tea cup made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "영남요 백자 3인 다기 찻잔", material: 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[273] d007_A
+Product photo of a Korean tea cup made of pale jade-green celadon glaze with fine crackle. Korean product name for reference (ignore the maker's name, never write any text on the image): "다도원 청자 상감 다관 및 잔세트", material: 청자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[274] d008_A
+Product photo of a Korean tea cup made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "광주요 소리잔 찻잔 2인 세트", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[275] d009_A
+Product photo of a Korean tea cup made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "신정희요 분청 찻잔 5인세트", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[276] d010_A
+Product photo of a Korean tea cup made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 옹기 찻그릇 및 퇴수기", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[277] d011_A
+Product photo of a Korean tea cup made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "김정옥 백자 수제 다관", material: 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[278] d012_A
+Product photo of a Korean tea cup made of pale jade-green celadon glaze with fine crackle. Korean product name for reference (ignore the maker's name, never write any text on the image): "강진 청자 상감 모란문 찻잔", material: 청자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[279] d013_A
+Product photo of a Korean tea cup made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "광주요 미수 백자 2인 다기세트", material: 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[280] d014_A
+Product photo of a Korean tea cup made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "신정희요 덤벙이 다완", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[281] d015_A
+Product photo of a Korean tea cup made of glossy deep red-brown urushi lacquer. Korean product name for reference (ignore the maker's name, never write any text on the image): "이종덕 나주 옻칠 찻잔 받침 세트", material: 원목 옻칠. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[282] d016_A
+Product photo of a Korean tea cup made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 옹기 찻사발", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[283] d017_A
+Product photo of a Korean tea cup made of white porcelain with blue cobalt painting. Korean product name for reference (ignore the maker's name, never write any text on the image): "영남요 청화백자 찻잔", material: 백자. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[284] d018_A
+Product photo of a Korean tea cup made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "전통 문양 현대식 다기 찻잔", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[285] d020_A
+Product photo of a Korean serving bowl and plate made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "이형근 방짜유기 원형 찬접시 5종 세트", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[286] d021_A
+Product photo of a Korean serving bowl and plate made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "광주요 먹빛 옥형 접시 세트", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[287] d022_A
+Product photo of a Korean serving bowl and plate made of glazed Korean ceramic whose glaze color and style follow the product name. Korean product name for reference (ignore the maker's name, never write any text on the image): "김정옥 영남요 분청 대접시", material: 도자기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[288] d023_A
+Product photo of a Korean serving bowl and plate made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "징광옹기 천연잿물 옹기 비빔밥 대접", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[289] d024_A
+Product photo of a Korean serving bowl and plate made of earthy brown onggi earthenware. Korean product name for reference (ignore the maker's name, never write any text on the image): "허진규 옹기 숨쉬는 옹기 접시", material: 옹기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[290] d025_A
+Product photo of a Korean serving bowl and plate made of hand-hammered golden bangjja brass. Korean product name for reference (ignore the maker's name, never write any text on the image): "김수영 방짜유기 무광 옥바리 밥그릇", material: 방짜유기. Show one single item that fits this name, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

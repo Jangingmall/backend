@@ -136,6 +136,12 @@ FLAG = {
 }
 
 
+# AI 가 사람을 그려 넣은 장면은 사람이 들어갈 수 없는 구도로 바꾼다
+SCENE_OVERRIDE = {
+    20: "A sterling silver hairpin with dragon-head finial lying alone on a small wooden dresser tray next to an antique hand mirror, still life, nobody in the scene, no hair, no head, no person.",
+}
+
+
 def cap(s):
     return s[0].upper() + s[1:]
 
@@ -172,7 +178,8 @@ def main():
         title = p["title"]
         items.append((2, f"{k}_A", "A", f"{title} · 대표", f"Product photo of {d}, {A_TAIL}", {"type": "flagship", "sub": sub}))
         items.append((2, f"{k}_B", "B", f"{title} · 소재 확대", f"Macro close-up of the material and craftsmanship of {d}, {B_TAIL}", {"type": "flagship", "sub": sub}))
-        items.append((2, f"{k}_C", "C", f"{title} · 장면", f"{cap(d)} in a natural, realistic setting where it is normally used, no people. {C_TAIL}", {"type": "flagship", "sub": sub}))
+        scene = SCENE_OVERRIDE.get(sub) or f"{cap(d)} in a natural, realistic setting where it is normally used, no people."
+        items.append((2, f"{k}_C", "C", f"{title} · 장면", f"{scene} {C_TAIL}", {"type": "flagship", "sub": sub}))
     names = {s: n for s, n, _c, _k in V.seed.ITEMS}
     for p in sorted(P, key=lambda x: x["id"]):
         if p["id"] in fids:
@@ -187,12 +194,14 @@ def main():
     for cls in sorted({p["cls"] for p in P}):
         items.append((4, f"m-{cls}_B", "B", f"{V.CLASSES[cls][0]} · 소재 확대(공용)",
                       f"Macro close-up of {MACRO[cls]}, filling the frame, {B_TAIL}", {"type": "material", "cls": cls}))
+    gno = {it[1]: n for n, it in enumerate(items, 1)}  # 전체 959장 기준 고정 번호(통과분을 빼도 번호가 바뀌지 않는다)
     items = [i for i in items if i[1] not in STAGED]
     manifest = []
     lines = ["# 전체 상품 실사 프롬프트 — 한 줄이 이미지 한 장 (정사각형 1:1)",
              "# 구성: Tier1 큐레이션 33개 상품 A·B·C / Tier2 대표 56개 A·B·C / Tier3 상품별 대표컷(시드 673) / Tier4 소재 확대 공용",
              "# 번호와 키는 파일 매칭용이다. 이미지에 글자를 넣지 말 것.", ""]
-    for n, (tier, key, cut, label, prompt, target) in enumerate(items, 1):
+    for tier, key, cut, label, prompt, target in items:
+        n = gno[key]
         lines.append(f"[{n:03d}] {key} (T{tier} · {label}) | {prompt}")
         manifest.append({"no": n, "tier": tier, "key": key, "cut": cut, "label": label, "target": target, "prompt": prompt})
     open(os.path.join(OUT, "prompts_all.txt"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
@@ -203,8 +212,8 @@ def main():
     out = []
     for i in range(0, len(items), 5):
         chunk = items[i:i + 5]
-        body = "\n".join(f"[{i + j + 1:03d}] {c[1]} — {c[4]}" for j, c in enumerate(chunk))
-        out.append(f"=== 배치 {i // 5 + 1:02d} ([{i + 1:03d}]–[{i + len(chunk):03d}]) ===\n" + head.format(n=len(chunk)) + body + "\n")
+        body = "\n".join(f"[{gno[c[1]]:03d}] {c[1]} — {c[4]}" for c in chunk)
+        out.append(f"=== 배치 {i // 5 + 1:02d} ([{gno[chunk[0][1]]:03d}]–[{gno[chunk[-1][1]]:03d}]) ===\n" + head.format(n=len(chunk)) + body + "\n")
     open(os.path.join(OUT, "batches.txt"), "w", encoding="utf-8").write("\n".join(out))
 
     # 대화형 AI에 한 번에 붙여 넣는 마스터 프롬프트 (60개씩)
@@ -222,10 +231,10 @@ def main():
              "접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.\n\n번호 목록\n")
     for k in range(0, len(items), 60):
         chunk = items[k:k + 60]
-        body = "\n\n".join(f"[{k + j + 1:03d}] {c[1]}\n{c[4]}" for j, c in enumerate(chunk))
+        body = "\n\n".join(f"[{gno[c[1]]:03d}] {c[1]}\n{c[4]}" for c in chunk)
         tail = "\n\n위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘."
         open(os.path.join(OUT, f"master_prompt_{k // 60 + 1:02d}.txt"), "w", encoding="utf-8").write(
-            head2.format(a=k + 1, b=k + len(chunk)) + body + tail + "\n")
+            head2.format(a=f"{gno[chunk[0][1]]:03d}", b=f"{gno[chunk[-1][1]]:03d}") + body + tail + "\n")
     from collections import Counter
     print(Counter(i[0] for i in items), len(items), "batches", len(out))
 
