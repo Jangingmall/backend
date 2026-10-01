@@ -50,7 +50,7 @@ class DemoSeedVariantsMigrationTest {
     @Test
     @DisplayName("대표 상품은 소분류 56종마다 하나씩 들어간다")
     void hasOneFlagshipPerSubcategory() {
-        Matcher matcher = Pattern.compile("(?m)^    \\('[^']+', (\\d+), '" + Pattern.quote(RAW) + "flagship/f\\d\\d\\.webp'").matcher(sql);
+        Matcher matcher = Pattern.compile("(?m)^    \\('[^']+', (\\d+), '" + Pattern.quote(RAW) + "demo-products/flagship/f\\d\\d\\.webp'").matcher(sql);
         Set<String> subcategories = new HashSet<>();
         int rows = 0;
         while (matcher.find()) {
