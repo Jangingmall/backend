@@ -22,6 +22,28 @@ UPDATE product
 SET title = btrim(replace(title, '(더미)', ''))
 WHERE title LIKE '%(더미)%';
 
+-- 2-1) 상품 설명
+--    "더미 수량 보완용 가상 …" 같은 안내 문구 69개와, CSV 열이 밀려 설명이 '소금' '옥'처럼 한 단어로 들어간 10개를
+--    화면에 그대로 보여도 어색하지 않은 문장으로 바꾼다. 소재는 같은 소분류에서 가장 흔한 값으로 맞춘다.
+UPDATE product p
+SET material = COALESCE(m.common_material, p.material)
+FROM (
+    SELECT subcategory_id, mode() WITHIN GROUP (ORDER BY material) AS common_material
+    FROM product
+    WHERE description IS NOT NULL AND length(description) >= 8
+    GROUP BY subcategory_id
+) m
+WHERE p.subcategory_id = m.subcategory_id
+  AND (p.description IS NULL OR length(p.description) < 8);
+
+UPDATE product p
+SET description = '전통 ' || COALESCE(NULLIF(p.material, ''), '수공예') || ' 기법으로 만든 ' || s.name
+        || '입니다. 손으로 하나하나 다듬어 결이 모두 다르고, 일상에서 쓰기 좋게 마감했습니다.'
+FROM subcategory s
+WHERE s.subcategory_id = p.subcategory_id
+  AND (p.description IS NULL OR length(p.description) < 8
+       OR p.description LIKE '%더미%' OR p.description LIKE '%가상%' OR p.description LIKE '%보완용%');
+
 -- 3) 선물 테마
 INSERT INTO product_gift_theme (product_id, gift_theme)
 SELECT p.product_id, t.gift_theme

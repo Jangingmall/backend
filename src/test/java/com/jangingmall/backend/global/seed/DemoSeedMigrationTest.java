@@ -61,4 +61,12 @@ class DemoSeedMigrationTest {
             assertThat(sql).contains("('" + theme + "',");
         }
     }
+
+    @Test
+    @DisplayName("\"더미 수량 보완용 가상 …\" 같은 안내 문구와 한 단어짜리 밀린 설명을 문장으로 바꾼다")
+    void rewritesDummyAndShiftedDescriptions() {
+        assertThat(sql).contains("p.description LIKE '%더미%'").contains("p.description LIKE '%가상%'")
+            .contains("length(p.description) < 8");
+        assertThat(sql).contains("mode() WITHIN GROUP (ORDER BY material)");
+    }
 }
