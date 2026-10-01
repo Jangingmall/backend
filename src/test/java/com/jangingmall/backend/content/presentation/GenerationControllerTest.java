@@ -96,7 +96,7 @@ class GenerationControllerTest extends RestDocsControllerTest {
                         )))
                     .pathParameters(parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER))
                     .requestFields(
-                        fieldWithPath("images").type(JsonFieldType.ARRAY).description("S3 이미지 ID 목록 (최대 8장)"),
+                        fieldWithPath("images").type(JsonFieldType.ARRAY).description("S3 이미지 ID 또는 https URL 목록 (1~500장). AI에는 앞에서부터 최대 12장만 전달된다"),
                         fieldWithPath("productName").type(JsonFieldType.STRING).description("작품명 (최대 15자)"),
                         fieldWithPath("howMade").type(JsonFieldType.STRING).description("제작 과정"),
                         fieldWithPath("careTips").type(JsonFieldType.STRING).description("관리 방법")
@@ -121,15 +121,29 @@ class GenerationControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("AI 콘텐츠 생성 요청 — 이미지 9장 이상이면 400을 반환한다")
+    @DisplayName("AI 콘텐츠 생성 요청 — 이미지가 500장을 넘으면 400을 반환한다")
     @WithMockUser(roles = "ARTISAN")
     void requestTooManyImages() throws Exception {
-        List<String> nineImages = List.of("img1", "img2", "img3", "img4", "img5", "img6", "img7", "img8", "img9");
+        List<String> tooMany = java.util.Collections.nCopies(501, "img");
         mockMvc.perform(post("/api/content/products/{productId}/generations", 10L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json(new GenerationRequest.Create(nineImages, "청자 다완", "손으로 직접 빚음", "물기 닦아서 보관"))))
+                .content(json(new GenerationRequest.Create(tooMany, "청자 다완", "손으로 직접 빚음", "물기 닦아서 보관"))))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.errorCode").value("INVALID_INPUT"));
+    }
+
+    @Test
+    @DisplayName("AI 콘텐츠 생성 요청 — 이미지 1~500장은 모두 허용한다(8장 초과, AI 상한 12장 초과 포함)")
+    @WithMockUser(roles = "ARTISAN")
+    void requestManyImagesAllowed() throws Exception {
+        when(generationService.request(any())).thenReturn(PROCESSING_RESPONSE);
+        for (int count : new int[] {1, 8, 9, 12, 13, 20, 500}) {
+            mockMvc.perform(post("/api/content/products/{productId}/generations", 10L)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(json(new GenerationRequest.Create(java.util.Collections.nCopies(count, "img"),
+                        "청자 다완", "손으로 직접 빚음", "물기 닦아서 보관"))))
+                .andExpect(status().isAccepted());
+        }
     }
 
     @Test
