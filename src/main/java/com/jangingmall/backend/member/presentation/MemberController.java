@@ -79,9 +79,8 @@ public class MemberController {
             throw new DomainException(ErrorCode.UNAUTHORIZED);
         }
         MemberSession session = memberAuthenticationService.refresh(refreshToken);
-        return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, refreshCookie(session.refreshToken()).toString())
-            .body(ApiResponse.ok(MemberTokenRefreshResponse.from(session, jwtProperties)));
+        // 리프레시 토큰은 교체하지 않으므로 쿠키를 다시 내려주지 않는다(기존 쿠키가 만료까지 유지된다).
+        return ResponseEntity.ok(ApiResponse.ok(MemberTokenRefreshResponse.from(session, jwtProperties)));
     }
 
     @PostMapping("/logout")

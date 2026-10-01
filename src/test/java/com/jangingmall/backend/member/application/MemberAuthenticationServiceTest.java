@@ -2,6 +2,7 @@ package com.jangingmall.backend.member.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -126,21 +127,23 @@ class MemberAuthenticationServiceTest {
     }
 
     @Test
-    @DisplayName("유효한 Refresh Token은 회전되어 새 토큰 쌍을 발급한다")
-    void refreshRotatesToken() {
+    @DisplayName("유효한 Refresh Token은 교체 없이 새 Access Token만 발급하고, 같은 토큰으로 여러 번 갱신할 수 있다")
+    void refreshIssuesAccessTokenWithoutRotation() {
         Member member = activeMember();
         when(jwtTokenProvider.parseRefreshToken("refresh-token"))
             .thenReturn(new JwtTokenProvider.JwtMemberClaims(1L, MemberRole.USER));
         when(memberRepository.findById(1L)).thenReturn(Optional.of(member));
         when(jwtTokenProvider.createAccessToken(1L, MemberRole.USER)).thenReturn("new-access-token");
-        when(jwtTokenProvider.createRefreshToken(1L, MemberRole.USER)).thenReturn("new-refresh-token");
-        when(refreshTokenStore.rotate(eq(1L), eq("refresh-token"), eq("new-refresh-token"), any())).thenReturn(true);
+        when(refreshTokenStore.matches(1L, "refresh-token")).thenReturn(true);
 
-        MemberSession session = memberAuthenticationService.refresh("refresh-token");
+        MemberSession first = memberAuthenticationService.refresh("refresh-token");
+        MemberSession second = memberAuthenticationService.refresh("refresh-token");
 
-        assertThat(session.accessToken()).isEqualTo("new-access-token");
-        assertThat(session.refreshToken()).isEqualTo("new-refresh-token");
-        verify(refreshTokenStore).rotate(eq(1L), eq("refresh-token"), eq("new-refresh-token"), eq(java.time.Duration.ofDays(7)));
+        assertThat(first.accessToken()).isEqualTo("new-access-token");
+        assertThat(first.refreshToken()).isEqualTo("refresh-token");
+        assertThat(second.refreshToken()).isEqualTo("refresh-token");
+        verify(jwtTokenProvider, never()).createRefreshToken(any(), any());
+        verify(refreshTokenStore, never()).save(any(), any(), any());
     }
 
     @Test
@@ -149,13 +152,12 @@ class MemberAuthenticationServiceTest {
         when(jwtTokenProvider.parseRefreshToken("logged-out-token"))
             .thenReturn(new JwtTokenProvider.JwtMemberClaims(1L, MemberRole.USER));
         when(memberRepository.findById(1L)).thenReturn(Optional.of(activeMember()));
-        when(jwtTokenProvider.createAccessToken(1L, MemberRole.USER)).thenReturn("new-access-token");
-        when(jwtTokenProvider.createRefreshToken(1L, MemberRole.USER)).thenReturn("new-refresh-token");
-        when(refreshTokenStore.rotate(eq(1L), eq("logged-out-token"), eq("new-refresh-token"), any())).thenReturn(false);
+        when(refreshTokenStore.matches(1L, "logged-out-token")).thenReturn(false);
 
         assertThatThrownBy(() -> memberAuthenticationService.refresh("logged-out-token"))
             .isInstanceOfSatisfying(DomainException.class,
                 exception -> assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.UNAUTHORIZED));
+        verify(jwtTokenProvider, never()).createAccessToken(any(), any());
     }
 
     @Test

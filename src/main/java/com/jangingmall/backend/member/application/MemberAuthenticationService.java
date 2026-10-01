@@ -67,12 +67,12 @@ public class MemberAuthenticationService {
             throw new DomainException(ErrorCode.UNAUTHORIZED);
         }
 
-        MemberSession session = buildSession(member);
-        if (!refreshTokenStore.rotate(member.getId(), refreshToken, session.refreshToken(),
-            Duration.ofMillis(jwtProperties.refreshTokenExpiry()))) {
+        // 리프레시 토큰은 로그인 때 발급된 값을 만료(7일)까지 그대로 쓴다. 갱신할 때마다 교체하지 않으므로 같은 토큰으로
+        // 동시에 여러 번 갱신해도 모두 성공한다. 로그아웃·비밀번호 변경·재로그인으로 서버 저장값이 바뀌면 이 토큰은 거절된다.
+        if (!refreshTokenStore.matches(member.getId(), refreshToken)) {
             throw new DomainException(ErrorCode.UNAUTHORIZED);
         }
-        return session;
+        return sessionOf(member, jwtTokenProvider.createAccessToken(member.getId(), member.getRole()), refreshToken);
     }
 
     public void logout(Long memberId) {
@@ -105,6 +105,10 @@ public class MemberAuthenticationService {
     private MemberSession buildSession(Member member) {
         String accessToken = jwtTokenProvider.createAccessToken(member.getId(), member.getRole());
         String refreshToken = jwtTokenProvider.createRefreshToken(member.getId(), member.getRole());
+        return sessionOf(member, accessToken, refreshToken);
+    }
+
+    private MemberSession sessionOf(Member member, String accessToken, String refreshToken) {
         return new MemberSession(
             accessToken,
             refreshToken,
