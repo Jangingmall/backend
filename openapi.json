@@ -545,7 +545,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "product-create-forbidden": {
@@ -565,7 +565,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "product-create-unauthorized": {
@@ -699,7 +699,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "image-presigned-url-agent-no-member-id": {
@@ -714,7 +714,7 @@
                             },
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "image-presigned-url-unauthorized": {
@@ -826,7 +826,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "image-delete-conflict": {
@@ -846,7 +846,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "image-delete-forbidden": {
@@ -908,12 +908,12 @@
                                             "data": {
                                                 "content": [
                                                     {
-                                                        "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
-                                                        "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                         "careerYears": 15,
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                        "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
+                                                        "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
+                                                        "artisanId": 10,
                                                         "category": "\ub3c4\uc608",
-                                                        "artisanId": 10
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                                     }
                                                 ],
                                                 "empty": false,
@@ -1015,7 +1015,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-login-locked": {
@@ -1035,7 +1035,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-login-unauthorized": {
@@ -1100,7 +1100,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-get-me-unauthorized": {
@@ -1230,7 +1230,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-account-update-unauthorized": {
@@ -1334,7 +1334,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-signup-conflict": {
@@ -1503,7 +1503,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "notification-get-one-403": {
@@ -1523,7 +1523,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "notification-get-one-404": {
@@ -1610,7 +1610,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "notification-delete-422": {
@@ -1714,8 +1714,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "DONE",
-                                                "approvedAt": "2026-10-01T17:46:54.944274373Z",
-                                                "canceledAt": "2026-10-01T17:46:54.944274593Z"
+                                                "approvedAt": "2026-10-01T17:57:52.067928716Z",
+                                                "canceledAt": "2026-10-01T17:57:52.067928867Z"
                                             }
                                         }
                                     }
@@ -1791,7 +1791,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "payment-methods-list-unauthorized": {
@@ -1938,7 +1938,7 @@
                                                 "orderNumber": "ORD-000001",
                                                 "totalAmount": 25000,
                                                 "status": "CREATED",
-                                                "createdAt": "2026-10-01T17:46:54.596648578Z",
+                                                "createdAt": "2026-10-01T17:57:51.689239282Z",
                                                 "items": [
                                                     
                                                 ]
@@ -2043,7 +2043,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-payments-returns-returnId-status-1115423141"
+                                    "$ref": "#/components/schemas/api-payments-returns-1115423141"
                                 },
                                 "examples": {
                                     "returns-request": {
@@ -2055,7 +2055,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "REQUESTED",
-                                                "requestedAt": "2026-10-01T17:46:54.462423640Z"
+                                                "requestedAt": "2026-10-01T17:57:51.499609314Z"
                                             }
                                         }
                                     }
@@ -2630,12 +2630,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
-                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
-                                                "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                 "careerYears": 15,
-                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
+                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
+                                                "artisanId": 10,
                                                 "category": "\ub3c4\uc608",
-                                                "artisanId": 10
+                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                             }
                                         }
                                     }
@@ -2694,12 +2694,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
-                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
-                                                "introduction": "\uc0c8\ub85c\uc6b4 \uc18c\uac1c\uc785\ub2c8\ub2e4.",
                                                 "careerYears": 15,
-                                                "businessName": "\uc0c8\uacf5\ubc29\uba85",
+                                                "introduction": "\uc0c8\ub85c\uc6b4 \uc18c\uac1c\uc785\ub2c8\ub2e4.",
+                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
+                                                "artisanId": 10,
                                                 "category": "\ub3c4\uc608",
-                                                "artisanId": 10
+                                                "businessName": "\uc0c8\uacf5\ubc29\uba85"
                                             }
                                         }
                                     }
@@ -2735,10 +2735,10 @@
                                             "data": {
                                                 "content": [
                                                     {
-                                                        "notificationsEnabled": true,
                                                         "newProductCount": 2,
-                                                        "artisanId": 10,
-                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
+                                                        "notificationsEnabled": true,
+                                                        "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                        "artisanId": 10
                                                     }
                                                 ],
                                                 "empty": false,
@@ -2767,7 +2767,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-subscriptions-unauthorized": {
@@ -2820,12 +2820,12 @@
                                             "success": true,
                                             "status": 200,
                                             "data": {
-                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
-                                                "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
                                                 "careerYears": 15,
-                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                "introduction": "\uc804\ud1b5 \ub3c4\uc790\uae30\ub97c \ube5a\ub294 \uc7a5\uc778\uc785\ub2c8\ub2e4.",
+                                                "region": "\uacbd\uae30\ub3c4 \uc774\ucc9c",
+                                                "artisanId": 10,
                                                 "category": "\ub3c4\uc608",
-                                                "artisanId": 10
+                                                "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                             }
                                         }
                                     }
@@ -2948,7 +2948,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "address-list-unauthorized": {
@@ -3125,7 +3125,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-order-list-bad-status": {
@@ -3168,28 +3168,28 @@
                                                                 "price": 85000,
                                                                 "quantity": 1,
                                                                 "artisan": {
-                                                                    "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                                    "artisanId": 10
+                                                                    "artisanId": 10,
+                                                                    "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                                                 },
                                                                 "options": {
-                                                                    "selectedOptions": [
+                                                                    "textInputs": [
                                                                         
                                                                     ],
-                                                                    "textInputs": [
+                                                                    "selectedOptions": [
                                                                         
                                                                     ]
                                                                 },
                                                                 "reviewId": 77,
                                                                 "thumbnail": {
+                                                                    "imageId": "01JIMAGE",
                                                                     "variants": [
                                                                         {
-                                                                            "format": "webp",
-                                                                            "height": 320,
                                                                             "url": "https://cdn.midam.store/products/320.webp",
+                                                                            "height": 320,
+                                                                            "format": "webp",
                                                                             "width": 320
                                                                         }
-                                                                    ],
-                                                                    "imageId": "01JIMAGE"
+                                                                    ]
                                                                 }
                                                             }
                                                         ],
@@ -3236,7 +3236,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-order-list-forbidden": {
@@ -3348,23 +3348,23 @@
                                             "data": {
                                                 "content": [
                                                     {
-                                                        "thumbnail": {
-                                                            "variants": [
-                                                                
-                                                            ],
-                                                            "imageId": "01JIMAGE"
-                                                        },
-                                                        "writerNickname": "\ubbf8\ub2f4",
+                                                        "reviewId": 1,
+                                                        "productId": 1,
+                                                        "createdAt": "2026-09-01T10:00:00",
                                                         "images": [
                                                             
                                                         ],
-                                                        "createdAt": "2026-09-01T10:00:00",
-                                                        "productId": 1,
-                                                        "reviewId": 1,
-                                                        "content": "\uc815\ub9d0 \uc544\ub984\ub2e4\uc6b4 \uc791\ud488\uc785\ub2c8\ub2e4.",
-                                                        "orderItemId": 10,
+                                                        "writerNickname": "\ubbf8\ub2f4",
+                                                        "thumbnail": {
+                                                            "imageId": "01JIMAGE",
+                                                            "variants": [
+                                                                
+                                                            ]
+                                                        },
+                                                        "rating": 4.5,
                                                         "productName": "\uccad\uc790 \ub2e4\uc644",
-                                                        "rating": 4.5
+                                                        "orderItemId": 10,
+                                                        "content": "\uc815\ub9d0 \uc544\ub984\ub2e4\uc6b4 \uc791\ud488\uc785\ub2c8\ub2e4."
                                                     }
                                                 ],
                                                 "empty": false,
@@ -3448,11 +3448,11 @@
                                                 "content": [
                                                     {
                                                         "name": "\uccad\uc790 \ub2e4\uc644",
-                                                        "price": 85000,
-                                                        "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                        "status": "ON_SALE",
+                                                        "artisanId": 10,
                                                         "productId": 1,
-                                                        "artisanId": 10
+                                                        "status": "ON_SALE",
+                                                        "artisanName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
+                                                        "price": 85000
                                                     }
                                                 ],
                                                 "empty": false,
@@ -3492,7 +3492,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-wish-list-forbidden": {
@@ -3700,7 +3700,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "notification-read-404": {
@@ -3720,7 +3720,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "notification-read-422": {
@@ -3858,7 +3858,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "cart-merge-unauthorized": {
@@ -4057,8 +4057,8 @@
                                                 "amount": 25000,
                                                 "method": "CARD",
                                                 "status": "CANCELED",
-                                                "approvedAt": "2026-10-01T17:46:55.119955283Z",
-                                                "canceledAt": "2026-10-01T17:46:55.119955484Z"
+                                                "approvedAt": "2026-10-01T17:57:52.213022664Z",
+                                                "canceledAt": "2026-10-01T17:57:52.213022784Z"
                                             }
                                         }
                                     }
@@ -4466,7 +4466,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "product-change-status-unauthorized": {
@@ -4511,7 +4511,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "product-wish-forbidden": {
@@ -4550,7 +4550,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "product-wish-unauthorized": {
@@ -4876,7 +4876,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-notifications-unauthorized": {
@@ -4896,7 +4896,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-notifications-invalid": {
@@ -4960,7 +4960,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-subscribe-not-found": {
@@ -4999,7 +4999,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-subscribe-unauthorized": {
@@ -5042,7 +5042,7 @@
                         "content": {
                             "application/json;charset=UTF-8": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-unsubscribe-unauthorized": {
@@ -5207,7 +5207,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-order-summary-forbidden": {
@@ -5282,7 +5282,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "member-order-detail-not-found": {
@@ -5325,28 +5325,28 @@
                                                         "price": 85000,
                                                         "quantity": 1,
                                                         "artisan": {
-                                                            "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608",
-                                                            "artisanId": 10
+                                                            "artisanId": 10,
+                                                            "businessName": "\uae40\ub3c4\uacf5 \ub3c4\uc608"
                                                         },
                                                         "options": {
-                                                            "selectedOptions": [
+                                                            "textInputs": [
                                                                 
                                                             ],
-                                                            "textInputs": [
+                                                            "selectedOptions": [
                                                                 
                                                             ]
                                                         },
                                                         "reviewId": 77,
                                                         "thumbnail": {
+                                                            "imageId": "01JIMAGE",
                                                             "variants": [
                                                                 {
-                                                                    "format": "webp",
-                                                                    "height": 320,
                                                                     "url": "https://cdn.midam.store/products/320.webp",
+                                                                    "height": 320,
+                                                                    "format": "webp",
                                                                     "width": 320
                                                                 }
-                                                            ],
-                                                            "imageId": "01JIMAGE"
+                                                            ]
                                                         }
                                                     }
                                                 ],
@@ -5423,18 +5423,18 @@
                                                         "productName": "\uccad\ud654\ubc31\uc790 \ucc3b\uc794",
                                                         "purchasedAt": "2026-09-01T10:00:00",
                                                         "options": {
-                                                            "selectedOptions": [
+                                                            "textInputs": [
                                                                 
                                                             ],
-                                                            "textInputs": [
+                                                            "selectedOptions": [
                                                                 
                                                             ]
                                                         },
                                                         "thumbnail": {
+                                                            "imageId": "01JIMAGE",
                                                             "variants": [
                                                                 
-                                                            ],
-                                                            "imageId": "01JIMAGE"
+                                                            ]
                                                         }
                                                     }
                                                 ],
@@ -5647,7 +5647,7 @@
                                             "data": {
                                                 "orderId": 100,
                                                 "status": "CANCELED",
-                                                "canceledAt": "2026-10-01T17:46:54.743018393Z",
+                                                "canceledAt": "2026-10-01T17:57:51.854278240Z",
                                                 "purchaseConfirmedAt": null
                                             }
                                         }
@@ -5756,7 +5756,7 @@
                                                 "orderId": 100,
                                                 "status": "PURCHASE_CONFIRMED",
                                                 "canceledAt": null,
-                                                "purchaseConfirmedAt": "2026-10-01T17:46:54.743224333Z"
+                                                "purchaseConfirmedAt": "2026-10-01T17:57:51.854508873Z"
                                             }
                                         }
                                     }
@@ -5877,7 +5877,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-payments-returns-returnId-status-1115423141"
+                                    "$ref": "#/components/schemas/api-payments-returns-1115423141"
                                 },
                                 "examples": {
                                     "returns-approve": {
@@ -5889,7 +5889,7 @@
                                                 "orderId": 100,
                                                 "type": "RETURN",
                                                 "status": "APPROVED",
-                                                "requestedAt": "2026-10-01T17:46:54.990983453Z"
+                                                "requestedAt": "2026-10-01T17:57:52.112444596Z"
                                             }
                                         }
                                     }
@@ -6080,7 +6080,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/api-member-signup16218693"
+                                    "$ref": "#/components/schemas/api-member-me-orders-orderId16218693"
                                 },
                                 "examples": {
                                     "image-internal-verify-not-found": {
@@ -7112,6 +7112,60 @@
                     }
                 }
             },
+            "api-member-artisans-me-1004667003": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "artisanId",
+                            "businessName",
+                            "careerYears",
+                            "category",
+                            "introduction",
+                            "region"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "careerYears": {
+                                "type": "number",
+                                "description": "\uacbd\ub825 \uc5f0\uc218"
+                            },
+                            "artisanId": {
+                                "type": "number",
+                                "description": "\uc7a5\uc778 ID"
+                            },
+                            "businessName": {
+                                "type": "string",
+                                "description": "\uacf5\ubc29\uba85"
+                            },
+                            "region": {
+                                "type": "string",
+                                "description": "\uc9c0\uc5ed"
+                            },
+                            "category": {
+                                "type": "string",
+                                "description": "\uce74\ud14c\uace0\ub9ac"
+                            },
+                            "introduction": {
+                                "type": "string",
+                                "description": "\uc18c\uac1c"
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
             "api-member-signup1149432730": {
                 "required": [
                     "email",
@@ -7173,60 +7227,6 @@
                     "email": {
                         "type": "string",
                         "description": "\uc774\uba54\uc77c (@NotBlank, @Email, \ucd5c\ub300 255\uc790)"
-                    }
-                }
-            },
-            "api-member-artisans-me-1004667003": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "artisanId",
-                            "businessName",
-                            "careerYears",
-                            "category",
-                            "introduction",
-                            "region"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "careerYears": {
-                                "type": "number",
-                                "description": "\uacbd\ub825 \uc5f0\uc218"
-                            },
-                            "artisanId": {
-                                "type": "number",
-                                "description": "\uc7a5\uc778 ID"
-                            },
-                            "businessName": {
-                                "type": "string",
-                                "description": "\uacf5\ubc29\uba85"
-                            },
-                            "region": {
-                                "type": "string",
-                                "description": "\uc9c0\uc5ed"
-                            },
-                            "category": {
-                                "type": "string",
-                                "description": "\uce74\ud14c\uace0\ub9ac"
-                            },
-                            "introduction": {
-                                "type": "string",
-                                "description": "\uc18c\uac1c"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
                     }
                 }
             },
@@ -7945,7 +7945,7 @@
                     }
                 }
             },
-            "api-member-signup16218693": {
+            "api-member-me-orders-orderId16218693": {
                 "required": [
                     "errorCode",
                     "message",
@@ -9052,86 +9052,6 @@
                     }
                 }
             },
-            "api-products-productId-reviews916845673": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "content",
-                            "createdAt",
-                            "orderItemId",
-                            "productId",
-                            "rating",
-                            "reviewId",
-                            "writerId"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "createdAt": {
-                                "type": "string",
-                                "description": "\uc791\uc131\uc77c\uc2dc"
-                            },
-                            "images": {
-                                "type": "array",
-                                "description": "\ucca8\ubd80 \uc774\ubbf8\uc9c0 ID \ubaa9\ub85d",
-                                "nullable": true,
-                                "items": {
-                                    "oneOf": [
-                                        {
-                                            "type": "object"
-                                        },
-                                        {
-                                            "type": "boolean"
-                                        },
-                                        {
-                                            "type": "string"
-                                        },
-                                        {
-                                            "type": "number"
-                                        }
-                                    ]
-                                }
-                            },
-                            "productId": {
-                                "type": "number",
-                                "description": "\uc0c1\ud488 ID"
-                            },
-                            "orderItemId": {
-                                "type": "number",
-                                "description": "\uc8fc\ubb38 \ud56d\ubaa9 ID"
-                            },
-                            "rating": {
-                                "type": "number",
-                                "description": "\ud3c9\uc810"
-                            },
-                            "reviewId": {
-                                "type": "number",
-                                "description": "\ud6c4\uae30 ID"
-                            },
-                            "content": {
-                                "type": "string",
-                                "description": "\ud6c4\uae30 \ub0b4\uc6a9"
-                            },
-                            "writerId": {
-                                "type": "number",
-                                "description": "\uc791\uc131\uc790 ID"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
             "api-member-artisans-1902721574": {
                 "required": [
                     "status",
@@ -9267,6 +9187,86 @@
                     }
                 }
             },
+            "api-products-productId-reviews916845673": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "content",
+                            "createdAt",
+                            "orderItemId",
+                            "productId",
+                            "rating",
+                            "reviewId",
+                            "writerId"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "createdAt": {
+                                "type": "string",
+                                "description": "\uc791\uc131\uc77c\uc2dc"
+                            },
+                            "images": {
+                                "type": "array",
+                                "description": "\ucca8\ubd80 \uc774\ubbf8\uc9c0 ID \ubaa9\ub85d",
+                                "nullable": true,
+                                "items": {
+                                    "oneOf": [
+                                        {
+                                            "type": "object"
+                                        },
+                                        {
+                                            "type": "boolean"
+                                        },
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "number"
+                                        }
+                                    ]
+                                }
+                            },
+                            "productId": {
+                                "type": "number",
+                                "description": "\uc0c1\ud488 ID"
+                            },
+                            "orderItemId": {
+                                "type": "number",
+                                "description": "\uc8fc\ubb38 \ud56d\ubaa9 ID"
+                            },
+                            "rating": {
+                                "type": "number",
+                                "description": "\ud3c9\uc810"
+                            },
+                            "reviewId": {
+                                "type": "number",
+                                "description": "\ud6c4\uae30 ID"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "\ud6c4\uae30 \ub0b4\uc6a9"
+                            },
+                            "writerId": {
+                                "type": "number",
+                                "description": "\uc791\uc131\uc790 ID"
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
             "api-products-productId-status-2050486651": {
                 "required": [
                     "status"
@@ -9288,6 +9288,114 @@
                     "status": {
                         "type": "string",
                         "description": "\ubcc0\uacbd\ud560 \uc0c1\ud0dc (APPROVED)"
+                    }
+                }
+            },
+            "api-images-presigned-url-1900015981": {
+                "required": [
+                    "status",
+                    "success"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "required": [
+                            "expiresInSeconds",
+                            "imageId",
+                            "uploads",
+                            "variants"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "imageId": {
+                                "type": "string",
+                                "description": "\uc774\ubbf8\uc9c0 ID (ULID)"
+                            },
+                            "variants": {
+                                "type": "array",
+                                "description": "\uc2e0\uaddc \ud074\ub77c\uc774\uc5b8\ud2b8\uc6a9 uploads \ubcc4\uce6d",
+                                "items": {
+                                    "required": [
+                                        "objectKey",
+                                        "presignedUrl",
+                                        "uploadUrl",
+                                        "variant",
+                                        "viewUrl"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "uploadUrl": {
+                                            "type": "string",
+                                            "description": "S3 PUT \uc804\uc6a9 Presigned URL"
+                                        },
+                                        "objectKey": {
+                                            "type": "string",
+                                            "description": "S3 \uc624\ube0c\uc81d\ud2b8 \ud0a4"
+                                        },
+                                        "presignedUrl": {
+                                            "type": "string",
+                                            "description": "\uae30\uc874 \ud074\ub77c\uc774\uc5b8\ud2b8 \ud638\ud658\uc6a9 uploadUrl \ubcc4\uce6d"
+                                        },
+                                        "viewUrl": {
+                                            "type": "string",
+                                            "description": "\uacf5\uac1c \uc774\ubbf8\uc9c0 \uc870\ud68c URL (RETURN \uc6a9\ub3c4\ub294 null)"
+                                        },
+                                        "variant": {
+                                            "type": "string",
+                                            "description": "\ubcc0\ud615 \uc774\ub984"
+                                        }
+                                    }
+                                }
+                            },
+                            "expiresInSeconds": {
+                                "type": "number",
+                                "description": "URL \uc720\ud6a8 \uc2dc\uac04 (\ucd08)"
+                            },
+                            "uploads": {
+                                "type": "array",
+                                "description": "\uac01 \ubcc0\ud615\ubcc4 \uc5c5\ub85c\ub4dc URL",
+                                "items": {
+                                    "required": [
+                                        "objectKey",
+                                        "presignedUrl",
+                                        "uploadUrl",
+                                        "variant",
+                                        "viewUrl"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "uploadUrl": {
+                                            "type": "string",
+                                            "description": "S3 PUT \uc804\uc6a9 Presigned URL"
+                                        },
+                                        "objectKey": {
+                                            "type": "string",
+                                            "description": "S3 \uc624\ube0c\uc81d\ud2b8 \ud0a4"
+                                        },
+                                        "presignedUrl": {
+                                            "type": "string",
+                                            "description": "\uae30\uc874 \ud074\ub77c\uc774\uc5b8\ud2b8 \ud638\ud658\uc6a9 uploadUrl \ubcc4\uce6d"
+                                        },
+                                        "viewUrl": {
+                                            "type": "string",
+                                            "description": "\uacf5\uac1c \uc774\ubbf8\uc9c0 \uc870\ud68c URL (RETURN \uc6a9\ub3c4\ub294 null)"
+                                        },
+                                        "variant": {
+                                            "type": "string",
+                                            "description": "\ubcc0\ud615 \uc774\ub984"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "success": {
+                        "type": "boolean",
+                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
+                    },
+                    "status": {
+                        "type": "number",
+                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
                     }
                 }
             },
@@ -9537,114 +9645,6 @@
                             "totalElements": {
                                 "type": "number",
                                 "description": "\uc804\uccb4 \uc218"
-                            }
-                        }
-                    },
-                    "success": {
-                        "type": "boolean",
-                        "description": "true \u2014 \ud56d\uc0c1 \uc131\uacf5"
-                    },
-                    "status": {
-                        "type": "number",
-                        "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
-                    }
-                }
-            },
-            "api-images-presigned-url-1900015981": {
-                "required": [
-                    "status",
-                    "success"
-                ],
-                "type": "object",
-                "properties": {
-                    "data": {
-                        "required": [
-                            "expiresInSeconds",
-                            "imageId",
-                            "uploads",
-                            "variants"
-                        ],
-                        "type": "object",
-                        "properties": {
-                            "imageId": {
-                                "type": "string",
-                                "description": "\uc774\ubbf8\uc9c0 ID (ULID)"
-                            },
-                            "variants": {
-                                "type": "array",
-                                "description": "\uc2e0\uaddc \ud074\ub77c\uc774\uc5b8\ud2b8\uc6a9 uploads \ubcc4\uce6d",
-                                "items": {
-                                    "required": [
-                                        "objectKey",
-                                        "presignedUrl",
-                                        "uploadUrl",
-                                        "variant",
-                                        "viewUrl"
-                                    ],
-                                    "type": "object",
-                                    "properties": {
-                                        "uploadUrl": {
-                                            "type": "string",
-                                            "description": "S3 PUT \uc804\uc6a9 Presigned URL"
-                                        },
-                                        "objectKey": {
-                                            "type": "string",
-                                            "description": "S3 \uc624\ube0c\uc81d\ud2b8 \ud0a4"
-                                        },
-                                        "presignedUrl": {
-                                            "type": "string",
-                                            "description": "\uae30\uc874 \ud074\ub77c\uc774\uc5b8\ud2b8 \ud638\ud658\uc6a9 uploadUrl \ubcc4\uce6d"
-                                        },
-                                        "viewUrl": {
-                                            "type": "string",
-                                            "description": "\uacf5\uac1c \uc774\ubbf8\uc9c0 \uc870\ud68c URL (RETURN \uc6a9\ub3c4\ub294 null)"
-                                        },
-                                        "variant": {
-                                            "type": "string",
-                                            "description": "\ubcc0\ud615 \uc774\ub984"
-                                        }
-                                    }
-                                }
-                            },
-                            "expiresInSeconds": {
-                                "type": "number",
-                                "description": "URL \uc720\ud6a8 \uc2dc\uac04 (\ucd08)"
-                            },
-                            "uploads": {
-                                "type": "array",
-                                "description": "\uac01 \ubcc0\ud615\ubcc4 \uc5c5\ub85c\ub4dc URL",
-                                "items": {
-                                    "required": [
-                                        "objectKey",
-                                        "presignedUrl",
-                                        "uploadUrl",
-                                        "variant",
-                                        "viewUrl"
-                                    ],
-                                    "type": "object",
-                                    "properties": {
-                                        "uploadUrl": {
-                                            "type": "string",
-                                            "description": "S3 PUT \uc804\uc6a9 Presigned URL"
-                                        },
-                                        "objectKey": {
-                                            "type": "string",
-                                            "description": "S3 \uc624\ube0c\uc81d\ud2b8 \ud0a4"
-                                        },
-                                        "presignedUrl": {
-                                            "type": "string",
-                                            "description": "\uae30\uc874 \ud074\ub77c\uc774\uc5b8\ud2b8 \ud638\ud658\uc6a9 uploadUrl \ubcc4\uce6d"
-                                        },
-                                        "viewUrl": {
-                                            "type": "string",
-                                            "description": "\uacf5\uac1c \uc774\ubbf8\uc9c0 \uc870\ud68c URL (RETURN \uc6a9\ub3c4\ub294 null)"
-                                        },
-                                        "variant": {
-                                            "type": "string",
-                                            "description": "\ubcc0\ud615 \uc774\ub984"
-                                        }
-                                    }
-                                }
                             }
                         }
                     },
@@ -10077,7 +10077,7 @@
                     }
                 }
             },
-            "api-payments-returns-returnId-status-1115423141": {
+            "api-payments-returns-1115423141": {
                 "required": [
                     "status",
                     "success"
@@ -11971,28 +11971,6 @@
                     }
                 }
             },
-            "api-payments999605347": {
-                "required": [
-                    "amount",
-                    "orderId"
-                ],
-                "type": "object",
-                "properties": {
-                    "amount": {
-                        "type": "number",
-                        "description": "\uacb0\uc81c \uae08\uc561"
-                    },
-                    "orderId": {
-                        "type": "number",
-                        "description": "\uc8fc\ubb38 ID"
-                    },
-                    "paymentMethod": {
-                        "type": "string",
-                        "description": "\uacb0\uc81c\uc218\ub2e8",
-                        "nullable": true
-                    }
-                }
-            },
             "api-member-me-orders-941884244": {
                 "required": [
                     "status",
@@ -12342,6 +12320,28 @@
                     "status": {
                         "type": "number",
                         "description": "HTTP \uc0c1\ud0dc \ucf54\ub4dc"
+                    }
+                }
+            },
+            "api-payments999605347": {
+                "required": [
+                    "amount",
+                    "orderId"
+                ],
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number",
+                        "description": "\uacb0\uc81c \uae08\uc561"
+                    },
+                    "orderId": {
+                        "type": "number",
+                        "description": "\uc8fc\ubb38 ID"
+                    },
+                    "paymentMethod": {
+                        "type": "string",
+                        "description": "\uacb0\uc81c\uc218\ub2e8",
+                        "nullable": true
                     }
                 }
             },
