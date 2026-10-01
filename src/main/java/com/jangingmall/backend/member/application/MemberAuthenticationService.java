@@ -27,6 +27,7 @@ public class MemberAuthenticationService {
     private final RefreshTokenStore refreshTokenStore;
     private final MemberSocialAccountRepository socialAccounts;
     private final LoginAttemptService loginAttempts;
+    private final MultiSessionAccounts multiSessionAccounts;
 
     @Transactional(readOnly = true)
     public MemberSession login(String email, String password) {
@@ -91,7 +92,12 @@ public class MemberAuthenticationService {
 
     private MemberSession issueSession(Member member) {
         MemberSession session = buildSession(member);
-        refreshTokenStore.save(member.getId(), session.refreshToken(), Duration.ofMillis(jwtProperties.refreshTokenExpiry()));
+        Duration ttl = Duration.ofMillis(jwtProperties.refreshTokenExpiry());
+        if (multiSessionAccounts.allows(member.getEmail())) {
+            refreshTokenStore.saveShared(member.getId(), session.refreshToken(), ttl);
+        } else {
+            refreshTokenStore.save(member.getId(), session.refreshToken(), ttl);
+        }
         return session;
     }
 
