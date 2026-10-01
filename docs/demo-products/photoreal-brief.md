@@ -521,3 +521,17 @@ python3 scripts/demo-products/photoreal_check.py sliced/            # 규칙·�
 
 - 이미지 생성 AI 가 **칸을 정확히 정사각형·40px 여백으로** 그리지 못할 수 있다. 그때는 `--square`, 또는 시트당 상품 1줄로 줄여서 다시 받는다.
 - 시트 방식은 한 장에 여러 컷을 그리느라 칸당 디테일이 조금 떨어질 수 있다. 가장 화질이 좋은 건 **한 장씩 따로** 받는 것(9번)이다.
+
+## 11. 이미지가 도착하면 (한 번에 적용)
+
+```
+python3 scripts/demo-products/photoreal_apply.py photoreal.zip              # 검증 → WebP(1280px) 저장 → V20 마이그레이션 생성
+python3 scripts/demo-products/photoreal_apply.py photoreal.zip --manual-sql  # 배포 없이 DB 에 직접 실행할 SQL 로 생성
+python3 scripts/demo-products/photoreal_apply.py photoreal.zip --dry-run     # 검증과 계획만 확인
+```
+
+- A → 대표(`thumbnail_url`), B → 상세 1번, C → 상세 2번. B·C 가 없으면 기존 상세 이미지를 그대로 둔다.
+- 상품은 상품명 + 장인 ID(V17 자연키)로 찾는다. 큐레이션 상품(이미지가 `docs/demo-*`)만 바꾼다.
+- 실사 이미지는 **AI 생성**이다. 시연에서 실제 촬영 사진이라고 말하지 않는다.
+- 대표(A) 20장만 있어도 적용할 수 있다(상세는 기존 일러스트 유지).
+- `--manual-sql` 로 만든 SQL 은 이미 배포된 STG DB 에 바로 실행할 수 있어 재배포 없이 이미지를 바꿀 수 있다(되돌리려면 V17 의 주소로 다시 UPDATE).
