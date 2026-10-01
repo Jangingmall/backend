@@ -11,184 +11,184 @@
 이미지 규칙: 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·여러 컷·라벨·캡션 금지). 글자·로고·워터마크·사람·손·얼룩 금지. 키가 _A 인 컷은 소품과 표면 질감이 없는 단색 따뜻한 연회색 배경, 모든 _A 컷은 같은 배경 톤. _B 는 같은 상품의 소재 매크로, _C 는 사람 없는 자연스러운 생활 장면. 한국 전통 공예품의 구조와 소재감이 정확해야 해. 접는 부채는 양쪽 가장자리에 굵은 대가 하나씩 있고 그 사이에 가는 살이 있어.
 
 번호 목록
-[001] p01_A
-Product photo of a pale pink Korean daily hanbok jeogori (jacket) made of ramie, flat lay neatly arranged, hand-stitched seams, relaxed fit, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[001] p29_A
+Product photo of a calligraphy set: two brushes on a rest, an ink stick and a dark stone inkstone, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[002] p01_B
-Close-up of the ramie fabric weave and the hand-stitched collar seam in pale pink of a pale pink ramie hanbok jacket (jeogori), macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[002] f02_B
+Macro close-up of the material and craftsmanship of a set of golden brass bangjja bowls and plates for four, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[003] p01_C
-The jeogori hanging on a wooden hanger against a white wall, soft light. The product is a pale pink ramie hanbok jacket (jeogori), lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[003] f20_C
+A sterling silver hairpin with dragon-head finial in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[004] p02_A
-Product photo of an indigo-blue quilted cotton Korean lucky pouch (bokjumeoni) with hand diamond quilting and a knotted cord closure, palm-sized, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[004] f36_A
+Product photo of a naturally dyed ramie table runner, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[005] p02_B
-Close-up of the hand diamond quilting stitches on deep indigo cotton and the knotted cord of an indigo-blue quilted cotton lucky pouch with a knotted cord, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[005] f36_B
+Macro close-up of the material and craftsmanship of a naturally dyed ramie table runner, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[006] p02_C
-The pouch resting on a folded linen cloth with a small sprig of dried flowers. The product is an indigo-blue quilted cotton lucky pouch with a knotted cord, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[006] f36_C
+A naturally dyed ramie table runner in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[007] p03_A
-Product photo of a set of two aubergine-purple cotton handkerchiefs, neatly folded with a hand-embroidered plum blossom branch in the corner, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[007] f37_A
+Product photo of a small silk bojagi with embroidered court insignia, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[008] p03_B
-Close-up of the embroidered plum blossoms on soft purple cotton of two aubergine-purple cotton handkerchiefs with embroidered plum blossoms, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[008] f37_B
+Macro close-up of the material and craftsmanship of a small silk bojagi with embroidered court insignia, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[009] p03_C
-The two handkerchiefs stacked on a wooden tray, tied with a thin cord. The product is two aubergine-purple cotton handkerchiefs with embroidered plum blossoms, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[009] f37_C
+A small silk bojagi with embroidered court insignia in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[010] p04_A
-Product photo of a Korean bojagi-style patchwork zipper pouch in silk with five traditional colors (blue, yellow, red, white, black) in geometric patches, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[010] f38_A
+Product photo of a microfiber glasses cloth handkerchief with embroidery, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[011] p04_B
-Close-up of the patchwork seams and the five traditional colors of silk of a five-color (blue, yellow, red, white, black) silk patchwork zipper pouch, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[011] f38_B
+Macro close-up of the material and craftsmanship of a microfiber glasses cloth handkerchief with embroidery, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[012] p04_C
-The pouch on a pale wooden table beside a folded bojagi cloth. The product is a five-color (blue, yellow, red, white, black) silk patchwork zipper pouch, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[012] f38_C
+A microfiber glasses cloth handkerchief with embroidery in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[013] p05_A
-Product photo of a light yellow-green ramie scarf with a delicate open weave and small fringe, softly folded, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[013] f39_A
+Product photo of a naturally dyed ramie kitchen apron, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[014] p05_B
-Close-up of the open ramie weave in fresh light green and the fringe ends of a light yellow-green ramie scarf with fringe, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[014] f39_B
+Macro close-up of the material and craftsmanship of a naturally dyed ramie kitchen apron, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[015] p05_C
-The scarf loosely tied on a rattan bag handle in daylight. The product is a light yellow-green ramie scarf with fringe, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[015] f39_C
+A naturally dyed ramie kitchen apron in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[016] p06_A
-Product photo of a Korean traditional ornament (norigae) in the three-piece (samjak) style, hand-knotted crimson-red silk cord knots with a plum-blossom shaped main knot and long tassels, hanging from a small hook, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[016] f40_A
+Product photo of a hanji and bamboo umbrella in seven colors, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[017] p06_B
-Close-up of the intricate hand-tied silk knots and tassel fibers, deep red silk with soft sheen of a crimson-red silk hand-knotted Korean norigae ornament with long tassels, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[017] f40_B
+Macro close-up of the material and craftsmanship of a hanji and bamboo umbrella in seven colors, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[018] p06_C
-The norigae hanging against a pale pink hanbok ribbon (goreum), soft background. The product is a crimson-red silk hand-knotted Korean norigae ornament with long tassels, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[018] f40_C
+A hanji and bamboo umbrella in seven colors in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[019] p07_A
-Product photo of an indigo-blue hand-knotted Korean maedeup keyring with a decorative knot and short tassel on a metal ring, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[019] f41_B
+Macro close-up of the material and craftsmanship of a framed peony satin-stitch embroidery in a wooden frame, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[020] p07_B
-Close-up of the intricate knot structure in indigo silk cord of an indigo-blue hand-knotted keyring with a tassel, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[020] f41_C
+A framed peony satin-stitch embroidery in a wooden frame in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[021] p07_C
-The keyring lying next to a small wrapped gift box. The product is an indigo-blue hand-knotted keyring with a tassel, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[021] f42_A
+Product photo of a canvas framed art of the Sun, Moon and Five Peaks painting, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[022] p08_A
-Product photo of a slim card wallet made of teal and blue-green silk patchwork (jogakbo) pieces, closed, thin profile, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[022] f42_B
+Macro close-up of the material and craftsmanship of a canvas framed art of the Sun, Moon and Five Peaks painting, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[023] p08_B
-Close-up of the patchwork silk pieces in teal tones and neat edge stitching of a slim teal and blue-green silk patchwork card wallet, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[023] f42_C
+A canvas framed art of the Sun, Moon and Five Peaks painting in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[024] p08_C
-The wallet open slightly with blank cards on a light wooden surface. The product is a slim teal and blue-green silk patchwork card wallet, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[024] f43_A
+Product photo of a four-panel gold-leaf folding screen of the Sun, Moon and Five Peaks, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[025] p09_A
-Product photo of a slender silver Korean hairpin (binyeo), about 14 cm long, with a carved plum blossom ornament at the head, polished silver, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[025] f43_B
+Macro close-up of the material and craftsmanship of a four-panel gold-leaf folding screen of the Sun, Moon and Five Peaks, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[026] p09_B
-Close-up of the carved plum blossom head and the fine engraving, with soft specular highlights of a slender polished silver hairpin with a carved plum blossom head, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[026] f43_C
+A four-panel gold-leaf folding screen of the Sun, Moon and Five Peaks in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[027] p09_C
-The hairpin placed on a small dark velvet cushion. The product is a slender polished silver hairpin with a carved plum blossom head, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[027] f44_A
+Product photo of a carved wooden plaque with relief carving of Hwaseong Haenggung, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[028] p10_A
-Product photo of a pair of earrings with jade-green beads and small hand-tied silk knots with silver posts, elegant and minimal, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[028] f44_B
+Macro close-up of the material and craftsmanship of a carved wooden plaque with relief carving of Hwaseong Haenggung, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[029] p10_B
-Close-up of the jade-green beads and the delicate knot detail of jade-green bead earrings with small hand-tied knots and silver posts, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[029] f44_C
+A carved wooden plaque with relief carving of Hwaseong Haenggung in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[030] p10_C
-The earrings on a small ceramic dish with a soft pink flower petal. The product is jade-green bead earrings with small hand-tied knots and silver posts, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[030] f45_A
+Product photo of a pair of carved wooden mandarin ducks with flowers, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[031] p11_A
-Product photo of a framed Korean silk satin-stitch embroidery of blooming pink peonies with green leaves on ivory silk, plain natural wood frame, portrait orientation 40x50 cm proportion, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[031] f45_B
+Macro close-up of the material and craftsmanship of a pair of carved wooden mandarin ducks with flowers, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[032] p11_B
-Close-up of the satin-stitch embroidery showing silk thread sheen and petal shading of a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[032] f45_C
+A pair of carved wooden mandarin ducks with flowers in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[033] p11_C
-The framed embroidery on a wall above a small wooden console in a calm minimalist room. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[033] f46_A
+Product photo of a Hahoe yangban mask carved in paulownia wood, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[034] p12_A
-Product photo of a framed Korean hanji landscape painting in ink and light green color with layered mountains, natural wood frame, handmade paper with visible fibers, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[034] f46_B
+Macro close-up of the material and craftsmanship of a Hahoe yangban mask carved in paulownia wood, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[035] p12_B
-Close-up of the ink brush strokes and mineral green color on hanji paper of a framed ink-and-light-green hanji landscape painting in a natural wood frame, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[035] f46_C
+A Hahoe yangban mask carved in paulownia wood in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[036] p12_C
-The framed painting leaning on a shelf with a small ceramic vase. The product is a framed ink-and-light-green hanji landscape painting in a natural wood frame, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[036] f47_A
+Product photo of traditional bamboo arrows with pheasant feather fletching, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[037] p13_A
-Product photo of a square quilted silk cushion (45 cm) in warm ochre-brown with hand diamond quilting stitches, plump 5cm thickness, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[037] f47_B
+Macro close-up of the material and craftsmanship of traditional bamboo arrows with pheasant feather fletching, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[038] p13_B
-Close-up of the diamond quilting and the silk sheen in ochre of a square ochre-brown quilted silk cushion with diamond stitching, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[038] f47_C
+Traditional bamboo arrows with pheasant feather fletching in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[039] p13_C
-The cushion placed on a Korean wooden floor seating area, warm light. The product is a square ochre-brown quilted silk cushion with diamond stitching, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[039] f48_A
+Product photo of a traditional dragon drum with wooden body and leather head, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[040] p14_A
-Product photo of an ivory ramie table runner 150 cm long with fringed ends, laid on a light wooden dining table, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[040] f48_B
+Macro close-up of the material and craftsmanship of a traditional dragon drum with wooden body and leather head, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[041] p14_B
-Close-up of the ivory ramie weave and the fringe edge of an ivory ramie table runner with fringed ends, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[041] f48_C
+A traditional dragon drum with wooden body and leather head in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[042] p14_C
-The runner on a set table with two white ceramic cups and a small flower vase. The product is an ivory ramie table runner with fringed ends, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[042] f49_A
+Product photo of a brass lotus-shaped wind chime bell, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[043] p15_A
-Product photo of a Korean hanji paper mood lamp with a softly glowing warm amber paper shade (visible paper fibers) on a simple solid wood base, 2700K warm light, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[043] f49_B
+Macro close-up of the material and craftsmanship of a brass lotus-shaped wind chime bell, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[044] p15_B
-Close-up of the lit hanji paper shade showing fibers and warm light diffusion of a warm amber-glowing hanji paper lamp on a solid wood base, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[044] f49_C
+A brass lotus-shaped wind chime bell in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[045] p15_C
-The lit lamp on a bedside table in a dim, cozy room. The product is a warm amber-glowing hanji paper lamp on a solid wood base, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[045] f50_A
+Product photo of five bangjja brass maepae horse-warrant tokens on a cord, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[046] p16_A
-Product photo of a sky-blue naturally dyed Hansan ramie (mosi) scarf, thin airy gauze weave, softly draped and loosely folded, small fringe at both ends, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[046] f50_B
+Macro close-up of the material and craftsmanship of five bangjja brass maepae horse-warrant tokens on a cord, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[047] p16_B
-Extreme close-up of the open ramie weave texture and the light blue natural dye of a sky-blue thin ramie scarf with small fringe, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[047] f50_C
+Five bangjja brass maepae horse-warrant tokens on a cord in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[048] p16_C
-The scarf draped over a wooden chair back in soft morning light. The product is a sky-blue thin ramie scarf with small fringe, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[048] f51_A
+Product photo of a 500 ml bottle of Korean traditional liquor in a ceramic bottle, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[049] p17_A
-Product photo of a natural ramie kitchen apron with a front pocket and neck and waist ties, in soft off-white linen tone, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[049] f51_B
+Macro close-up of the material and craftsmanship of a 500 ml bottle of Korean traditional liquor in a ceramic bottle, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[050] p17_B
-Macro close-up of the material and craftsmanship of a natural ramie kitchen apron with a front pocket and neck and waist ties, in soft off-white linen tone, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[050] f51_C
+A 500 ml bottle of Korean traditional liquor in a ceramic bottle in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[051] p17_C
-A wooden kitchen counter beside a ceramic bowl and fresh vegetables, window light. The product is a natural ramie kitchen apron with a front pocket and neck and waist ties, in soft off-white linen tone, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[051] f52_A
+Product photo of a 30 g package of premium green tea leaves with a small tea bowl, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[052] p18_A
-Product photo of a thin ivory ramie summer bed sheet, neatly folded, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[052] f52_B
+Macro close-up of the material and craftsmanship of a 30 g package of premium green tea leaves with a small tea bowl, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[053] p18_B
-Macro close-up of the material and craftsmanship of a thin ivory ramie summer bed sheet, neatly folded, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[053] f52_C
+A 30 g package of premium green tea leaves with a small tea bowl in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[054] p18_C
-A made bed with the ivory ramie sheet in a calm bedroom, morning light. The product is a thin ivory ramie summer bed sheet, neatly folded, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[054] f53_A
+Product photo of a 320 g jar of traditional fermented soybean paste in a brass-colored lid, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[055] p19_A
-Product photo of a square mint-green ramie bojagi wrapping cloth with neat stitched edges, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[055] f53_B
+Macro close-up of the material and craftsmanship of a 320 g jar of traditional fermented soybean paste in a brass-colored lid, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[056] p19_B
-Macro close-up of the material and craftsmanship of a square mint-green ramie bojagi wrapping cloth with neat stitched edges, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[056] f53_C
+A 320 g jar of traditional fermented soybean paste in a brass-colored lid in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[057] p19_C
-The mint ramie bojagi wrapping a small gift box on a wooden table. The product is a square mint-green ramie bojagi wrapping cloth with neat stitched edges, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[057] f54_A
+Product photo of a 3 kg container of white gardenia kimchi, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[058] p20_A
-Product photo of an off-white ramie modern hanbok top with simple clean lines, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[058] f54_B
+Macro close-up of the material and craftsmanship of a 3 kg container of white gardenia kimchi, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[059] p20_B
-Macro close-up of the material and craftsmanship of an off-white ramie modern hanbok top with simple clean lines, macro photograph, shallow depth of field, soft light, warm light-grey tone, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[059] f54_C
+A 3 kg container of white gardenia kimchi in a natural, realistic setting where it is normally used, no people. lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
-[060] p20_C
-The top hanging on a wooden hanger against a plain light wall, window light. The product is an off-white ramie modern hanbok top with simple clean lines, lifestyle photograph, no people, shallow depth of field, soft window light, warm neutral tones, photorealistic, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+[060] f55_A
+Product photo of a three-tier holiday gift box of traditional hangwa sweets, centered, plain seamless warm light-grey backdrop and floor, no props, no table texture, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, no text, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
 
 위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.

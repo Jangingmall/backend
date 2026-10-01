@@ -25,7 +25,10 @@ spec.loader.exec_module(V)
 
 GUARD = "full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark"
 A_TAIL, B_TAIL, C_TAIL = (f"{t}, {GUARD}" for t in (pp.A_TAIL, pp.B_TAIL, pp.C_TAIL))
-DONE = set()  # 처음부터 다시 만든다(기존 이미지 재사용 안 함)
+DONE = set()
+STAGING = os.path.join(ROOT, "docs", "demo-products", "photoreal", "staging")
+# 이미 검수를 통과해 staging 에 올라간 키는 다시 만들지 않는다
+STAGED = {os.path.splitext(f)[0] for f in os.listdir(STAGING) if f.endswith((".webp", ".jpg"))} if os.path.isdir(STAGING) else set()
 
 # 큐레이션 중 prompts_imagefx 에 아직 없는 13개 + 이미 있는 16개는 기존 문장을 쓴다
 CURATED_NEW = {
@@ -184,6 +187,7 @@ def main():
     for cls in sorted({p["cls"] for p in P}):
         items.append((4, f"m-{cls}_B", "B", f"{V.CLASSES[cls][0]} · 소재 확대(공용)",
                       f"Macro close-up of {MACRO[cls]}, filling the frame, {B_TAIL}", {"type": "material", "cls": cls}))
+    items = [i for i in items if i[1] not in STAGED]
     manifest = []
     lines = ["# 전체 상품 실사 프롬프트 — 한 줄이 이미지 한 장 (정사각형 1:1)",
              "# 구성: Tier1 큐레이션 33개 상품 A·B·C / Tier2 대표 56개 A·B·C / Tier3 상품별 대표컷(시드 673) / Tier4 소재 확대 공용",
