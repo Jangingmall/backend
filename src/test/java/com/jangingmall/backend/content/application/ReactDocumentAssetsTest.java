@@ -53,4 +53,20 @@ class ReactDocumentAssetsTest {
         assertThat(ReactDocumentAssets.attach(objectMapper, DOCUMENT, Map.of("hero", "k"), "")).isSameAs(DOCUMENT);
         assertThat(ReactDocumentAssets.refresh(objectMapper, null, "https://img.stg.midam.store")).isNull();
     }
+
+    @Test
+    @DisplayName("예전 문서(assetKey·src 없음)는 resolver 가 찾아 준 키로 채우고, 업로드 이미지 ID 와 못 찾은 사진은 건드리지 않는다")
+    void attachesLegacyPhotos() throws Exception {
+        String result = ReactDocumentAssets.attachLegacy(objectMapper, DOCUMENT,
+            photoId -> "hero".equals(photoId) ? "ai-generated/7/photo-hero.webp" : null, "https://img.stg.midam.store");
+
+        assertThat(image(result, 0).get("assetKey").asText()).isEqualTo("ai-generated/7/photo-hero.webp");
+        assertThat(image(result, 0).get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/ai-generated/7/photo-hero.webp");
+        // 대문자 ULID 26자는 업로드 이미지 ID 라 resolver 를 거치지 않는다
+        assertThat(image(result, 1).has("src")).isFalse();
+        // 이미 src 가 있는 노드는 다시 건드리지 않는다
+        String withSrc = "{\"root\":[{\"tag\":\"img\",\"props\":{\"imageId\":\"hero\",\"src\":\"https://x/y.png\"}}]}";
+        assertThat(ReactDocumentAssets.attachLegacy(objectMapper, withSrc, id -> "k", "https://b")).isSameAs(withSrc);
+    }
 }

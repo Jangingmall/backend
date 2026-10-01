@@ -8,6 +8,7 @@ import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
 import com.jangingmall.backend.content.domain.ContentGeneration;
+import com.jangingmall.backend.image.application.ImageService;
 import com.jangingmall.backend.content.domain.ContentRepository;
 import com.jangingmall.backend.content.domain.ContentStatus;
 import com.jangingmall.backend.content.domain.EditedByType;
@@ -136,6 +137,43 @@ class ContentServiceTest {
             .isEqualTo("https://img.stg.midam.store/images/product/63/01M3VAY2JC89RQ9G6JXBGV7HS4/1280w.webp");
         assertThat(images.get(2).get("props").has("src")).isFalse();
         assertThat(images.get(2).get("props").get("imageId").asText()).isEqualTo("01JUPLOADEDIMAGE00000000000");
+    }
+
+    @Test
+    @DisplayName("콘텐츠 조회 — 예전 AI 문서(photo_id 만 있음)는 완료된 생성 건의 ai-generated 파일을 찾아 src 를 채운다")
+    void getContentResolvesLegacyAiPhotos() throws Exception {
+        ImageService imageService = mock(ImageService.class);
+        ContentGenerationRepository generationRepository = mock(ContentGenerationRepository.class);
+        ApplicationEventPublisher eventPublisher = mock(ApplicationEventPublisher.class);
+        ContentService service = new ContentService(
+            contentRepository, historyRepository, productRepository, aiContentClient,
+            artisanProfileRepository, interviewRepository, null, null, imageService,
+            new ObjectMapper(), generationRepository, eventPublisher
+        );
+        ReflectionTestUtils.setField(service, "imageBaseUrl", "https://img.stg.midam.store/");
+        ContentGeneration completed = mock(ContentGeneration.class);
+        when(completed.getId()).thenReturn(42L);
+        when(generationRepository.findFirstByProductIdAndStatusOrderByRequestedAtDesc(10L, GenerationStatus.COMPLETED))
+            .thenReturn(Optional.of(completed));
+        // hero 는 webp, 나머지는 png 로 올라가 있다
+        when(imageService.publicObjectExists("ai-generated/42/photo-hero.webp")).thenReturn(true);
+        when(imageService.publicObjectExists("ai-generated/42/photo-detail-02.png")).thenReturn(true);
+        String document = "{\"root\":[{\"tag\":\"section\",\"children\":["
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"hero\"}},"
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"detail-02\"}},"
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"missing\"}}]}]}";
+        ReflectionTestUtils.setField(sampleContent, "reactDocument", document);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+
+        ContentResponse.Detail detail = service.getContent(10L, 1L);
+
+        var images = new ObjectMapper().readTree(detail.reactDocument()).get("root").get(0).get("children");
+        assertThat(images.get(0).get("props").get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/ai-generated/42/photo-hero.webp");
+        assertThat(images.get(1).get("props").get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/ai-generated/42/photo-detail-02.png");
+        assertThat(images.get(2).get("props").has("src")).isFalse();
     }
 
     @Test

@@ -34,6 +34,40 @@ final class ReactDocumentAssets {
         });
     }
 
+    /**
+     * assetKey 가 없는 예전 문서용. src·assetKey 가 없고 업로드 이미지 ID(대문자 ULID 26자)가 아닌 img 노드의 imageId(photo_id)를
+     * resolver 로 S3 키에 맞춰 assetKey·src 를 채운다. resolver 가 null 을 주면 그 노드는 그대로 둔다.
+     */
+    static String attachLegacy(ObjectMapper objectMapper, String json, java.util.function.Function<String, String> resolver,
+                               String baseUrl) {
+        if (blank(json) || blank(baseUrl) || resolver == null) {
+            return json;
+        }
+        return transform(objectMapper, json, node -> {
+            Object props = node.get("props");
+            if (props instanceof Map<?, ?> map && (map.get("assetKey") != null || map.get("src") != null)) {
+                return false;
+            }
+            Object ref = reference(node);
+            if (ref == null || String.valueOf(ref).matches("[0-9A-Z]{26}")) {
+                return false;
+            }
+            String key = resolver.apply(String.valueOf(ref));
+            if (key == null) {
+                return false;
+            }
+            Map<String, Object> target = props(node);
+            target.put("assetKey", key);
+            target.put("src", join(baseUrl, key));
+            return true;
+        });
+    }
+
+    /** 이 문서에 assetKey·src 가 없는 사진용 img 노드가 있는지(예전 문서인지) 대략 확인한다. */
+    static boolean mayNeedLegacyResolution(String json) {
+        return !blank(json) && json.contains("\"img\"");
+    }
+
     /** 저장된 assetKey 로 src 를 현재 기본 주소 기준으로 다시 만든다. assetKey 가 없는 노드는 건드리지 않는다. */
     static String refresh(ObjectMapper objectMapper, String json, String baseUrl) {
         if (blank(json) || blank(baseUrl) || !json.contains("assetKey")) {
