@@ -89,6 +89,7 @@ public class ImageService {
         if (uploads.consumeIfOwnedAndActive(imageId, requesterId, Instant.now()) != 1) {
             throw new DomainException(ErrorCode.CONFLICT);
         }
+        upload.markConsumed();
         return new Verification(true, true, objectKeys);
     }
 
@@ -135,6 +136,7 @@ public class ImageService {
             if (uploads.consumeIfOwnedAndActive(upload.getId(), requesterId, now) != 1) {
                 throw new DomainException(ErrorCode.CONCURRENT_UPDATE);
             }
+            upload.markConsumed();
         }
         return selected.stream().map(ImageUpload::getId).toList();
     }

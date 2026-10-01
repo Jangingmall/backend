@@ -169,6 +169,8 @@ class ImageServiceTest {
 
         assertThat(service.consumeOwned(1L, ImagePurpose.RETURN, List.of(upload.getId())))
             .containsExactly(upload.getId());
+        // 같은 트랜잭션에서 곧바로 공개 variant 를 만들 수 있도록 메모리의 엔티티도 소비 상태여야 한다.
+        assertThat(upload.isConsumed()).isTrue();
     }
 
     @Test

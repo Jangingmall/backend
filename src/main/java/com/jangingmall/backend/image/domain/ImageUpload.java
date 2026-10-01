@@ -61,4 +61,12 @@ public class ImageUpload {
         this.createdAt = Instant.now();
         this.expiresAt = expiresAt;
     }
+
+    /**
+     * 벌크 update(consumeIfOwnedAndActive)로 DB 가 소비 처리된 뒤, 같은 트랜잭션의 영속성 컨텍스트에 남은 이 엔티티도 맞춘다.
+     * 맞추지 않으면 같은 트랜잭션에서 곧바로 공개 variant 를 만들 때 "아직 소비되지 않음"으로 보여 409 가 난다.
+     */
+    public void markConsumed() {
+        this.consumed = true;
+    }
 }
