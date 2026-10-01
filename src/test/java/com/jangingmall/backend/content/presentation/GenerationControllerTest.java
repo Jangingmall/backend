@@ -133,11 +133,11 @@ class GenerationControllerTest extends RestDocsControllerTest {
     }
 
     @Test
-    @DisplayName("AI 콘텐츠 생성 요청 — 이미지 20장과 500장도 허용한다")
+    @DisplayName("AI 콘텐츠 생성 요청 — 이미지 1~500장은 모두 허용한다(8장 초과, AI 상한 12장 초과 포함)")
     @WithMockUser(roles = "ARTISAN")
     void requestManyImagesAllowed() throws Exception {
         when(generationService.request(any())).thenReturn(PROCESSING_RESPONSE);
-        for (int count : new int[] {20, 500}) {
+        for (int count : new int[] {1, 8, 9, 12, 13, 20, 500}) {
             mockMvc.perform(post("/api/content/products/{productId}/generations", 10L)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(json(new GenerationRequest.Create(java.util.Collections.nCopies(count, "img"),
