@@ -62,4 +62,31 @@ class JwtTokenProviderTest {
         assertThatThrownBy(() -> jwtTokenProvider.parseAccessToken(tamperedToken))
             .isInstanceOf(JwtException.class);
     }
+
+    @Test
+    void accessTokenCannotBeUsedAsRefreshToken() {
+        String accessToken = jwtTokenProvider.createAccessToken(1L, MemberRole.USER);
+
+        assertThatThrownBy(() -> jwtTokenProvider.parseRefreshToken(accessToken))
+            .isInstanceOf(JwtTokenProvider.InvalidTokenTypeException.class);
+    }
+
+    @Test
+    void refreshTokenIsParsedWithMemberAndRole() {
+        String refreshToken = jwtTokenProvider.createRefreshToken(7L, MemberRole.ARTISAN);
+
+        JwtTokenProvider.JwtMemberClaims claims = jwtTokenProvider.parseRefreshToken(refreshToken);
+
+        assertThat(claims.memberId()).isEqualTo(7L);
+        assertThat(claims.role()).isEqualTo(MemberRole.ARTISAN);
+    }
+
+    @Test
+    void tokensIssuedInTheSameSecondAreStillDistinct() {
+        // 같은 회원이 같은 초에 다시 로그인해도 이전 Refresh Token과 구분돼야 재로그인 시 이전 토큰을 거절할 수 있다.
+        String first = jwtTokenProvider.createRefreshToken(1L, MemberRole.USER);
+        String second = jwtTokenProvider.createRefreshToken(1L, MemberRole.USER);
+
+        assertThat(second).isNotEqualTo(first);
+    }
 }
