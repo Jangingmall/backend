@@ -48,6 +48,7 @@ public class GenerationDeadlineScheduler {
     private final GenerationProperties properties;
     private final AiContentClient aiContentClient;
     private final AiRenderApprovalAsyncExecutor renderExecutor;
+    private final GenerationImageResolver imageResolver;
 
     @Scheduled(fixedDelayString = "${ai.generation.scan-millis:60000}")
     public void pollQueuedGenerations() {
@@ -201,7 +202,7 @@ public class GenerationDeadlineScheduler {
             AiJobAccepted accepted = aiContentClient.submitJob(
                 generationId,
                 generation.getProductId(),
-                splitImages(generation.getImages()),
+                imageResolver.resolve(splitImages(generation.getImages())),
                 generation.getProductName(),
                 generation.getHowMade(),
                 generation.getCareTips()

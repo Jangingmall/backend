@@ -29,16 +29,19 @@ public class GenerationAsyncExecutor {
     private final ContentGenerationRepository generationRepository;
     private final AiContentClient aiContentClient;
     private final DiscordNotificationService discordNotificationService;
+    private final GenerationImageResolver imageResolver;
     private final Counter retryCounter;
     private final Counter failedCounter;
 
     public GenerationAsyncExecutor(ContentGenerationRepository generationRepository,
                                    AiContentClient aiContentClient,
                                    DiscordNotificationService discordNotificationService,
+                                   GenerationImageResolver imageResolver,
                                    MeterRegistry meterRegistry) {
         this.generationRepository = generationRepository;
         this.aiContentClient = aiContentClient;
         this.discordNotificationService = discordNotificationService;
+        this.imageResolver = imageResolver;
         this.retryCounter = Counter.builder("ai_generation_retry")
             .description("AI job 제출 재시도 횟수")
             .register(meterRegistry);
@@ -70,7 +73,7 @@ public class GenerationAsyncExecutor {
                 AiJobAccepted accepted = aiContentClient.submitJob(
                     generationId,
                     command.productId(),
-                    command.images(),
+                    imageResolver.resolve(command.images()),
                     command.productName(),
                     command.howMade(),
                     command.careTips()
