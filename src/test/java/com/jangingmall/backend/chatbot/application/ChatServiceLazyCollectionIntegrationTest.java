@@ -5,6 +5,7 @@ import com.jangingmall.backend.chatbot.domain.AiChatClient.AiChatResult;
 import com.jangingmall.backend.chatbot.domain.AiChatClient.ProductCard;
 import com.jangingmall.backend.member.infrastructure.EmailSenderService;
 import com.jangingmall.backend.support.PostgresIntegrationBase;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,11 @@ class ChatServiceLazyCollectionIntegrationTest extends PostgresIntegrationBase {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private ObjectMapper objectMapper;
+
+    @AfterEach
+    void cleanUp() {
+        jdbcTemplate.update("DELETE FROM product_purpose_tag WHERE purpose_tag = 'WEDDING' AND product_id = (SELECT MIN(product_id) FROM product)");
+    }
 
     @Test
     @DisplayName("추천 상품 카드의 purposeTags는 트랜잭션이 끝난 뒤 직렬화해도 실패하지 않는다")
