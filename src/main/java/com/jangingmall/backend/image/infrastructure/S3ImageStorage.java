@@ -57,6 +57,21 @@ public class S3ImageStorage implements ImageStorage {
     }
 
     @Override
+    public boolean exists(ImagePurpose purpose, String objectKey) {
+        try {
+            s3.headObject(HeadObjectRequest.builder().bucket(bucket(purpose)).key(objectKey).build());
+            return true;
+        } catch (NoSuchKeyException exception) {
+            return false;
+        } catch (S3Exception exception) {
+            if (exception.statusCode() == 404) {
+                return false;
+            }
+            throw new IllegalStateException("S3 이미지 존재 여부를 확인할 수 없습니다.", exception);
+        }
+    }
+
+    @Override
     public void delete(ImagePurpose purpose, String objectKey) {
         try {
             s3.deleteObject(request -> request.bucket(bucket(purpose)).key(objectKey));

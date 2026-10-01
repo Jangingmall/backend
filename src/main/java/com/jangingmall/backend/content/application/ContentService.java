@@ -5,6 +5,7 @@ import com.jangingmall.backend.content.domain.AiCatalogCodes;
 import com.jangingmall.backend.content.domain.AiProductSyncPayload;
 import com.jangingmall.backend.content.domain.Content;
 import com.jangingmall.backend.content.domain.ContentGenerationRepository;
+import com.jangingmall.backend.content.domain.ContentGeneration;
 import com.jangingmall.backend.content.domain.GenerationStatus;
 import com.jangingmall.backend.content.domain.ContentEditHistory;
 import com.jangingmall.backend.content.domain.ContentEditHistoryRepository;
@@ -66,6 +67,9 @@ public class ContentService {
     private final ContentGenerationRepository generationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    @org.springframework.beans.factory.annotation.Value("${image.base-url:}")
+    private String imageBaseUrl;
+
     @Autowired
     public ContentService(ContentRepository contentRepository, ContentEditHistoryRepository historyRepository,
                           ProductRepository productRepository, AiContentClient aiContentClient,
@@ -104,12 +108,69 @@ public class ContentService {
             interviewRepository, null, null, null, objectMapper, null, null);
     }
 
+    /** 응답의 react 문서는 저장된 assetKey 로 현재 이미지 기본 주소 기준 src 를 다시 만들어 내려준다. */
+    private ContentResponse.Detail detail(Content content, List<ContentResponse.Block> blocks) {
+        ContentResponse.Detail detail = ContentResponse.Detail.from(content, blocks);
+        String refreshed = ReactDocumentAssets.refresh(objectMapper, detail.reactDocument(), imageBaseUrl);
+        refreshed = resolveLegacyPhotos(content.getProductId(), refreshed);
+        return refreshed == detail.reactDocument() ? detail
+            : new ContentResponse.Detail(detail.contentId(), detail.productId(), detail.status(), detail.version(),
+                refreshed, detail.blocks());
+    }
+
+    private final java.util.concurrent.ConcurrentHashMap<String, String> legacyPhotoKeys =
+        new java.util.concurrent.ConcurrentHashMap<>();
+
+    /**
+     * assetKey 를 남기기 전에 만들어진 예전 문서는 img 노드가 photo_id 만 갖고 있다. 이 상품의 완료된 AI 생성 건의 파일
+     * (ai-generated/{generationId}/photo-{photo_id}.{ext})을 찾아 주소를 채운다. 확장자는 사진마다 달라 존재하는 것을 찾는다.
+     * 찾은 키는 메모리에 기억해 같은 확인을 반복하지 않는다(저장하지는 않는다).
+     */
+    private String resolveLegacyPhotos(Long productId, String reactDocument) {
+        if (!ReactDocumentAssets.mayNeedLegacyResolution(reactDocument) || generationRepository == null
+            || imageService == null || productId == null) {
+            return reactDocument;
+        }
+        Optional<ContentGeneration> generation = generationRepository
+            .findFirstByProductIdAndStatusOrderByRequestedAtDesc(productId, GenerationStatus.COMPLETED);
+        if (generation.isEmpty() || generation.get().getId() == null) {
+            return reactDocument;
+        }
+        Long generationId = generation.get().getId();
+        return ReactDocumentAssets.attachLegacy(objectMapper, reactDocument,
+            photoId -> legacyPhotoKey(generationId, photoId), imageBaseUrl);
+    }
+
+    private String legacyPhotoKey(Long generationId, String photoId) {
+        String safeId = photoId.replaceAll("[^A-Za-z0-9._-]", "_");
+        String cacheKey = generationId + "/" + safeId;
+        String cached = legacyPhotoKeys.get(cacheKey);
+        if (cached != null) {
+            return cached;
+        }
+        // 원본 hero 는 webp, 나머지는 png 인 경우가 많아 그 순서로 먼저 확인한다.
+        List<String> extensions = "hero".equals(safeId) ? List.of("webp", "png", "jpg") : List.of("png", "webp", "jpg");
+        for (String extension : extensions) {
+            String key = GenerationService.AI_KEY_PREFIX + generationId + "/photo-" + safeId + "." + extension;
+            try {
+                if (imageService.publicObjectExists(key)) {
+                    legacyPhotoKeys.put(cacheKey, key);
+                    return key;
+                }
+            } catch (RuntimeException exception) {
+                log.warn("예전 AI 사진의 존재 여부를 확인하지 못했습니다 key={}", key, exception);
+                return null;
+            }
+        }
+        return null;
+    }
+
     @Transactional(readOnly = true)
     public ContentResponse.Detail getContent(Long productId, Long requesterId) {
         verifyProductOwner(productId, requesterId);
         Content content = contentRepository.findByProductId(productId)
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
-        return ContentResponse.Detail.from(content, readBlocks(content));
+        return detail(content, readBlocks(content));
     }
 
     @Transactional(readOnly = true)
@@ -162,7 +223,7 @@ public class ContentService {
         Content content = contentRepository.findByIdAndProductId(command.contentId(), command.productId())
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
         Content saved = persistBlocks(content, command.blocks(), command.requesterId());
-        return ContentResponse.Detail.from(saved, readBlocks(saved));
+        return detail(saved, readBlocks(saved));
     }
 
     /** Applies the AI editor's node-id based patch contract to the stored JSON document. */
