@@ -33,6 +33,10 @@ public class ContentBlock {
     @Column(name = "image_id", length = 30)
     private String imageId;
 
+    /** 업로드 이미지가 아닌 외부·AI 이미지의 공개 주소. image_id 가 없을 때만 쓴다. */
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+
     @Column(name = "video_url", length = 500)
     private String videoUrl;
 
@@ -46,6 +50,16 @@ public class ContentBlock {
         this.imageId = imageId;
         this.videoUrl = videoUrl;
         this.text = text;
+    }
+
+    public ContentBlock(Long contentId, int displayOrder, String tag, String imageId, String imageUrl, String videoUrl,
+                        String text) {
+        this(contentId, displayOrder, tag, imageId, videoUrl, text);
+        this.imageUrl = imageUrl;
+    }
+
+    public boolean hasImage() {
+        return imageId != null || (imageUrl != null && !imageUrl.isBlank());
     }
 
     public void update(String tag, String imageId, String videoUrl, String text) {

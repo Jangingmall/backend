@@ -179,4 +179,20 @@ class ProductServiceTest {
 
         assertThat(product.getStatus()).isEqualTo(ProductStatus.ON_SALE);
     }
+
+    @org.junit.jupiter.api.Test
+    @org.junit.jupiter.api.DisplayName("업로드 이미지가 없으면 대표 이미지에 상세 이미지를 이어 붙인 갤러리를 만들고, 하나뿐이면 만들지 않는다")
+    void buildsDetailGalleryFromExternalUrls() {
+        var gallery = ProductService.galleryFrom("합죽선", "https://x/a.webp",
+            java.util.List.of("https://x/b.webp", "https://x/a.webp", " ", "https://x/c.png"));
+
+        org.assertj.core.api.Assertions.assertThat(gallery).hasSize(3);
+        org.assertj.core.api.Assertions.assertThat(gallery.get(0).imageId()).isEqualTo("gallery-1");
+        org.assertj.core.api.Assertions.assertThat(gallery.get(0).alt()).isEqualTo("합죽선");
+        org.assertj.core.api.Assertions.assertThat(gallery.get(2).variants().get(0).url()).isEqualTo("https://x/c.png");
+        org.assertj.core.api.Assertions.assertThat(gallery.get(2).variants().get(0).format()).isEqualTo("png");
+        org.assertj.core.api.Assertions.assertThat(ProductService.galleryFrom("합죽선", "https://x/a.webp", java.util.List.of()))
+            .isEmpty();
+        org.assertj.core.api.Assertions.assertThat(ProductService.galleryFrom("합죽선", null, null)).isEmpty();
+    }
 }

@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OrderColumn;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -73,6 +74,16 @@ public class Product {
     @CollectionTable(name = "product_purpose_tag", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "purpose_tag")
     private List<String> purposeTags = new ArrayList<>();
+
+    /**
+     * 업로드 이미지(product_image)가 없는 상품의 상세 갤러리용 외부 이미지 주소. 시연·시드 데이터용이며
+     * 대표 이미지(thumbnail_url) 뒤에 이어 붙는다.
+     */
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "product_detail_image", joinColumns = @JoinColumn(name = "product_id"))
+    @OrderColumn(name = "display_order")
+    @Column(name = "image_url", length = 500)
+    private List<String> detailImageUrls = new ArrayList<>();
 
     @Column(name = "production_period_days")
     private Integer productionPeriodDays;
@@ -179,6 +190,13 @@ public class Product {
         this.purposeTags = new ArrayList<>(purposeTags);
         this.productionPeriodDays = productionPeriodDays;
         this.colors = new ArrayList<>(colors);
+    }
+
+    /** 대표 이미지가 아직 없을 때만 채운다(판매자가 정한 대표 이미지는 덮어쓰지 않는다). */
+    public void useThumbnail(String url) {
+        if (url != null && !url.isBlank() && url.length() <= 500 && (thumbnailUrl == null || thumbnailUrl.isBlank())) {
+            thumbnailUrl = url;
+        }
     }
 
     public void changeStatus(ProductStatus next, Long requesterId) {

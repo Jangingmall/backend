@@ -3,7 +3,7 @@
 
 외부 쇼핑몰 이미지는 링크가 끊기거나 상품과 무관하거나 안전성을 보장할 수 없어, 소분류(56종)마다 직접 그린
 일러스트를 만들어 docs/seed-images/sub-NN.png 로 저장한다. 사람·실제 사진·상표가 없는 단순 도형 그림이라
-부적절한 이미지가 섞일 수 없다. 필요: pip install pillow, 한글 글꼴(wqy-zenhei 등).
+부적절한 이미지가 섞일 수 없다. 필요: pip install pillow. 이미지에는 글자를 넣지 않는다(이름은 DB 텍스트로 따로 보인다).
 
 실행: python3 scripts/seed-images/generate.py
 """
@@ -495,36 +495,30 @@ def draw(kind, p):  # noqa: C901 - 그림 종류별 분기
         raise ValueError(kind)
 
 
-def make(font_path, sub_id, name, cat_id, kind):
-    top, bottom, accent, dark, light = PALETTE[cat_id]
-    im = gradient(top, bottom).convert("RGBA")
+def render(kind, palette, dy=25, background=True):
+    """글자 없는 일러스트(그림 종류 + 팔레트). 상품 설명은 따로 텍스트로 있으므로 이미지에는 글자를 넣지 않는다.
+    그림이 원래 위쪽에 치우쳐 그려져 있어 dy 만큼 내려 가운데에 맞춘다."""
+    top, bottom, accent, dark, light = palette
+    im = gradient(top, bottom).convert("RGBA") if background else Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
     overlay = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
     d = ImageDraw.Draw(overlay)
-    # 바닥 그림자와 큰 원형 무대
-    d.ellipse((120, 140, 680, 620), fill=(255, 255, 255, 110))
-    pen = Pen(d, accent, dark, light)
-    draw(kind, pen)
-    im.alpha_composite(overlay)
-    d2 = ImageDraw.Draw(im)
-    # 하단 이름띠
-    d2.rectangle((0, 650, SIZE, SIZE), fill=hexrgb(dark) + (255,))
-    font = ImageFont.truetype(font_path, 56)
-    small = ImageFont.truetype(font_path, 22)
-    w = d2.textlength(name, font=font)
-    d2.text(((SIZE - w) / 2, 668), name, font=font, fill=CREAM)
-    note = "MIDAM · 시연용 일러스트"
-    w2 = d2.textlength(note, font=small)
-    d2.text(((SIZE - w2) / 2, 745), note, font=small, fill=hexrgb(light))
-    return im.convert("RGB")
+    if background:
+        d.ellipse((120, 140, 680, 620), fill=(255, 255, 255, 110))
+    draw(kind, Pen(d, accent, dark, light))
+    shifted = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
+    shifted.paste(overlay, (0, dy))
+    im.alpha_composite(shifted)
+    return im.convert("RGB") if background else im
+
+
+def make(sub_id, name, cat_id, kind):
+    return render(kind, PALETTE[cat_id])
 
 
 def main():
-    font_path = next((f for f in FONT_CANDIDATES if os.path.exists(f)), None)
-    if not font_path:
-        sys.exit("한글 글꼴을 찾을 수 없습니다. FONT_CANDIDATES에 경로를 추가하세요.")
     os.makedirs(OUT, exist_ok=True)
     for sub_id, name, cat_id, kind in ITEMS:
-        img = make(font_path, sub_id, name, cat_id, kind)
+        img = make(sub_id, name, cat_id, kind)
         img.save(os.path.join(OUT, f"sub-{sub_id:02d}.png"), optimize=True)
         # 업로드 규격과 같은 WebP(≤10MB, ≤10,000px)도 함께 만든다. 외부 링크로 서비스할 때 이 파일을 쓴다.
         img.save(os.path.join(OUT, f"sub-{sub_id:02d}.webp"), "WEBP", quality=88, method=6)
