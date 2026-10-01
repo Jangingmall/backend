@@ -172,7 +172,9 @@ class MemberRefreshTokenScenarioTest {
         JwtTokenProvider expiredIssuer = new JwtTokenProvider(new JwtProperties(SECRET, 1_800_000, -1_000, false));
         String expiredRefresh = expiredIssuer.createRefreshToken(1L, MemberRole.USER);
         String real = service.login("artisan@example.com", "password").refreshToken();
-        String tampered = real.substring(0, real.length() - 1) + (real.endsWith("a") ? 'b' : 'a');
+        // 서명 마지막 글자는 패딩 비트 때문에 바꿔도 같은 값일 수 있어, 페이로드 중간 글자를 바꿔 확실히 위조한다.
+        int index = real.indexOf('.') + 5;
+        String tampered = real.substring(0, index) + (real.charAt(index) == 'A' ? 'B' : 'A') + real.substring(index + 1);
 
         assertUnauthorized(() -> service.refresh(access));
         assertUnauthorized(() -> service.refresh(expiredRefresh));
