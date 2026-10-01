@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.List;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Repository;
 public class RedisRefreshTokenStore implements RefreshTokenStore {
 
     private static final String KEY_PREFIX = "member:refresh-token:";
+    private static final String SHARED_KEY_PREFIX = "member:refresh-tokens:";
+    private static final long MAX_SHARED_TOKENS = 20;
 
     private final StringRedisTemplate redisTemplate;
 
@@ -25,17 +28,36 @@ public class RedisRefreshTokenStore implements RefreshTokenStore {
     }
 
     @Override
+    public void saveShared(Long memberId, String refreshToken, Duration ttl) {
+        String sharedKey = sharedKey(memberId);
+        Long size = redisTemplate.opsForSet().size(sharedKey);
+        if (size != null && size >= MAX_SHARED_TOKENS) {
+            redisTemplate.delete(sharedKey);
+        }
+        redisTemplate.opsForSet().add(sharedKey, hash(refreshToken));
+        redisTemplate.expire(sharedKey, ttl);
+    }
+
+    @Override
     public boolean matches(Long memberId, String refreshToken) {
+        String presented = hash(refreshToken);
         String storedHash = redisTemplate.opsForValue().get(key(memberId));
-        return storedHash != null && MessageDigest.isEqual(
+        if (storedHash != null && MessageDigest.isEqual(
             storedHash.getBytes(StandardCharsets.UTF_8),
-            hash(refreshToken).getBytes(StandardCharsets.UTF_8)
-        );
+            presented.getBytes(StandardCharsets.UTF_8)
+        )) {
+            return true;
+        }
+        return Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(sharedKey(memberId), presented));
     }
 
     @Override
     public void delete(Long memberId) {
-        redisTemplate.delete(key(memberId));
+        redisTemplate.delete(List.of(key(memberId), sharedKey(memberId)));
+    }
+
+    private String sharedKey(Long memberId) {
+        return SHARED_KEY_PREFIX + memberId;
     }
 
     private String key(Long memberId) {

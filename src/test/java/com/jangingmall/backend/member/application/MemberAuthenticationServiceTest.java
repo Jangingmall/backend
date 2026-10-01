@@ -65,7 +65,8 @@ class MemberAuthenticationServiceTest {
             ),
             refreshTokenStore,
             socialAccounts,
-            loginAttempts
+            loginAttempts,
+            new MultiSessionAccounts("shared@test.com")
         );
     }
 
@@ -124,6 +125,22 @@ class MemberAuthenticationServiceTest {
                 assertThat(exception.getMessage()).isEqualTo(MemberAuthenticationService.LOGIN_LOCKED_MESSAGE);
             });
         verifyNoInteractions(memberRepository);
+    }
+
+    @Test
+    @DisplayName("동시 로그인 허용 계정은 로그인해도 기존 Refresh Token을 지우지 않고 추가로 저장한다")
+    void multiSessionAccountKeepsExistingRefreshTokens() {
+        Member member = activeMember();
+        ReflectionTestUtils.setField(member, "email", "shared@test.com");
+        when(memberRepository.findByEmail("shared@test.com")).thenReturn(Optional.of(member));
+        when(passwordEncoder.matches("password", member.getPasswordHash())).thenReturn(true);
+        when(jwtTokenProvider.createAccessToken(1L, MemberRole.USER)).thenReturn("access-token");
+        when(jwtTokenProvider.createRefreshToken(1L, MemberRole.USER)).thenReturn("refresh-token");
+
+        memberAuthenticationService.login("SHARED@test.com", "password");
+
+        verify(refreshTokenStore).saveShared(1L, "refresh-token", java.time.Duration.ofDays(7));
+        verify(refreshTokenStore, never()).save(any(), any(), any());
     }
 
     @Test
