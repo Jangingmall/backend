@@ -16,6 +16,7 @@ import com.jangingmall.backend.product.domain.ProductErrorMessage;
 import com.jangingmall.backend.product.domain.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -39,6 +41,15 @@ public class GenerationService {
     private final ImageStorage imageStorage;
     private final ObjectMapper objectMapper;
     private final ApplicationEventPublisher eventPublisher;
+
+    /**
+     * AI 가 만든 이미지는 이미지 CDN 이 이미 공개하는 경로(images/product/*) 아래에 저장한다.
+     * 다른 경로(ai-generated/*)에 두면 CDN 이 403 을 돌려줘 화면에서 이미지가 깨진다.
+     */
+    static final String AI_KEY_PREFIX = "images/product/ai-generated/";
+
+    @Value("${image.base-url:}")
+    private String imageBaseUrl;
 
     private static final Pattern PHOTO_FILENAME = Pattern.compile("-photo-\\d+-(.+)$");
 
@@ -102,12 +113,14 @@ public class GenerationService {
 
         uploadDetailPageImage(command.generationId().toString(), detailPageImage);
         uploadPrefixedFiles(command.generationId().toString(), "section-", sectionFiles);
-        uploadPrefixedFiles(command.generationId().toString(), "photo-", photoFiles);
+        Map<String, String> photoKeys = uploadPrefixedFiles(command.generationId().toString(), "photo-", photoFiles);
 
-        generation.complete(command.reactDocumentJson(), command.idempotencyKey());
+        // react 문서의 이미지 노드는 photo_id(hero, detail-02 …)만 갖고 있어 FE 가 그림을 찾지 못한다. 올린 사진의 공개 주소를 src 로 채운다.
+        String reactDocumentJson = withPhotoUrls(command.reactDocumentJson(), photoKeys);
+        generation.complete(reactDocumentJson, command.idempotencyKey());
         ContentGeneration saved = generationRepository.save(generation);
         contentService.storeReactDocument(
-            new ContentCommand.StoreReactDocument(saved.getProductId(), command.reactDocumentJson(), null)
+            new ContentCommand.StoreReactDocument(saved.getProductId(), reactDocumentJson, null)
         );
         log.info("AI 멀티파트 콜백 완료 generationId={}", command.generationId());
         return new BeToAiPersistAckResponse(command.generationId().toString(), productIdStr, "SAVED", saved.getCompletedAt());
@@ -175,7 +188,7 @@ public class GenerationService {
             return;
         }
         try {
-            String key = "ai-generated/" + generationId + "/detail-page." + extension(file.getContentType());
+            String key = AI_KEY_PREFIX + generationId + "/detail-page." + extension(file.getContentType());
             imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
         } catch (IOException exception) {
             log.error("상세페이지 이미지 업로드 실패 generationId={}", generationId, exception);
@@ -183,18 +196,78 @@ public class GenerationService {
         }
     }
 
-    private void uploadPrefixedFiles(String generationId, String keyPrefix, Map<String, MultipartFile> files) {
+    /** 올린 파일의 {fileId → S3 키}를 돌려준다. */
+    private Map<String, String> uploadPrefixedFiles(String generationId, String keyPrefix, Map<String, MultipartFile> files) {
+        Map<String, String> keys = new java.util.LinkedHashMap<>();
+        if (files == null) {
+            return keys;
+        }
         for (Map.Entry<String, MultipartFile> entry : files.entrySet()) {
             MultipartFile file = entry.getValue();
             try {
                 String fileId = extractFileId(entry.getKey(), file.getOriginalFilename());
-                String key = "ai-generated/" + generationId + "/" + keyPrefix + fileId + "." + extension(file.getContentType());
+                String key = AI_KEY_PREFIX + generationId + "/" + keyPrefix + fileId + "." + extension(file.getContentType());
                 imageStorage.put(ImagePurpose.PRODUCT, key, file.getContentType(), file.getBytes());
+                keys.put(fileId, key);
             } catch (IOException exception) {
                 log.error("파일 업로드 실패 generationId={} prefix={} filename={}", generationId, keyPrefix, file.getOriginalFilename(), exception);
                 throw new ExternalServiceException("파일 업로드 실패 generationId=" + generationId + " prefix=" + keyPrefix);
             }
         }
+        return keys;
+    }
+
+    /**
+     * react 문서의 img 노드 중 props.imageId(또는 imageId)가 올린 사진의 photo_id 와 같으면 props.src 에 공개 주소를 넣는다.
+     * imageId 는 그대로 둔다. 이미지 기본 주소가 없거나 바꿀 노드가 없으면 원문을 그대로 돌려준다.
+     */
+    @SuppressWarnings("unchecked")
+    String withPhotoUrls(String reactDocumentJson, Map<String, String> photoKeys) {
+        String base = imageBaseUrl == null ? "" : imageBaseUrl.replaceAll("/+$", "");
+        if (reactDocumentJson == null || reactDocumentJson.isBlank() || photoKeys == null || photoKeys.isEmpty()
+            || base.isBlank()) {
+            return reactDocumentJson;
+        }
+        try {
+            Object document = objectMapper.readValue(reactDocumentJson, Object.class);
+            if (!fillPhotoUrls(document, photoKeys, base)) {
+                return reactDocumentJson;
+            }
+            return objectMapper.writeValueAsString(document);
+        } catch (Exception exception) {
+            log.warn("react 문서에 사진 주소를 채우지 못해 원문을 그대로 저장합니다", exception);
+            return reactDocumentJson;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean fillPhotoUrls(Object node, Map<String, String> photoKeys, String base) {
+        boolean changed = false;
+        if (node instanceof List<?> list) {
+            for (Object child : list) {
+                changed |= fillPhotoUrls(child, photoKeys, base);
+            }
+        } else if (node instanceof Map<?, ?> raw) {
+            Map<String, Object> map = (Map<String, Object>) raw;
+            if ("img".equals(map.get("tag"))) {
+                Object props = map.get("props");
+                Map<String, Object> propsMap = props instanceof Map<?, ?> p ? (Map<String, Object>) p : null;
+                Object ref = propsMap != null && propsMap.get("imageId") != null ? propsMap.get("imageId") : map.get("imageId");
+                String key = ref == null ? null : photoKeys.get(String.valueOf(ref));
+                if (key != null) {
+                    if (propsMap == null) {
+                        propsMap = new java.util.LinkedHashMap<>();
+                        map.put("props", propsMap);
+                    }
+                    propsMap.put("src", base + "/" + key);
+                    changed = true;
+                }
+            }
+            for (Object child : map.values()) {
+                changed |= fillPhotoUrls(child, photoKeys, base);
+            }
+        }
+        return changed;
     }
 
     private String extension(String contentType) {

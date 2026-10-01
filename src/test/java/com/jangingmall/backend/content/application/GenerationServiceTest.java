@@ -266,9 +266,40 @@ class GenerationServiceTest {
         GenerationCommand.Complete command = new GenerationCommand.Complete(1L, "idem-key", REACT_DOCUMENT_JSON);
         generationService.completeWithImages(command, null, sectionFiles, photoFiles, "10");
 
-        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/photo-detail-02.webp"), eq("image/webp"), any());
-        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/photo-detail-03.webp"), eq("image/webp"), any());
-        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/section-01.png"), eq("image/png"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("images/product/ai-generated/1/photo-detail-02.webp"), eq("image/webp"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("images/product/ai-generated/1/photo-detail-03.webp"), eq("image/webp"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("images/product/ai-generated/1/section-01.png"), eq("image/png"), any());
+    }
+
+    @Test
+    @DisplayName("react 문서의 이미지 노드에 올린 사진의 공개 주소(src)를 채우고 imageId 는 그대로 둔다")
+    void fillsPhotoUrlsIntoReactDocument() throws Exception {
+        ReflectionTestUtils.setField(generationService, "imageBaseUrl", "https://img.stg.midam.store/");
+        String json = "{\"root\":[{\"tag\":\"div\",\"children\":["
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"hero\"}},"
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"detail-02\",\"alt\":\"상세\"}},"
+            + "{\"tag\":\"img\",\"props\":{\"imageId\":\"unknown\"}}]}]}";
+
+        String result = generationService.withPhotoUrls(json, Map.of(
+            "hero", "images/product/ai-generated/1/photo-hero.webp",
+            "detail-02", "images/product/ai-generated/1/photo-detail-02.png"));
+
+        var children = objectMapper.readTree(result).get("root").get(0).get("children");
+        assertThat(children.get(0).get("props").get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/images/product/ai-generated/1/photo-hero.webp");
+        assertThat(children.get(0).get("props").get("imageId").asText()).isEqualTo("hero");
+        assertThat(children.get(1).get("props").get("src").asText())
+            .isEqualTo("https://img.stg.midam.store/images/product/ai-generated/1/photo-detail-02.png");
+        assertThat(children.get(1).get("props").get("alt").asText()).isEqualTo("상세");
+        assertThat(children.get(2).get("props").has("src")).isFalse();
+    }
+
+    @Test
+    @DisplayName("이미지 기본 주소가 없거나 바꿀 사진이 없으면 react 문서 원문을 그대로 돌려준다")
+    void keepsReactDocumentWhenNothingToFill() {
+        assertThat(generationService.withPhotoUrls(REACT_DOCUMENT_JSON, Map.of("hero", "k"))).isEqualTo(REACT_DOCUMENT_JSON);
+        ReflectionTestUtils.setField(generationService, "imageBaseUrl", "https://img.stg.midam.store");
+        assertThat(generationService.withPhotoUrls(REACT_DOCUMENT_JSON, Map.of())).isEqualTo(REACT_DOCUMENT_JSON);
     }
 
     // ── 렌더링 수동 요청 ────────────────────────────────────────────────────────
@@ -357,7 +388,7 @@ class GenerationServiceTest {
         assertThat(ack.status()).isEqualTo("SAVED");
         assertThat(generation.getStatus()).isEqualTo(GenerationStatus.COMPLETED);
         assertThat(generation.getFailureReason()).isNull();
-        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("ai-generated/1/detail-page.jpg"), eq("image/jpeg"), any());
+        verify(imageStorage).put(eq(ImagePurpose.PRODUCT), eq("images/product/ai-generated/1/detail-page.jpg"), eq("image/jpeg"), any());
         verify(contentService).storeReactDocument(any());
     }
 
