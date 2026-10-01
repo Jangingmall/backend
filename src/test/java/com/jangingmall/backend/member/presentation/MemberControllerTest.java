@@ -234,6 +234,83 @@ class MemberControllerTest extends RestDocsControllerTest {
     }
 
     @Test
+    @DisplayName("토큰 갱신은 인증 없이 호출되고, 응답 본문은 accessToken·expiresIn만 담으며 쿠키를 다시 내려주지 않는다")
+    @WithAnonymousUser
+    void refreshContract() throws Exception {
+        when(memberAuthenticationService.refresh("refresh-token")).thenReturn(
+            new MemberSession("new-access-token", "refresh-token", 1L, "artisan@example.com", "김도공", MemberRole.USER));
+
+        mockMvc.perform(post("/api/member/token/refresh")
+                .cookie(new Cookie("refreshToken", "refresh-token")))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.status").value(200))
+            .andExpect(jsonPath("$.data.length()").value(2))
+            .andExpect(jsonPath("$.data.accessToken").value("new-access-token"))
+            .andExpect(jsonPath("$.data.expiresIn").value(1800))
+            .andExpect(jsonPath("$.data.refreshToken").doesNotExist())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie")).isNull());
+    }
+
+    @Test
+    @DisplayName("만료·위조된 Access Token을 함께 보내도 Refresh Token 쿠키가 유효하면 갱신된다")
+    @WithAnonymousUser
+    void refreshIgnoresStaleAccessToken() throws Exception {
+        when(memberAuthenticationService.refresh("refresh-token")).thenReturn(
+            new MemberSession("new-access-token", "refresh-token", 1L, "artisan@example.com", "김도공", MemberRole.USER));
+
+        mockMvc.perform(post("/api/member/token/refresh")
+                .header("Authorization", "Bearer expired.or.invalid")
+                .cookie(new Cookie("refreshToken", "refresh-token")))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.accessToken").value("new-access-token"));
+    }
+
+    @Test
+    @DisplayName("Refresh Token 쿠키가 없거나 비어 있으면 401 UNAUTHORIZED를 반환한다")
+    @WithAnonymousUser
+    void refreshWithoutCookie() throws Exception {
+        mockMvc.perform(post("/api/member/token/refresh"))
+            .andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.errorCode").value("UNAUTHORIZED"));
+        mockMvc.perform(post("/api/member/token/refresh").cookie(new Cookie("refreshToken", " ")))
+            .andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.errorCode").value("UNAUTHORIZED"));
+    }
+
+    @Test
+    @DisplayName("서버가 거절한 Refresh Token(로그아웃·재로그인·만료)은 401 UNAUTHORIZED를 반환한다")
+    @WithAnonymousUser
+    void refreshRejectedToken() throws Exception {
+        when(memberAuthenticationService.refresh("stale-token")).thenThrow(new DomainException(ErrorCode.UNAUTHORIZED));
+
+        mockMvc.perform(post("/api/member/token/refresh").cookie(new Cookie("refreshToken", "stale-token")))
+            .andExpect(status().isUnauthorized())
+            .andExpect(jsonPath("$.errorCode").value("UNAUTHORIZED"));
+    }
+
+    @Test
+    @DisplayName("로그인 응답의 Refresh Token 쿠키는 HttpOnly·Secure·SameSite=Strict·Path=/api/member·7일로 내려간다")
+    @WithAnonymousUser
+    void loginRefreshCookieAttributes() throws Exception {
+        when(memberAuthenticationService.login(any(), any())).thenReturn(
+            new MemberSession("access", "refresh-token", 1L, "artisan@example.com", "김도공", MemberRole.USER));
+
+        mockMvc.perform(post("/api/member/login")
+                .contentType(APPLICATION_JSON)
+                .content(json(new MemberLoginRequest("artisan@example.com", "password123!"))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.refreshToken").doesNotExist())
+            .andExpect(result -> assertThat(result.getResponse().getHeader("Set-Cookie"))
+                .contains("refreshToken=refresh-token")
+                .contains("HttpOnly")
+                .contains("Secure")
+                .contains("SameSite=Strict")
+                .contains("Path=/api/member")
+                .contains("Max-Age=604800"));
+    }
+
+    @Test
     @DisplayName("로그아웃은 Refresh Token 쿠키를 만료시킨다")
     void logout() throws Exception {
         mockMvc.perform(post("/api/member/logout")

@@ -7,8 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.data.redis.core.script.DefaultRedisScript;
-import java.util.List;
 
 @Repository
 public class RedisRefreshTokenStore implements RefreshTokenStore {
@@ -33,17 +31,6 @@ public class RedisRefreshTokenStore implements RefreshTokenStore {
             storedHash.getBytes(StandardCharsets.UTF_8),
             hash(refreshToken).getBytes(StandardCharsets.UTF_8)
         );
-    }
-
-    @Override
-    public boolean rotate(Long memberId, String expectedToken, String replacementToken, Duration ttl) {
-        var script = new DefaultRedisScript<Long>("""
-            if redis.call('GET', KEYS[1]) ~= ARGV[1] then return 0 end
-            redis.call('SET', KEYS[1], ARGV[2], 'PX', ARGV[3])
-            return 1
-            """, Long.class);
-        return Long.valueOf(1).equals(redisTemplate.execute(script, List.of(key(memberId)),
-            hash(expectedToken), hash(replacementToken), Long.toString(ttl.toMillis())));
     }
 
     @Override
