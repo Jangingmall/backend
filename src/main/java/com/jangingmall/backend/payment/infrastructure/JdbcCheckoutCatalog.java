@@ -146,7 +146,7 @@ public class JdbcCheckoutCatalog implements CheckoutCatalog {
             (rs, rowNum) -> new ImageRow(rs.getInt("source_width"), rs.getInt("source_height"),
                 rs.getString("variants")), productId
         ).stream().findFirst().orElse(null);
-        if (image == null) return List.of();
+        if (image == null) return legacyThumbnail(productId);
         try {
             Map<String, Object> variants = objectMapper.readValue(image.variants(), Map.class);
             List<ImageVariant> result = new ArrayList<>();
@@ -164,6 +164,24 @@ public class JdbcCheckoutCatalog implements CheckoutCatalog {
         } catch (Exception exception) {
             throw new DomainException(ErrorCode.INTERNAL_ERROR);
         }
+    }
+
+    /** 업로드 이미지가 없는 기존 상품은 product.thumbnail_url 한 장을 대표 이미지로 쓴다. */
+    private List<ImageVariant> legacyThumbnail(Long productId) {
+        String url = jdbcTemplate.query("select thumbnail_url from product where product_id = ?",
+            (rs, rowNum) -> rs.getString(1), productId).stream().findFirst().orElse(null);
+        return legacyThumbnail(url);
+    }
+
+    static List<ImageVariant> legacyThumbnail(String url) {
+        if (url == null || !(url.startsWith("https://") || url.startsWith("http://"))) return List.of();
+        String path = url.contains("?") ? url.substring(0, url.indexOf('?')) : url;
+        String extension = path.contains(".") ? path.substring(path.lastIndexOf('.') + 1).toLowerCase() : "";
+        String format = switch (extension) {
+            case "png", "webp" -> extension;
+            default -> "jpeg";
+        };
+        return List.of(new ImageVariant(url, 800, 800, format));
     }
 
     private record ProductRow(Long id, String name, long price, Integer stock, String status,
