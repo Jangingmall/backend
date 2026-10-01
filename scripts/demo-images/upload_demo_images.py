@@ -5,7 +5,7 @@
   1) POST /api/images/presigned-url  -> 320w/640w/1280w 업로드 주소
   2) 각 WebP 변형을 업로드 주소로 PUT
   3) 업로드 확정(consume): 확정하지 않으면 24시간 뒤 자동 삭제된다
-       - 장인 계정 모드(--email/--password): 로그인 후 --attach-product-id 상품의 이미지로 연결한다
+       - 장인 계정 모드(--email/--password 또는 장인 액세스 토큰 --token): --attach-product-id 상품의 이미지로 연결한다
        - AGENT 모드(--token/--member-id)   : POST /internal/images/verify
   4) 공개 주소(viewUrl)를 3초 안에 내려받아 image/webp 인지 확인한다
 
@@ -225,8 +225,11 @@ def main():
             token, member_id = login(base_url, args.email, args.password), None
             if not args.attach_product_id:
                 print("[경고] --attach-product-id 가 없으면 업로드가 확정되지 않아 24시간 뒤 자동 삭제됩니다.", file=sys.stderr)
+        elif token and not member_id:  # 장인 액세스 토큰 모드: 이미 로그인된 토큰을 그대로 쓴다
+            if not args.attach_product_id:
+                print("[경고] --attach-product-id 가 없으면 업로드가 확정되지 않아 24시간 뒤 자동 삭제됩니다.", file=sys.stderr)
         elif not (token and member_id):
-            fail("--email/--password(장인 계정) 또는 --token/--member-id(AGENT) 가 필요합니다.")
+            fail("--email/--password(장인 계정), --token(장인 액세스 토큰), 또는 --token/--member-id(AGENT) 가 필요합니다.")
 
     entries = []
     for item in unique:
@@ -241,7 +244,7 @@ def main():
             entry["publicCheck"] = {variant: {"ok": ok, "detail": detail} for variant, (ok, detail) in checks.items()}
             print(f"  {name}: {image_id} " + ", ".join(f"{v}={'OK' if ok else 'FAIL'}" for v, (ok, _) in checks.items()))
         entries.append(entry)
-    if not args.dry_run and args.email and args.attach_product_id:
+    if not args.dry_run and member_id is None and args.attach_product_id:
         attach_to_product(base_url, token, args.attach_product_id, [e["imageId"] for e in entries if e.get("imageId")])
     for dup, original in duplicates.items():
         base = next(e for e in entries if e["source"] == original)
