@@ -1,0 +1,87 @@
+# 임시 워크플로 — 시연용 사진 업로드 전용. merge 전에 이 파일과 tmp-demo-images/, scripts/demo-images/ 를 삭제한다.
+name: tmp-upload-demo-images
+
+on:
+  push:
+    branches: [tmp/demo-image-upload]
+    paths:
+      - "tmp-demo-images/**"
+      - "scripts/demo-images/**"
+      - ".github/workflows/tmp-upload-demo-images.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/tmp-upload-demo-images.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  # PR 이 열려 있으면 항상 빨갛게 보여 임시 파일이 develop 에 들어가는 실수를 막는다.
+  block-merge-until-removed:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "::error::임시 시연 업로드 파일(tmp-upload-demo-images.yml, tmp-demo-images/, scripts/demo-images/)을 제거한 뒤에만 merge 하세요."
+          exit 1
+
+  upload:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pillow
+
+      - name: 필요한 설정 확인
+        env:
+          DEMO_API_BASE_URL: ${{ secrets.STG_API_BASE_URL }}
+          DEMO_AGENT_TOKEN: ${{ secrets.STG_AGENT_TOKEN }}
+          DEMO_MEMBER_ID: ${{ vars.DEMO_OWNER_MEMBER_ID }}
+        run: |
+          missing=""
+          [ -z "$DEMO_API_BASE_URL" ] && missing="$missing secrets.STG_API_BASE_URL"
+          [ -z "$DEMO_AGENT_TOKEN" ] && missing="$missing secrets.STG_AGENT_TOKEN"
+          [ -z "$DEMO_MEMBER_ID" ] && missing="$missing vars.DEMO_OWNER_MEMBER_ID"
+          if [ -n "$missing" ]; then
+            echo "::error::저장소 설정에 다음 값이 필요합니다:$missing"
+            exit 1
+          fi
+
+      - name: 사진 업로드 (정식 이미지 API 사용, 같은 사진은 한 번만)
+        env:
+          DEMO_API_BASE_URL: ${{ secrets.STG_API_BASE_URL }}
+          DEMO_AGENT_TOKEN: ${{ secrets.STG_AGENT_TOKEN }}
+          DEMO_MEMBER_ID: ${{ vars.DEMO_OWNER_MEMBER_ID }}
+        run: |
+          python3 scripts/demo-images/upload_demo_images.py \
+            --src tmp-demo-images/hapjukseon-maehwa/source \
+            --out manifest.json
+
+      - name: 결과 요약
+        if: always()
+        run: |
+          [ -f manifest.json ] || exit 0
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d = json.load(open("manifest.json"))
+          print("| 사진 | imageId | 1280w 링크 | 확인 |")
+          print("|---|---|---|---|")
+          for e in d["images"]:
+              urls = e.get("urls") or {}
+              check = e.get("publicCheck", {})
+              ok = "중복(재사용)" if "duplicateOf" in e else ("OK" if check and all(c["ok"] for c in check.values()) else "FAIL")
+              print(f"| {e['name']} | `{e.get('imageId')}` | {urls.get('1280w','')} | {ok} |")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: demo-image-manifest
+          path: manifest.json
+          if-no-files-found: ignore
