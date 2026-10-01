@@ -192,6 +192,13 @@ public class Product {
         this.colors = new ArrayList<>(colors);
     }
 
+    /** 대표 이미지가 아직 없을 때만 채운다(판매자가 정한 대표 이미지는 덮어쓰지 않는다). */
+    public void useThumbnail(String url) {
+        if (url != null && !url.isBlank() && url.length() <= 500 && (thumbnailUrl == null || thumbnailUrl.isBlank())) {
+            thumbnailUrl = url;
+        }
+    }
+
     public void changeStatus(ProductStatus next, Long requesterId) {
         verifyOwner(requesterId);
         status.validateTransitionTo(next);

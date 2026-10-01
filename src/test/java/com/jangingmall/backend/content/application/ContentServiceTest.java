@@ -239,6 +239,36 @@ class ContentServiceTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    @DisplayName("react_document 저장 — AI 이미지에 공개 주소(props.src)가 있으면 그 주소를 블록에 보관한다")
+    void storeReactDocumentKeepsPublicImageUrl() {
+        ContentBlockRepository blockRepository = mock(ContentBlockRepository.class);
+        ImageUploadRepository uploadRepository = mock(ImageUploadRepository.class);
+        ContentService serviceWithBlocks = new ContentService(
+            contentRepository, historyRepository, productRepository, aiContentClient,
+            artisanProfileRepository, interviewRepository, blockRepository, uploadRepository, null,
+            new ObjectMapper(), null, null
+        );
+        String document = "{\"root\":[{\"tag\":\"h2\",\"text\":\"제목\"},{\"tag\":\"img\",\"props\":"
+            + "{\"imageId\":\"hero\",\"src\":\"https://img.stg.midam.store/ai-generated/7/photo-1-hero.webp\"}}]}";
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+        when(historyRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
+
+        serviceWithBlocks.storeReactDocument(new ContentCommand.StoreReactDocument(10L, document, null));
+
+        ArgumentCaptor<Iterable<ContentBlock>> blocks = ArgumentCaptor.forClass(Iterable.class);
+        verify(blockRepository).saveAll(blocks.capture());
+        java.util.List<ContentBlock> saved = new java.util.ArrayList<>();
+        blocks.getValue().forEach(saved::add);
+        assertThat(saved).hasSize(2);
+        assertThat(saved.get(1).getTag()).isEqualTo("img");
+        assertThat(saved.get(1).getImageId()).isNull();
+        assertThat(saved.get(1).getImageUrl()).isEqualTo("https://img.stg.midam.store/ai-generated/7/photo-1-hero.webp");
+        assertThat(saved.get(1).hasImage()).isTrue();
+    }
+
+    @Test
     @DisplayName("늦은 AI 결과 덮어쓰기 — 콘텐츠가 없으면 허용한다")
     void canOverwriteWithAiResultWhenNoContent() {
         when(contentRepository.findByProductId(10L)).thenReturn(Optional.empty());
@@ -451,7 +481,25 @@ class ContentServiceTest {
         ContentResponse.StatusChanged result = contentService.publish(command);
 
         assertThat(result.status()).isEqualTo(ContentStatus.PUBLISHED);
+        assertThat(artisanProduct.getStatus()).isEqualTo(com.jangingmall.backend.product.domain.ProductStatus.ON_SALE);
         verify(aiContentClient).syncProduct(any());
+    }
+
+    @Test
+    @DisplayName("콘텐츠 게시 — 숨김 상태 상품은 판매 중으로 바꾸지 않는다")
+    void publishKeepsHiddenProduct() {
+        sampleContent.submitForReview();
+        sampleContent.approve(true, true, true);
+        artisanProduct.changeStatus(com.jangingmall.backend.product.domain.ProductStatus.HIDDEN, 1L);
+        ArtisanProfile artisanProfile = org.mockito.Mockito.mock(ArtisanProfile.class);
+        when(productRepository.findById(10L)).thenReturn(Optional.of(artisanProduct));
+        when(contentRepository.findByProductId(10L)).thenReturn(Optional.of(sampleContent));
+        when(contentRepository.save(any())).thenReturn(sampleContent);
+        when(artisanProfileRepository.findById(1L)).thenReturn(Optional.of(artisanProfile));
+
+        contentService.publish(new ContentCommand.Publish(10L, 1L));
+
+        assertThat(artisanProduct.getStatus()).isEqualTo(com.jangingmall.backend.product.domain.ProductStatus.HIDDEN);
     }
 
     @Test

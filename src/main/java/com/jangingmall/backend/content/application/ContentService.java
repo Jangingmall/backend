@@ -327,7 +327,10 @@ public class ContentService {
             : imageService.publicVariants(block.getImageId()).stream()
                 .map(image -> new ContentResponse.ImageVariant(image.url(), image.width(), image.height(), image.format()))
                 .toList();
-        return new ContentResponse.Block(block.getDisplayOrder(), block.getTag(), block.getImageId() != null,
+        if (block.getImageId() == null && block.getImageUrl() != null && !block.getImageUrl().isBlank()) {
+            variants = List.of(new ContentResponse.ImageVariant(block.getImageUrl(), 1280, 1280, formatOf(block.getImageUrl())));
+        }
+        return new ContentResponse.Block(block.getDisplayOrder(), block.getTag(), block.hasImage(),
             variants, block.getVideoUrl(), block.getText());
     }
 
@@ -358,12 +361,16 @@ public class ContentService {
                     props instanceof Map<?, ?> map ? text(map.get("imageId"), text(map.get("imageUrl"),
                         text(map.get("src"), text(map.get("url"), null)))) : null));
                 String imageId = "img".equals(tag) ? resolveImageId(imageRef) : null;
+                String imageUrl = null;
                 if ("img".equals(tag) && imageRef != null && !imageRef.isBlank() && imageId == null) {
-                    // AI가 만든 이미지는 업로드 이미지로 등록되어 있지 않다. 404로 콜백 전체를 실패시키지 않고
-                    // 해당 이미지 블록만 건너뛴다(글 블록과 reactDocument 원문은 그대로 저장된다).
-                    log.warn("reactDocument 이미지 참조를 찾을 수 없어 블록을 건너뜁니다 contentId={} imageRef={}",
-                        content.getId(), imageRef);
-                    continue;
+                    // AI가 만든 이미지는 업로드 이미지로 등록되어 있지 않다. 공개 주소(props.src 등)가 있으면 그 주소를 블록에 보관해
+                    // 소비자 상세에서도 보이게 하고, 주소도 없으면 404로 콜백 전체를 실패시키지 않고 이미지 블록만 건너뛴다.
+                    imageUrl = publicImageUrl(values, props, imageRef);
+                    if (imageUrl == null) {
+                        log.warn("reactDocument 이미지 참조를 찾을 수 없어 블록을 건너뜁니다 contentId={} imageRef={}",
+                            content.getId(), imageRef);
+                        continue;
+                    }
                 }
                 String videoUrl = "video".equals(tag) ? text(values.get("videoUrl"), null) : null;
                 String blockText = Set.of("h2", "p").contains(tag)
@@ -372,7 +379,7 @@ public class ContentService {
                 if (blockText == null && Set.of("h2", "p").contains(tag)) {
                     blockText = extractText(values.get("children"));
                 }
-                blocks.add(new ContentBlock(content.getId(), order, tag, imageId, videoUrl, blockText));
+                blocks.add(new ContentBlock(content.getId(), order, tag, imageId, imageUrl, videoUrl, blockText));
             }
             contentBlockRepository.deleteByContentId(content.getId());
             if (!blocks.isEmpty()) {
@@ -383,6 +390,36 @@ public class ContentService {
         } catch (Exception exception) {
             throw new IllegalArgumentException("reactDocument 블록을 저장할 수 없습니다.", exception);
         }
+    }
+
+    /** img 노드가 가진 공개 http(s) 주소(props.src·url·imageUrl, 참조 자체가 주소인 경우). 없으면 null. */
+    private static String publicImageUrl(Map<?, ?> node, Object props, String imageRef) {
+        List<Object> candidates = new ArrayList<>();
+        if (props instanceof Map<?, ?> map) {
+            candidates.add(map.get("src"));
+            candidates.add(map.get("url"));
+            candidates.add(map.get("imageUrl"));
+        }
+        candidates.add(node.get("src"));
+        candidates.add(node.get("imageUrl"));
+        candidates.add(imageRef);
+        for (Object candidate : candidates) {
+            if (candidate instanceof String value) {
+                String url = value.trim();
+                String lower = url.toLowerCase(java.util.Locale.ROOT);
+                if ((lower.startsWith("https://") || lower.startsWith("http://")) && url.length() <= 500) {
+                    return url;
+                }
+            }
+        }
+        return null;
+    }
+
+    /** 외부·AI 이미지 주소를 변형 하나짜리 목록으로 만든다(크기는 알 수 없어 화면 표시용 기본값을 쓴다). */
+    static String formatOf(String url) {
+        String path = url.contains("?") ? url.substring(0, url.indexOf('?')) : url;
+        int dot = path.lastIndexOf('.');
+        return dot < 0 || dot < path.lastIndexOf('/') ? "webp" : path.substring(dot + 1).toLowerCase(java.util.Locale.ROOT);
     }
 
     private String resolveImageId(String imageRef) {
@@ -572,18 +609,43 @@ public class ContentService {
         return ContentResponse.StatusChanged.from(contentRepository.save(content));
     }
 
+    @org.springframework.cache.annotation.CacheEvict(value = "products", allEntries = true)
     @Transactional
     public ContentResponse.StatusChanged publish(ContentCommand.Publish command) {
         verifyProductOwner(command.productId(), command.requesterId());
         Content content = contentRepository.findByProductId(command.productId())
             .orElseThrow(() -> new NotFoundException(ContentErrorMessage.NOT_FOUND.message()));
         content.publish();
+        openForSaleIfDraft(command.productId(), command.requesterId());
         ContentResponse.StatusChanged result = ContentResponse.StatusChanged.from(contentRepository.save(content));
         syncPublishedProductToAi(command.productId());
         if (eventPublisher != null) {
             eventPublisher.publishEvent(RevalidateEvent.ofProduct(RevalidateEventType.PRODUCT_CONTENT_PUBLISHED, UUID.randomUUID().toString(), Instant.now(), command.productId()));
         }
         return result;
+    }
+
+    /**
+     * 상세페이지를 게시(제작 완료)하면 소비자 화면(상세·목록)과 챗봇이 그 상품을 보도록 DRAFT 상품을 판매 중으로 연다.
+     * 소비자 상세는 ON_SALE·SOLD_OUT 만 보여 주므로, 이 전환이 없으면 게시한 상품이 소비자에게 나타나지 않는다.
+     * 숨김·품절 등 판매자가 직접 정한 상태는 건드리지 않는다. 대표 이미지가 비어 있으면 첫 상세 이미지로 채운다.
+     */
+    private void openForSaleIfDraft(Long productId, Long requesterId) {
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new NotFoundException(ProductErrorMessage.NOT_FOUND.message()));
+        if (product.getStatus() == com.jangingmall.backend.product.domain.ProductStatus.DRAFT) {
+            product.changeStatus(com.jangingmall.backend.product.domain.ProductStatus.ON_SALE, requesterId);
+        }
+        if (contentBlockRepository != null && (product.getThumbnailUrl() == null || product.getThumbnailUrl().isBlank())) {
+            contentRepository.findByProductId(productId).ifPresent(content ->
+                contentBlockRepository.findByContentIdOrderByDisplayOrderAsc(content.getId()).stream()
+                    .filter(block -> "img".equals(block.getTag()))
+                    .map(this::toResponseBlock)
+                    .filter(block -> block.imageVariants() != null && !block.imageVariants().isEmpty())
+                    .findFirst()
+                    .ifPresent(block -> product.useThumbnail(block.imageVariants().getLast().url())));
+        }
+        productRepository.save(product);
     }
 
     @Transactional(readOnly = true)

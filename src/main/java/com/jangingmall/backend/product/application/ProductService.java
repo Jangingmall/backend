@@ -337,8 +337,15 @@ public class ProductService {
                         : imageService.publicVariants(block.getImageId()).stream()
                             .map(image -> new ProductResponse.ImageVariantView(image.url(), image.width(), image.height(), image.format()))
                             .toList();
+                    if (block.getImageId() == null && block.getImageUrl() != null && !block.getImageUrl().isBlank()) {
+                        String url = block.getImageUrl();
+                        String path = url.contains("?") ? url.substring(0, url.indexOf('?')) : url;
+                        int dot = path.lastIndexOf('.');
+                        String format = dot < 0 || dot < path.lastIndexOf('/') ? "webp" : path.substring(dot + 1).toLowerCase();
+                        variants = List.of(new ProductResponse.ImageVariantView(url, 1280, 1280, format));
+                    }
                     return new ProductResponse.ContentBlockView(block.getDisplayOrder(), block.getTag(),
-                        block.getImageId() != null, variants, block.getVideoUrl(), block.getText());
+                        block.hasImage(), variants, block.getVideoUrl(), block.getText());
                 }).toList())
             .orElseGet(List::of);
     }
