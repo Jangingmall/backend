@@ -216,6 +216,15 @@ public class GenerationService {
         return keys;
     }
 
+    private String extension(String contentType) {
+        return switch (contentType == null ? "" : contentType) {
+            case "image/jpeg" -> "jpg";
+            case "image/png" -> "png";
+            case "image/webp" -> "webp";
+            default -> "bin";
+        };
+    }
+
     /** react 문서의 img 노드에 올린 사진의 S3 키(assetKey)와 공개 주소(src)를 채운다. imageId 는 그대로 둔다. */
     String withPhotoUrls(String reactDocumentJson, Map<String, String> photoKeys) {
         return ReactDocumentAssets.attach(objectMapper, reactDocumentJson, photoKeys, imageBaseUrl);
