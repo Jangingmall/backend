@@ -5,7 +5,7 @@
 
 | 목적 | API | REST Docs 식별자 | 비고 |
 |---|---|---|---|
-| 상태 조회(2초 폴링) | `GET /api/content/products/{productId}/generations/{generationId}` | `generation-poll` | `QUEUED → PROCESSING → ANALYZING → DRAFT_READY → COMPLETED \| FAILED` |
+| 상태 조회(2초 폴링) | `GET /api/content/products/{productId}/generations/{generationId}` | `generation-poll-processing` · `-draft-ready` · `-completed` · `-failed` · `-not-found` | `QUEUED → PROCESSING → ANALYZING → DRAFT_READY → COMPLETED \| FAILED` |
 | 렌더링 수동 요청 | `POST /api/content/products/{productId}/generations/{generationId}/render` | `generation-render`, `generation-render-not-allowed`(422), 403 | `DRAFT_READY` 일 때만 202. 같은 요청 반복해도 중복 생성 없음 |
 | 콘텐츠 승인 | `POST /api/content/products/{productId}/contents/{contentId}/approve` | `content-approve` | 승인 시 `DRAFT_READY` 건이 있으면 렌더도 함께 요청 |
 

@@ -183,6 +183,34 @@ class GenerationControllerTest extends RestDocsControllerTest {
     }
 
     @Test
+    @DisplayName("AI 콘텐츠 생성 상태 조회 — DRAFT_READY 상태(초안 완료, 렌더링 대기)를 반환한다")
+    @WithMockUser(roles = "ARTISAN")
+    void pollDraftReady() throws Exception {
+        when(generationService.poll(anyLong(), anyLong(), any())).thenReturn(DRAFT_READY_RESPONSE);
+
+        mockMvc.perform(get("/api/content/products/{productId}/generations/{generationId}", 10L, 1L))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.status").value("DRAFT_READY"))
+            .andDo(MockMvcRestDocumentationWrapper.document(
+                "generation-poll-draft-ready",
+                resource(ResourceSnippetParameters.builder()
+                    .tag("AI 콘텐츠 생성")
+                    .summary("AI 생성 상태 조회 (DRAFT_READY)")
+                    .description("AI 초안은 끝났고 최종 렌더링을 기다리는 중간 상태입니다. 오류가 아니므로 계속 폴링합니다.\n"
+                        + "- 서버가 자동으로 렌더링을 요청하고 마감(3시간)까지 재요청하며, 끝나면 COMPLETED 가 됩니다.\n"
+                        + "- 즉시 다시 요청하려면 POST /api/content/products/{productId}/generations/{generationId}/render 를 호출합니다.\n"
+                        + "- DRAFT_READY 동안 GET /contents 는 이전 생성의 문서일 수 있으니 편집 화면에는 COMPLETED 이후에만 사용합니다.")
+                    .pathParameters(
+                        parameterWithName("productId").description("상품 ID").type(SimpleType.INTEGER),
+                        parameterWithName("generationId").description("생성 요청 ID").type(SimpleType.INTEGER)
+                    )
+                    .responseFields(successEnvelopeFields(GENERATION_FIELDS))
+                    .build()
+                )
+            ));
+    }
+
+    @Test
     @DisplayName("AI 콘텐츠 생성 상태 조회 — COMPLETED 상태를 반환한다")
     @WithMockUser(roles = "ARTISAN")
     void pollCompleted() throws Exception {
