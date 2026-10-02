@@ -3,320 +3,400 @@
   "key": "body_p31_01",
   "product": "p31",
   "name": "전주 합죽선 · 매화선",
-  "cut": "재료",
-  "prompt": "Raw materials for making a folding fan: split bamboo strips and sheets of white mulberry hanji paper on a wooden table. The product made here is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 1
+  "no": 1,
+  "heading": "한눈에 보는 합죽선",
+  "caption": "흰 한지 선면 위에 먹과 분홍빛 매화가 이어지고, 아래로 대나무 살이 모입니다. 접부채 전체의 균형이 한눈에 들어옵니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the folding fan fully opened, seen straight from the front on a plain light backdrop. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p31_A.webp"
  },
  {
   "key": "body_p31_02",
   "product": "p31",
   "name": "전주 합죽선 · 매화선",
-  "cut": "도구",
-  "prompt": "Fan-making tools laid out on a workbench: a small bamboo knife, a brush, an ink stone and a thin ink stick. The product made here is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 2
+  "no": 2,
+  "heading": "선면 위의 매화",
+  "caption": "검은 먹으로 그린 가지와 분홍 꽃송이가 한지 결 위에 번져 있습니다. 같은 그림이 하나도 없는 이유입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of the ink plum branch and pale pink blossoms on the paper face. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p31_A.webp"
  },
  {
   "key": "body_p31_03",
   "product": "p31",
   "name": "전주 합죽선 · 매화선",
-  "cut": "작업대",
-  "prompt": "A quiet Korean workshop bench with bamboo ribs drying on a rack beside stacks of hanji paper, nobody in the scene. The product made here is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 3
+  "no": 3,
+  "heading": "한지의 결",
+  "caption": "닥섬유가 살아 있는 한지 선면의 결과 접힌 주름입니다. 빛을 받으면 은은한 결이 드러납니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a macro of the folded hanji paper pleats and fibers in soft light. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p31_A.webp"
  },
  {
   "key": "body_p31_04",
   "product": "p31",
   "name": "전주 합죽선 · 매화선",
-  "cut": "진행 중인 작품",
-  "prompt": "A half-assembled folding fan frame with bamboo ribs fanned out before the paper is attached, on a work table. The product made here is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 4
+  "no": 4,
+  "heading": "비스듬한 각도",
+  "caption": "반쯤 펼친 부채를 비스듬히 본 모습입니다. 선면의 주름과 대나무 살의 입체감이 보입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the fan half-opened seen from a 45-degree angle. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p31_A.webp"
  },
  {
   "key": "body_p31_05",
   "product": "p31",
   "name": "전주 합죽선 · 매화선",
-  "cut": "기법 확대",
-  "prompt": "Close-up of fine black ink plum branch strokes and pale pink petals painted on white hanji paper. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 5
+  "no": 5,
+  "heading": "대나무 뼈대",
+  "caption": "부채 중심에서 바깥으로 퍼지는 대나무 살과 겉대의 결입니다. 하나씩 깎아 맞춘 뼈대입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of the bamboo ribs and outer guard sticks at the fan's pivot. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p31_A.webp"
  },
  {
   "key": "body_p31_06",
   "product": "p31",
   "name": "전주 합죽선 · 매화선",
-  "cut": "진열",
-  "prompt": "Several finished folding fans of the same kind displayed standing on a wooden shelf in a bright room. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 6
+  "no": 6,
+  "heading": "손에 들면 그림이 되는 부채",
+  "caption": "탁자 위에 펼쳐 둔 모습입니다. 선면의 매화가 공간의 그림처럼 놓입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the opened fan resting on a wooden table beside a linen cloth in warm window light. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p31_A.webp"
  },
  {
   "key": "body_p31_07",
   "product": "p31",
   "name": "전주 합죽선 · 매화선",
-  "cut": "변형 비교",
-  "prompt": "Two folding fans with different plum blossom paintings placed side by side on a plain light surface to show that no two are alike. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 7
+  "no": 7,
+  "heading": "흰 한지와 먹, 분홍 매화",
+  "caption": "선면은 흰 한지, 검은 먹, 분홍 매화 세 색으로 정리됩니다. 대나무의 자연색이 이 색을 받칩니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a flat lay of the fan on a plain surface emphasizing its white, black and pink color palette. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p31_A.webp"
  },
  {
   "key": "body_p31_08",
   "product": "p31",
   "name": "전주 합죽선 · 매화선",
-  "cut": "선물 구성",
-  "prompt": "The folding fan with a small gift box, a linen ribbon and a handwritten-style blank card, arranged as a gift set. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 8
+  "no": 8,
+  "heading": "접어 두면",
+  "caption": "접어 두면 얇은 대나무 겉대 두 쪽이 선면을 감싸는 단정한 막대가 됩니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the fan fully closed lying flat to show the two outer bamboo guard sticks. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p31_A.webp"
  },
  {
   "key": "body_p32_01",
   "product": "p32",
   "name": "청자 운학문 찻잔",
-  "cut": "재료",
-  "prompt": "Raw materials for celadon pottery: a lump of fine grey clay, a jar of translucent glaze and a bowl of white slip on a wooden table. The product made here is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 9
+  "no": 1,
+  "heading": "한눈에 보는 청자 찻잔",
+  "caption": "연한 비색 유약 위에 학과 구름이 둘러진 찻잔입니다. 둥근 입술과 가벼운 몸체가 단정합니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup seen straight from the front on a plain light backdrop. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p32_A.webp"
  },
  {
   "key": "body_p32_02",
   "product": "p32",
   "name": "청자 운학문 찻잔",
-  "cut": "도구",
-  "prompt": "Pottery tools on a workbench: carving needles, a sponge, a small brush and a wooden rib beside a potter's wheel. The product made here is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 10
+  "no": 2,
+  "heading": "운학문 상감",
+  "caption": "백토와 흑토로 메운 학과 구름 문양입니다. 선 하나하나가 손으로 새겨졌습니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of the inlaid white and black cranes and clouds on the glaze. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p32_A.webp"
  },
  {
   "key": "body_p32_03",
   "product": "p32",
   "name": "청자 운학문 찻잔",
-  "cut": "작업대",
-  "prompt": "A quiet pottery studio shelf with unfired cups drying on boards in rows, nobody in the scene. The product made here is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 11
+  "no": 3,
+  "heading": "유약의 결",
+  "caption": "유약 속 가는 균열이 그물처럼 번져 있습니다. 쓸수록 균열이 깊어집니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a macro of the crackle pattern in the pale jade-green glaze. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p32_A.webp"
  },
  {
   "key": "body_p32_04",
   "product": "p32",
   "name": "청자 운학문 찻잔",
-  "cut": "진행 중인 작품",
-  "prompt": "An unglazed bisque tea cup with carved crane and cloud lines waiting for glaze, on a workbench. The product made here is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 12
+  "no": 4,
+  "heading": "비스듬한 각도",
+  "caption": "찻잔을 위에서 비스듬히 본 모습입니다. 안쪽의 맑은 유약과 입술의 선이 보입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup seen from a 45-degree angle above showing the inside. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p32_A.webp"
  },
  {
   "key": "body_p32_05",
   "product": "p32",
   "name": "청자 운학문 찻잔",
-  "cut": "기법 확대",
-  "prompt": "Close-up of white and black slip inlay of cranes and clouds on pale jade-green celadon glaze with fine crackle. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 13
+  "no": 5,
+  "heading": "굽",
+  "caption": "찻잔을 받치는 굽과 유약이 닿지 않은 흙 빛입니다. 가마에서 구워진 흔적입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the underside and foot ring of the cup. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p32_A.webp"
  },
  {
   "key": "body_p32_06",
   "product": "p32",
   "name": "청자 운학문 찻잔",
-  "cut": "진열",
-  "prompt": "Several finished pale jade-green celadon tea cups displayed on a wooden shelf in a bright room. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 14
+  "no": 6,
+  "heading": "차 한 잔과 함께",
+  "caption": "따뜻한 차를 따라 나무 쟁반에 올린 모습입니다. 비색이 차의 빛과 어우러집니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup filled with green tea on a small wooden tray with a linen cloth. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p32_A.webp"
  },
  {
   "key": "body_p32_07",
   "product": "p32",
   "name": "청자 운학문 찻잔",
-  "cut": "변형 비교",
-  "prompt": "Two celadon tea cups of the same kind with slightly different glaze depth placed side by side on a plain light surface. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 15
+  "no": 7,
+  "heading": "비색",
+  "caption": "연한 옥빛 비색 유약이 빛에 따라 짙고 옅게 변합니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a flat lay of the cup on a plain surface emphasizing the pale jade-green color. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p32_A.webp"
  },
  {
   "key": "body_p32_08",
   "product": "p32",
   "name": "청자 운학문 찻잔",
-  "cut": "선물 구성",
-  "prompt": "A celadon tea cup in a gift set with a small tea caddy, a bamboo tea scoop and a cloth wrap in an open wooden box. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 16
+  "no": 8,
+  "heading": "손에 쥐면",
+  "caption": "손안에 들어오는 크기의 찻잔을 탁자 위에 놓은 모습입니다. 가볍고 손에 감깁니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup placed on a wooden table in soft window light with a small tea caddy beside it. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p32_A.webp"
  },
  {
   "key": "body_p33_01",
   "product": "p33",
   "name": "분청 귀얄 찻잔",
-  "cut": "재료",
-  "prompt": "Raw materials for buncheong pottery: grey stoneware clay, a bucket of white slip and iron-brown pigment on a wooden table. The product made here is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 17
+  "no": 1,
+  "heading": "한눈에 보는 분청 찻잔",
+  "caption": "회백색 바탕에 귀얄로 쓸어 바른 흰 분장이 남은 찻잔입니다. 투박하고 따뜻한 형태입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup seen straight from the front on a plain light backdrop. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p33_A.webp"
  },
  {
   "key": "body_p33_02",
   "product": "p33",
   "name": "분청 귀얄 찻잔",
-  "cut": "도구",
-  "prompt": "Pottery tools on a workbench: a wide flat brush for slip, a trimming tool and a sponge beside a potter's wheel. The product made here is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 18
+  "no": 2,
+  "heading": "귀얄 분장",
+  "caption": "넓은 붓으로 쓸어 바른 흰 흙 자국이 결을 그립니다. 같은 붓질은 두 번 없습니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of the wide brush-stroke white slip texture. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p33_A.webp"
  },
  {
   "key": "body_p33_03",
   "product": "p33",
   "name": "분청 귀얄 찻잔",
-  "cut": "작업대",
-  "prompt": "A quiet pottery studio with cups wet with white slip drying on boards in rows, nobody in the scene. The product made here is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 19
+  "no": 3,
+  "heading": "철화 풀꽃",
+  "caption": "철 안료로 그린 갈색 풀꽃 무늬가 흰 분장 위에 놓여 있습니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a macro of the iron-brown wildflower pattern on the slip. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p33_A.webp"
  },
  {
   "key": "body_p33_04",
   "product": "p33",
   "name": "분청 귀얄 찻잔",
-  "cut": "진행 중인 작품",
-  "prompt": "A tea cup freshly brushed with white slip before firing, on a workbench. The product made here is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 20
+  "no": 4,
+  "heading": "비스듬한 각도",
+  "caption": "찻잔을 위에서 비스듬히 본 모습입니다. 안쪽 유약과 입술의 선이 보입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup seen from a 45-degree angle above showing the inside. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p33_A.webp"
  },
  {
   "key": "body_p33_05",
   "product": "p33",
   "name": "분청 귀얄 찻잔",
-  "cut": "기법 확대",
-  "prompt": "Close-up of wide brush-stroke white slip texture and iron-brown wildflower pattern on grayish stoneware. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 21
+  "no": 5,
+  "heading": "굽과 흙",
+  "caption": "유약을 닦아 낸 굽에 드러난 거친 흙 빛입니다. 분청 특유의 질감입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the underside and unglazed foot ring of the cup showing raw clay. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p33_A.webp"
  },
  {
   "key": "body_p33_06",
   "product": "p33",
   "name": "분청 귀얄 찻잔",
-  "cut": "진열",
-  "prompt": "Several finished buncheong tea cups displayed on a wooden shelf in a bright room. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 22
+  "no": 6,
+  "heading": "다탁 위에서",
+  "caption": "리넨 위에 놓고 작은 다기와 함께 둔 모습입니다. 소박한 다탁에 어울립니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup on a linen cloth next to a small tea caddy in natural window light. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p33_A.webp"
  },
  {
   "key": "body_p33_07",
   "product": "p33",
   "name": "분청 귀얄 찻잔",
-  "cut": "변형 비교",
-  "prompt": "Two buncheong tea cups with different brush-stroke directions placed side by side on a plain light surface. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 23
+  "no": 7,
+  "heading": "회백색과 갈색",
+  "caption": "회백색 바탕, 흰 분장, 갈색 무늬 세 가지가 어울립니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a flat lay of the cup on a plain surface emphasizing its gray, white and brown tones. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p33_A.webp"
  },
  {
   "key": "body_p33_08",
   "product": "p33",
   "name": "분청 귀얄 찻잔",
-  "cut": "선물 구성",
-  "prompt": "A buncheong tea cup on a linen cloth with a small tea caddy and a bamboo whisk arranged as a tea set. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 24
+  "no": 8,
+  "heading": "손에 쥐면",
+  "caption": "손안에 들어오는 크기로 투박하게 쥐기 좋은 찻잔입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup placed on a wooden table in soft window light. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p33_A.webp"
  },
  {
   "key": "body_p15_01",
   "product": "p15",
   "name": "한지 무드 조명",
-  "cut": "재료",
-  "prompt": "Raw materials for a hanji lamp: sheets of handmade mulberry paper, thin wooden slats and a block of solid walnut on a work table. The product made here is a warm amber-glowing hanji paper lamp on a solid wood base, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 25
+  "no": 1,
+  "heading": "한눈에 보는 한지 조명",
+  "caption": "한지 갓을 두른 원목 받침의 스탠드입니다. 불을 켜면 따뜻한 빛이 갓 전체로 퍼집니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the lamp switched on, seen straight from the front on a plain backdrop. The product is a warm amber-glowing hanji paper lamp on a solid wood base. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p15_A.webp"
  },
  {
   "key": "body_p15_02",
   "product": "p15",
   "name": "한지 무드 조명",
-  "cut": "도구",
-  "prompt": "Lamp-making tools on a workbench: a small hand plane, a glue brush, a ruler and a pencil, with hanji sheets nearby. The product made here is a warm amber-glowing hanji paper lamp on a solid wood base, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 26
+  "no": 2,
+  "heading": "한지 결 위의 빛",
+  "caption": "손으로 뜬 한지의 섬유가 빛을 받아 은은한 결로 드러납니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of long mulberry fibers glowing in the lit hanji shade. The product is a warm amber-glowing hanji paper lamp on a solid wood base. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p15_A.webp"
  },
  {
   "key": "body_p15_03",
   "product": "p15",
   "name": "한지 무드 조명",
-  "cut": "작업대",
-  "prompt": "A quiet woodworking bench with lamp frames without paper standing in a row, nobody in the scene. The product made here is a warm amber-glowing hanji paper lamp on a solid wood base, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 27
+  "no": 3,
+  "heading": "원목 받침",
+  "caption": "단단한 원목으로 깎은 받침과 코드가 맞닿는 부분입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of the solid wood base and the lamp cord. The product is a warm amber-glowing hanji paper lamp on a solid wood base. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p15_A.webp"
  },
  {
   "key": "body_p15_04",
   "product": "p15",
   "name": "한지 무드 조명",
-  "cut": "진행 중인 작품",
-  "prompt": "A lamp frame half covered with hanji paper, on a workbench. The product made here is a warm amber-glowing hanji paper lamp on a solid wood base, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 28
+  "no": 4,
+  "heading": "비스듬한 각도",
+  "caption": "조명을 비스듬히 본 모습입니다. 갓의 둥근 선과 받침의 균형이 보입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the lamp switched on seen from a 45-degree angle. The product is a warm amber-glowing hanji paper lamp on a solid wood base. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p15_A.webp"
  },
  {
   "key": "body_p15_05",
   "product": "p15",
   "name": "한지 무드 조명",
-  "cut": "기법 확대",
-  "prompt": "Close-up of long mulberry fibers glowing warmly in a lit hanji paper shade. The product is a warm amber-glowing hanji paper lamp on a solid wood base, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 29
+  "no": 5,
+  "heading": "꺼 두면",
+  "caption": "불을 끄면 한지가 낮에는 부드러운 흰빛으로 보입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the lamp switched off in daylight seen from the front. The product is a warm amber-glowing hanji paper lamp on a solid wood base. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p15_A.webp"
  },
  {
   "key": "body_p15_06",
   "product": "p15",
   "name": "한지 무드 조명",
-  "cut": "진열",
-  "prompt": "Several lit hanji lamps of different sizes displayed in a row on a wooden shelf in a dim room. The product is a warm amber-glowing hanji paper lamp on a solid wood base, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 30
+  "no": 6,
+  "heading": "침실의 밤",
+  "caption": "침대 옆 협탁에 놓아 어두운 방을 따뜻하게 밝히는 모습입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the lit lamp on a bedside table in a dim cozy bedroom. The product is a warm amber-glowing hanji paper lamp on a solid wood base. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p15_A.webp"
  },
  {
   "key": "body_p15_07",
   "product": "p15",
   "name": "한지 무드 조명",
-  "cut": "변형 비교",
-  "prompt": "Three hanji lamps of small, medium and large size lit side by side on a plain surface. The product is a warm amber-glowing hanji paper lamp on a solid wood base, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 31
+  "no": 7,
+  "heading": "호박빛",
+  "caption": "불을 켰을 때의 호박빛이 벽과 바닥에 번집니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the lit lamp on a plain surface casting warm amber light on the wall. The product is a warm amber-glowing hanji paper lamp on a solid wood base. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p15_A.webp"
  },
  {
   "key": "body_p15_08",
   "product": "p15",
   "name": "한지 무드 조명",
-  "cut": "선물 구성",
-  "prompt": "A hanji lamp in its gift box with soft packing paper and a cloth bag, box slightly open. The product is a warm amber-glowing hanji paper lamp on a solid wood base, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 32
+  "no": 8,
+  "heading": "거실 한켠",
+  "caption": "거실 선반 위에 두어 공간의 분위기를 바꾸는 모습입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the lamp on a wooden shelf in a calm living room. The product is a warm amber-glowing hanji paper lamp on a solid wood base. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p15_A.webp"
  },
  {
   "key": "body_p11_01",
   "product": "p11",
   "name": "수자수 모란도 액자",
-  "cut": "재료",
-  "prompt": "Raw materials for silk embroidery: spools of pink, green and cream silk thread and a piece of undyed silk on a wooden table. The product made here is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 33
+  "no": 1,
+  "heading": "한눈에 보는 모란도",
+  "caption": "분홍 모란이 수놓인 비단을 원목 액자에 표구한 작품입니다. 한 송이가 화면 가득 피어 있습니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the framed embroidery seen straight from the front on a plain wall. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p11_A.webp"
  },
  {
   "key": "body_p11_02",
   "product": "p11",
   "name": "수자수 모란도 액자",
-  "cut": "도구",
-  "prompt": "Embroidery tools on a workbench: needles in a pincushion, small scissors and a wooden embroidery hoop. The product made here is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 34
+  "no": 2,
+  "heading": "수자수의 결",
+  "caption": "한 올씩 나란히 채운 수자수 실이 꽃잎의 곡선을 따라 흐릅니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of the satin-stitch silk threads of the pink peony petals. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p11_A.webp"
  },
  {
   "key": "body_p11_03",
   "product": "p11",
   "name": "수자수 모란도 액자",
-  "cut": "작업대",
-  "prompt": "A quiet embroidery studio corner with a stand frame holding stretched silk, nobody in the scene. The product made here is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 35
+  "no": 3,
+  "heading": "꽃술과 잎",
+  "caption": "모란의 꽃술과 초록 잎을 실의 방향으로 표현한 부분입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a macro of the peony center and green leaves in embroidery. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p11_A.webp"
  },
  {
   "key": "body_p11_04",
   "product": "p11",
   "name": "수자수 모란도 액자",
-  "cut": "진행 중인 작품",
-  "prompt": "A pink peony half embroidered with satin stitch in a wooden hoop, on a workbench. The product made here is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 36
+  "no": 4,
+  "heading": "비스듬한 각도",
+  "caption": "액자를 비스듬히 본 모습입니다. 원목 틀의 두께와 비단 표면의 윤기가 보입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the framed embroidery seen from a 30-degree angle showing the frame depth. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p11_A.webp"
  },
  {
   "key": "body_p11_05",
   "product": "p11",
   "name": "수자수 모란도 액자",
-  "cut": "기법 확대",
-  "prompt": "Close-up of satin-stitch silk threads of pink peony petals with a fine highlight. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 37
+  "no": 5,
+  "heading": "원목 액자",
+  "caption": "수작업으로 짠 원목 액자의 모서리와 천을 감싼 가장자리입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of the wooden frame corner and the fabric edge. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p11_A.webp"
  },
  {
   "key": "body_p11_06",
   "product": "p11",
   "name": "수자수 모란도 액자",
-  "cut": "진열",
-  "prompt": "Several framed embroideries of the same kind displayed on a wall above a wooden console table in a bright room. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 38
+  "no": 6,
+  "heading": "거실 벽에서",
+  "caption": "작은 협탁 위 벽에 걸어 둔 모습입니다. 공간에 은은한 색을 더합니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the framed embroidery hanging on a wall above a small wooden console table. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p11_A.webp"
  },
  {
   "key": "body_p11_07",
   "product": "p11",
   "name": "수자수 모란도 액자",
-  "cut": "변형 비교",
-  "prompt": "Two framed peony embroideries with different color tones placed side by side leaning on a plain wall. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 39
+  "no": 7,
+  "heading": "분홍과 초록",
+  "caption": "분홍 꽃과 초록 잎, 바탕의 미색이 조화를 이룹니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a flat view of the framed embroidery emphasizing the pink, green and cream colors. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p11_A.webp"
  },
  {
   "key": "body_p11_08",
   "product": "p11",
   "name": "수자수 모란도 액자",
-  "cut": "선물 구성",
-  "prompt": "The framed embroidery wrapped in protective paper with a ribbon, arranged as a gift. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark",
-  "no": 40
+  "no": 8,
+  "heading": "선물로",
+  "caption": "보호지로 싸고 리본을 묶은 선물 포장입니다.",
+  "prompt": "Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the framed embroidery wrapped in protective paper with a ribbon as a gift. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders",
+  "reference": "docs/demo-products/photoreal/staging/p11_A.webp"
  }
 ]
