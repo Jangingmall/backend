@@ -50,6 +50,11 @@ import tools.jackson.databind.ObjectMapper;
 public class MemberReadRepositoryImpl implements MemberReadRepository {
     private static final Set<ProductStatus> VISIBLE_PRODUCTS = Set.of(ProductStatus.ON_SALE, ProductStatus.SOLD_OUT);
     private static final String APPROVED = "APPROVED";
+    /**
+     * 찜·최근 본 상품에서 상품을 보이게 하는 장인 인증 상태. 시드 장인의 상태는 CERTIFIED·UNDER_REVIEW·UNCERTIFIED 라서
+     * APPROVED 만 허용하면 시드 상품은 찜·최근 본 기록이 모두 404 이거나 빈 목록이 된다.
+     */
+    private static final Set<String> PRODUCT_ARTISAN_STATUSES = Set.of(APPROVED, "CERTIFIED", "UNDER_REVIEW", "UNCERTIFIED");
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -92,18 +97,18 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
         String joins = " FROM Wishlist w, Product p, ArtisanProfile a, Member m"
             + " WHERE w.productId=p.id AND p.artisanId=a.id AND m.id=a.id"
             + " AND w.memberId=:memberId"
-            + " AND p.status IN :statuses AND m.status=:active AND a.certificationStatus=:approved";
+            + " AND p.status IN :statuses AND m.status=:active AND a.certificationStatus IN :approved";
         List<Object[]> rows = entityManager.createQuery(
                 "SELECT w,p,a" + joins + " ORDER BY w.id DESC", Object[].class)
             .setParameter("memberId", memberId)
             .setParameter("statuses", VISIBLE_PRODUCTS).setParameter("active", MemberStatus.ACTIVE)
-            .setParameter("approved", APPROVED)
+            .setParameter("approved", PRODUCT_ARTISAN_STATUSES)
             .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
             .getResultList();
         long total = entityManager.createQuery("SELECT count(w)" + joins, Long.class)
             .setParameter("memberId", memberId)
             .setParameter("statuses", VISIBLE_PRODUCTS).setParameter("active", MemberStatus.ACTIVE)
-            .setParameter("approved", APPROVED).getSingleResult();
+            .setParameter("approved", PRODUCT_ARTISAN_STATUSES).getSingleResult();
         List<Map<String, Object>> items = rows.stream()
             .map(row -> product((Product) row[1], (ArtisanProfile) row[2])).toList();
         return new PageImpl<>(items, pageable, total);
@@ -199,16 +204,16 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
         String joins = " FROM RecentView rv, Product p, ArtisanProfile a, Member m"
             + " WHERE rv.productId=p.id AND p.artisanId=a.id AND m.id=a.id"
             + " AND rv.memberId=:memberId AND p.status IN :statuses"
-            + " AND m.status=:active AND a.certificationStatus=:approved";
+            + " AND m.status=:active AND a.certificationStatus IN :approved";
         List<Object[]> rows = entityManager.createQuery(
                 "SELECT rv,p,a" + joins + " ORDER BY rv.viewedAt DESC,rv.id DESC", Object[].class)
             .setParameter("memberId", memberId).setParameter("statuses", VISIBLE_PRODUCTS)
-            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", APPROVED)
+            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", PRODUCT_ARTISAN_STATUSES)
             .setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize())
             .getResultList();
         long total = entityManager.createQuery("SELECT count(rv)" + joins, Long.class)
             .setParameter("memberId", memberId).setParameter("statuses", VISIBLE_PRODUCTS)
-            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", APPROVED)
+            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", PRODUCT_ARTISAN_STATUSES)
             .getSingleResult();
         List<Map<String, Object>> items = rows.stream().map(row -> {
             RecentView view = (RecentView) row[0];
@@ -296,9 +301,9 @@ public class MemberReadRepositoryImpl implements MemberReadRepository {
         return entityManager.createQuery(
                 "SELECT count(p) FROM Product p, ArtisanProfile a, Member m"
                     + " WHERE p.id=:id AND p.artisanId=a.id AND m.id=a.id AND p.status IN :statuses"
-                    + " AND m.status=:active AND a.certificationStatus=:approved", Long.class)
+                    + " AND m.status=:active AND a.certificationStatus IN :approved", Long.class)
             .setParameter("id", productId).setParameter("statuses", VISIBLE_PRODUCTS)
-            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", APPROVED)
+            .setParameter("active", MemberStatus.ACTIVE).setParameter("approved", PRODUCT_ARTISAN_STATUSES)
             .getSingleResult() > 0;
     }
 
