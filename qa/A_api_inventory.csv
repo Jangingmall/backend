@@ -3,6 +3,8 @@ POST-chatbot-session-create,챗봇,POST,/api/chatbot/sessions,chatbot-session-cr
 DELETE-chatbot-session-end,챗봇,DELETE,/api/chatbot/sessions/{sessionId},chatbot-session-end,NO,PUBLIC,-,200,,NORMAL,챗봇 세션 종료
 GET-chatbot-message-list,챗봇,GET,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-list,NO,PUBLIC,-,200,,NORMAL,대화 이력 조회
 POST-chatbot-message-send,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,NO,PUBLIC,api-chatbot-sessions-sessionId-messages-645351721,201,,NORMAL,챗봇 메시지 전송
+GET-exhibition-list,기획전,GET,/api/exhibitions,exhibition-list,YES,USER,-,200,,NORMAL,기획전 목록
+GET-exhibition-detail,기획전,GET,/api/exhibitions/{exhibitionId},exhibition-detail,YES,USER,-,200,,NORMAL,기획전 상세
 POST-image-presigned-url,이미지,POST,/api/images/presigned-url,image-presigned-url,YES,USER,api-images-presigned-url-1187326752,200,401,NORMAL,Presigned URL 발급
 DELETE-image-delete,이미지,DELETE,/api/images/{imageId},image-delete,YES,USER,-,200,"409,403",NORMAL,미사용 이미지 삭제
 GET-artisan-list,장인,GET,/api/member/artisans,artisan-list,YES,USER,-,200,,NORMAL,장인 목록 조회

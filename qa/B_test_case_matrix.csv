@@ -11,6 +11,15 @@ CHAT-009,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-
 CHAT-010,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,BOUNDARY,content: len=2000 (maxLen),HTTP 201,,AUTO
 CHAT-011,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,BOUNDARY,content: len=2001 (maxLen+1),HTTP 400,,AUTO
 CHAT-012,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,NOT_FOUND,sessionId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
+API-001,기획전,GET,/api/exhibitions,exhibition-list,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
+API-002,기획전,GET,/api/exhibitions,exhibition-list,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+API-003,기획전,GET,/api/exhibitions,exhibition-list,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+API-004,기획전,GET,/api/exhibitions,exhibition-list,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+API-005,기획전,GET,/api/exhibitions/{exhibitionId},exhibition-detail,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
+API-006,기획전,GET,/api/exhibitions/{exhibitionId},exhibition-detail,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+API-007,기획전,GET,/api/exhibitions/{exhibitionId},exhibition-detail,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+API-008,기획전,GET,/api/exhibitions/{exhibitionId},exhibition-detail,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+API-009,기획전,GET,/api/exhibitions/{exhibitionId},exhibition-detail,NOT_FOUND,exhibitionId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
 IMAGE-001,이미지,POST,/api/images/presigned-url,image-presigned-url,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
 IMAGE-002,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_MISSING,fileName 누락,HTTP 400 INVALID_INPUT,,AUTO
 IMAGE-003,이미지,POST,/api/images/presigned-url,image-presigned-url,REQUIRED_NULL,fileName=null,HTTP 400 INVALID_INPUT,,AUTO
@@ -586,27 +595,27 @@ QNA-023,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answ
 QNA-024,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
 QNA-025,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
 QNA-026,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,NOT_FOUND,questionId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-API-001,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
-API-002,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
-API-003,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 201,,AUTO
-API-004,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_MISSING,orderItemId 누락,HTTP 400 INVALID_INPUT,,AUTO
-API-005,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_NULL,orderItemId=null,HTTP 400 INVALID_INPUT,,AUTO
-API-006,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_MISSING,rating 누락,HTTP 400 INVALID_INPUT,,AUTO
-API-007,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_NULL,rating=null,HTTP 400 INVALID_INPUT,,AUTO
-API-008,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_MISSING,content 누락,HTTP 400 INVALID_INPUT,,AUTO
-API-009,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_NULL,content=null,HTTP 400 INVALID_INPUT,,AUTO
-API-010,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_EMPTY,"content=""""",HTTP 400 INVALID_INPUT,,AUTO
-API-011,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,TYPE_MISMATCH,images: array→object,HTTP 400,,AUTO
-API-012,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,rating=0 (min-1),HTTP 400,,AUTO
-API-013,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,rating=1 (min),HTTP 201,,AUTO
-API-014,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,rating=5 (max),HTTP 201,,AUTO
-API-015,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,rating=6 (max+1),HTTP 400,,AUTO
-API-016,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,content: len=2000 (maxLen),HTTP 201,,AUTO
-API-017,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,content: len=2001 (maxLen+1),HTTP 400,,AUTO
-API-018,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
-API-019,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
-API-020,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
-API-021,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
+API-010,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
+API-011,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
+API-012,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 201,,AUTO
+API-013,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_MISSING,orderItemId 누락,HTTP 400 INVALID_INPUT,,AUTO
+API-014,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_NULL,orderItemId=null,HTTP 400 INVALID_INPUT,,AUTO
+API-015,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_MISSING,rating 누락,HTTP 400 INVALID_INPUT,,AUTO
+API-016,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_NULL,rating=null,HTTP 400 INVALID_INPUT,,AUTO
+API-017,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_MISSING,content 누락,HTTP 400 INVALID_INPUT,,AUTO
+API-018,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_NULL,content=null,HTTP 400 INVALID_INPUT,,AUTO
+API-019,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,REQUIRED_EMPTY,"content=""""",HTTP 400 INVALID_INPUT,,AUTO
+API-020,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,TYPE_MISMATCH,images: array→object,HTTP 400,,AUTO
+API-021,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,rating=0 (min-1),HTTP 400,,AUTO
+API-022,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,rating=1 (min),HTTP 201,,AUTO
+API-023,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,rating=5 (max),HTTP 201,,AUTO
+API-024,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,rating=6 (max+1),HTTP 400,,AUTO
+API-025,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,content: len=2000 (maxLen),HTTP 201,,AUTO
+API-026,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,BOUNDARY,content: len=2001 (maxLen+1),HTTP 400,,AUTO
+API-027,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,AUTH_NO_TOKEN,Authorization 헤더 없음,HTTP 401 UNAUTHORIZED,,AUTO
+API-028,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,AUTH_INVALID_TOKEN,Bearer INVALID_TOKEN,HTTP 401 UNAUTHORIZED,,AUTO
+API-029,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,AUTH_EXPIRED_TOKEN,만료된 Access Token,HTTP 401 UNAUTHORIZED,,AUTO
+API-030,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,NOT_FOUND,productId=999999999 (존재하지 않는 ID),HTTP 404 NOT_FOUND,,AUTO
 PRODUCT-064,상품,PATCH,/api/products/{productId}/status,product-change-status,HAPPY_PATH,정상 요청 — 유효한 필수값,HTTP 200,,AUTO
 PRODUCT-065,상품,PATCH,/api/products/{productId}/status,product-change-status,REQUIRED_MISSING,status 누락,HTTP 400 INVALID_INPUT,,AUTO
 PRODUCT-066,상품,PATCH,/api/products/{productId}/status,product-change-status,REQUIRED_NULL,status=null,HTTP 400 INVALID_INPUT,,AUTO

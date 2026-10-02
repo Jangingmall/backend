@@ -5,6 +5,7 @@ NEG-CHAT-003,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-mess
 NEG-CHAT-004,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
 NEG-CHAT-005,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
 NEG-CHAT-006,챗봇,POST,/api/chatbot/sessions/{sessionId}/messages,chatbot-message-send,PATH_PARAM_NOT_FOUND,sessionId=999999999,HTTP 404 NOT_FOUND,AUTO
+NEG-API-001,기획전,GET,/api/exhibitions/{exhibitionId},exhibition-detail,PATH_PARAM_NOT_FOUND,exhibitionId=999999999,HTTP 404 NOT_FOUND,AUTO
 NEG-IMAGE-001,이미지,POST,/api/images/presigned-url,image-presigned-url,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
 NEG-IMAGE-002,이미지,POST,/api/images/presigned-url,image-presigned-url,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
 NEG-IMAGE-003,이미지,POST,/api/images/presigned-url,image-presigned-url,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
@@ -177,15 +178,15 @@ NEG-QNA-015,상품 문의,POST,/api/products/{productId}/questions/{questionId}/
 NEG-QNA-016,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,PATH_PARAM_TYPE,"questionId=""abc""",HTTP 400,AUTO
 NEG-QNA-017,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,PATH_PARAM_NEGATIVE,questionId=-1,HTTP 400 또는 404,AUTO
 NEG-QNA-018,상품 문의,POST,/api/products/{productId}/questions/{questionId}/answer,product-qna-answer,PATH_PARAM_NOT_FOUND,questionId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-API-001,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-API-002,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-API-003,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
-NEG-API-004,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
-NEG-API-005,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
-NEG-API-006,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
-NEG-API-007,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
-NEG-API-008,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
-NEG-API-009,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
+NEG-API-002,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
+NEG-API-003,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
+NEG-API-004,상품 후기,GET,/api/products/{productId}/reviews,product-review-list,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
+NEG-API-005,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
+NEG-API-006,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
+NEG-API-007,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO
+NEG-API-008,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,PATH_PARAM_TYPE,"productId=""abc""",HTTP 400,AUTO
+NEG-API-009,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,PATH_PARAM_NEGATIVE,productId=-1,HTTP 400 또는 404,AUTO
+NEG-API-010,상품 후기,POST,/api/products/{productId}/reviews,product-review-write,PATH_PARAM_NOT_FOUND,productId=999999999,HTTP 404 NOT_FOUND,AUTO
 NEG-PRODUCT-016,상품,PATCH,/api/products/{productId}/status,product-change-status,MALFORMED_JSON,"{ ""key"": (불완전 JSON)",HTTP 400 REQUEST_BODY_MALFORMED,AUTO
 NEG-PRODUCT-017,상품,PATCH,/api/products/{productId}/status,product-change-status,WRONG_CONTENT_TYPE,Content-Type: text/plain,HTTP 400 또는 415,AUTO
 NEG-PRODUCT-018,상품,PATCH,/api/products/{productId}/status,product-change-status,EMPTY_BODY,{},HTTP 400 INVALID_INPUT,AUTO

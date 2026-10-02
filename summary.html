@@ -33,7 +33,7 @@
 </nav>
 <div class="container">
   <h1>API 요약</h1>
-  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 91개 엔드포인트 · 2026-10-01 21:47 UTC</div>
+  <div class="meta">PM/기획 팀 · v0.0.1-SNAPSHOT · 총 93개 엔드포인트 · 2026-10-02 03:04 UTC</div>
   <input class="search" type="text" placeholder="경로 또는 설명으로 검색..." oninput="filterTable(this.value)"/>
   <table id="tbl">
     <thead><tr><th>Method</th><th>경로</th><th>설명</th><th>권한</th></tr></thead>
@@ -49,6 +49,9 @@
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/methods</td><td>결제수단 등록</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#49cc90">POST</span></td><td class="path">/api/payments/refund-account</td><td>환불계좌 등록</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#f93e3e">DELETE</span></td><td class="path">/api/payments/methods/{paymentMethodId}</td><td>결제수단 삭제</td><td><span class="role">USER</span></td></tr>
+      <tr class="tag-header"><td colspan="4"><strong>기획전</strong></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/exhibitions</td><td>기획전 목록</td><td><span class="role">USER</span></td></tr>
+      <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/exhibitions/{exhibitionId}</td><td>기획전 상세</td><td><span class="role">USER</span></td></tr>
       <tr class="tag-header"><td colspan="4"><strong>리뷰</strong></td></tr>
       <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/reviews</td><td>작성한 리뷰 목록</td><td><span class="role">USER</span></td></tr>
       <tr><td><span class="method" style="background:#61affe">GET</span></td><td class="path">/api/member/me/reviews/writable</td><td>작성 가능한 리뷰 목록</td><td><span class="role">USER</span></td></tr>

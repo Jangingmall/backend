@@ -4,6 +4,31 @@
  */
 
 export interface paths {
+    "/api/exhibitions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 기획전 목록
+         * @description 🔑 **USER** 이상
+         *
+         *     홈 기획전 섹션과 기획전 목록 화면에 쓰는 노출 중 기획전 목록입니다. 로그인 없이 조회합니다.
+         *     - sort(ENUM, 대소문자·'-' 무관, 모르는 값은 DISPLAY_ORDER):
+         *       - DISPLAY_ORDER: 노출 순서(기본). 운영이 정한 display_order 오름차순
+         *       - NEWEST: 최신 등록순. created_at 내림차순
+         */
+        get: operations["exhibition-list"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/notifications": {
         parameters: {
             query?: never;
@@ -89,7 +114,14 @@ export interface paths {
          * @description 🔓 **인증 불필요**
          *
          *     판매 중 상품 목록을 필터와 함께 조회합니다.
-         *     - sort: NEWEST(기본) | PRICE_ASC | PRICE_DESC | POPULAR
+         *     - sort(ENUM, 대소문자·'-' 무관, 모르는 값은 NEWEST):
+         *       - NEWEST: 최신 등록순(기본). created_at 내림차순
+         *       - POPULAR: 인기순. 점수 = 운영 노출 가중치 + 판매수×3 + 찜수×2 + 리뷰수 (판매수는 결제 완료 이후 주문의 수량 합), 점수 내림차순
+         *       - SALES_COUNT: 판매순. 결제 완료(PAID·IN_DELIVERY·DELIVERED·PURCHASE_CONFIRMED) 주문의 수량 합 내림차순
+         *       - WISHLIST_COUNT: 찜 많은 순. 찜한 회원 수 내림차순
+         *       - PRICE_ASC: 가격 낮은 순
+         *       - PRICE_DESC: 가격 높은 순
+         *     - 홈 사용처: 베스트=SALES_COUNT size=5, 신상품=NEWEST size=4, 전체 목록 기본=POPULAR (기획전은 GET /api/exhibitions)
          *     - excludeSoldOut=true 이면 ON_SALE만 반환 (기본: ON_SALE+SOLD_OUT 포함)
          */
         get: operations["product-list"];
@@ -123,6 +155,33 @@ export interface paths {
          *     소비자가 새 챗봇 대화 세션을 생성합니다.
          */
         post: operations["chatbot-session-create"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/exhibitions/{exhibitionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 기획전 상세
+         * @description 🔑 **USER** 이상
+         *
+         *     기획전 소개와 ON_SALE 상품 목록을 조회합니다. 존재하지 않거나 노출 중이 아니면 404 입니다.
+         *     - sort(ENUM, 대소문자·'-' 무관, 모르는 값은 CURATED):
+         *       - CURATED: 기획 순서(기본). 기획자가 지정한 display_order 오름차순
+         *       - NEWEST: 최신 등록순. 상품 created_at 내림차순
+         *       - PRICE_ASC: 가격 낮은 순
+         *       - PRICE_DESC: 가격 높은 순
+         */
+        get: operations["exhibition-detail"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1981,32 +2040,9 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-products-materials-415789377": {
-            /** @description 소재 코드 목록 */
-            data: (Record<string, never> | boolean | string | number)[];
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-member-email-verification-code-1316556146": {
             /** @description 인증할 이메일 (@NotBlank, @Email, 최대 255자) */
             email: string;
-        };
-        "api-payments-webhooks-toss2067222078": {
-            /** @description 이벤트 데이터 */
-            data: {
-                /** @description 총 결제 금액 */
-                totalAmount: number;
-                /** @description 주문번호 */
-                orderId: string;
-                /** @description 결제 키 */
-                paymentKey: string;
-                /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description 이벤트 유형 */
-            eventType: string;
         };
         "api-member-me-wishes525484891": {
             data?: {
@@ -2075,6 +2111,21 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
+        "api-payments-webhooks-toss2067222078": {
+            /** @description 이벤트 데이터 */
+            data: {
+                /** @description 총 결제 금액 */
+                totalAmount: number;
+                /** @description 주문번호 */
+                orderId: string;
+                /** @description 결제 키 */
+                paymentKey: string;
+                /** @description 결제 상태 */
+                status: string;
+            };
+            /** @description 이벤트 유형 */
+            eventType: string;
+        };
         "api-payments-methods1245291826": {
             data?: {
                 /** @description 기본 결제수단 여부 */
@@ -2119,143 +2170,6 @@ export interface components {
             /** @description 소개 */
             introduction?: string | null;
         };
-        "api-products-productId288555837": {
-            data?: {
-                /** @description 대표 이미지 variant 목록 */
-                thumbnail?: {
-                    /** @description 대표 variant 포맷 */
-                    format?: string | null;
-                    /** @description 대표 variant 너비 */
-                    width?: number | null;
-                    /** @description 대표 variant URL */
-                    url?: string | null;
-                    /** @description 대표 variant 높이 */
-                    height?: number | null;
-                }[];
-                /** @description 상품 이미지 목록 */
-                images?: {
-                    /** @description 이미지 그룹 ID */
-                    imageId?: string | null;
-                    /** @description 대체 텍스트 */
-                    alt?: string | null;
-                    /** @description 이미지 variant 목록 */
-                    variants?: {
-                        /** @description variant 포맷 */
-                        format?: string | null;
-                        /** @description variant 너비 */
-                        width?: number | null;
-                        /** @description 이미지 URL */
-                        url?: string | null;
-                        /** @description variant 높이 */
-                        height?: number | null;
-                    }[];
-                }[];
-                /** @description 장인 ID */
-                artisanId: number;
-                /** @description 상품 ID */
-                productId: number;
-                /** @description 설명 */
-                description?: string | null;
-                /** @description 제목 */
-                title: string;
-                /** @description 카테고리명 */
-                categoryName?: string | null;
-                /** @description 색상 목록 */
-                colors?: (Record<string, never> | boolean | string | number)[] | null;
-                /** @description 생성일시 */
-                createdAt: string;
-                /** @description 선물 테마 목록 */
-                giftThemes?: (Record<string, never> | boolean | string | number)[] | null;
-                /** @description 서브카테고리명 */
-                subcategoryName?: string | null;
-                /** @description 용도 태그 목록 */
-                purposeTags?: (Record<string, never> | boolean | string | number)[] | null;
-                /** @description 가격 */
-                price: number;
-                /** @description 콘텐츠 블록 목록 */
-                detailPageBlocks?: {
-                    /** @description 영상 URL */
-                    videoUrl?: string | null;
-                    /** @description 이미지 포함 여부 */
-                    hasImage?: boolean | null;
-                    /** @description 블록 텍스트 */
-                    text?: string | null;
-                    /** @description 블록 태그 */
-                    tag?: string | null;
-                    /** @description 블록 이미지 variant */
-                    imageVariants?: {
-                        /** @description variant 포맷 */
-                        format?: string | null;
-                        /** @description variant 너비 */
-                        width?: number | null;
-                        /** @description 이미지 URL */
-                        url?: string | null;
-                        /** @description variant 높이 */
-                        height?: number | null;
-                    }[];
-                    /** @description 블록 순서 */
-                    order?: number | null;
-                }[];
-                /** @description 제작 기간(일) */
-                productionPeriodDays?: number | null;
-                /** @description 서브카테고리 ID */
-                subcategoryId?: number | null;
-                /** @description 재고 */
-                stock: number;
-                /** @description 카테고리 ID */
-                categoryId?: number | null;
-                /** @description 수정일시 */
-                updatedAt: string;
-                /** @description 상태 */
-                status: string;
-                /** @description 썸네일 URL */
-                thumbnailUrl?: string | null;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-payments-cart-merge-82228599": {
-            data?: {
-                /** @description 상품 합계 금액 */
-                totalPrice: number;
-                /** @description 총 상품 수 */
-                totalCount: number;
-                /** @description 배송비 합계 */
-                totalShippingFee: number;
-                /** @description 아티산별 장바구니 섹션 목록 */
-                sections: (Record<string, never> | boolean | string | number)[];
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-member-me335907477": {
-            data?: {
-                /** @description 역할 */
-                role: string;
-                /** @description 소셜 로그인 제공자 */
-                provider?: string | null;
-                /** @description 전화번호 */
-                phone: string;
-                /** @description 닉네임 */
-                nickname?: string | null;
-                /** @description 이름 */
-                name: string;
-                /** @description 프로필 이미지 URL */
-                profileImageUrl?: string | null;
-                /** @description 이메일 */
-                email: string;
-                /** @description 회원 ID */
-                memberId: number;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-payments-fail-966144645": {
             /** @description 주문번호 (6~64자) */
             orderId: string;
@@ -2263,12 +2177,6 @@ export interface components {
             errorMessage: string;
             /** @description 결제 실패 코드 (최대 100자) */
             errorCode: string;
-        };
-        "api-payments-cart-items-521794704": {
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
         };
         "api-payments-cart-items166605304": {
             /** @description 수량 (1 이상) */
@@ -2314,58 +2222,6 @@ export interface components {
             /** @description 이메일 (@NotBlank, @Email, 최대 255자) */
             email: string;
         };
-        "api-member-artisans-me-1004667003": {
-            data?: {
-                /** @description 경력 연수 */
-                careerYears: number;
-                /** @description 장인 ID */
-                artisanId: number;
-                /** @description 공방명 */
-                businessName: string;
-                /** @description 지역 */
-                region: string;
-                /** @description 카테고리 */
-                category: string;
-                /** @description 소개 */
-                introduction: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-payments-methods1001892655": {
-            /** @description 생년월일 6자리 또는 사업자번호 10자리 */
-            birthOrBusinessNo: string;
-            /** @description 유효기간 (MM/YY) */
-            expiry: string;
-            /** @description 결제수단 유형 (CARD) */
-            type: string;
-            /** @description 카드번호 (13~25자리, 숫자·공백·하이픈) */
-            cardNumber: string;
-        };
-        "api-member-oauth2-complete-profile1234726145": {
-            /** @description 전화번호 (숫자만) */
-            phone: string;
-            /** @description 이름 */
-            name: string;
-            agreements?: {
-                /** @description 마케팅 수신 동의 (선택) */
-                marketing?: boolean | null;
-                /** @description 개인정보 수집 동의 */
-                privacyCollection: boolean;
-                /** @description 서비스 이용약관 동의 */
-                termsOfService: boolean;
-                /** @description 만 14세 이상 동의 */
-                age14OrOlder: boolean;
-            };
-        };
-        "internal-images-verify-211043086": {
-            /** @description 소유자 확인용 회원 ID */
-            requesterId: number;
-            /** @description 이미지 ID (ULID) */
-            imageId: string;
-        };
         "api-admin-seller-applications-applicationId-reject-311794827": {
             /** @description 거절 사유 */
             reason: string;
@@ -2408,30 +2264,6 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-admin-artisans-applications-applicationId-pipeline-338536592": {
-            data?: {
-                pipeline?: {
-                    /** @description 주문 시스템 연동 */
-                    orderSystemIntegration: string;
-                    /** @description 서류 심사 */
-                    documentReview: string;
-                    /** @description 디지털 전환 */
-                    digitalConversion: string;
-                    /** @description 장인성 심사 */
-                    craftsmanshipReview: string;
-                };
-                /** @description 자격 등급 */
-                qualificationTier?: string | null;
-                /** @description 신청 ID */
-                applicationId: number;
-                /** @description 전체 신청 상태 */
-                overallStatus: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-payments316824518": {
             data?: {
                 /** @description 결제 금액 */
@@ -2450,36 +2282,16 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-payments-orders-438073018": {
-            data?: {
-                /** @description 주문 생성 일시 */
-                createdAt: string;
-                /** @description 결제 예정 금액 */
-                totalAmount: number;
-                /** @description 주문번호 */
-                orderNumber: string;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 주문 항목 목록 */
-                items: (Record<string, never> | boolean | string | number)[];
-                /** @description 주문 상태 */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
+        "api-member-email-verify1884513398": {
+            /** @description 6자리 숫자 인증 코드 */
+            code: string;
+            /** @description 인증할 이메일 */
+            email: string;
         };
         "api-member-login-1429029385": {
             /** @description 비밀번호 */
             password: string;
             /** @description 이메일 */
-            email: string;
-        };
-        "api-member-email-verify1884513398": {
-            /** @description 6자리 숫자 인증 코드 */
-            code: string;
-            /** @description 인증할 이메일 */
             email: string;
         };
         "api-payments-orders-orderId-delivery716694160": {
@@ -2516,30 +2328,6 @@ export interface components {
         "api-payments-orders-orderId-shipping-address1663523072": {
             /** @description 본인 주소록의 배송지 ID */
             addressId: number;
-        };
-        "api-payments-paymentId-cancel1498139372": {
-            data?: {
-                /** @description 결제 금액 */
-                amount: number;
-                /** @description 주문번호 */
-                orderNumber: string;
-                /** @description 결제수단 */
-                method: string;
-                /** @description 취소 일시 */
-                canceledAt?: string | null;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 결제 ID */
-                paymentId: number;
-                /** @description 승인 일시 */
-                approvedAt?: string | null;
-                /** @description 결제 상태 (CANCELED) */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
         };
         "api-member-me-addresses-1394498104": {
             data?: {
@@ -2588,32 +2376,6 @@ export interface components {
             address1?: string | null;
             /** @description 수령인 */
             recipientName?: string | null;
-        };
-        "api-member-signup16218693": {
-            /** @description false — 항상 실패 */
-            success: boolean;
-            /** @description ErrorCode 식별자 */
-            errorCode: string;
-            /** @description 에러 메시지 */
-            message: string;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-products-productId-questions-questionId-answer-1567978184": {
-            data?: {
-                /** @description 답변 ID */
-                answerId: number;
-                /** @description 장인 ID */
-                artisanId: number;
-                /** @description 답변일시 */
-                answeredAt: string;
-                /** @description 답변 내용 */
-                content: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
         };
         "api-products-productId-questions-311681186": {
             data?: {
@@ -2665,107 +2427,59 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-admin-seller-applications141931969": {
+        "api-exhibitions-exhibitionId1277242900": {
             data?: {
-                /** @description 현재 페이지(0-based) */
-                number: number;
-                /** @description 현재 페이지 요소 수 */
-                numberOfElements: number;
-                /** @description 마지막 페이지 여부 */
-                last: boolean;
-                /** @description 페이지 크기 */
-                size: number;
-                /** @description 전체 페이지 수 */
-                totalPages: number;
-                /** @description 페이지 요청 정보 */
-                pageable: Record<string, never>;
-                /** @description 정렬 정보 */
-                sort: {
-                    /** @description 미정렬 여부 */
-                    unsorted: boolean;
-                    /** @description 정렬 여부 */
-                    sorted: boolean;
-                    /** @description 정렬 없음 여부 */
-                    empty: boolean;
-                };
-                /** @description 첫 페이지 여부 */
-                first: boolean;
-                /** @description 신청 목록 */
-                content: {
-                    pipeline?: {
-                        /** @description 주문 시스템 연동 단계 */
-                        orderSystemIntegration: string;
-                        /** @description 서류 심사 단계 */
-                        documentReview: string;
-                        /** @description 디지털 전환 단계 */
-                        digitalConversion: string;
-                        /** @description 장인성 심사 단계 */
-                        craftsmanshipReview: string;
-                    };
-                    /** @description 거절 사유 */
-                    rejectReason?: string | null;
-                    /** @description 자격 등급 */
-                    qualificationTier?: string | null;
-                    /** @description 공방명 */
-                    businessName: string;
-                    /** @description 신청 일시 */
-                    submittedAt: string;
-                    /** @description 신청 ID */
-                    applicationId: number;
-                    /** @description 사업자 등록증 이미지 URL */
-                    businessLicenseImageUrl: string;
-                    /** @description 소개 */
-                    introduction: string;
-                    /** @description 신청 상태 (PENDING/APPROVED/REJECTED) */
-                    status: string;
-                    /** @description 신청 회원 ID */
-                    memberId: number;
-                }[];
-                /** @description 빈 페이지 여부 */
-                empty: boolean;
-                /** @description 전체 신청 수 */
-                totalElements: number;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-member-me-2097818813": {
-            /** @description 탈퇴 사유 (최대 500자) */
-            reason: string;
-        };
-        "api-notifications-notificationId1090539448": {
-            data?: {
-                /** @description 생성 일시 */
-                createdAt: string;
-                /** @description 알림 ID */
-                id: number;
-                /** @description 알림 제목 */
+                /** @description 배너 이미지 URL */
+                bannerImageUrl?: string | null;
+                /** @description 부제 */
+                subtitle?: string | null;
+                /** @description 기획전 소개 */
+                description?: string | null;
+                /** @description 기획전 ID */
+                exhibitionId: number;
+                /** @description 적용된 상품 정렬 ENUM */
+                sort: string;
+                /** @description 기획전 제목 */
                 title: string;
-                /** @description 알림 내용 */
-                content: string;
-                /** @description 알림 상태 (UNREAD/READ/DELETED) */
-                status: string;
+                products?: {
+                    /** @description 장인 ID */
+                    artisanId: number;
+                    /** @description 상품 ID */
+                    productId: number;
+                    /** @description 상품 설명 */
+                    description?: string | null;
+                    /** @description 상품명 */
+                    title: string;
+                    /** @description 카테고리명 */
+                    categoryName?: string | null;
+                    /** @description 색상 */
+                    colors: (Record<string, never> | boolean | string | number)[];
+                    /** @description 등록일시 */
+                    createdAt: string;
+                    /** @description 선물 테마 */
+                    giftThemes: (Record<string, never> | boolean | string | number)[];
+                    /** @description 서브카테고리명 */
+                    subcategoryName?: string | null;
+                    /** @description 용도 태그 */
+                    purposeTags: (Record<string, never> | boolean | string | number)[];
+                    /** @description 가격 */
+                    price: number;
+                    /** @description 제작 기간(일) */
+                    productionPeriodDays?: number | null;
+                    /** @description 서브카테고리 ID */
+                    subcategoryId?: number | null;
+                    /** @description 재고 */
+                    stock: number;
+                    /** @description 카테고리 ID */
+                    categoryId?: number | null;
+                    /** @description 수정일시 */
+                    updatedAt: string;
+                    /** @description 상태 */
+                    status: string;
+                    /** @description 대표 이미지 URL */
+                    thumbnailUrl?: string | null;
+                }[];
             };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-chatbot-sessions-sessionId-messages-2051810038": {
-            data?: {
-                /** @description 발신자 (USER/ADMIN) */
-                sender: string;
-                /** @description 메시지 ID */
-                messageId: number;
-                /** @description 전송일시 */
-                sentAt: string;
-                /** @description 세션 ID */
-                sessionId: string;
-                /** @description 메시지 내용 */
-                content: string;
-            }[];
             /** @description true — 항상 성공 */
             success: boolean;
             /** @description HTTP 상태 코드 */
@@ -2784,26 +2498,6 @@ export interface components {
         "api-payments-cart-items-cartItemId84680242": {
             /** @description 변경할 수량 (1 이상) */
             quantity: number;
-        };
-        "api-payments-refund-account-135657900": {
-            data?: {
-                /** @description 예금주명 */
-                accountHolder: string;
-                /** @description 마스킹된 계좌번호 */
-                accountNumberMasked: string;
-                /** @description 은행명 */
-                bankName: string;
-                /** @description 환불계좌 ID */
-                refundAccountId: number;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-member-artisans-subscriptions-notifications1775079949": {
-            /** @description 알림 수신 여부 */
-            notificationsEnabled: boolean;
         };
         "api-products-subcategories-1412570228": {
             data?: {
@@ -2889,62 +2583,6 @@ export interface components {
                 optionGroupId?: number | null;
             }[];
         };
-        "api-member-oauth2-complete-profile1591061011": {
-            data?: {
-                /** @description 역할 */
-                role: string;
-                /** @description 소셜 로그인 제공자 (kakao) */
-                provider?: string | null;
-                /** @description 액세스 토큰 */
-                accessToken: string;
-                /** @description 이메일 */
-                email: string;
-                /** @description 회원 ID */
-                memberId: number;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-notifications-unread-count-716840062": {
-            data?: {
-                /** @description 읽지 않은 알림 수 */
-                unreadCount: number;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-member-signup-1500359845": {
-            data?: {
-                member?: {
-                    /** @description 역할 */
-                    role: string;
-                    /** @description 소셜 로그인 제공자 (일반 가입은 null) */
-                    provider?: string | null;
-                    /** @description 전화번호 */
-                    phone: string;
-                    /** @description 닉네임 */
-                    nickname?: string | null;
-                    /** @description 이름 */
-                    name: string;
-                    /** @description 프로필 이미지 URL */
-                    profileImageUrl?: string | null;
-                    /** @description 이메일 */
-                    email: string;
-                    /** @description 회원 ID */
-                    memberId: number;
-                };
-                /** @description 액세스 토큰 (가입 직후는 null) */
-                accessToken?: string | null;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-products-467839916": {
             /** @description 이미지 그룹 ID 목록 */
             images?: (Record<string, never> | boolean | string | number)[] | null;
@@ -2970,30 +2608,6 @@ export interface components {
             categoryId?: number | null;
             /** @description 썸네일 URL (최대 500자) */
             thumbnailUrl?: string | null;
-        };
-        "api-products-productId-reviews916845673": {
-            data?: {
-                /** @description 작성일시 */
-                createdAt: string;
-                /** @description 첨부 이미지 ID 목록 */
-                images?: (Record<string, never> | boolean | string | number)[] | null;
-                /** @description 상품 ID */
-                productId: number;
-                /** @description 주문 항목 ID */
-                orderItemId: number;
-                /** @description 평점 */
-                rating: number;
-                /** @description 후기 ID */
-                reviewId: number;
-                /** @description 후기 내용 */
-                content: string;
-                /** @description 작성자 ID */
-                writerId: number;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
         };
         "api-member-artisans-1902721574": {
             data?: {
@@ -3085,85 +2699,6 @@ export interface components {
                     /** @description 변형 이름 */
                     variant: string;
                 }[];
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-member-me-reviews-writable1471322465": {
-            data?: {
-                /** @description 현재 페이지 */
-                number: number;
-                /** @description 현재 페이지 요소 수 */
-                numberOfElements: number;
-                /** @description 마지막 페이지 여부 */
-                last: boolean;
-                /** @description 페이지 크기 */
-                size: number;
-                /** @description 전체 페이지 수 */
-                totalPages: number;
-                pageable?: {
-                    /** @description 페이징 여부 */
-                    paged?: boolean | null;
-                    /** @description 페이지 번호 */
-                    pageNumber?: number | null;
-                    /** @description 오프셋 */
-                    offset?: number | null;
-                    /** @description 페이지 크기 */
-                    pageSize?: number | null;
-                    /** @description 비페이징 여부 */
-                    unpaged?: boolean | null;
-                    sort?: {
-                        /** @description 비정렬 여부 */
-                        unsorted?: boolean | null;
-                        /** @description 정렬 여부 */
-                        sorted?: boolean | null;
-                        /** @description 정렬 정보 없음 */
-                        empty?: boolean | null;
-                    };
-                };
-                sort?: {
-                    /** @description 비정렬 여부 */
-                    unsorted: boolean;
-                    /** @description 정렬 여부 */
-                    sorted: boolean;
-                    /** @description 정렬 정보 없음 */
-                    empty: boolean;
-                };
-                /** @description 첫 페이지 여부 */
-                first: boolean;
-                /** @description 작성 가능한 리뷰 목록 */
-                content: {
-                    /** @description 레거시 상품 전환용 URL */
-                    legacyThumbnailUrl?: string | null;
-                    /** @description 상품 이미지 그룹 */
-                    thumbnail: {
-                        /** @description 이미지 그룹 ID */
-                        imageId: string;
-                        /** @description 이미지 variant */
-                        variants: (Record<string, never> | boolean | string | number)[];
-                    };
-                    /** @description 상품 ID */
-                    productId: number;
-                    /** @description 주문 항목 ID */
-                    orderItemId: number;
-                    /** @description 주문 시 선택한 옵션 */
-                    options: {
-                        /** @description 선택형 옵션 */
-                        selectedOptions: (Record<string, never> | boolean | string | number)[];
-                        /** @description 입력형 옵션 */
-                        textInputs: (Record<string, never> | boolean | string | number)[];
-                    };
-                    /** @description 구매 일시 */
-                    purchasedAt: string;
-                    /** @description 상품명 */
-                    productName: string;
-                }[];
-                /** @description 비어있는지 여부 */
-                empty: boolean;
-                /** @description 전체 수 */
-                totalElements: number;
             };
             /** @description true — 항상 성공 */
             success: boolean;
@@ -3306,48 +2841,6 @@ export interface components {
             /** @description 후기 내용 (최대 2000자) */
             content: string;
         };
-        "api-payments-returns-returnId-status-1115423141": {
-            data?: {
-                /** @description 신청 일시 */
-                requestedAt: string;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 반품 ID */
-                returnId: number;
-                /** @description 반품·교환 유형 */
-                type: string;
-                /** @description 처리 상태 */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-payments-confirm1321390106": {
-            data?: {
-                /** @description 결제 금액 */
-                amount: number;
-                /** @description 주문번호 */
-                orderNumber: string;
-                /** @description 결제수단 */
-                method: string;
-                /** @description 취소 일시 */
-                canceledAt?: string | null;
-                /** @description 주문 ID */
-                orderId: number;
-                /** @description 결제 ID */
-                paymentId: number;
-                /** @description 승인 일시 */
-                approvedAt?: string | null;
-                /** @description 결제 상태 */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-member-me-orders-orderId-637732955": {
             data?: {
                 /** @description 교환/환불 정보. RETURN_REQUESTED 상태인 주문에만 포함 */
@@ -3469,6 +2962,810 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
+        "api-chatbot-sessions-sessionId-messages-645351721": {
+            /** @description 소비자 메시지 (@NotBlank, 최대 2000자) */
+            content: string;
+        };
+        "api-products-productId-questions-148092557": {
+            data?: {
+                /** @description 작성일시 */
+                createdAt: string;
+                /** @description 문의 ID */
+                questionId: number;
+                /** @description 답변 */
+                answer?: Record<string, never> | null;
+                /** @description 상품 ID */
+                productId: number;
+                /** @description 비공개 여부 */
+                secret: boolean;
+                /** @description 문의 내용 */
+                content: string;
+                /** @description 작성자 ID */
+                writerId: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-refund-account-1562392385": {
+            /** @description 예금주명 */
+            accountHolder: string;
+            /** @description 은행명 (한글·영문) */
+            bankName: string;
+            /** @description 계좌번호 (숫자·하이픈 8~30자) */
+            accountNumber: string;
+        };
+        "api-member-me-1000024570": {
+            /** @description 전화번호 (변경 시, 숫자만) */
+            phone?: string | null;
+            /** @description 닉네임 (변경 시) */
+            nickname?: string | null;
+            /** @description 이름 (변경 시) */
+            name?: string | null;
+        };
+        "api-notifications728957461": {
+            /** @description 알림 제목 (@NotBlank, 최대 255자) */
+            title: string;
+            /** @description 알림 내용 (@NotBlank, 최대 255자) */
+            content: string;
+        };
+        "api-payments-confirm-12221918": {
+            /** @description 결제 금액 */
+            amount: number;
+            /** @description 주문번호 (6~64자) */
+            orderId: string;
+            /** @description 토스페이먼츠 결제 키 (최대 200자) */
+            paymentKey: string;
+        };
+        "api-notifications2012318619": {
+            data?: {
+                /** @description 생성 일시 */
+                createdAt: string;
+                /** @description 알림 ID */
+                id: number;
+                /** @description 알림 제목 */
+                title: string;
+                /** @description 알림 내용 */
+                content: string;
+                /** @description 알림 상태 (UNREAD) */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "internal-images-verify1955001579": {
+            data?: {
+                /** @description 소유권 일치 여부 */
+                ownerMatched: boolean;
+                /** @description 이미지 존재 여부 */
+                exists: boolean;
+                /** @description S3 오브젝트 키 목록 */
+                variants: (Record<string, never> | boolean | string | number)[];
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-token-refresh-1731277407": {
+            data?: {
+                /** @description 만료 시간 (초) */
+                expiresIn: number;
+                /** @description 새 액세스 토큰 */
+                accessToken: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-artisans-applications-1305820327": {
+            /** @description 공방명 (최대 100자) */
+            businessName: string;
+            /** @description 사업자 등록증 이미지 URL (https://로 시작) */
+            businessLicenseImageUrl: string;
+            /** @description 소개 (최대 255자) */
+            introduction: string;
+        };
+        "api-member-me-orders-941884244": {
+            data?: {
+                /** @description 현재 페이지 */
+                number: number;
+                /** @description 현재 페이지 요소 수 */
+                numberOfElements: number;
+                /** @description 마지막 페이지 여부 */
+                last: boolean;
+                /** @description 페이지 크기 */
+                size: number;
+                /** @description 전체 페이지 수 */
+                totalPages: number;
+                pageable?: {
+                    /** @description 페이징 여부 */
+                    paged?: boolean | null;
+                    /** @description 페이지 번호 */
+                    pageNumber?: number | null;
+                    /** @description 오프셋 */
+                    offset?: number | null;
+                    /** @description 페이지 크기 */
+                    pageSize?: number | null;
+                    /** @description 비페이징 여부 */
+                    unpaged?: boolean | null;
+                    sort?: {
+                        /** @description 비정렬 여부 */
+                        unsorted?: boolean | null;
+                        /** @description 정렬 여부 */
+                        sorted?: boolean | null;
+                        /** @description 정렬 정보 없음 */
+                        empty?: boolean | null;
+                    };
+                };
+                sort?: {
+                    /** @description 비정렬 여부 */
+                    unsorted: boolean;
+                    /** @description 정렬 여부 */
+                    sorted: boolean;
+                    /** @description 정렬 정보 없음 */
+                    empty: boolean;
+                };
+                /** @description 첫 페이지 여부 */
+                first: boolean;
+                /** @description 주문 목록 */
+                content: {
+                    /** @description 교환/환불 정보. RETURN_REQUESTED 상태인 주문에만 포함 */
+                    returnInfo?: {
+                        /** @description 유형. RETURN(환불) | EXCHANGE(교환) */
+                        type?: string | null;
+                        /** @description 처리 상태. REQUESTED(신청) | APPROVED(승인) | REJECTED(불가) | COMPLETED(완료) */
+                        status?: string | null;
+                    };
+                    /** @description 주문 생성일시 */
+                    createdAt: string;
+                    /** @description 총 결제 금액 */
+                    totalAmount: number;
+                    /** @description 주문번호 */
+                    orderNumber: string;
+                    /** @description 주문 ID */
+                    orderId: number;
+                    /** @description 주문 상품 목록 */
+                    items: {
+                        /** @description 레거시 상품 전환용 URL */
+                        legacyThumbnailUrl?: string | null;
+                        /** @description 이미지 그룹 썸네일 */
+                        thumbnail: {
+                            /** @description 이미지 그룹 ID */
+                            imageId: string;
+                            /** @description 320w·640w·1280w WebP variant */
+                            variants: {
+                                /** @description 형식(webp) */
+                                format: string;
+                                /** @description 가로 폭 */
+                                width: number;
+                                /** @description 이미지 URL */
+                                url: string;
+                                /** @description 세로 폭 */
+                                height: number;
+                            }[];
+                        };
+                        /** @description 판매 장인 */
+                        artisan: {
+                            /** @description 장인 ID */
+                            artisanId: number;
+                            /** @description 장인 상호 */
+                            businessName?: string | null;
+                        };
+                        /** @description 수량 */
+                        quantity: number;
+                        /** @description 상품 ID */
+                        productId: number;
+                        /** @description 단가 */
+                        price: number;
+                        /** @description 주문 항목 ID */
+                        orderItemId: number;
+                        /** @description 주문 시 선택한 옵션 */
+                        options: {
+                            /** @description 선택형 옵션 */
+                            selectedOptions: (Record<string, never> | boolean | string | number)[];
+                            /** @description 입력형 옵션 */
+                            textInputs: (Record<string, never> | boolean | string | number)[];
+                        };
+                        /** @description 작성한 리뷰 ID */
+                        reviewId?: number | null;
+                        /** @description 상품명 */
+                        productName: string;
+                    }[];
+                    /** @description 주문 상태. CREATED | PAID | CANCELED | IN_DELIVERY | DELIVERED | PURCHASE_CONFIRMED | RETURN_REQUESTED. PAYMENT_FAILED와 반품 정보 없는 RETURN_REQUESTED는 목록에서 제외 */
+                    status: string;
+                }[];
+                /** @description 비어있는지 여부 */
+                empty: boolean;
+                /** @description 전체 수 */
+                totalElements: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-paymentId-cancel813387520": {
+            /** @description 취소 사유 (최대 200자) */
+            reason: string;
+        };
+        "api-member-artisans-subscriptions1318461673": {
+            data?: {
+                /** @description 현재 페이지(0-based) */
+                number: number;
+                /** @description 현재 페이지 요소 수 */
+                numberOfElements: number;
+                /** @description 마지막 페이지 여부 */
+                last: boolean;
+                /** @description 페이지 크기 */
+                size: number;
+                /** @description 전체 페이지 수 */
+                totalPages: number;
+                /** @description 페이지 요청 정보 */
+                pageable: Record<string, never>;
+                /** @description 정렬 정보 */
+                sort: {
+                    /** @description 미정렬 여부 */
+                    unsorted: boolean;
+                    /** @description 정렬 여부 */
+                    sorted: boolean;
+                    /** @description 정렬 없음 여부 */
+                    empty: boolean;
+                };
+                /** @description 첫 페이지 여부 */
+                first: boolean;
+                /** @description 구독 장인 목록 */
+                content: {
+                    /** @description 장인 ID */
+                    artisanId: number;
+                    /** @description 신규 상품 수 */
+                    newProductCount: number;
+                    /** @description 장인 상호명 */
+                    businessName: string;
+                    /** @description 알림 수신 여부 */
+                    notificationsEnabled: boolean;
+                }[];
+                /** @description 빈 페이지 여부 */
+                empty: boolean;
+                /** @description 전체 구독 수 */
+                totalElements: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-products-materials-415789377": {
+            /** @description 소재 코드 목록 */
+            data: (Record<string, never> | boolean | string | number)[];
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-cart-merge-82228599": {
+            data?: {
+                /** @description 상품 합계 금액 */
+                totalPrice: number;
+                /** @description 총 상품 수 */
+                totalCount: number;
+                /** @description 배송비 합계 */
+                totalShippingFee: number;
+                /** @description 아티산별 장바구니 섹션 목록 */
+                sections: (Record<string, never> | boolean | string | number)[];
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-me335907477": {
+            data?: {
+                /** @description 역할 */
+                role: string;
+                /** @description 소셜 로그인 제공자 */
+                provider?: string | null;
+                /** @description 전화번호 */
+                phone: string;
+                /** @description 닉네임 */
+                nickname?: string | null;
+                /** @description 이름 */
+                name: string;
+                /** @description 프로필 이미지 URL */
+                profileImageUrl?: string | null;
+                /** @description 이메일 */
+                email: string;
+                /** @description 회원 ID */
+                memberId: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-fail-521794704": {
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-artisans-me-1004667003": {
+            data?: {
+                /** @description 경력 연수 */
+                careerYears: number;
+                /** @description 장인 ID */
+                artisanId: number;
+                /** @description 공방명 */
+                businessName: string;
+                /** @description 지역 */
+                region: string;
+                /** @description 카테고리 */
+                category: string;
+                /** @description 소개 */
+                introduction: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-methods1001892655": {
+            /** @description 생년월일 6자리 또는 사업자번호 10자리 */
+            birthOrBusinessNo: string;
+            /** @description 유효기간 (MM/YY) */
+            expiry: string;
+            /** @description 결제수단 유형 (CARD) */
+            type: string;
+            /** @description 카드번호 (13~25자리, 숫자·공백·하이픈) */
+            cardNumber: string;
+        };
+        "api-member-oauth2-complete-profile1234726145": {
+            /** @description 전화번호 (숫자만) */
+            phone: string;
+            /** @description 이름 */
+            name: string;
+            agreements?: {
+                /** @description 마케팅 수신 동의 (선택) */
+                marketing?: boolean | null;
+                /** @description 개인정보 수집 동의 */
+                privacyCollection: boolean;
+                /** @description 서비스 이용약관 동의 */
+                termsOfService: boolean;
+                /** @description 만 14세 이상 동의 */
+                age14OrOlder: boolean;
+            };
+        };
+        "internal-images-verify-211043086": {
+            /** @description 소유자 확인용 회원 ID */
+            requesterId: number;
+            /** @description 이미지 ID (ULID) */
+            imageId: string;
+        };
+        "api-admin-artisans-applications-applicationId-pipeline-338536592": {
+            data?: {
+                pipeline?: {
+                    /** @description 주문 시스템 연동 */
+                    orderSystemIntegration: string;
+                    /** @description 서류 심사 */
+                    documentReview: string;
+                    /** @description 디지털 전환 */
+                    digitalConversion: string;
+                    /** @description 장인성 심사 */
+                    craftsmanshipReview: string;
+                };
+                /** @description 자격 등급 */
+                qualificationTier?: string | null;
+                /** @description 신청 ID */
+                applicationId: number;
+                /** @description 전체 신청 상태 */
+                overallStatus: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-orders-438073018": {
+            data?: {
+                /** @description 주문 생성 일시 */
+                createdAt: string;
+                /** @description 결제 예정 금액 */
+                totalAmount: number;
+                /** @description 주문번호 */
+                orderNumber: string;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 주문 항목 목록 */
+                items: (Record<string, never> | boolean | string | number)[];
+                /** @description 주문 상태 */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-paymentId-cancel1498139372": {
+            data?: {
+                /** @description 결제 금액 */
+                amount: number;
+                /** @description 주문번호 */
+                orderNumber: string;
+                /** @description 결제수단 */
+                method: string;
+                /** @description 취소 일시 */
+                canceledAt?: string | null;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 결제 ID */
+                paymentId: number;
+                /** @description 승인 일시 */
+                approvedAt?: string | null;
+                /** @description 결제 상태 (CANCELED) */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-signup16218693": {
+            /** @description false — 항상 실패 */
+            success: boolean;
+            /** @description ErrorCode 식별자 */
+            errorCode: string;
+            /** @description 에러 메시지 */
+            message: string;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-products-productId-questions-questionId-answer-1567978184": {
+            data?: {
+                /** @description 답변 ID */
+                answerId: number;
+                /** @description 장인 ID */
+                artisanId: number;
+                /** @description 답변일시 */
+                answeredAt: string;
+                /** @description 답변 내용 */
+                content: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-admin-seller-applications141931969": {
+            data?: {
+                /** @description 현재 페이지(0-based) */
+                number: number;
+                /** @description 현재 페이지 요소 수 */
+                numberOfElements: number;
+                /** @description 마지막 페이지 여부 */
+                last: boolean;
+                /** @description 페이지 크기 */
+                size: number;
+                /** @description 전체 페이지 수 */
+                totalPages: number;
+                /** @description 페이지 요청 정보 */
+                pageable: Record<string, never>;
+                /** @description 정렬 정보 */
+                sort: {
+                    /** @description 미정렬 여부 */
+                    unsorted: boolean;
+                    /** @description 정렬 여부 */
+                    sorted: boolean;
+                    /** @description 정렬 없음 여부 */
+                    empty: boolean;
+                };
+                /** @description 첫 페이지 여부 */
+                first: boolean;
+                /** @description 신청 목록 */
+                content: {
+                    pipeline?: {
+                        /** @description 주문 시스템 연동 단계 */
+                        orderSystemIntegration: string;
+                        /** @description 서류 심사 단계 */
+                        documentReview: string;
+                        /** @description 디지털 전환 단계 */
+                        digitalConversion: string;
+                        /** @description 장인성 심사 단계 */
+                        craftsmanshipReview: string;
+                    };
+                    /** @description 거절 사유 */
+                    rejectReason?: string | null;
+                    /** @description 자격 등급 */
+                    qualificationTier?: string | null;
+                    /** @description 공방명 */
+                    businessName: string;
+                    /** @description 신청 일시 */
+                    submittedAt: string;
+                    /** @description 신청 ID */
+                    applicationId: number;
+                    /** @description 사업자 등록증 이미지 URL */
+                    businessLicenseImageUrl: string;
+                    /** @description 소개 */
+                    introduction: string;
+                    /** @description 신청 상태 (PENDING/APPROVED/REJECTED) */
+                    status: string;
+                    /** @description 신청 회원 ID */
+                    memberId: number;
+                }[];
+                /** @description 빈 페이지 여부 */
+                empty: boolean;
+                /** @description 전체 신청 수 */
+                totalElements: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-me-2097818813": {
+            /** @description 탈퇴 사유 (최대 500자) */
+            reason: string;
+        };
+        "api-notifications-notificationId1090539448": {
+            data?: {
+                /** @description 생성 일시 */
+                createdAt: string;
+                /** @description 알림 ID */
+                id: number;
+                /** @description 알림 제목 */
+                title: string;
+                /** @description 알림 내용 */
+                content: string;
+                /** @description 알림 상태 (UNREAD/READ/DELETED) */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-chatbot-sessions-sessionId-messages-2051810038": {
+            data?: {
+                /** @description 발신자 (USER/ADMIN) */
+                sender: string;
+                /** @description 메시지 ID */
+                messageId: number;
+                /** @description 전송일시 */
+                sentAt: string;
+                /** @description 세션 ID */
+                sessionId: string;
+                /** @description 메시지 내용 */
+                content: string;
+            }[];
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-refund-account-135657900": {
+            data?: {
+                /** @description 예금주명 */
+                accountHolder: string;
+                /** @description 마스킹된 계좌번호 */
+                accountNumberMasked: string;
+                /** @description 은행명 */
+                bankName: string;
+                /** @description 환불계좌 ID */
+                refundAccountId: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-artisans-subscriptions-notifications1775079949": {
+            /** @description 알림 수신 여부 */
+            notificationsEnabled: boolean;
+        };
+        "api-member-oauth2-complete-profile1591061011": {
+            data?: {
+                /** @description 역할 */
+                role: string;
+                /** @description 소셜 로그인 제공자 (kakao) */
+                provider?: string | null;
+                /** @description 액세스 토큰 */
+                accessToken: string;
+                /** @description 이메일 */
+                email: string;
+                /** @description 회원 ID */
+                memberId: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-notifications-unread-count-716840062": {
+            data?: {
+                /** @description 읽지 않은 알림 수 */
+                unreadCount: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-signup-1500359845": {
+            data?: {
+                member?: {
+                    /** @description 역할 */
+                    role: string;
+                    /** @description 소셜 로그인 제공자 (일반 가입은 null) */
+                    provider?: string | null;
+                    /** @description 전화번호 */
+                    phone: string;
+                    /** @description 닉네임 */
+                    nickname?: string | null;
+                    /** @description 이름 */
+                    name: string;
+                    /** @description 프로필 이미지 URL */
+                    profileImageUrl?: string | null;
+                    /** @description 이메일 */
+                    email: string;
+                    /** @description 회원 ID */
+                    memberId: number;
+                };
+                /** @description 액세스 토큰 (가입 직후는 null) */
+                accessToken?: string | null;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-products-productId-reviews916845673": {
+            data?: {
+                /** @description 작성일시 */
+                createdAt: string;
+                /** @description 첨부 이미지 ID 목록 */
+                images?: (Record<string, never> | boolean | string | number)[] | null;
+                /** @description 상품 ID */
+                productId: number;
+                /** @description 주문 항목 ID */
+                orderItemId: number;
+                /** @description 평점 */
+                rating: number;
+                /** @description 후기 ID */
+                reviewId: number;
+                /** @description 후기 내용 */
+                content: string;
+                /** @description 작성자 ID */
+                writerId: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-member-me-reviews-writable1471322465": {
+            data?: {
+                /** @description 현재 페이지 */
+                number: number;
+                /** @description 현재 페이지 요소 수 */
+                numberOfElements: number;
+                /** @description 마지막 페이지 여부 */
+                last: boolean;
+                /** @description 페이지 크기 */
+                size: number;
+                /** @description 전체 페이지 수 */
+                totalPages: number;
+                pageable?: {
+                    /** @description 페이징 여부 */
+                    paged?: boolean | null;
+                    /** @description 페이지 번호 */
+                    pageNumber?: number | null;
+                    /** @description 오프셋 */
+                    offset?: number | null;
+                    /** @description 페이지 크기 */
+                    pageSize?: number | null;
+                    /** @description 비페이징 여부 */
+                    unpaged?: boolean | null;
+                    sort?: {
+                        /** @description 비정렬 여부 */
+                        unsorted?: boolean | null;
+                        /** @description 정렬 여부 */
+                        sorted?: boolean | null;
+                        /** @description 정렬 정보 없음 */
+                        empty?: boolean | null;
+                    };
+                };
+                sort?: {
+                    /** @description 비정렬 여부 */
+                    unsorted: boolean;
+                    /** @description 정렬 여부 */
+                    sorted: boolean;
+                    /** @description 정렬 정보 없음 */
+                    empty: boolean;
+                };
+                /** @description 첫 페이지 여부 */
+                first: boolean;
+                /** @description 작성 가능한 리뷰 목록 */
+                content: {
+                    /** @description 레거시 상품 전환용 URL */
+                    legacyThumbnailUrl?: string | null;
+                    /** @description 상품 이미지 그룹 */
+                    thumbnail: {
+                        /** @description 이미지 그룹 ID */
+                        imageId: string;
+                        /** @description 이미지 variant */
+                        variants: (Record<string, never> | boolean | string | number)[];
+                    };
+                    /** @description 상품 ID */
+                    productId: number;
+                    /** @description 주문 항목 ID */
+                    orderItemId: number;
+                    /** @description 주문 시 선택한 옵션 */
+                    options: {
+                        /** @description 선택형 옵션 */
+                        selectedOptions: (Record<string, never> | boolean | string | number)[];
+                        /** @description 입력형 옵션 */
+                        textInputs: (Record<string, never> | boolean | string | number)[];
+                    };
+                    /** @description 구매 일시 */
+                    purchasedAt: string;
+                    /** @description 상품명 */
+                    productName: string;
+                }[];
+                /** @description 비어있는지 여부 */
+                empty: boolean;
+                /** @description 전체 수 */
+                totalElements: number;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-returns-1115423141": {
+            data?: {
+                /** @description 신청 일시 */
+                requestedAt: string;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 반품 ID */
+                returnId: number;
+                /** @description 반품·교환 유형 */
+                type: string;
+                /** @description 처리 상태 */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
+        "api-payments-confirm1321390106": {
+            data?: {
+                /** @description 결제 금액 */
+                amount: number;
+                /** @description 주문번호 */
+                orderNumber: string;
+                /** @description 결제수단 */
+                method: string;
+                /** @description 취소 일시 */
+                canceledAt?: string | null;
+                /** @description 주문 ID */
+                orderId: number;
+                /** @description 결제 ID */
+                paymentId: number;
+                /** @description 승인 일시 */
+                approvedAt?: string | null;
+                /** @description 결제 상태 */
+                status: string;
+            };
+            /** @description true — 항상 성공 */
+            success: boolean;
+            /** @description HTTP 상태 코드 */
+            status: number;
+        };
         "api-member-me-addresses1218174785": {
             /** @description 우편번호 (최대 10자) */
             zipCode: string;
@@ -3571,39 +3868,23 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-chatbot-sessions-sessionId-messages-645351721": {
-            /** @description 소비자 메시지 (@NotBlank, 최대 2000자) */
-            content: string;
-        };
-        "api-products-productId-questions-148092557": {
+        "api-exhibitions1208895696": {
             data?: {
-                /** @description 작성일시 */
-                createdAt: string;
-                /** @description 문의 ID */
-                questionId: number;
-                /** @description 답변 */
-                answer?: Record<string, never> | null;
-                /** @description 상품 ID */
-                productId: number;
-                /** @description 비공개 여부 */
-                secret: boolean;
-                /** @description 문의 내용 */
-                content: string;
-                /** @description 작성자 ID */
-                writerId: number;
-            };
+                /** @description 배너 이미지 URL */
+                bannerImageUrl?: string | null;
+                /** @description 부제 */
+                subtitle?: string | null;
+                /** @description 기획전 ID */
+                exhibitionId: number;
+                /** @description 묶인 상품 수 */
+                productCount: number;
+                /** @description 기획전 제목 */
+                title: string;
+            }[];
             /** @description true — 항상 성공 */
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-payments-refund-account-1562392385": {
-            /** @description 예금주명 */
-            accountHolder: string;
-            /** @description 은행명 (한글·영문) */
-            bankName: string;
-            /** @description 계좌번호 (숫자·하이픈 8~30자) */
-            accountNumber: string;
         };
         "api-payments-orders-orderId-cancel-400892677": {
             data?: {
@@ -3633,14 +3914,6 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-member-me-1000024570": {
-            /** @description 전화번호 (변경 시, 숫자만) */
-            phone?: string | null;
-            /** @description 닉네임 (변경 시) */
-            nickname?: string | null;
-            /** @description 이름 (변경 시) */
-            name?: string | null;
-        };
         "api-member-me-addresses-addressId1985616569": {
             data?: {
                 /** @description 우편번호 */
@@ -3663,27 +3936,13 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-notifications728957461": {
-            /** @description 알림 제목 (@NotBlank, 최대 255자) */
-            title: string;
-            /** @description 알림 내용 (@NotBlank, 최대 255자) */
-            content: string;
-        };
         "api-chatbot-sessions-sessionId-1487972696": {
             /** @description true — 항상 성공 */
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-payments-confirm-12221918": {
-            /** @description 결제 금액 */
-            amount: number;
-            /** @description 주문번호 (6~64자) */
-            orderId: string;
-            /** @description 토스페이먼츠 결제 키 (최대 200자) */
-            paymentKey: string;
-        };
-        "api-admin-seller-applications-applicationId-approve1698846120": {
+        "api-member-artisans-applications1698846120": {
             data?: {
                 pipeline?: {
                     /** @description 주문 시스템 연동 단계 */
@@ -3723,43 +3982,11 @@ export interface components {
             /** @description 답변 내용 (최대 2000자) */
             content: string;
         };
-        "api-notifications2012318619": {
-            data?: {
-                /** @description 생성 일시 */
-                createdAt: string;
-                /** @description 알림 ID */
-                id: number;
-                /** @description 알림 제목 */
-                title: string;
-                /** @description 알림 내용 */
-                content: string;
-                /** @description 알림 상태 (UNREAD) */
-                status: string;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
         "api-member-me-password-1908260178": {
             /** @description 새 비밀번호 (8자 이상, 72자 이하) */
             newPassword: string;
             /** @description 현재 비밀번호 */
             currentPassword: string;
-        };
-        "internal-images-verify1955001579": {
-            data?: {
-                /** @description 소유권 일치 여부 */
-                ownerMatched: boolean;
-                /** @description 이미지 존재 여부 */
-                exists: boolean;
-                /** @description S3 오브젝트 키 목록 */
-                variants: (Record<string, never> | boolean | string | number)[];
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
         };
         "api-products-me-2131279592": {
             data?: {
@@ -3886,25 +4113,111 @@ export interface components {
             /** @description HTTP 상태 코드 */
             status: number;
         };
-        "api-member-token-refresh-1731277407": {
+        "api-products-productId-1964900587": {
             data?: {
-                /** @description 만료 시간 (초) */
-                expiresIn: number;
-                /** @description 새 액세스 토큰 */
-                accessToken: string;
+                /** @description 대표 이미지 variant 목록 */
+                thumbnail?: {
+                    /** @description 대표 variant 포맷 */
+                    format?: string | null;
+                    /** @description 대표 variant 너비 */
+                    width?: number | null;
+                    /** @description 대표 variant URL */
+                    url?: string | null;
+                    /** @description 대표 variant 높이 */
+                    height?: number | null;
+                }[];
+                /** @description 상품 이미지 목록 */
+                images?: {
+                    /** @description 이미지 그룹 ID */
+                    imageId?: string | null;
+                    /** @description 대체 텍스트 */
+                    alt?: string | null;
+                    /** @description 이미지 variant 목록 */
+                    variants?: {
+                        /** @description variant 포맷 */
+                        format?: string | null;
+                        /** @description variant 너비 */
+                        width?: number | null;
+                        /** @description 이미지 URL */
+                        url?: string | null;
+                        /** @description variant 높이 */
+                        height?: number | null;
+                    }[];
+                }[];
+                /** @description 장인 ID */
+                artisanId: number;
+                /** @description 상품 ID */
+                productId: number;
+                /** @description 설명 */
+                description?: string | null;
+                /** @description 제목 */
+                title: string;
+                /** @description 카테고리명 */
+                categoryName?: string | null;
+                /** @description 상세 JSON 의 특징 카드 목록(상세 조회에서만) */
+                detailFeatures?: {
+                    /** @description 특징 설명 */
+                    body?: string | null;
+                    /** @description 특징 제목 */
+                    title?: string | null;
+                }[];
+                /** @description 색상 목록 */
+                colors?: (Record<string, never> | boolean | string | number)[] | null;
+                /** @description AI 상세 페이지 JSON(schemaVersion 2.0). 상세 조회에서만 내려가며, 이미지 노드는 props.src 를 가진다 */
+                detailPageDocument?: Record<string, never> | null;
+                /** @description 생성일시 */
+                createdAt: string;
+                /** @description 선물 테마 목록 */
+                giftThemes?: (Record<string, never> | boolean | string | number)[] | null;
+                /** @description 서브카테고리명 */
+                subcategoryName?: string | null;
+                /** @description 용도 태그 목록 */
+                purposeTags?: (Record<string, never> | boolean | string | number)[] | null;
+                /** @description 가격 */
+                price: number;
+                /** @description 콘텐츠 블록 목록 */
+                detailPageBlocks?: {
+                    /** @description 영상 URL */
+                    videoUrl?: string | null;
+                    /** @description 이미지 포함 여부 */
+                    hasImage?: boolean | null;
+                    /** @description 블록 텍스트 */
+                    text?: string | null;
+                    /** @description 블록 태그 */
+                    tag?: string | null;
+                    /** @description 블록 이미지 variant */
+                    imageVariants?: {
+                        /** @description variant 포맷 */
+                        format?: string | null;
+                        /** @description variant 너비 */
+                        width?: number | null;
+                        /** @description 이미지 URL */
+                        url?: string | null;
+                        /** @description variant 높이 */
+                        height?: number | null;
+                    }[];
+                    /** @description 블록 순서 */
+                    order?: number | null;
+                }[];
+                /** @description 제작 기간(일) */
+                productionPeriodDays?: number | null;
+                /** @description 서브카테고리 ID */
+                subcategoryId?: number | null;
+                /** @description 재고 */
+                stock: number;
+                /** @description 카테고리 ID */
+                categoryId?: number | null;
+                /** @description 수정일시 */
+                updatedAt: string;
+                /** @description 상태 */
+                status: string;
+                /** @description 썸네일 URL */
+                thumbnailUrl?: string | null;
             };
             /** @description true — 항상 성공 */
             success: boolean;
             /** @description HTTP 상태 코드 */
             status: number;
-        };
-        "api-member-artisans-applications-1305820327": {
-            /** @description 공방명 (최대 100자) */
-            businessName: string;
-            /** @description 사업자 등록증 이미지 URL (https://로 시작) */
-            businessLicenseImageUrl: string;
-            /** @description 소개 (최대 255자) */
-            introduction: string;
         };
         "api-payments-methods-220864991": {
             /** @description 결제수단 목록 */
@@ -3940,125 +4253,6 @@ export interface components {
             type: string;
             /** @description 첨부 이미지 ID 목록 (최대 5개) */
             imageIds?: (Record<string, never> | boolean | string | number)[] | null;
-        };
-        "api-member-me-orders-941884244": {
-            data?: {
-                /** @description 현재 페이지 */
-                number: number;
-                /** @description 현재 페이지 요소 수 */
-                numberOfElements: number;
-                /** @description 마지막 페이지 여부 */
-                last: boolean;
-                /** @description 페이지 크기 */
-                size: number;
-                /** @description 전체 페이지 수 */
-                totalPages: number;
-                pageable?: {
-                    /** @description 페이징 여부 */
-                    paged?: boolean | null;
-                    /** @description 페이지 번호 */
-                    pageNumber?: number | null;
-                    /** @description 오프셋 */
-                    offset?: number | null;
-                    /** @description 페이지 크기 */
-                    pageSize?: number | null;
-                    /** @description 비페이징 여부 */
-                    unpaged?: boolean | null;
-                    sort?: {
-                        /** @description 비정렬 여부 */
-                        unsorted?: boolean | null;
-                        /** @description 정렬 여부 */
-                        sorted?: boolean | null;
-                        /** @description 정렬 정보 없음 */
-                        empty?: boolean | null;
-                    };
-                };
-                sort?: {
-                    /** @description 비정렬 여부 */
-                    unsorted: boolean;
-                    /** @description 정렬 여부 */
-                    sorted: boolean;
-                    /** @description 정렬 정보 없음 */
-                    empty: boolean;
-                };
-                /** @description 첫 페이지 여부 */
-                first: boolean;
-                /** @description 주문 목록 */
-                content: {
-                    /** @description 교환/환불 정보. RETURN_REQUESTED 상태인 주문에만 포함 */
-                    returnInfo?: {
-                        /** @description 유형. RETURN(환불) | EXCHANGE(교환) */
-                        type?: string | null;
-                        /** @description 처리 상태. REQUESTED(신청) | APPROVED(승인) | REJECTED(불가) | COMPLETED(완료) */
-                        status?: string | null;
-                    };
-                    /** @description 주문 생성일시 */
-                    createdAt: string;
-                    /** @description 총 결제 금액 */
-                    totalAmount: number;
-                    /** @description 주문번호 */
-                    orderNumber: string;
-                    /** @description 주문 ID */
-                    orderId: number;
-                    /** @description 주문 상품 목록 */
-                    items: {
-                        /** @description 레거시 상품 전환용 URL */
-                        legacyThumbnailUrl?: string | null;
-                        /** @description 이미지 그룹 썸네일 */
-                        thumbnail: {
-                            /** @description 이미지 그룹 ID */
-                            imageId: string;
-                            /** @description 320w·640w·1280w WebP variant */
-                            variants: {
-                                /** @description 형식(webp) */
-                                format: string;
-                                /** @description 가로 폭 */
-                                width: number;
-                                /** @description 이미지 URL */
-                                url: string;
-                                /** @description 세로 폭 */
-                                height: number;
-                            }[];
-                        };
-                        /** @description 판매 장인 */
-                        artisan: {
-                            /** @description 장인 ID */
-                            artisanId: number;
-                            /** @description 장인 상호 */
-                            businessName?: string | null;
-                        };
-                        /** @description 수량 */
-                        quantity: number;
-                        /** @description 상품 ID */
-                        productId: number;
-                        /** @description 단가 */
-                        price: number;
-                        /** @description 주문 항목 ID */
-                        orderItemId: number;
-                        /** @description 주문 시 선택한 옵션 */
-                        options: {
-                            /** @description 선택형 옵션 */
-                            selectedOptions: (Record<string, never> | boolean | string | number)[];
-                            /** @description 입력형 옵션 */
-                            textInputs: (Record<string, never> | boolean | string | number)[];
-                        };
-                        /** @description 작성한 리뷰 ID */
-                        reviewId?: number | null;
-                        /** @description 상품명 */
-                        productName: string;
-                    }[];
-                    /** @description 주문 상태. CREATED | PAID | CANCELED | IN_DELIVERY | DELIVERED | PURCHASE_CONFIRMED | RETURN_REQUESTED. PAYMENT_FAILED와 반품 정보 없는 RETURN_REQUESTED는 목록에서 제외 */
-                    status: string;
-                }[];
-                /** @description 비어있는지 여부 */
-                empty: boolean;
-                /** @description 전체 수 */
-                totalElements: number;
-            };
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
         };
         "api-payments999605347": {
             /** @description 결제 금액 */
@@ -4102,10 +4296,6 @@ export interface components {
             /** @description 썸네일 URL (최대 500자) */
             thumbnailUrl?: string | null;
         };
-        "api-payments-paymentId-cancel813387520": {
-            /** @description 취소 사유 (최대 200자) */
-            reason: string;
-        };
         "api-products-categories1684097948": {
             data?: {
                 /** @description 카테고리명 */
@@ -4113,52 +4303,6 @@ export interface components {
                 /** @description 카테고리 ID */
                 categoryId: number;
             }[];
-            /** @description true — 항상 성공 */
-            success: boolean;
-            /** @description HTTP 상태 코드 */
-            status: number;
-        };
-        "api-member-artisans-subscriptions1318461673": {
-            data?: {
-                /** @description 현재 페이지(0-based) */
-                number: number;
-                /** @description 현재 페이지 요소 수 */
-                numberOfElements: number;
-                /** @description 마지막 페이지 여부 */
-                last: boolean;
-                /** @description 페이지 크기 */
-                size: number;
-                /** @description 전체 페이지 수 */
-                totalPages: number;
-                /** @description 페이지 요청 정보 */
-                pageable: Record<string, never>;
-                /** @description 정렬 정보 */
-                sort: {
-                    /** @description 미정렬 여부 */
-                    unsorted: boolean;
-                    /** @description 정렬 여부 */
-                    sorted: boolean;
-                    /** @description 정렬 없음 여부 */
-                    empty: boolean;
-                };
-                /** @description 첫 페이지 여부 */
-                first: boolean;
-                /** @description 구독 장인 목록 */
-                content: {
-                    /** @description 장인 ID */
-                    artisanId: number;
-                    /** @description 신규 상품 수 */
-                    newProductCount: number;
-                    /** @description 장인 상호명 */
-                    businessName: string;
-                    /** @description 알림 수신 여부 */
-                    notificationsEnabled: boolean;
-                }[];
-                /** @description 빈 페이지 여부 */
-                empty: boolean;
-                /** @description 전체 구독 수 */
-                totalElements: number;
-            };
             /** @description true — 항상 성공 */
             success: boolean;
             /** @description HTTP 상태 코드 */
@@ -4192,6 +4336,29 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    "exhibition-list": {
+        parameters: {
+            query?: {
+                /** @description 정렬 ENUM: DISPLAY_ORDER | NEWEST (상세는 위 설명) */
+                sort?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api-exhibitions1208895696"];
+                };
+            };
+        };
+    };
     "notification-list-200": {
         parameters: {
             query?: never;
@@ -4271,7 +4438,7 @@ export interface operations {
                 subcategoryId?: string;
                 /** @description 선물 테마 (선택) */
                 giftTheme?: string;
-                /** @description 정렬: NEWEST | PRICE_ASC | PRICE_DESC | POPULAR */
+                /** @description 정렬 ENUM: NEWEST | POPULAR | SALES_COUNT | WISHLIST_COUNT | PRICE_ASC | PRICE_DESC (상세는 위 설명) */
                 sort?: string;
                 /** @description 최소 가격 (선택) */
                 minPrice?: string;
@@ -4322,7 +4489,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-products-productId288555837"];
+                    "application/json": components["schemas"]["api-products-productId-1964900587"];
                 };
             };
             /** @description 401 */
@@ -4361,6 +4528,32 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["api-chatbot-sessions-881852531"];
+                };
+            };
+        };
+    };
+    "exhibition-detail": {
+        parameters: {
+            query?: {
+                /** @description 상품 정렬 ENUM: CURATED | NEWEST | PRICE_ASC | PRICE_DESC (상세는 위 설명) */
+                sort?: string;
+            };
+            header?: never;
+            path: {
+                /** @description 기획전 ID */
+                exhibitionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["api-exhibitions-exhibitionId1277242900"];
                 };
             };
         };
@@ -4416,7 +4609,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
             /** @description 403 */
@@ -4516,7 +4709,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -4569,7 +4762,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -4837,7 +5030,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -4962,7 +5155,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
@@ -5068,7 +5261,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-products-productId288555837"];
+                    "application/json": components["schemas"]["api-products-productId-1964900587"];
                 };
             };
         };
@@ -5118,7 +5311,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-products-productId288555837"];
+                    "application/json": components["schemas"]["api-products-productId-1964900587"];
                 };
             };
         };
@@ -5165,7 +5358,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-admin-seller-applications-applicationId-approve1698846120"];
+                    "application/json": components["schemas"]["api-member-artisans-applications1698846120"];
                 };
             };
         };
@@ -5437,7 +5630,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -5681,7 +5874,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -5733,7 +5926,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -5757,7 +5950,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -6074,7 +6267,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-admin-seller-applications-applicationId-approve1698846120"];
+                    "application/json": components["schemas"]["api-member-artisans-applications1698846120"];
                 };
             };
         };
@@ -6211,7 +6404,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -6367,7 +6560,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-cart-items-521794704"];
+                    "application/json": components["schemas"]["api-payments-fail-521794704"];
                 };
             };
         };
@@ -6517,7 +6710,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["api-payments-returns-returnId-status-1115423141"];
+                    "application/json": components["schemas"]["api-payments-returns-1115423141"];
                 };
             };
         };
