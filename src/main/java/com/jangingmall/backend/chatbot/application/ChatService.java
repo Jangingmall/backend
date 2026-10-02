@@ -143,7 +143,7 @@ public class ChatService {
 
         Double rating = reviewRepository.findAverageRatingByProductId(product.getId());
 
-        List<ChatResponse.ThumbnailVariant> thumbnail = buildThumbnailVariants(product.getThumbnailUrl());
+        List<ChatResponse.ThumbnailVariant> thumbnail = buildThumbnailVariants(cardImageUrl(product));
 
         String categoryCode = product.getCategory() != null ? product.getCategory().getName() : null;
         String subcategoryCode = product.getSubcategory() != null ? product.getSubcategory().getName() : null;
@@ -187,8 +187,22 @@ public class ChatService {
         return values == null ? List.of() : List.copyOf(values);
     }
 
+    /** 대표 이미지(thumbnail_url)가 비어 있으면 상세 이미지의 첫 장을 쓰고, 둘 다 없으면 로그를 남긴다. */
+    private String cardImageUrl(Product product) {
+        String thumbnail = product.getThumbnailUrl();
+        if (thumbnail != null && !thumbnail.isBlank()) {
+            return thumbnail;
+        }
+        List<String> details = product.getDetailImageUrls();
+        if (details != null && !details.isEmpty()) {
+            return details.get(0);
+        }
+        log.warn("챗봇 상품 카드 이미지 없음 productId={}", product.getId());
+        return null;
+    }
+
     private List<ChatResponse.ThumbnailVariant> buildThumbnailVariants(String thumbnailUrl) {
-        if (thumbnailUrl == null) {
+        if (thumbnailUrl == null || thumbnailUrl.isBlank()) {
             return List.of();
         }
         return List.of(
