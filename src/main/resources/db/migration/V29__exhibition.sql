@@ -22,10 +22,10 @@ CREATE INDEX idx_exhibition_active_order ON exhibition (active, display_order);
 INSERT INTO exhibition (title, subtitle, description, banner_image_url, display_order, active, created_at) VALUES
     ('장인이 빚은 공간의 온기', '집 안에 들이고 싶은 공예 4선',
      '대나무를 엮은 조명부터 맑은 백토 잔, 자연에서 얻은 색으로 물들인 러너까지. 공간에 은은한 분위기를 더하는 장인의 작품을 모았습니다.',
-     (SELECT thumbnail_url FROM product WHERE title = '대나무 조명' LIMIT 1), 1, TRUE, NOW()),
+     'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/banner_ex1.webp', 1, TRUE, NOW()),
     ('바람을 부르는 부채 모음', '한 해 여름을 함께할 부채 5선',
      '합죽선과 산수화 부채, 옻칠 흑선과 모시 접선, 왕골 원형 부채까지. 손에 쥐는 순간 시원해지는 부채를 한자리에 모았습니다.',
-     (SELECT thumbnail_url FROM product WHERE title = '산수화 대형 부채' LIMIT 1), 2, TRUE, NOW());
+     'https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/banner_ex2.webp', 2, TRUE, NOW());
 
 INSERT INTO exhibition_product (exhibition_id, product_id, display_order)
 SELECT e.exhibition_id, p.product_id, v.ord

@@ -14,5 +14,5 @@
 기획전 목록 `DISPLAY_ORDER` `NEWEST`, 기획전 상품 `CURATED` `NEWEST` `PRICE_ASC` `PRICE_DESC`.
 
 ## 고화질 AI 이미지(베스트 5·기획전 4)
-지금은 비슷한 다른 상품 사진을 임시로 쓴다. `docs/demo-products/photoreal/home/master_prompt.txt`(29장: 9개×3장 + 배너 2장)로 만들어
-`photoreal/staging/home_best1_A.webp` 처럼 넣고 `python3 scripts/demo-products/seed_design_products.py` 를 다시 돌리면 V23 에 반영된다.
+적용 완료: 9개 상품 × 3장(`photoreal/staging/home_best1_A.webp` … `home_plan4_C.webp`)과 기획전 배너 2장(`banner_ex1`, `banner_ex2`).
+A 는 대표 이미지, B·C 는 상세 이미지로 V23 에 들어가고(`seed_design_products.py`), 상세 JSON(V26)은 3장짜리 틀로 만들어진다. 기획전 배너는 V29 에 들어 있다.
