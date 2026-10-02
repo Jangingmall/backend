@@ -1,0 +1,2177 @@
+{
+  "schemaVersion": "2.0",
+  "canvasWidth": 774,
+  "root": [
+    {
+      "id": "section-01-hero-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "dark",
+        "layout": {
+          "display": "stack",
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#F7F4EE",
+          "backgroundColor": "#242424",
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        }
+      },
+      "children": [
+        {
+          "id": "section-01-hero-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-01-hero-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-01-hero-eyebrow-text",
+                  "type": "text",
+                  "value": "PRODUCT STORY",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-01-hero-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 40.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.25,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-01-hero-title-text",
+                  "type": "text",
+                  "value": "빛을 머금은 한지 조명",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-01-hero-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-01-hero-body-text",
+                  "type": "text",
+                  "value": "한지를 두른 스탠드 조명입니다. 불을 켜면 한지 결 사이로 따뜻한 빛이 퍼져 방이 포근해집니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-01-hero-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-01-hero-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "style": {
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-01-hero-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "style": {
+                      "objectFit": "contain",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "imageId": "body_p15_01",
+                    "alt": "한지 무드 조명 한눈에 보는 한지 조명",
+                    "src": "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/p15_A.webp"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-02-features-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "paper",
+        "layout": {
+          "display": "stack",
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#F6F2EC",
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        }
+      },
+      "children": [
+        {
+          "id": "section-02-features-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-02-features-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-02-features-eyebrow-text",
+                  "type": "text",
+                  "value": "VISIBLE DETAILS",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-02-features-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-02-features-title-text",
+                  "type": "text",
+                  "value": "가까이 볼수록 선명해지는 디테일",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-02-features-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-02-features-body-text",
+                  "type": "text",
+                  "value": "만든 방식과 쓰임, 관리법을 한눈에 정리했습니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-02-features-cards",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "grid",
+              "columns": 3,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-02-features-card-01",
+              "type": "element",
+              "tag": "article",
+              "props": {
+                "layout": {
+                  "display": "stack",
+                  "gap": 12.0,
+                  "wrap": false,
+                  "align": "stretch"
+                },
+                "style": {
+                  "color": "#222222",
+                  "backgroundColor": "#E6EEEF",
+                  "borderRadius": 12.0,
+                  "padding": {
+                    "top": 20.0,
+                    "right": 20.0,
+                    "bottom": 20.0,
+                    "left": 20.0
+                  },
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-02-features-card-01-title",
+                  "type": "element",
+                  "tag": "h3",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 19.0,
+                      "fontWeight": 600,
+                      "lineHeight": 1.4,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-02-features-card-01-title-text",
+                      "type": "text",
+                      "value": "한지 갓",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-02-features-card-01-body",
+                  "type": "element",
+                  "tag": "p",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-02-features-card-01-body-text",
+                      "type": "text",
+                      "value": "닥나무 껍질을 삶아 두드려 한 장씩 떠 낸 한지로 만든 조명입니다.",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "section-02-features-card-02",
+              "type": "element",
+              "tag": "article",
+              "props": {
+                "layout": {
+                  "display": "stack",
+                  "gap": 12.0,
+                  "wrap": false,
+                  "align": "stretch"
+                },
+                "style": {
+                  "color": "#222222",
+                  "backgroundColor": "#E6EEEF",
+                  "borderRadius": 12.0,
+                  "padding": {
+                    "top": 20.0,
+                    "right": 20.0,
+                    "bottom": 20.0,
+                    "left": 20.0
+                  },
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-02-features-card-02-title",
+                  "type": "element",
+                  "tag": "h3",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 19.0,
+                      "fontWeight": 600,
+                      "lineHeight": 1.4,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-02-features-card-02-title-text",
+                      "type": "text",
+                      "value": "원목 받침",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-02-features-card-02-body",
+                  "type": "element",
+                  "tag": "p",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-02-features-card-02-body-text",
+                      "type": "text",
+                      "value": "습기를 피해 보관하면 오래 쓸 수 있습니다.",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "section-02-features-card-03",
+              "type": "element",
+              "tag": "article",
+              "props": {
+                "layout": {
+                  "display": "stack",
+                  "gap": 12.0,
+                  "wrap": false,
+                  "align": "stretch"
+                },
+                "style": {
+                  "color": "#222222",
+                  "backgroundColor": "#E6EEEF",
+                  "borderRadius": 12.0,
+                  "padding": {
+                    "top": 20.0,
+                    "right": 20.0,
+                    "bottom": 20.0,
+                    "left": 20.0
+                  },
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-02-features-card-03-title",
+                  "type": "element",
+                  "tag": "h3",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 19.0,
+                      "fontWeight": 600,
+                      "lineHeight": 1.4,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-02-features-card-03-title-text",
+                      "type": "text",
+                      "value": "전구 색온도 2700K",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-02-features-card-03-body",
+                  "type": "element",
+                  "tag": "p",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-02-features-card-03-body-text",
+                      "type": "text",
+                      "value": "불을 켜면 방 안에 따뜻한 빛이 퍼집니다.",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-03-detail-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "light",
+        "layout": {
+          "display": "flex",
+          "direction": "row",
+          "gap": 24.0,
+          "wrap": false,
+          "align": "center"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#F7F7F5",
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        }
+      },
+      "children": [
+        {
+          "id": "section-03-detail-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-03-detail-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-03-detail-eyebrow-text",
+                  "type": "text",
+                  "value": "MATERIAL DETAIL",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-03-detail-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-03-detail-title-text",
+                  "type": "text",
+                  "value": "한지 결 위의 빛",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-03-detail-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-03-detail-body-text",
+                  "type": "text",
+                  "value": "손으로 뜬 한지의 섬유가 빛을 받아 은은한 결로 드러납니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-03-detail-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-03-detail-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "style": {
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-03-detail-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "style": {
+                      "objectFit": "contain",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "imageId": "body_p15_02",
+                    "alt": "한지 무드 조명 한지 결 위의 빛",
+                    "src": "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/p15_B.webp"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-04-texture-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "dark",
+        "layout": {
+          "display": "flex",
+          "direction": "row",
+          "gap": 24.0,
+          "wrap": false,
+          "align": "center"
+        },
+        "style": {
+          "color": "#F7F4EE",
+          "backgroundColor": "#242424",
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        }
+      },
+      "children": [
+        {
+          "id": "section-04-texture-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-04-texture-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "style": {
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-04-texture-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "style": {
+                      "objectFit": "contain",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "imageId": "body_p15_03",
+                    "alt": "한지 무드 조명 원목 받침",
+                    "src": "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/p15_C.webp"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-04-texture-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-04-texture-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-04-texture-eyebrow-text",
+                  "type": "text",
+                  "value": "SURFACE AND MATERIAL",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-04-texture-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-04-texture-title-text",
+                  "type": "text",
+                  "value": "원목 받침",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-04-texture-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-04-texture-body-text",
+                  "type": "text",
+                  "value": "단단한 원목으로 깎은 받침과 코드가 맞닿는 부분입니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-05-usage-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "sand",
+        "layout": {
+          "display": "stack",
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#EEE5D8",
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        }
+      },
+      "children": [
+        {
+          "id": "section-05-usage-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-05-usage-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-05-usage-eyebrow-text",
+                  "type": "text",
+                  "value": "IN DAILY SPACE",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-05-usage-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-05-usage-title-text",
+                  "type": "text",
+                  "value": "침실의 밤",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-05-usage-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-05-usage-body-text",
+                  "type": "text",
+                  "value": "침대 옆 협탁에 놓아 어두운 방을 따뜻하게 밝히는 모습입니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-05-usage-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-05-usage-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "style": {
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-05-usage-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "style": {
+                      "objectFit": "cover",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "imageId": "body_p15_06",
+                    "alt": "한지 무드 조명 침실의 밤",
+                    "src": "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/p15_C.webp"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-06-gallery-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "light",
+        "layout": {
+          "display": "stack",
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#F7F7F5",
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        }
+      },
+      "children": [
+        {
+          "id": "section-06-gallery-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-06-gallery-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-eyebrow-text",
+                  "type": "text",
+                  "value": "DETAIL VIEW",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-06-gallery-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-title-text",
+                  "type": "text",
+                  "value": "각도별로 살펴보기",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-06-gallery-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-body-text",
+                  "type": "text",
+                  "value": "같은 작품을 여러 각도에서 살펴봅니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-06-gallery-grid",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "grid",
+              "columns": 2,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-06-gallery-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "style": {
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "style": {
+                      "objectFit": "cover",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "imageId": "body_p15_04",
+                    "alt": "한지 무드 조명 비스듬한 각도",
+                    "src": "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/p15_A.webp"
+                  },
+                  "children": []
+                },
+                {
+                  "id": "section-06-gallery-caption-01",
+                  "type": "element",
+                  "tag": "figcaption",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 14.0,
+                      "fontWeight": 500,
+                      "lineHeight": 1.5,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-06-gallery-caption-01-text",
+                      "type": "text",
+                      "value": "비스듬한 각도 — 조명을 비스듬히 본 모습입니다. 갓의 둥근 선과 받침의 균형이 보입니다.",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "section-06-gallery-figure-02",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "style": {
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-image-02",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "style": {
+                      "objectFit": "cover",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "imageId": "body_p15_05",
+                    "alt": "한지 무드 조명 꺼 두면",
+                    "src": "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/p15_B.webp"
+                  },
+                  "children": []
+                },
+                {
+                  "id": "section-06-gallery-caption-02",
+                  "type": "element",
+                  "tag": "figcaption",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 14.0,
+                      "fontWeight": 500,
+                      "lineHeight": 1.5,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-06-gallery-caption-02-text",
+                      "type": "text",
+                      "value": "꺼 두면 — 불을 끄면 한지가 낮에는 부드러운 흰빛으로 보입니다.",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "section-06-gallery-figure-03",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "style": {
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-image-03",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "style": {
+                      "objectFit": "cover",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "imageId": "body_p15_07",
+                    "alt": "한지 무드 조명 호박빛",
+                    "src": "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/p15_A.webp"
+                  },
+                  "children": []
+                },
+                {
+                  "id": "section-06-gallery-caption-03",
+                  "type": "element",
+                  "tag": "figcaption",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 14.0,
+                      "fontWeight": 500,
+                      "lineHeight": 1.5,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-06-gallery-caption-03-text",
+                      "type": "text",
+                      "value": "호박빛 — 불을 켰을 때의 호박빛이 벽과 바닥에 번집니다.",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "section-06-gallery-figure-04",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "style": {
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-image-04",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "style": {
+                      "objectFit": "cover",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "imageId": "body_p15_08",
+                    "alt": "한지 무드 조명 거실 한켠",
+                    "src": "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging/p15_B.webp"
+                  },
+                  "children": []
+                },
+                {
+                  "id": "section-06-gallery-caption-04",
+                  "type": "element",
+                  "tag": "figcaption",
+                  "props": {
+                    "style": {
+                      "fontFamily": "sans",
+                      "fontSize": 14.0,
+                      "fontWeight": 500,
+                      "lineHeight": 1.5,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    }
+                  },
+                  "children": [
+                    {
+                      "id": "section-06-gallery-caption-04-text",
+                      "type": "text",
+                      "value": "거실 한켠 — 거실 선반 위에 두어 공간의 분위기를 바꾸는 모습입니다.",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-07-spec-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "paper",
+        "layout": {
+          "display": "stack",
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#F6F2EC",
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        }
+      },
+      "children": [
+        {
+          "id": "section-07-spec-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-07-spec-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-07-spec-eyebrow-text",
+                  "type": "text",
+                  "value": "PRODUCT NOTE",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-07-spec-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-07-spec-title-text",
+                  "type": "text",
+                  "value": "제품 정보",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-07-spec-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-07-spec-body-text",
+                  "type": "text",
+                  "value": "이미지와 검수된 상품 정보로 확인 가능한 범위입니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-07-spec-table",
+          "type": "element",
+          "tag": "table",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 12.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-07-spec-table-caption",
+              "type": "element",
+              "tag": "caption",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-07-spec-table-caption-text",
+                  "type": "text",
+                  "value": "제품 정보",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-07-spec-table-body",
+              "type": "element",
+              "tag": "tbody",
+              "props": {},
+              "children": [
+                {
+                  "id": "section-07-spec-row-01",
+                  "type": "element",
+                  "tag": "tr",
+                  "props": {},
+                  "children": [
+                    {
+                      "id": "section-07-spec-row-01-label",
+                      "type": "element",
+                      "tag": "th",
+                      "props": {
+                        "style": {
+                          "fontFamily": "sans",
+                          "fontSize": 16.0,
+                          "fontWeight": 600,
+                          "lineHeight": 1.5,
+                          "margin": {
+                            "top": 0.0,
+                            "right": 0.0,
+                            "bottom": 0.0,
+                            "left": 0.0
+                          }
+                        },
+                        "scope": "row"
+                      },
+                      "children": [
+                        {
+                          "id": "section-07-spec-row-01-label-text",
+                          "type": "text",
+                          "value": "제품 유형",
+                          "marks": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "section-07-spec-row-01-value",
+                      "type": "element",
+                      "tag": "td",
+                      "props": {
+                        "style": {
+                          "fontFamily": "sans",
+                          "fontSize": 16.0,
+                          "fontWeight": 400,
+                          "lineHeight": 1.7,
+                          "margin": {
+                            "top": 0.0,
+                            "right": 0.0,
+                            "bottom": 0.0,
+                            "left": 0.0
+                          }
+                        }
+                      },
+                      "children": [
+                        {
+                          "id": "section-07-spec-row-01-value-text",
+                          "type": "text",
+                          "value": "조명",
+                          "marks": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "section-07-spec-row-02",
+                  "type": "element",
+                  "tag": "tr",
+                  "props": {},
+                  "children": [
+                    {
+                      "id": "section-07-spec-row-02-label",
+                      "type": "element",
+                      "tag": "th",
+                      "props": {
+                        "style": {
+                          "fontFamily": "sans",
+                          "fontSize": 16.0,
+                          "fontWeight": 600,
+                          "lineHeight": 1.5,
+                          "margin": {
+                            "top": 0.0,
+                            "right": 0.0,
+                            "bottom": 0.0,
+                            "left": 0.0
+                          }
+                        },
+                        "scope": "row"
+                      },
+                      "children": [
+                        {
+                          "id": "section-07-spec-row-02-label-text",
+                          "type": "text",
+                          "value": "소재",
+                          "marks": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "section-07-spec-row-02-value",
+                      "type": "element",
+                      "tag": "td",
+                      "props": {
+                        "style": {
+                          "fontFamily": "sans",
+                          "fontSize": 16.0,
+                          "fontWeight": 400,
+                          "lineHeight": 1.7,
+                          "margin": {
+                            "top": 0.0,
+                            "right": 0.0,
+                            "bottom": 0.0,
+                            "left": 0.0
+                          }
+                        }
+                      },
+                      "children": [
+                        {
+                          "id": "section-07-spec-row-02-value-text",
+                          "type": "text",
+                          "value": "한지·원목",
+                          "marks": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "section-07-spec-row-03",
+                  "type": "element",
+                  "tag": "tr",
+                  "props": {},
+                  "children": [
+                    {
+                      "id": "section-07-spec-row-03-label",
+                      "type": "element",
+                      "tag": "th",
+                      "props": {
+                        "style": {
+                          "fontFamily": "sans",
+                          "fontSize": 16.0,
+                          "fontWeight": 600,
+                          "lineHeight": 1.5,
+                          "margin": {
+                            "top": 0.0,
+                            "right": 0.0,
+                            "bottom": 0.0,
+                            "left": 0.0
+                          }
+                        },
+                        "scope": "row"
+                      },
+                      "children": [
+                        {
+                          "id": "section-07-spec-row-03-label-text",
+                          "type": "text",
+                          "value": "특징",
+                          "marks": []
+                        }
+                      ]
+                    },
+                    {
+                      "id": "section-07-spec-row-03-value",
+                      "type": "element",
+                      "tag": "td",
+                      "props": {
+                        "style": {
+                          "fontFamily": "sans",
+                          "fontSize": 16.0,
+                          "fontWeight": 400,
+                          "lineHeight": 1.7,
+                          "margin": {
+                            "top": 0.0,
+                            "right": 0.0,
+                            "bottom": 0.0,
+                            "left": 0.0
+                          }
+                        }
+                      },
+                      "children": [
+                        {
+                          "id": "section-07-spec-row-03-value-text",
+                          "type": "text",
+                          "value": "한지 갓 · 원목 받침 · 전구 색온도 2700K",
+                          "marks": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-08-closing-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "dark",
+        "layout": {
+          "display": "stack",
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#F7F4EE",
+          "backgroundColor": "#242424",
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        }
+      },
+      "children": [
+        {
+          "id": "section-08-closing-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "layout": {
+              "display": "stack",
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            }
+          },
+          "children": [
+            {
+              "id": "section-08-closing-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-08-closing-eyebrow-text",
+                  "type": "text",
+                  "value": "CRAFTSMANSHIP",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-08-closing-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-08-closing-title-text",
+                  "type": "text",
+                  "value": "한 점의 차이",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-08-closing-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "style": {
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                }
+              },
+              "children": [
+                {
+                  "id": "section-08-closing-body-text",
+                  "type": "text",
+                  "value": "손으로 만든 조명이라 사진과 결·색이 조금씩 다를 수 있습니다. 그 차이가 이 작품만의 멋입니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

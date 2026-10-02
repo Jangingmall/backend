@@ -1,0 +1,142 @@
+[
+ {
+  "section_id": "hero",
+  "block_type": "hero",
+  "eyebrow": "전주 합죽선",
+  "title": "매화 한 획씩 직접 그린 부채",
+  "body": "담양 왕대를 3년 건조해 손으로 깎은 대나무 뼈대와 한지 선면 위에 매화를 그렸습니다. 같은 부채가 하나도 없는, 한 획의 차이가 살아 있는 전주 합죽선입니다.",
+  "variant": "paper",
+  "photo_id": "hero",
+  "photo_ids": [],
+  "items": []
+ },
+ {
+  "section_id": "statement",
+  "block_type": "statement",
+  "eyebrow": "제작 이야기",
+  "title": "3년 건조한 대나무, 손으로 깎은 선면",
+  "body": "담양 왕대를 3년 동안 건조한 뒤 손으로 겉대와 속대를 깎아 부채의 뼈대를 만듭니다. 그 위에 한지를 겹겹이 붙여 선면을 만들고, 매화를 한 획씩 직접 그려 완성합니다.",
+  "variant": "sand",
+  "photo_id": null,
+  "photo_ids": [],
+  "items": []
+ },
+ {
+  "section_id": "detail_split",
+  "block_type": "detail_split",
+  "eyebrow": "표면과 문양",
+  "title": "한지 선면 위의 매화",
+  "body": "흰 한지 선면 위에 검은 먹과 분홍빛 매화가 대나무 뼈대 사이로 이어집니다. 선면의 결과 문양의 흐름이 한 장의 그림처럼 읽힙니다.",
+  "variant": "dark",
+  "photo_id": "detail",
+  "photo_ids": [],
+  "items": []
+ },
+ {
+  "section_id": "palette",
+  "block_type": "palette",
+  "eyebrow": "색채",
+  "title": "흰 한지와 먹, 분홍 매화",
+  "body": "부채의 색은 흰 한지, 검은 먹, 분홍 매화 세 가지로 정리됩니다. 대나무의 자연스러운 색이 이 세 가지 색을 받쳐줍니다.",
+  "variant": "sand",
+  "photo_id": "detail",
+  "photo_ids": [],
+  "items": [
+   {
+    "label": "흰 한지",
+    "value": "선면의 기본 배경",
+    "description": "부채 전체를 밝고 차분하게 받치는 색",
+    "evidence": "image-visible"
+   },
+   {
+    "label": "검은 먹",
+    "value": "매화 가지와 줄기",
+    "description": "선면 위를 흐르는 검은 곡선",
+    "evidence": "image-visible"
+   },
+   {
+    "label": "분홍 매화",
+    "value": "꽃과 꽃봉오리",
+    "description": "검은 가지 사이로 피어나는 색",
+    "evidence": "image-visible"
+   }
+  ]
+ },
+ {
+  "section_id": "usage_scene",
+  "block_type": "usage_scene",
+  "eyebrow": "사용 장면",
+  "title": "손에 들면 그림이 되는 부채",
+  "body": "부채를 펼치면 선면의 매화가 손안에서 그림이 됩니다. 부채로 바람을 부는 순간에도 선면의 문양이 함께 움직입니다.",
+  "variant": "dark",
+  "photo_id": "lifestyle",
+  "photo_ids": [],
+  "items": []
+ },
+ {
+  "section_id": "gallery",
+  "block_type": "gallery",
+  "eyebrow": "상세 보기",
+  "title": "부채의 각도",
+  "body": "부채의 전체 형태와 선면의 매화 문양, 대나무 뼈대의 결을 각도별로 살펴봅니다.",
+  "variant": "sand",
+  "photo_id": null,
+  "photo_ids": [
+   "hero",
+   "detail"
+  ],
+  "items": []
+ },
+ {
+  "section_id": "recommendation",
+  "block_type": "recommendation",
+  "eyebrow": "함께 보기",
+  "title": "전주 부채 시리즈",
+  "body": "같은 제작 방식과 한지 선면으로 완성된 다른 문양의 부채를 함께 살펴보세요.",
+  "variant": "paper",
+  "photo_id": null,
+  "photo_ids": [],
+  "items": []
+ },
+ {
+  "section_id": "notice",
+  "block_type": "notice",
+  "eyebrow": "관리 안내",
+  "title": "부채를 오래 쓰는 방법",
+  "body": "펼칠 때는 아래에서 위로 천천히 펴 주세요. 사용 후에는 접어 직사광선과 습기를 피해 보관하면 오래 쓸 수 있습니다. 물티슈·물세척은 한지가 상하니 피해 주세요.",
+  "variant": "dark",
+  "photo_id": null,
+  "photo_ids": [],
+  "items": [
+   {
+    "label": "펼칠 때",
+    "value": "아래에서 위로 천천히 펴기",
+    "description": "부채의 뼈대와 선면을 보호하는 방법",
+    "evidence": "inferred"
+   },
+   {
+    "label": "보관",
+    "value": "접어 직사광선·습기 피하기",
+    "description": "한지 선면이 변색되거나 상하는 것을 막는 방법",
+    "evidence": "inferred"
+   },
+   {
+    "label": "세척 금지",
+    "value": "물티슈·물세척 금지",
+    "description": "한지가 물에 상할 수 있으므로 물로 닦지 않기",
+    "evidence": "inferred"
+   }
+  ]
+ },
+ {
+  "section_id": "closing",
+  "block_type": "closing",
+  "eyebrow": "마무리",
+  "title": "한 획의 차이가 만드는 부채",
+  "body": "매화를 한 획씩 직접 그리기 때문에 같은 부채가 하나도 없습니다. 전주 합죽선 매화선은 손의 흔적이 선면에 남은 부채입니다.",
+  "variant": "sand",
+  "photo_id": null,
+  "photo_ids": [],
+  "items": []
+ }
+]

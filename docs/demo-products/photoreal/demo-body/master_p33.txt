@@ -1,0 +1,35 @@
+첨부한 사진은 미담 쇼핑몰의 '분청 귀얄 찻잔' 대표 사진이야. 이 사진을 기준 상품으로 삼아, 같은 물건을 각도와 특징만 바꿔 아래 8장을 만들어 줘.
+
+규칙
+1. 첨부 사진과 같은 상품이어야 해. 모양·색·소재·무늬를 바꾸지 마.
+2. 번호 하나당 이미지는 정확히 1장. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 4장씩 만들어 줘.
+3. 이미지 제목(파일 이름)은 그 번호의 키(예: body_p31_01)로 정하고, 아래에 '[키]'만 적어 줘. 설명·질문은 하지 마.
+4. 정사각형 1:1, 최대 해상도, 한 장은 독립된 사진 하나. 글자·로고·워터마크·사람·손 금지.
+5. 내가 '다시 [키]'라고 할 때만 그 번호를 다시 만들어 줘.
+
+번호 목록
+[body_p33_01] (한눈에 보는 분청 찻잔)
+Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup seen straight from the front on a plain light backdrop. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+[body_p33_02] (귀얄 분장)
+Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a close-up of the wide brush-stroke white slip texture. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+[body_p33_03] (철화 풀꽃)
+Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a macro of the iron-brown wildflower pattern on the slip. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+[body_p33_04] (비스듬한 각도)
+Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup seen from a 45-degree angle above showing the inside. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+[body_p33_05] (굽과 흙)
+Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the underside and unglazed foot ring of the cup showing raw clay. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+[body_p33_06] (다탁 위에서)
+Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup on a linen cloth next to a small tea caddy in natural window light. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+[body_p33_07] (회백색과 갈색)
+Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: a flat lay of the cup on a plain surface emphasizing its gray, white and brown tones. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+[body_p33_08] (손에 쥐면)
+Keep exactly the same product as the attached reference photo (same shape, color, material and pattern). Product photo: the cup placed on a wooden table in soft window light. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern. Soft natural light, warm neutral tones, photorealistic, sharp focus, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+위 설명을 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.
