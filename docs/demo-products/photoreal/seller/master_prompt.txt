@@ -1,0 +1,132 @@
+너는 전통 공예 쇼핑몰 '미담' 판매자의 상품 사진 작가야. 아래 번호 목록 1~40번 이미지를 번호 순서대로 만들어 줘.
+
+진행 방식 (반드시 지켜)
+0. 번호 하나당 이미지는 정확히 1장만 만들어. 마음에 안 들어도 스스로 다시 만들지 마. 내가 '다시 [번호]'라고 할 때만 다시 만들어.
+1. 처음에는 아무것도 만들지 말고 '준비 완료'라고만 답해 줘. 내가 '계속'이라고 보내면 다음 번호부터 최대 5장씩, 번호 순서대로, 서로 다른 별도 이미지로 만들어 줘.
+2. 이미지마다 이미지 제목(파일 이름)을 반드시 그 번호의 키(예: seller_p31_01)로 정하고, 아래에 '[번호] 키'만 적어 줘. 질문·설명·제안은 하지 마.
+3. 생성 한도에 걸리면 '[번호]까지 완료, 한도 도달'이라고만 말해 줘. 내가 '계속'이라고 하면 이어서 해 줘.
+4. 같은 상품(같은 앞 4글자 키 p31 등)의 8장은 같은 물건의 사진이어야 해. 색·소재·모양을 장마다 바꾸지 마.
+5. 정사각형 1:1, 최대 해상도. 한 장은 독립된 사진 하나(콜라주·표·라벨·캡션 금지). 글자·로고·워터마크·사람·손 금지.
+
+번호 목록
+[01] seller_p31_01
+Product photo of a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, the fan fully opened, seen from the front, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[02] seller_p31_02
+Product photo of a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, the fan half-opened seen from a 45-degree angle, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[03] seller_p31_03
+Product photo of a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, the fan closed, lying flat, showing the bamboo outer guard sticks, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[04] seller_p31_04
+Close-up of the ink plum blossom branch painting on the paper face of a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[05] seller_p31_05
+Close-up of the bamboo ribs and the small knotted tassel pendant at the handle of a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[06] seller_p31_06
+The opened fan resting on a dark wooden tray beside a small tea cup in a quiet hanok room. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[07] seller_p31_07
+Product packaging photo: the closed fan in an open paulownia gift box with a linen ribbon. The product is a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[08] seller_p31_08
+Wide shot of a calm interior styled around a white mulberry-paper (hanji) folding fan with ink and pale-pink plum blossom branches and natural bamboo ribs, the product clearly visible but not centered, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[09] seller_p32_01
+Product photo of a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, the cup seen straight from the front, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[10] seller_p32_02
+Product photo of a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, the cup seen from a 45-degree angle from above showing the inside, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[11] seller_p32_03
+Product photo of a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, the underside of the cup showing the foot ring, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[12] seller_p32_04
+Close-up of the inlaid white cranes and clouds on the glaze of a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[13] seller_p32_05
+Close-up of the fine crackle pattern of the pale jade-green glaze at the rim of a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[14] seller_p32_06
+The cup filled with green tea on a small wooden tea tray beside a linen cloth. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[15] seller_p32_07
+Product packaging photo: the cup nested in a cream cloth wrapping inside an open wooden box. The product is a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[16] seller_p32_08
+Wide shot of a calm interior styled around a pale jade-green celadon tea cup with white-and-black inlaid crane-and-cloud pattern, the product clearly visible but not centered, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[17] seller_p33_01
+Product photo of a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, the cup seen straight from the front, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[18] seller_p33_02
+Product photo of a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, the cup seen from a 45-degree angle from above showing the inside, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[19] seller_p33_03
+Product photo of a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, the underside of the cup showing the foot ring and the unglazed clay, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[20] seller_p33_04
+Close-up of the brush-stroke white slip texture on the grayish surface of a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[21] seller_p33_05
+Close-up of the iron-brown wildflower pattern and the glaze edge of a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[22] seller_p33_06
+The cup on a linen cloth beside a small tea caddy in natural window light. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[23] seller_p33_07
+Product packaging photo: the cup wrapped in kraft paper inside an open cardboard gift box. The product is a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[24] seller_p33_08
+Wide shot of a calm interior styled around a grayish-white buncheong tea cup with brushed white slip and iron-brown wildflower pattern, the product clearly visible but not centered, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[25] seller_p15_01
+Product photo of a warm amber-glowing hanji paper lamp on a solid wood base, the lamp switched on, seen from the front, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[26] seller_p15_02
+Product photo of a warm amber-glowing hanji paper lamp on a solid wood base, the lamp switched on, seen from a 45-degree angle, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[27] seller_p15_03
+Product photo of a warm amber-glowing hanji paper lamp on a solid wood base, the lamp switched off in daylight, seen from the front, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[28] seller_p15_04
+Close-up of the hanji paper shade fibers glowing with warm light of a warm amber-glowing hanji paper lamp on a solid wood base, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[29] seller_p15_05
+Close-up of the solid wood base joint and the lamp cord of a warm amber-glowing hanji paper lamp on a solid wood base, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[30] seller_p15_06
+The lit lamp on a bedside table in a dim cozy bedroom. The product is a warm amber-glowing hanji paper lamp on a solid wood base, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[31] seller_p15_07
+Product packaging photo: the lamp's neat cardboard gift box and wrapping, box slightly open. The product is a warm amber-glowing hanji paper lamp on a solid wood base, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[32] seller_p15_08
+Wide shot of a calm interior styled around a warm amber-glowing hanji paper lamp on a solid wood base, the product clearly visible but not centered, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[33] seller_p11_01
+Product photo of a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, the framed embroidery seen straight from the front, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[34] seller_p11_02
+Product photo of a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, the framed embroidery seen from a 30-degree angle showing the frame depth, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[35] seller_p11_03
+Product photo of a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, the back of the frame showing the wooden backing, centered, plain seamless warm light-grey backdrop and floor, no props, wide margin, soft light from upper left, soft shadow, photorealistic, sharp focus, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[36] seller_p11_04
+Close-up of the satin-stitch silk threads of the pink peony petals of a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[37] seller_p11_05
+Close-up of the wooden frame corner and the mounting edge of the fabric of a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, macro photograph, shallow depth of field, soft light, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[38] seller_p11_06
+The framed embroidery hanging on a wall above a small wooden console table. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[39] seller_p11_07
+Product packaging photo: the framed embroidery packed in protective paper in an open shipping box. The product is a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+[40] seller_p11_08
+Wide shot of a calm interior styled around a framed pink peony silk satin-stitch embroidery in a plain natural wood frame, the product clearly visible but not centered, lifestyle photograph, soft window light, warm neutral tones, shallow depth of field, photorealistic, full-bleed square frame with no white bars or borders, no people, no hands, no text, no logos, no watermark
+
+위 설명을 모두 이해했으면 아무것도 만들지 말고 '준비 완료'라고만 답해 줘.
