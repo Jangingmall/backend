@@ -32,6 +32,12 @@ P31_PHOTOS = {"hero": ["01-hero"], "statement": ["02-packshot"], "detail_split":
               "gallery": ["05-lifestyle-02", "07-detail-03", "08-detail-04", "09-detail-05"]}
 
 
+
+def ira(word):
+    """받침이 있으면 '이라', 없으면 '라' (예: 찻잔이라, 노리개라)."""
+    code = ord(word[-1])
+    return word + ("이라" if 0xAC00 <= code <= 0xD7A3 and (code - 0xAC00) % 28 else "라")
+
 def q(s):
     return "'" + s.replace("'", "''") + "'"
 
@@ -81,7 +87,7 @@ def product_blocks(p):
         img("C"), ("h2", "이렇게 쓰세요", None), ("p", f"{use[0]} {use[1]}", None),
         ("h2", "특징", None), ("p", feats, None),
         ("h2", "관리 안내", None), ("p", f"{care[0]} {care[1]}", None),
-        ("h2", "한 점의 차이", None), ("p", f"손으로 만든 {item}이라 사진과 결·색이 조금씩 다를 수 있습니다. 그 차이가 이 작품만의 멋입니다.", None),
+        ("h2", "한 점의 차이", None), ("p", f"손으로 만든 {ira(item)} 사진과 결·색이 조금씩 다를 수 있습니다. 그 차이가 이 작품만의 멋입니다.", None),
     ]
 
 

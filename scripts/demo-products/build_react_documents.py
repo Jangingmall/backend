@@ -30,6 +30,12 @@ BODY_DIR = os.path.join(ROOT, "docs", "demo-products", "photoreal", "staging")
 FALLBACK = {1: "A", 2: "B", 3: "C", 4: "A", 5: "B", 6: "C", 7: "A", 8: "B"}
 
 
+
+def ira(word):
+    """받침이 있으면 '이라', 없으면 '라' (예: 찻잔이라, 노리개라)."""
+    code = ord(word[-1])
+    return word + ("이라" if 0xAC00 <= code <= 0xD7A3 and (code - 0xAC00) % 28 else "라")
+
 def slot_src(key, n):
     """본문용 이미지(body_<키>_NN.webp)가 저장소에 있으면 그것을, 없으면 실사 A·B·C 를 임시로 쓴다."""
     own = f"body_{key}_{n:02d}.webp"
@@ -137,7 +143,7 @@ def document(key, name, shots, desc, material, features, item, sub):
         el("section-07-spec-table-body", "tbody", {}, [spec_row("section-07-spec", i, a, b) for i, (a, b) in enumerate(rows, 1)])])
     spec = section(7, "spec", "paper", "#222222", "#F6F2EC", STACK, [copy("section-07-spec", "PRODUCT NOTE", "제품 정보", "이미지와 검수된 상품 정보로 확인 가능한 범위입니다."), table])
     closing = section(8, "closing", "dark", "#F7F4EE", "#242424", STACK, [
-        copy("section-08-closing", "CRAFTSMANSHIP", "한 점의 차이", f"손으로 만든 {item}이라 사진과 결·색이 조금씩 다를 수 있습니다. 그 차이가 이 작품만의 멋입니다.")])
+        copy("section-08-closing", "CRAFTSMANSHIP", "한 점의 차이", f"손으로 만든 {ira(item)} 사진과 결·색이 조금씩 다를 수 있습니다. 그 차이가 이 작품만의 멋입니다.")])
     return {"schemaVersion": "2.0", "canvasWidth": 774, "root": [hero, feats, detail, detail2, usage, gallery, spec, closing]}
 
 

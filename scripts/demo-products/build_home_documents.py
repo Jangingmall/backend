@@ -17,6 +17,12 @@ JSON_DIR = os.path.join(ROOT, "docs", "demo-products", "detail", "home9")
 RAW = "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/demo-products/photoreal/staging"
 
 
+
+def ira(word):
+    """받침이 있으면 '이라', 없으면 '라' (예: 찻잔이라, 노리개라)."""
+    code = ord(word[-1])
+    return word + ("이라" if 0xAC00 <= code <= 0xD7A3 and (code - 0xAC00) % 28 else "라")
+
 def load(name):
     spec = importlib.util.spec_from_file_location(name, os.path.join(HERE, name + ".py"))
     mod = importlib.util.module_from_spec(spec)
@@ -82,13 +88,13 @@ def build(group, no, title, sub, material, desc):
         BD.el("section-06-spec-table-body", "tbody", {}, [BD.spec_row("section-06-spec", i, a, b) for i, (a, b) in enumerate(rows, 1)])])
     spec = BD.section(6, "spec", "paper", "#222222", "#F6F2EC", BD.STACK, [BD.copy("section-06-spec", "PRODUCT NOTE", "제품 정보", "사진과 검수된 상품 정보로 확인 가능한 범위입니다."), table])
     closing = BD.section(7, "closing", "dark", "#F7F4EE", "#242424", BD.STACK, [
-        BD.copy("section-07-closing", "CRAFTSMANSHIP", "한 점의 차이", f"손으로 만든 {item}이라 사진과 결·색이 조금씩 다를 수 있습니다. 그 차이가 이 작품만의 멋입니다.")])
+        BD.copy("section-07-closing", "CRAFTSMANSHIP", "한 점의 차이", f"손으로 만든 {ira(item)} 사진과 결·색이 조금씩 다를 수 있습니다. 그 차이가 이 작품만의 멋입니다.")])
     doc = {"schemaVersion": "2.0", "canvasWidth": 774, "root": [hero, feats, detail, usage, gallery, spec, closing]}
     blocks = [("img", None, src[1]), ("h2", title, None), ("p", sent[0], None), ("h2", "가까이 볼수록 선명해지는 디테일", None)]
     blocks += [("p", f"{a}: {b}", None) for a, b in pairs]
     blocks += [("img", None, src[2]), ("h2", shots[1][0], None), ("p", shots[1][1], None),
                ("img", None, src[3]), ("h2", shots[2][0], None), ("p", shots[2][1], None),
-               ("p", f"손으로 만든 {item}이라 사진과 결·색이 조금씩 다를 수 있습니다.", None)]
+               ("p", f"손으로 만든 {ira(item)} 사진과 결·색이 조금씩 다를 수 있습니다.", None)]
     return key, doc, blocks
 
 
