@@ -9,6 +9,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -140,7 +141,9 @@ class JpaProductRepository implements ProductRepository {
 
     private String resolveOrder(String sort, Pageable pageable) {
         if (sort != null) {
-            return switch (sort) {
+            return switch (sort.trim().toUpperCase(Locale.ROOT)) {
+                case "SALES_COUNT" -> " ORDER BY (SELECT count(oi) FROM OrderItem oi WHERE oi.productId = p.id) DESC, p.id DESC";
+                case "WISHLIST_COUNT" -> " ORDER BY (SELECT count(w) FROM Wishlist w WHERE w.productId = p.id) DESC, p.id DESC";
                 case "PRICE_ASC" -> " ORDER BY p.price ASC, p.id DESC";
                 case "PRICE_DESC" -> " ORDER BY p.price DESC, p.id DESC";
                 case "POPULAR" -> " ORDER BY p.id DESC";

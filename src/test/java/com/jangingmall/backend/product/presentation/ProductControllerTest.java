@@ -237,14 +237,14 @@ class ProductControllerTest extends RestDocsControllerTest {
                     .tag("상품")
                     .summary("상품 목록")
                     .description("판매 중 상품 목록을 필터와 함께 조회합니다.\n"
-                        + "- sort: NEWEST(기본) | PRICE_ASC | PRICE_DESC | POPULAR\n"
+                        + "- sort: NEWEST(기본) | PRICE_ASC | PRICE_DESC | POPULAR | SALES_COUNT | WISHLIST_COUNT (대소문자 무관)\n"
                         + "- excludeSoldOut=true 이면 ON_SALE만 반환 (기본: ON_SALE+SOLD_OUT 포함)")
                     .queryParameters(
                         parameterWithName("keyword").description("상품명 검색어 (선택)").optional(),
                         parameterWithName("categoryId").description("카테고리 ID (선택)").optional(),
                         parameterWithName("subcategoryId").description("서브카테고리 ID (선택)").optional(),
                         parameterWithName("giftTheme").description("선물 테마 (선택)").optional(),
-                        parameterWithName("sort").description("정렬: NEWEST | PRICE_ASC | PRICE_DESC | POPULAR").optional(),
+                        parameterWithName("sort").description("정렬: NEWEST | PRICE_ASC | PRICE_DESC | POPULAR | SALES_COUNT | WISHLIST_COUNT").optional(),
                         parameterWithName("minPrice").description("최소 가격 (선택)").optional(),
                         parameterWithName("maxPrice").description("최대 가격 (선택)").optional(),
                         parameterWithName("excludeSoldOut").description("품절 제외 여부 (기본: false)").optional(),
