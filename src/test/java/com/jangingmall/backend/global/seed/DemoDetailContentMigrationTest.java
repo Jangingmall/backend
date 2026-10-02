@@ -14,7 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 
-/** 전주 합죽선 상세 소개(V22)가 약속한 내용을 DB 없이 SQL 파일과 저장소 이미지로 검증한다. */
+/** 큐레이션 상품 상세 소개(V22)가 약속한 내용을 DB 없이 SQL 파일과 저장소 이미지로 검증한다. */
 class DemoDetailContentMigrationTest {
 
     private static final String RAW = "https://raw.githubusercontent.com/Jangingmall/backend/develop/docs/";
@@ -23,7 +23,7 @@ class DemoDetailContentMigrationTest {
 
     @BeforeAll
     static void load() throws Exception {
-        sql = new String(new ClassPathResource("db/migration/V22__demo_detail_content_p31.sql")
+        sql = new String(new ClassPathResource("db/migration/V22__demo_detail_content.sql")
             .getInputStream().readAllBytes(), StandardCharsets.UTF_8);
     }
 
@@ -46,11 +46,23 @@ class DemoDetailContentMigrationTest {
     }
 
     @Test
-    @DisplayName("소제목·본문·이미지 블록을 순서대로 심고 상세를 게시 상태로 둔다")
-    void seedsOrderedBlocksAndPublishesContent() {
-        long rows = sql.lines().filter(line -> line.matches("^    \\(\\d+, '(h2|p|img)', .*")).count();
-        assertThat(rows).isGreaterThanOrEqualTo(20);
-        assertThat(sql).contains("'PUBLISHED'").contains("ON CONFLICT (product_id) DO UPDATE")
-            .contains("p.title = '전주 합죽선 · 매화선' AND p.artisan_id = 41");
+    @DisplayName("상품 33개마다 본문 이미지 3장 이상과 소제목·본문 블록을 순서대로 심고 상세를 게시 상태로 둔다")
+    void seedsRichBodyForEveryCuratedProduct() {
+        Pattern row = Pattern.compile("(?m)^    \\('((?:[^']|'')*)', (\\d+), (\\d+), '(h2|p|img)', ");
+        Matcher matcher = row.matcher(sql);
+        java.util.Map<String, int[]> perProduct = new java.util.HashMap<>();
+        while (matcher.find()) {
+            int[] counts = perProduct.computeIfAbsent(matcher.group(1), key -> new int[2]);
+            counts[0]++;
+            if ("img".equals(matcher.group(4))) {
+                counts[1]++;
+            }
+        }
+        assertThat(perProduct).hasSize(33);
+        perProduct.forEach((title, counts) -> {
+            assertThat(counts[1]).as(title + " 본문 이미지").isGreaterThanOrEqualTo(3);
+            assertThat(counts[0]).as(title + " 블록 수").isGreaterThanOrEqualTo(16);
+        });
+        assertThat(sql).contains("'PUBLISHED'").contains("ON CONFLICT (product_id) DO UPDATE");
     }
 }
