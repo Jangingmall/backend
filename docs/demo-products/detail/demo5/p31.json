@@ -1,0 +1,3875 @@
+{
+  "schemaVersion": "2.0",
+  "canvasWidth": 774,
+  "root": [
+    {
+      "id": "section-01-hero-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "paper",
+        "layout": {
+          "display": "stack",
+          "direction": null,
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#F6F2EC",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-01-hero-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-01-hero-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-01-hero-eyebrow-text",
+                  "type": "text",
+                  "value": "전주 합죽선",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-01-hero-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 40.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.25,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-01-hero-title-text",
+                  "type": "text",
+                  "value": "매화 한 획씩 직접 그린 부채",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-01-hero-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-01-hero-body-text",
+                  "type": "text",
+                  "value": "담양 왕대를 3년 건조해 손으로 깎은 대나무 뼈대와 한지 선면 위에 매화를 그렸습니다. 같은 부채가 하나도 없는 전주 합죽선입니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-01-hero-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-01-hero-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": null,
+                  "fontSize": null,
+                  "fontWeight": null,
+                  "lineHeight": null,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-01-hero-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": null,
+                      "fontSize": null,
+                      "fontWeight": null,
+                      "lineHeight": null,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": "contain",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": "hero",
+                    "alt": "전주 합죽선 · 매화선 매화 한 획씩 직접 그린 부채",
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-02-statement-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "sand",
+        "layout": {
+          "display": "stack",
+          "direction": null,
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#EEE5D8",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-02-statement-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-02-statement-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-02-statement-eyebrow-text",
+                  "type": "text",
+                  "value": "제작 이야기",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-02-statement-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-02-statement-title-text",
+                  "type": "text",
+                  "value": "3년 건조한 대나무, 손으로 깎은 선면",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-02-statement-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-02-statement-body-text",
+                  "type": "text",
+                  "value": "담양 왕대를 3년 동안 건조한 뒤 손으로 겉대와 속대를 깎아 부채의 뼈대를 만듭니다. 그 위에 한지를 겹겹이 붙여 선면을 만들고, 매화를 한 획씩 직접 그려 완성합니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-03-detail_split-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "dark",
+        "layout": {
+          "display": "flex",
+          "direction": "row",
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "center"
+        },
+        "style": {
+          "color": "#F7F4EE",
+          "backgroundColor": "#242424",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-03-detail_split-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-03-detail_split-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-03-detail_split-eyebrow-text",
+                  "type": "text",
+                  "value": "표면과 문양",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-03-detail_split-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-03-detail_split-title-text",
+                  "type": "text",
+                  "value": "한지 선면 위의 매화",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-03-detail_split-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-03-detail_split-body-text",
+                  "type": "text",
+                  "value": "흰 한지 선면 위에 검은 먹과 분홍빛 매화가 대나무 뼈대 사이로 이어집니다. 선면의 결과 문양의 흐름이 한 장의 그림처럼 읽힙니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-03-detail_split-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-03-detail_split-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": null,
+                  "fontSize": null,
+                  "fontWeight": null,
+                  "lineHeight": null,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-03-detail_split-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": null,
+                      "fontSize": null,
+                      "fontWeight": null,
+                      "lineHeight": null,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": "contain",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": "detail",
+                    "alt": "전주 합죽선 · 매화선 한지 선면 위의 매화",
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-04-palette-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "sand",
+        "layout": {
+          "display": "stack",
+          "direction": null,
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#EEE5D8",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-04-palette-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-04-palette-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-04-palette-eyebrow-text",
+                  "type": "text",
+                  "value": "색채",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-04-palette-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-04-palette-title-text",
+                  "type": "text",
+                  "value": "흰 한지와 먹, 분홍 매화",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-04-palette-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-04-palette-body-text",
+                  "type": "text",
+                  "value": "부채의 색은 흰 한지, 검은 먹, 분홍 매화 세 가지로 정리됩니다. 대나무의 자연스러운 색이 이 세 가지 색을 받쳐줍니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-04-palette-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-04-palette-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": null,
+                  "fontSize": null,
+                  "fontWeight": null,
+                  "lineHeight": null,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-04-palette-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": null,
+                      "fontSize": null,
+                      "fontWeight": null,
+                      "lineHeight": null,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": "contain",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": "detail",
+                    "alt": "전주 합죽선 · 매화선 흰 한지와 먹, 분홍 매화",
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-05-usage_scene-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "dark",
+        "layout": {
+          "display": "stack",
+          "direction": null,
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#F7F4EE",
+          "backgroundColor": "#242424",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-05-usage_scene-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-05-usage_scene-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-05-usage_scene-eyebrow-text",
+                  "type": "text",
+                  "value": "사용 장면",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-05-usage_scene-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-05-usage_scene-title-text",
+                  "type": "text",
+                  "value": "손에 들면 그림이 되는 부채",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-05-usage_scene-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-05-usage_scene-body-text",
+                  "type": "text",
+                  "value": "부채를 펼치면 선면의 매화가 손안에서 그림이 됩니다. 부채로 바람을 부는 순간에도 선면의 문양이 함께 움직입니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-05-usage_scene-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-05-usage_scene-figure-01",
+              "type": "element",
+              "tag": "figure",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": null,
+                  "fontSize": null,
+                  "fontWeight": null,
+                  "lineHeight": null,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-05-usage_scene-image-01",
+                  "type": "element",
+                  "tag": "img",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": null,
+                      "fontSize": null,
+                      "fontWeight": null,
+                      "lineHeight": null,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": "cover",
+                      "objectPosition": {
+                        "x": 0.5,
+                        "y": 0.5
+                      },
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": "lifestyle",
+                    "alt": "전주 합죽선 · 매화선 손에 들면 그림이 되는 부채",
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-06-gallery-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "sand",
+        "layout": {
+          "display": "stack",
+          "direction": null,
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#EEE5D8",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-06-gallery-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-06-gallery-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-eyebrow-text",
+                  "type": "text",
+                  "value": "상세 보기",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-06-gallery-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-title-text",
+                  "type": "text",
+                  "value": "부채의 각도",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-06-gallery-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-body-text",
+                  "type": "text",
+                  "value": "부채의 전체 형태와 선면의 매화 문양, 대나무 뼈대의 결을 각도별로 살펴봅니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-06-gallery-media",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-06-gallery-gallery-row-01",
+              "type": "element",
+              "tag": "div",
+              "props": {
+                "variant": null,
+                "layout": {
+                  "display": "grid",
+                  "direction": null,
+                  "columns": 3,
+                  "gap": 16.0,
+                  "wrap": false,
+                  "align": "stretch"
+                },
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": null,
+                  "fontSize": null,
+                  "fontWeight": null,
+                  "lineHeight": null,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-06-gallery-figure-01",
+                  "type": "element",
+                  "tag": "figure",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": null,
+                      "fontSize": null,
+                      "fontWeight": null,
+                      "lineHeight": null,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-06-gallery-image-01",
+                      "type": "element",
+                      "tag": "img",
+                      "props": {
+                        "variant": null,
+                        "layout": null,
+                        "style": {
+                          "color": null,
+                          "backgroundColor": null,
+                          "gradient": null,
+                          "fontFamily": null,
+                          "fontSize": null,
+                          "fontWeight": null,
+                          "lineHeight": null,
+                          "letterSpacing": null,
+                          "textAlign": null,
+                          "opacity": null,
+                          "borderColor": null,
+                          "borderWidth": null,
+                          "borderRadius": null,
+                          "boxShadow": null,
+                          "objectFit": "contain",
+                          "objectPosition": {
+                            "x": 0.5,
+                            "y": 0.5
+                          },
+                          "rotate": null,
+                          "padding": null,
+                          "margin": {
+                            "top": 0.0,
+                            "right": 0.0,
+                            "bottom": 0.0,
+                            "left": 0.0
+                          }
+                        },
+                        "href": null,
+                        "target": null,
+                        "imageId": "hero",
+                        "alt": "전주 합죽선 · 매화선 부채의 각도",
+                        "crop": null,
+                        "videoUrl": null,
+                        "scope": null,
+                        "colSpan": null,
+                        "rowSpan": null
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-06-gallery-figure-02",
+                  "type": "element",
+                  "tag": "figure",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": null,
+                      "fontSize": null,
+                      "fontWeight": null,
+                      "lineHeight": null,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-06-gallery-image-02",
+                      "type": "element",
+                      "tag": "img",
+                      "props": {
+                        "variant": null,
+                        "layout": null,
+                        "style": {
+                          "color": null,
+                          "backgroundColor": null,
+                          "gradient": null,
+                          "fontFamily": null,
+                          "fontSize": null,
+                          "fontWeight": null,
+                          "lineHeight": null,
+                          "letterSpacing": null,
+                          "textAlign": null,
+                          "opacity": null,
+                          "borderColor": null,
+                          "borderWidth": null,
+                          "borderRadius": null,
+                          "boxShadow": null,
+                          "objectFit": "contain",
+                          "objectPosition": {
+                            "x": 0.5,
+                            "y": 0.5
+                          },
+                          "rotate": null,
+                          "padding": null,
+                          "margin": {
+                            "top": 0.0,
+                            "right": 0.0,
+                            "bottom": 0.0,
+                            "left": 0.0
+                          }
+                        },
+                        "href": null,
+                        "target": null,
+                        "imageId": "detail",
+                        "alt": "전주 합죽선 · 매화선 부채의 각도",
+                        "crop": null,
+                        "videoUrl": null,
+                        "scope": null,
+                        "colSpan": null,
+                        "rowSpan": null
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-07-recommendation-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "paper",
+        "layout": {
+          "display": "stack",
+          "direction": null,
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#F6F2EC",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-07-recommendation-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-07-recommendation-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-07-recommendation-eyebrow-text",
+                  "type": "text",
+                  "value": "함께 보기",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-07-recommendation-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-07-recommendation-title-text",
+                  "type": "text",
+                  "value": "전주 부채 시리즈",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-07-recommendation-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-07-recommendation-body-text",
+                  "type": "text",
+                  "value": "같은 제작 방식과 한지 선면으로 완성된 다른 문양의 부채를 함께 살펴보세요.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-08-notice-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "dark",
+        "layout": {
+          "display": "stack",
+          "direction": null,
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#F7F4EE",
+          "backgroundColor": "#242424",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-08-notice-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-08-notice-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-08-notice-eyebrow-text",
+                  "type": "text",
+                  "value": "관리 안내",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-08-notice-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-08-notice-title-text",
+                  "type": "text",
+                  "value": "부채를 오래 쓰는 방법",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-08-notice-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-08-notice-body-text",
+                  "type": "text",
+                  "value": "펼칠 때는 아래에서 위로 천천히 펴 주세요. 사용 후에는 접어 직사광선과 습기를 피해 보관하면 오래 쓸 수 있습니다. 물티슈·물세척은 한지가 상하니 피해 주세요.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "section-08-notice-items",
+          "type": "element",
+          "tag": "ul",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 12.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-08-notice-item-01",
+              "type": "element",
+              "tag": "li",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": null,
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-08-notice-item-01-label",
+                  "type": "element",
+                  "tag": "strong",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 19.0,
+                      "fontWeight": 600,
+                      "lineHeight": 1.4,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-01-label-text",
+                      "type": "text",
+                      "value": "펼칠 때",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-08-notice-item-01-value",
+                  "type": "element",
+                  "tag": "span",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-01-value-text",
+                      "type": "text",
+                      "value": "아래에서 위로 천천히 펴기",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-08-notice-item-01-description",
+                  "type": "element",
+                  "tag": "span",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-01-description-text",
+                      "type": "text",
+                      "value": "부채의 뼈대와 선면을 보호하는 방법",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "section-08-notice-item-02",
+              "type": "element",
+              "tag": "li",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": null,
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-08-notice-item-02-label",
+                  "type": "element",
+                  "tag": "strong",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 19.0,
+                      "fontWeight": 600,
+                      "lineHeight": 1.4,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-02-label-text",
+                      "type": "text",
+                      "value": "보관",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-08-notice-item-02-value",
+                  "type": "element",
+                  "tag": "span",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-02-value-text",
+                      "type": "text",
+                      "value": "접어 직사광선·습기 피하기",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-08-notice-item-02-description",
+                  "type": "element",
+                  "tag": "span",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-02-description-text",
+                      "type": "text",
+                      "value": "한지 선면이 변색되거나 상하는 것을 막는 방법",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "section-08-notice-item-03",
+              "type": "element",
+              "tag": "li",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": null,
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-08-notice-item-03-label",
+                  "type": "element",
+                  "tag": "strong",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 19.0,
+                      "fontWeight": 600,
+                      "lineHeight": 1.4,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-03-label-text",
+                      "type": "text",
+                      "value": "세척 금지",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-08-notice-item-03-value",
+                  "type": "element",
+                  "tag": "span",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-03-value-text",
+                      "type": "text",
+                      "value": "물티슈·물세척 금지",
+                      "marks": []
+                    }
+                  ]
+                },
+                {
+                  "id": "section-08-notice-item-03-description",
+                  "type": "element",
+                  "tag": "span",
+                  "props": {
+                    "variant": null,
+                    "layout": null,
+                    "style": {
+                      "color": null,
+                      "backgroundColor": null,
+                      "gradient": null,
+                      "fontFamily": "sans",
+                      "fontSize": 16.0,
+                      "fontWeight": 400,
+                      "lineHeight": 1.7,
+                      "letterSpacing": null,
+                      "textAlign": null,
+                      "opacity": null,
+                      "borderColor": null,
+                      "borderWidth": null,
+                      "borderRadius": null,
+                      "boxShadow": null,
+                      "objectFit": null,
+                      "objectPosition": null,
+                      "rotate": null,
+                      "padding": null,
+                      "margin": {
+                        "top": 0.0,
+                        "right": 0.0,
+                        "bottom": 0.0,
+                        "left": 0.0
+                      }
+                    },
+                    "href": null,
+                    "target": null,
+                    "imageId": null,
+                    "alt": null,
+                    "crop": null,
+                    "videoUrl": null,
+                    "scope": null,
+                    "colSpan": null,
+                    "rowSpan": null
+                  },
+                  "children": [
+                    {
+                      "id": "section-08-notice-item-03-description-text",
+                      "type": "text",
+                      "value": "한지가 물에 상할 수 있으므로 물로 닦지 않기",
+                      "marks": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "section-09-closing-root",
+      "type": "element",
+      "tag": "section",
+      "props": {
+        "variant": "sand",
+        "layout": {
+          "display": "stack",
+          "direction": null,
+          "columns": null,
+          "gap": 24.0,
+          "wrap": false,
+          "align": "stretch"
+        },
+        "style": {
+          "color": "#222222",
+          "backgroundColor": "#EEE5D8",
+          "gradient": null,
+          "fontFamily": null,
+          "fontSize": null,
+          "fontWeight": null,
+          "lineHeight": null,
+          "letterSpacing": null,
+          "textAlign": null,
+          "opacity": null,
+          "borderColor": null,
+          "borderWidth": null,
+          "borderRadius": null,
+          "boxShadow": null,
+          "objectFit": null,
+          "objectPosition": null,
+          "rotate": null,
+          "padding": {
+            "top": 40.0,
+            "right": 40.0,
+            "bottom": 40.0,
+            "left": 40.0
+          },
+          "margin": {
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0,
+            "left": 0.0
+          }
+        },
+        "href": null,
+        "target": null,
+        "imageId": null,
+        "alt": null,
+        "crop": null,
+        "videoUrl": null,
+        "scope": null,
+        "colSpan": null,
+        "rowSpan": null
+      },
+      "children": [
+        {
+          "id": "section-09-closing-copy",
+          "type": "element",
+          "tag": "div",
+          "props": {
+            "variant": null,
+            "layout": {
+              "display": "stack",
+              "direction": null,
+              "columns": null,
+              "gap": 16.0,
+              "wrap": false,
+              "align": "stretch"
+            },
+            "style": {
+              "color": null,
+              "backgroundColor": null,
+              "gradient": null,
+              "fontFamily": null,
+              "fontSize": null,
+              "fontWeight": null,
+              "lineHeight": null,
+              "letterSpacing": null,
+              "textAlign": null,
+              "opacity": null,
+              "borderColor": null,
+              "borderWidth": null,
+              "borderRadius": null,
+              "boxShadow": null,
+              "objectFit": null,
+              "objectPosition": null,
+              "rotate": null,
+              "padding": null,
+              "margin": {
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0,
+                "left": 0.0
+              }
+            },
+            "href": null,
+            "target": null,
+            "imageId": null,
+            "alt": null,
+            "crop": null,
+            "videoUrl": null,
+            "scope": null,
+            "colSpan": null,
+            "rowSpan": null
+          },
+          "children": [
+            {
+              "id": "section-09-closing-eyebrow",
+              "type": "element",
+              "tag": "span",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 13.0,
+                  "fontWeight": 500,
+                  "lineHeight": 1.5,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-09-closing-eyebrow-text",
+                  "type": "text",
+                  "value": "마무리",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-09-closing-title",
+              "type": "element",
+              "tag": "h2",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 30.0,
+                  "fontWeight": 700,
+                  "lineHeight": 1.35,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-09-closing-title-text",
+                  "type": "text",
+                  "value": "한 획의 차이가 만드는 부채",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "id": "section-09-closing-body",
+              "type": "element",
+              "tag": "p",
+              "props": {
+                "variant": null,
+                "layout": null,
+                "style": {
+                  "color": null,
+                  "backgroundColor": null,
+                  "gradient": null,
+                  "fontFamily": "sans",
+                  "fontSize": 16.0,
+                  "fontWeight": 400,
+                  "lineHeight": 1.7,
+                  "letterSpacing": null,
+                  "textAlign": null,
+                  "opacity": null,
+                  "borderColor": null,
+                  "borderWidth": null,
+                  "borderRadius": null,
+                  "boxShadow": null,
+                  "objectFit": null,
+                  "objectPosition": null,
+                  "rotate": null,
+                  "padding": null,
+                  "margin": {
+                    "top": 0.0,
+                    "right": 0.0,
+                    "bottom": 0.0,
+                    "left": 0.0
+                  }
+                },
+                "href": null,
+                "target": null,
+                "imageId": null,
+                "alt": null,
+                "crop": null,
+                "videoUrl": null,
+                "scope": null,
+                "colSpan": null,
+                "rowSpan": null
+              },
+              "children": [
+                {
+                  "id": "section-09-closing-body-text",
+                  "type": "text",
+                  "value": "매화를 한 획씩 직접 그리기 때문에 같은 부채가 하나도 없습니다. 전주 합죽선 매화선은 손의 흔적이 선면에 남은 부채입니다.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

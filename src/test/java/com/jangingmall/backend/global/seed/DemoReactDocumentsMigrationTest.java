@@ -46,7 +46,7 @@ class DemoReactDocumentsMigrationTest {
         assertThat(ALLOWED_TAGS).containsAll(tags);
         long images = sql.split("\"tag\":\"img\"", -1).length - 1;
         long imageIds = sql.split("\"imageId\":\"body_", -1).length - 1;
-        assertThat(images).isEqualTo(12);
+        assertThat(images).isEqualTo(32);
         assertThat(imageIds).isEqualTo(images);
     }
 }
