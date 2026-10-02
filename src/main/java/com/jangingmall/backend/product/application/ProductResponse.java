@@ -2,6 +2,7 @@ package com.jangingmall.backend.product.application;
 
 import com.jangingmall.backend.product.domain.Product;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import tools.jackson.databind.JsonNode;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +31,11 @@ public record ProductResponse(
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     List<ContentBlockView> detailPageBlocks,
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    List<ImageVariantView> thumbnail
+    List<ImageVariantView> thumbnail,
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    JsonNode detailPageDocument,
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    List<FeatureView> detailFeatures
 ) {
     public ProductResponse(Long productId, Long artisanId, Long categoryId, String categoryName,
                            Long subcategoryId, String subcategoryName, String title, String description, int price,
@@ -39,7 +44,7 @@ public record ProductResponse(
                            Integer productionPeriodDays, List<String> colors) {
         this(productId, artisanId, categoryId, categoryName, subcategoryId, subcategoryName, title, description,
             price, stock, thumbnailUrl, status, createdAt, updatedAt, giftThemes, purposeTags,
-            productionPeriodDays, colors, List.of(), List.of(), List.of());
+            productionPeriodDays, colors, List.of(), List.of(), List.of(), null, List.of());
     }
 
     public static ProductResponse from(Product product) {
@@ -51,6 +56,12 @@ public record ProductResponse(
     }
     public static ProductResponse from(Product product, List<ProductImageView> images,
                                        List<ContentBlockView> detailPageBlocks) {
+        return from(product, images, detailPageBlocks, null, List.of());
+    }
+
+    public static ProductResponse from(Product product, List<ProductImageView> images,
+                                       List<ContentBlockView> detailPageBlocks, JsonNode detailPageDocument,
+                                       List<FeatureView> detailFeatures) {
         List<ProductImageView> resolvedImages =
                 images == null ? List.of() : List.copyOf(images);
 
@@ -125,9 +136,14 @@ public record ProductResponse(
                         ? List.of()
                         : List.copyOf(detailPageBlocks),
 
-                resolvedThumbnail
+                resolvedThumbnail,
+                detailPageDocument,
+                detailFeatures == null ? List.of() : List.copyOf(detailFeatures)
         );
     }
+
+    /** 상세 JSON 의 특징 카드(제목 + 설명). 화면이 JSON 을 그리지 않아도 특징 목록을 바로 보여 줄 수 있다. */
+    public record FeatureView(String title, String body) {}
 
     public record ProductImageView(String imageId, String alt, List<ImageVariantView> variants) {}
 

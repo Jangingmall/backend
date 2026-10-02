@@ -159,6 +159,10 @@ class ProductControllerTest extends RestDocsControllerTest {
         fieldWithPath("data.detailPageBlocks[].imageVariants[].format").type(JsonFieldType.STRING).optional().description("variant 포맷"),
         fieldWithPath("data.detailPageBlocks[].videoUrl").type(JsonFieldType.STRING).optional().description("영상 URL"),
         fieldWithPath("data.detailPageBlocks[].text").type(JsonFieldType.STRING).optional().description("블록 텍스트"),
+        fieldWithPath("data.detailPageDocument").type(JsonFieldType.OBJECT).optional().description("AI 상세 페이지 JSON(schemaVersion 2.0). 상세 조회에서만 내려가며, 이미지 노드는 props.src 를 가진다"),
+        fieldWithPath("data.detailFeatures").type(JsonFieldType.ARRAY).optional().description("상세 JSON 의 특징 카드 목록(상세 조회에서만)"),
+        fieldWithPath("data.detailFeatures[].title").type(JsonFieldType.STRING).optional().description("특징 제목"),
+        fieldWithPath("data.detailFeatures[].body").type(JsonFieldType.STRING).optional().description("특징 설명"),
     };
 
     @Test
@@ -218,6 +222,17 @@ class ProductControllerTest extends RestDocsControllerTest {
             ));
     }
 
+    private static String sortEnumDescription() {
+        return java.util.Arrays.stream(com.jangingmall.backend.product.domain.ProductSort.values())
+            .map(sort -> "  - " + sort.name() + ": " + sort.description())
+            .collect(java.util.stream.Collectors.joining("\n"));
+    }
+
+    private static String sortEnumNames() {
+        return java.util.Arrays.stream(com.jangingmall.backend.product.domain.ProductSort.values())
+            .map(Enum::name).collect(java.util.stream.Collectors.joining(" | "));
+    }
+
     @Test
     @DisplayName("상품 전체 목록 조회 — 필터와 함께 ON_SALE 상품을 조회한다")
     void list() throws Exception {
@@ -237,14 +252,15 @@ class ProductControllerTest extends RestDocsControllerTest {
                     .tag("상품")
                     .summary("상품 목록")
                     .description("판매 중 상품 목록을 필터와 함께 조회합니다.\n"
-                        + "- sort: NEWEST(기본) | PRICE_ASC | PRICE_DESC | POPULAR | SALES_COUNT | WISHLIST_COUNT (대소문자 무관)\n"
+                        + "- sort(ENUM, 대소문자·'-' 무관, 모르는 값은 NEWEST):\n" + sortEnumDescription()
+                        + "\n- 홈 사용처: 베스트=SALES_COUNT size=5, 신상품=NEWEST size=4, 전체 목록 기본=POPULAR (기획전은 GET /api/exhibitions)\n"
                         + "- excludeSoldOut=true 이면 ON_SALE만 반환 (기본: ON_SALE+SOLD_OUT 포함)")
                     .queryParameters(
                         parameterWithName("keyword").description("상품명 검색어 (선택)").optional(),
                         parameterWithName("categoryId").description("카테고리 ID (선택)").optional(),
                         parameterWithName("subcategoryId").description("서브카테고리 ID (선택)").optional(),
                         parameterWithName("giftTheme").description("선물 테마 (선택)").optional(),
-                        parameterWithName("sort").description("정렬: NEWEST | PRICE_ASC | PRICE_DESC | POPULAR | SALES_COUNT | WISHLIST_COUNT").optional(),
+                        parameterWithName("sort").description("정렬 ENUM: " + sortEnumNames() + " (상세는 위 설명)").optional(),
                         parameterWithName("minPrice").description("최소 가격 (선택)").optional(),
                         parameterWithName("maxPrice").description("최대 가격 (선택)").optional(),
                         parameterWithName("excludeSoldOut").description("품절 제외 여부 (기본: false)").optional(),

@@ -293,7 +293,8 @@ public class ProductService {
             images = detailGallery(product);
         }
         List<ProductResponse.ContentBlockView> blocks = includeContent ? contentBlocks(product) : List.of();
-        return ProductResponse.from(product, images, blocks);
+        tools.jackson.databind.JsonNode document = includeContent ? detailDocument(product) : null;
+        return ProductResponse.from(product, images, blocks, document, DetailDocumentView.features(document));
     }
 
     /**
@@ -323,6 +324,15 @@ public class ProductService {
 
     private List<ProductResponse.ProductImageView> detailGallery(Product product) {
         return galleryFrom(product.getTitle(), product.getThumbnailUrl(), product.getDetailImageUrls());
+    }
+
+    private tools.jackson.databind.JsonNode detailDocument(Product product) {
+        if (contentRepository == null) {
+            return null;
+        }
+        return contentRepository.findByProductId(product.getId())
+            .map(content -> DetailDocumentView.parse(content.getReactDocument()))
+            .orElse(null);
     }
 
     private List<ProductResponse.ContentBlockView> contentBlocks(Product product) {

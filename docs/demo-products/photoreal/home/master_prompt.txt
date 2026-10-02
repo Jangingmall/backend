@@ -1,0 +1,90 @@
+아래 요청 번호마다 정확히 1장씩, 1024×1024 정사각형 사진(배너 2장만 3:1 가로형)을 만들어 주세요.
+각 요청의 제목은 [키]입니다. 저장할 때 파일 이름을 [키].jpg 로 하고, 번호를 건너뛰거나 합치지 마세요.
+사진 속에 사람·손·글자·로고·워터마크가 없어야 합니다.
+
+01. [home_best1_A] 청자 분청 찻잔
+a small handmade Korean pale-celadon tea cup with a faint jade-green glaze and subtle crackle, seen straight from the front on a plain light backdrop. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+02. [home_best1_B] 청자 분청 찻잔
+a close-up of the translucent pale jade glaze and fine crackle on the cup wall. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+03. [home_best1_C] 청자 분청 찻잔
+the celadon cup filled with warm green tea on a small wooden tray beside a linen cloth. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+04. [home_best2_A] 옻칠 원형 쟁반
+a round handmade Korean wooden tray finished with deep red-brown lacquer, seen from a slightly raised front angle on a plain light backdrop. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+05. [home_best2_B] 옻칠 원형 쟁반
+a close-up of the glossy layered lacquer surface and the rounded rim of the tray. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+06. [home_best2_C] 옻칠 원형 쟁반
+the lacquer tray holding two small tea cups and a plate of rice cakes on a wooden table. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+07. [home_best3_A] 옥 매듭 반지
+a handmade Korean ring carved from pale green jade in a knot shape, placed on a plain light stone surface. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+08. [home_best3_B] 옥 매듭 반지
+a macro of the polished translucent jade and the carved knot detail of the ring. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+09. [home_best3_C] 옥 매듭 반지
+the jade ring resting on a folded silk cloth next to a small wooden jewelry box. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+10. [home_best4_A] 전통 한지 무드등
+a cylindrical Korean traditional hanji paper table lamp with wooden slats, switched on glowing in warm amber, seen from the front. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+11. [home_best4_B] 전통 한지 무드등
+a close-up of the long mulberry fibers glowing in the lit hanji paper and the wooden slats. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+12. [home_best4_C] 전통 한지 무드등
+the lit hanji lamp on a bedside table in a dim, cozy bedroom. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+13. [home_best5_A] 왕골 원형 부채
+a round hand-woven Korean wangol (sedge) fan in warm apricot and ochre tones with a short wooden handle, seen straight from the front. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+14. [home_best5_B] 왕골 원형 부채
+a macro of the fine hand-woven wangol sedge pattern and the edge binding of the round fan. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+15. [home_best5_C] 왕골 원형 부채
+the round wangol fan resting on a wooden porch floor beside a glass of cold barley tea. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+16. [home_plan1_A] 대나무 조명
+a handmade Korean bamboo woven pendant lamp, switched on glowing warm, seen from the front on a plain dark backdrop. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+17. [home_plan1_B] 대나무 조명
+a close-up of the thin woven bamboo strips and the shadows they cast when lit. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+18. [home_plan1_C] 대나무 조명
+the bamboo lamp hanging above a wooden dining table in a calm room. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+19. [home_plan2_A] 백잔
+a small handmade Korean white porcelain cup with a clear glaze, seen straight from the front on a plain light backdrop. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+20. [home_plan2_B] 백잔
+a close-up of the smooth translucent white glaze and the thin rim of the cup. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+21. [home_plan2_C] 백잔
+the white cup filled with pale tea on a wooden tray beside a small teapot. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+22. [home_plan3_A] 자연염 테이블 러너
+a long handmade Korean ramie table runner naturally dyed in gray-brown, soft pink and green, laid across a wooden table seen from above. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+23. [home_plan3_B] 자연염 테이블 러너
+a macro of the loosely woven ramie texture and the natural dye gradation of the runner. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+24. [home_plan3_C] 자연염 테이블 러너
+the table runner under a simple Korean meal setting with ceramic bowls. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+25. [home_plan4_A] 산수화 대형 부채
+a large opened Korean folding fan of hanji paper painted with an ink and light-color landscape, seen straight from the front. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+26. [home_plan4_B] 산수화 대형 부채
+a close-up of the ink-wash mountains and the paper texture on the fan face. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+27. [home_plan4_C] 산수화 대형 부채
+the opened landscape fan standing on a wooden stand beside a window like a framed painting. photorealistic high-resolution product photography, sharp focus, soft natural light, warm neutral tones, no people, no hands, no text, no logos, no watermark, full-bleed square frame with no white bars or borders
+
+28. [banner_ex1] 장인이 빚은 공간의 온기
+a wide cinematic banner of a calm living room corner with a bamboo woven lamp glowing, a white porcelain cup and a natural-dyed ramie runner on a wooden table, soft warm light, wide 3:1 landscape frame. photorealistic high-resolution photography, no people, no text, no logos, no watermark
+
+29. [banner_ex2] 바람을 부르는 부채 모음
+a wide cinematic banner of several Korean folding and round fans (hanji, lacquered black, ramie, sedge) arranged on a wooden floor in soft summer light, wide 3:1 landscape frame. photorealistic high-resolution photography, no people, no text, no logos, no watermark

@@ -3,13 +3,13 @@ package com.jangingmall.backend.product.infrastructure;
 import com.jangingmall.backend.product.application.ProductCommand;
 import com.jangingmall.backend.product.domain.Product;
 import com.jangingmall.backend.product.domain.ProductRepository;
+import com.jangingmall.backend.product.domain.ProductSort;
 import com.jangingmall.backend.product.domain.ProductStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -26,6 +26,14 @@ interface JpaProductRepositoryJpa extends JpaRepository<Product, Long> {
 
 @Repository
 class JpaProductRepository implements ProductRepository {
+    private static final String SALES_COUNT_EXPR = "(SELECT coalesce(sum(oi.quantity), 0L) FROM OrderItem oi WHERE oi.productId = p.id"
+        + " AND oi.order.status IN (com.jangingmall.backend.payment.domain.OrderStatus.PAID,"
+        + " com.jangingmall.backend.payment.domain.OrderStatus.IN_DELIVERY,"
+        + " com.jangingmall.backend.payment.domain.OrderStatus.DELIVERED,"
+        + " com.jangingmall.backend.payment.domain.OrderStatus.PURCHASE_CONFIRMED))";
+    private static final String WISHLIST_COUNT_EXPR = "(SELECT count(w) FROM Wishlist w WHERE w.productId = p.id)";
+    private static final String REVIEW_COUNT_EXPR = "(SELECT count(r) FROM ProductReview r WHERE r.productId = p.id)";
+
 
     private static final List<ProductStatus> ON_SALE_STATUSES = List.of(ProductStatus.ON_SALE);
     private static final List<ProductStatus> INCLUDE_SOLD_OUT = List.of(ProductStatus.ON_SALE, ProductStatus.SOLD_OUT);
@@ -141,13 +149,14 @@ class JpaProductRepository implements ProductRepository {
 
     private String resolveOrder(String sort, Pageable pageable) {
         if (sort != null) {
-            return switch (sort.trim().toUpperCase(Locale.ROOT)) {
-                case "SALES_COUNT" -> " ORDER BY (SELECT count(oi) FROM OrderItem oi WHERE oi.productId = p.id) DESC, p.id DESC";
-                case "WISHLIST_COUNT" -> " ORDER BY (SELECT count(w) FROM Wishlist w WHERE w.productId = p.id) DESC, p.id DESC";
-                case "PRICE_ASC" -> " ORDER BY p.price ASC, p.id DESC";
-                case "PRICE_DESC" -> " ORDER BY p.price DESC, p.id DESC";
-                case "POPULAR" -> " ORDER BY p.id DESC";
-                default -> " ORDER BY p.createdAt DESC, p.id DESC";
+            return switch (ProductSort.from(sort)) {
+                case SALES_COUNT -> " ORDER BY " + SALES_COUNT_EXPR + " DESC, p.id DESC";
+                case WISHLIST_COUNT -> " ORDER BY " + WISHLIST_COUNT_EXPR + " DESC, p.id DESC";
+                case POPULAR -> " ORDER BY (p.popularityBoost + 3 * " + SALES_COUNT_EXPR + " + 2 * " + WISHLIST_COUNT_EXPR
+                    + " + " + REVIEW_COUNT_EXPR + ") DESC, p.id DESC";
+                case PRICE_ASC -> " ORDER BY p.price ASC, p.id DESC";
+                case PRICE_DESC -> " ORDER BY p.price DESC, p.id DESC";
+                case NEWEST -> " ORDER BY p.createdAt DESC, p.id DESC";
             };
         }
         if (pageable.getSort().isSorted()) {

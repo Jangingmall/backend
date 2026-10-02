@@ -46,6 +46,14 @@ ITEMS = [
 ]
 
 
+def home_image(group, no, suffix, fallback):
+    """고화질 전용 이미지(staging/home_<그룹><번호>_<A|B|C>.webp)가 있으면 그것을, 없으면 임시 이미지를 쓴다."""
+    name = f"home_{group}{no}_{suffix}.webp"
+    if os.path.exists(os.path.join(ROOT, "docs", "demo-products", "photoreal", "staging", name)):
+        return f"{ST}/{name}"
+    return fallback
+
+
 def q(s):
     return "'" + s.replace("'", "''") + "'"
 
@@ -57,8 +65,24 @@ def main():
     for ord_, (group, no, title, artisan, sub, price, material, image, colors, desc) in enumerate(order, 1):
         # 신상품 4개는 가장 최근 등록(1번이 최신), 나머지는 하루 전
         created = f"NOW() - ({no} * INTERVAL '1 second')" if group == "new" else "NOW() - INTERVAL '1 day'"
+        image = home_image(group, no, "A", image) if group in ("best", "plan") else image
         rows.append(f"    ({ord_}, {q(title)}, {artisan}, {sub}, {q(desc)}, {q(material)}, {price}, 30, {q(image)}, 14, {created})")
     colors = ",\n".join(f"    ({q(it[2])}, {it[3]}, {q(c)})" for it in ITEMS for c in it[8])
+    detail_rows = [f"    ({q(it[2])}, {it[3]}, {i}, {q(home_image(it[0], it[1], suffix, ''))})"
+                   for it in ITEMS if it[0] in ("best", "plan") for i, suffix in enumerate(("B", "C"))
+                   if home_image(it[0], it[1], suffix, "")]
+    detail_sql = ""
+    if detail_rows:
+        joined = ",\n".join(detail_rows)
+        detail_sql = f"""
+INSERT INTO product_detail_image (product_id, display_order, image_url)
+SELECT p.product_id, d.display_order, d.image_url
+FROM (VALUES
+{joined}
+) AS d(title, artisan_id, display_order, image_url)
+JOIN product p ON p.title = d.title AND p.artisan_id = d.artisan_id
+ON CONFLICT DO NOTHING;
+"""
     rows_sql = ",\n".join(rows)
     text = f"""-- 시연 디자인(홈 베스트 5·기획전 4·신상품 4)의 상품 13개를 심는다. 원본: scripts/demo-products/seed_design_products.py
 -- POPULAR(id 내림차순)에서 베스트 1~5번·기획전 6~9번, NEWEST 상위 4개가 신상품이 되도록 id 와 등록 시각을 정했다.
@@ -83,7 +107,7 @@ FROM (VALUES
 ) AS c(title, artisan_id, color)
 JOIN product p ON p.title = c.title AND p.artisan_id = c.artisan_id
 ON CONFLICT DO NOTHING;
-"""
+{detail_sql}"""
     open(OUT, "w", encoding="utf-8").write(text)
     print(len(ITEMS), "products ->", OUT)
 

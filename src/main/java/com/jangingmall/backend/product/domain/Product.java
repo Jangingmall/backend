@@ -102,6 +102,10 @@ public class Product {
     @Column(name = "is_single_item", nullable = false)
     private boolean isSingleItem = false;
 
+    /** 인기순 점수에 더하는 운영 노출 가중치. 기본 0. */
+    @Column(name = "popularity_boost", nullable = false)
+    private int popularityBoost = 0;
+
     @Column(name = "has_gift_wrap", nullable = false)
     private boolean hasGiftWrap = false;
 
