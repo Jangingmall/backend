@@ -1,0 +1,141 @@
+### 시연 점검용 .http (VS Code REST Client / IntelliJ HTTP Client)
+# 사용법: 아래 변수를 환경에 맞게 바꾸고, 로그인 요청을 먼저 실행한 뒤 위에서부터 차례로 실행한다.
+# STG 는 호스트를 https://api.stg.midam.store 로 바꾼다. 비밀번호는 팀 공유 값을 넣는다(저장소에 적지 않는다).
+
+@host = http://localhost:8080
+@userEmail = stgUser@midam.store
+@userPassword = <비밀번호>
+@artisanEmail = stgArtisan@midam.store
+@artisanPassword = <비밀번호>
+# 합죽선 상품 ID (STG 에서 목록으로 확인한 값)
+@productId = 785
+@exhibitionId = 1
+
+############################################################
+### 0. 로그인
+############################################################
+
+### 0-1. USER 로그인 (찜·최근 본·챗봇)
+# @name loginUser
+POST {{host}}/api/member/login
+Content-Type: application/json
+
+{ "email": "{{userEmail}}", "password": "{{userPassword}}" }
+
+### 0-2. ARTISAN 로그인 (AI 생성)
+# @name loginArtisan
+POST {{host}}/api/member/login
+Content-Type: application/json
+
+{ "email": "{{artisanEmail}}", "password": "{{artisanPassword}}" }
+
+############################################################
+### 1. 홈 — 정렬 ENUM (대소문자 무관)
+############################################################
+
+### 1-1. 베스트 5 — 기대: 청자 분청 찻잔, 옻칠 원형 쟁반, 옥 매듭 반지, 전통 한지 무드등, 왕골 원형 부채
+GET {{host}}/api/products?sort=SALES_COUNT&size=5
+
+### 1-2. 신상품 4 — 기대: 청사초롱 벽등, 전통 매화 은반지, 모시 여름 접선, 옻칠 흑선
+GET {{host}}/api/products?sort=NEWEST&size=4
+
+### 1-3. 기획전(찜순 4) — 기대: 대나무 조명, 백잔, 자연염 테이블 러너, 산수화 대형 부채
+GET {{host}}/api/products?sort=WISHLIST_COUNT&size=4
+
+### 1-4. 전체 상품 기본 인기순 — 기대 첫 8개: 합죽선, 청자 운학문 찻잔, 분청 귀얄 찻잔, 노리개, 모란도 액자, 한지 조명, 모시 스카프, 나전 명함집
+GET {{host}}/api/products?sort=POPULAR&size=10
+
+### 1-5. 소문자·프론트 표기도 동작 (popular / sales / wishlist / price-asc)
+GET {{host}}/api/products?sort=sales&size=3
+
+### 1-6. 가격순
+GET {{host}}/api/products?sort=PRICE_DESC&size=5
+
+############################################################
+### 2. 기획전 API
+############################################################
+
+### 2-1. 목록 — 기대: 2개(장인이 빚은 공간의 온기 4개 / 바람을 부르는 부채 모음 5개), bannerImageUrl 있음
+GET {{host}}/api/exhibitions?sort=DISPLAY_ORDER
+
+### 2-2. 최신순
+GET {{host}}/api/exhibitions?sort=NEWEST
+
+### 2-3. 상세 — 기획 순서(CURATED)
+GET {{host}}/api/exhibitions/{{exhibitionId}}?sort=CURATED
+
+### 2-4. 상세 — 가격 낮은 순
+GET {{host}}/api/exhibitions/{{exhibitionId}}?sort=PRICE_ASC
+
+### 2-5. 없는 기획전 — 기대: 404
+GET {{host}}/api/exhibitions/999999
+
+############################################################
+### 3. 상품 상세 — 본문·JSON·특징
+############################################################
+
+### 3-1. 상세 — 기대: images 3장 이상, detailPageBlocks(본문), detailPageDocument(JSON), detailFeatures(특징 카드)
+# 비어 있으면 V22/V26/V30 적용 여부와 캐시(60초)를 확인한다.
+GET {{host}}/api/products/{{productId}}
+
+### 3-2. 목록에는 detailPageDocument 가 없어야 한다
+GET {{host}}/api/products?size=1
+
+############################################################
+### 4. 찜·최근 본 상품 (USER 토큰 필요)
+############################################################
+
+### 4-1. 최근 본 기록 — 기대: 200 (이전에는 404)
+POST {{host}}/api/member/recent-views
+Content-Type: application/json
+Authorization: Bearer {{loginUser.response.body.data.accessToken}}
+
+{ "productId": {{productId}} }
+
+### 4-2. 최근 본 목록 — 기대: 위 상품이 첫 번째
+GET {{host}}/api/member/recent-views
+Authorization: Bearer {{loginUser.response.body.data.accessToken}}
+
+### 4-3. 찜 여부 — 기대: 찜 전 404, 찜 후 204 (404 는 "찜 아님"으로 정상)
+GET {{host}}/api/member/me/wishes/{{productId}}
+Authorization: Bearer {{loginUser.response.body.data.accessToken}}
+
+############################################################
+### 5. 챗봇 (USER 토큰 필요) — 응답 시간을 같이 본다
+############################################################
+
+### 5-1. 세션 생성
+# @name chatSession
+POST {{host}}/api/chatbot/sessions
+Authorization: Bearer {{loginUser.response.body.data.accessToken}}
+
+### 5-2. 메시지 전송 — 기대: reply, products[].thumbnail[0].url 존재
+# 1분 넘게 걸리면 백엔드 로그의 "AI 챗봇 요청" 시각과 비교한다.
+POST {{host}}/api/chatbot/sessions/{{chatSession.response.body.data.sessionId}}/messages
+Content-Type: application/json
+Authorization: Bearer {{loginUser.response.body.data.accessToken}}
+
+{ "content": "60대 부모님 생신 선물로 찻잔 추천해 주세요" }
+
+### 5-3. 대화 이력
+GET {{host}}/api/chatbot/sessions/{{chatSession.response.body.data.sessionId}}/messages
+Authorization: Bearer {{loginUser.response.body.data.accessToken}}
+
+############################################################
+### 6. AI 생성 상태 (ARTISAN 토큰 필요) — DRAFT_READY 점검
+############################################################
+
+### 6-1. 상태 조회 — generationId 는 생성 요청 응답의 data.generationId
+GET {{host}}/api/content/products/{{productId}}/generations/1
+Authorization: Bearer {{loginArtisan.response.body.data.accessToken}}
+
+### 6-2. 렌더링 수동 요청 — DRAFT_READY 일 때만 202, 아니면 422
+POST {{host}}/api/content/products/{{productId}}/generations/1/render
+Authorization: Bearer {{loginArtisan.response.body.data.accessToken}}
+
+############################################################
+### 7. 상품 문의 (실제 API)
+############################################################
+
+### 7-1. 문의 목록
+GET {{host}}/api/products/{{productId}}/questions
